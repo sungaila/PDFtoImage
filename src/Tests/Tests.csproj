@@ -2,8 +2,8 @@
   <!-- Assembly -->
   <PropertyGroup>
     <TargetFrameworks>net50;netcoreapp3.0;net461</TargetFrameworks>
-    <AssemblyName>PDFtoImages.Tests</AssemblyName>
-    <RootNamespace>PDFtoImages.Tests</RootNamespace>
+    <AssemblyName>PDFtoImage.Tests</AssemblyName>
+    <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
