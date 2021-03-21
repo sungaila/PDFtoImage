@@ -17,6 +17,7 @@ jobs:
     inputs:
       command: 'build'
       arguments: '-c $(buildConfiguration) -p:VersionSuffix=ci'
+      workingDirectory: 'src'
   - task: PublishPipelineArtifact@1
     displayName: 'Publish project assemblies'
     inputs:
