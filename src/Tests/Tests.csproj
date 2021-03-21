@@ -1,0 +1,446 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Assembly -->
+  <PropertyGroup>
+    <TargetFrameworks>net50;netcoreapp3.0;net461</TargetFrameworks>
+    <AssemblyName>PDFtoImages.Tests</AssemblyName>
+    <RootNamespace>PDFtoImages.Tests</RootNamespace>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <!-- C# compiler -->
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Features>strict</Features>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <NoWarn>CA1416</NoWarn>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.bmp" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.gif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.jpg" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.png" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.tif" />
+    <None Remove="Assets\SocialPreview.pdf" />
+    <None Remove="Assets\Wikimedia_Commons_web.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.tif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SocialPreview.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Wikimedia_Commons_web.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
+  </ItemGroup>
+
+  <!-- NuGet Icon -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
+  </ItemGroup>
+</Project>

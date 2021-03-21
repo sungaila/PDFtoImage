@@ -1,0 +1,114 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Assembly -->
+  <PropertyGroup>
+    <TargetFrameworks>net50;netcoreapp3.0;net461</TargetFrameworks>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <AssemblyName>PDFtoImage</AssemblyName>
+    <RootNamespace>PDFtoImage</RootNamespace>
+    <EmbedAllSources>true</EmbedAllSources>
+    <AssemblyOriginatorKeyFile>PDFtoImage.snk</AssemblyOriginatorKeyFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>David Sungaila</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Icon_128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
+    <Description>About A .NET library to render PDF files into images.</Description>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageTags>PDF Bitmap Convert Conversion C# PDFium</PackageTags>
+    <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- C# compiler -->
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Features>strict</Features>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <NoWarn>NETSDK1138</NoWarn>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+  </PropertyGroup>
+
+  <!-- Debug builds -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <VersionSuffix>debug</VersionSuffix>
+  </PropertyGroup>
+
+  <!-- Release builds -->
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <SignAssembly>true</SignAssembly>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="PDFtoImage.targets">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
+    <None Include="runtimes\win-x64\native\pdfium.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x64\native\pdfium.dll</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="runtimes\win-x86\native\pdfium.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x86\native\pdfium.dll</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="runtimes\linux-x64\native\libpdfium.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-x64\native\libpdfium.so</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="runtimes\osx-x64\native\libpdfium.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-x64\native\libpdfium.dylib</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="runtimes\osx-arm64\native\libpdfium.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-arm64\native\libpdfium.dylib</PackagePath>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+  <!-- Remove Linux and macOS PDFium for .NET Framework targets -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFrameworkVersion)'=='v4.6.1' or '$(TargetFrameworkVersion)'=='v4.6.2' or '$(TargetFrameworkVersion)'=='v4.7' or '$(TargetFrameworkVersion)'=='v4.7.1' or '$(TargetFrameworkVersion)'=='v4.7.2' or '$(TargetFrameworkVersion)'=='v4.8'">
+    <None Remove="runtimes\linux-x64\native\libpdfium.so" />
+    <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
+    <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
+  </ItemGroup>
+
+  <!-- NuGet Icon -->
+  <ItemGroup>
+    <None Include="..\..\etc\Icon_128.png">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <!-- SourceLink build steps and NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

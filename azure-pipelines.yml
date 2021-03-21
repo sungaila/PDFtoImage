@@ -1,0 +1,102 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+
+trigger:
+- master
+
+jobs:
+- job: Build
+  displayName: 'Build'
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'Build solution'
+    inputs:
+      command: 'build'
+      arguments: '-c $(buildConfiguration) -p:VersionSuffix=ci'
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish project assemblies'
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)\src\PDFtoImage\bin\$(buildConfiguration)'
+      artifact: 'Assemblies ($(buildConfiguration))'
+      publishLocation: 'pipeline'
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish test assemblies'
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)\Tests\bin\$(buildConfiguration)'
+      artifact: 'Tests'
+      publishLocation: 'pipeline'
+  - task: DotNetCoreCLI@2
+    displayName: 'Create NuGet package'
+    inputs:
+      command: 'pack'
+      arguments: '-c $(buildConfiguration)'
+      packagesToPack: '$(Build.SourcesDirectory)\src\PDFtoImage\PDFtoImage.csproj'
+      nobuild: true
+      versioningScheme: 'off'
+      buildProperties: 'VersionSuffix=ci'
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish NuGet package'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'NuGet package ($(buildConfiguration))'
+      publishLocation: 'pipeline'
+  
+- job: Test
+  displayName: 'Test'
+  dependsOn: Build
+  strategy:
+    matrix:
+      Windows:
+        imageName: 'windows-latest'
+      Linux:
+        imageName: 'ubuntu-latest'
+      macOS:
+        imageName: 'macOS-latest'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - checkout: none
+    displayName: 'Skip checkout'
+  - task: Bash@3
+    displayName: 'Install mono-libgdiplus'
+    condition: eq(variables['agent.os'], 'Darwin')
+    inputs:
+      targetType: 'inline'
+      script: 'brew install mono-libgdiplus'
+      failOnStderr: true
+  - task: DownloadPipelineArtifact@2
+    displayName: 'Download test assemblies'
+    inputs:
+      buildType: 'current'
+      artifactName: 'Tests'
+      targetPath: '$(Pipeline.Workspace)'
+  - task: VSTest@2
+    displayName: '.NET Framework 4.6.1'
+    condition: eq(variables['agent.os'], 'Windows_NT')
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: '$(Pipeline.Workspace)\**\net461\PDFtoImage.Tests.dll'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      runTestsInIsolation: true
+      codeCoverageEnabled: true
+      testRunTitle: '.NET Framework 4.6.1 ($(agent.os))'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: '.NET Core 3.0'
+    condition: succeededOrFailed()
+    inputs:
+      command: 'test'
+      arguments: '$(Pipeline.Workspace)\**\netcoreapp3.0\PDFtoImage.Tests.dll'
+      testRunTitle: '.NET Core 3.0 ($(agent.os))'
+  - task: DotNetCoreCLI@2
+    displayName: '.NET 5.0'
+    condition: succeededOrFailed()
+    inputs:
+      command: 'test'
+      arguments: '$(Pipeline.Workspace)\**\net50\PDFtoImage.Tests.dll'
+      testRunTitle: '.NET 5.0 ($(agent.os))'
