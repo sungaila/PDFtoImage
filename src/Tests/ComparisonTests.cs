@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using static PDFtoImage.Conversion;
+[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
 namespace Tests
 {

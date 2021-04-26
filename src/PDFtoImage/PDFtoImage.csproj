@@ -22,7 +22,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Convert Conversion C# PDFium</PackageTags>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
