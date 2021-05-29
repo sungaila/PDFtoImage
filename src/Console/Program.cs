@@ -15,7 +15,7 @@ namespace PDFtoImage.Console
 
             try
             {
-                ParseArguments(args, out string? inputPath, out string? outputPath, out int dpi);
+                ParseArguments(args, out string? inputPath, out string? outputPath, out int page, out int dpi);
 
                 if (inputPath == null)
                     throw new InvalidOperationException("There is no PDF file path.");
@@ -33,21 +33,21 @@ namespace PDFtoImage.Console
                 switch (Path.GetExtension(outputPath).ToLower())
                 {
                     case ".bmp":
-                        Conversion.SaveBmp(outputPath, inputStream, dpi: dpi);
+                        Conversion.SaveBmp(outputPath, inputStream, page: page - 1, dpi: dpi);
                         break;
                     case ".png":
-                        Conversion.SavePng(outputPath, inputStream, dpi: dpi);
+                        Conversion.SavePng(outputPath, inputStream, page: page - 1, dpi: dpi);
                         break;
                     case ".gif":
-                        Conversion.SaveGif(outputPath, inputStream, dpi: dpi);
+                        Conversion.SaveGif(outputPath, inputStream, page: page - 1, dpi: dpi);
                         break;
                     case ".jpg":
                     case ".jpeg":
-                        Conversion.SaveJpeg(outputPath, inputStream, dpi: dpi);
+                        Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, dpi: dpi);
                         break;
                     case ".tif":
                     case ".tiff":
-                        Conversion.SaveTiff(outputPath, inputStream, dpi: dpi);
+                        Conversion.SaveTiff(outputPath, inputStream, page: page - 1, dpi: dpi);
                         break;
                     default:
                         throw new InvalidOperationException("Only the following file extensions are supported: bmp, png, gif, jpg/jpeg and tif/tiff.");
@@ -64,7 +64,7 @@ namespace PDFtoImage.Console
             return 0;
         }
 
-        private static void ParseArguments(string[] args, out string? inputPath, out string? outputPath, out int dpi)
+        private static void ParseArguments(string[] args, out string? inputPath, out string? outputPath, out int page, out int dpi)
         {
             if (args == null)
                 throw new ArgumentNullException(nameof(args));
@@ -99,7 +99,7 @@ namespace PDFtoImage.Console
 
             outputPath = outputPath.Trim('\"');
 
-            dpi = 300;
+            page = 1;
 
             if (args.Length >= 3)
             {
@@ -107,9 +107,26 @@ namespace PDFtoImage.Console
             }
             else
             {
+                System.Console.Write("Enter PDF page number: ");
+
+                if (!int.TryParse(System.Console.ReadLine(), out page) || page <= 0)
+                {
+                    page = 1;
+                    System.Console.WriteLine($"PDF page number defaulting to {page}.");
+                }
+            }
+
+            dpi = 300;
+
+            if (args.Length >= 4)
+            {
+                outputPath = args[3];
+            }
+            else
+            {
                 System.Console.Write("Enter the target resolution in DPI: ");
                 
-                if (!int.TryParse(System.Console.ReadLine(), out dpi))
+                if (!int.TryParse(System.Console.ReadLine(), out dpi) || dpi <= 0)
                 {
                     dpi = 300;
                     System.Console.WriteLine($"Target DPI defaulting to {dpi}.");

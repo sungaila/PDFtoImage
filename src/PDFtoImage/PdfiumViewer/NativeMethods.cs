@@ -25,7 +25,7 @@ namespace PDFtoImage.PdfiumViewer
 #if NETCOREAPP3_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.OSArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
                 {
                     Architecture.X86 => "win-x86",
                     Architecture.X64 => "win-x64",
@@ -36,7 +36,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.OSArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
                 {
                     Architecture.X64 => "linux-x64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 is supported on Linux.")
@@ -46,7 +46,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.OSArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
                 {
                     Architecture.X64 => "osx-x64",
                     Architecture.Arm64 => "osx-arm64",
