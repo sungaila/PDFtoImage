@@ -294,6 +294,14 @@ namespace PDFtoImage.PdfiumViewer
                 Imports.FPDF_FFLDraw(form, bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
             }
         }
+
+        public static void FPDF_RemoveFormFieldHighlight(IntPtr form)
+        {
+            lock (LockString)
+            {
+                Imports.FPDF_RemoveFormFieldHighlight(form);
+            }
+        }
         #endregion
 
         #region Custom Load/Save Logic
@@ -429,6 +437,9 @@ namespace PDFtoImage.PdfiumViewer
             #region Save/Edit APIs
             [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+
+            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
             #endregion
         }
 

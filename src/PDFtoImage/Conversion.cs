@@ -23,14 +23,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Tiff, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Tiff, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -43,14 +45,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Tiff, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Tiff, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -63,14 +67,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Tiff, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Tiff, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -83,14 +89,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Tiff, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Tiff, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -103,14 +111,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Tiff, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Tiff, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -123,14 +133,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveTiff(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveTiff(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Tiff, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Tiff, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
         #endregion
 
@@ -145,14 +157,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Gif, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Gif, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -165,14 +179,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Gif, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Gif, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -185,14 +201,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Gif, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Gif, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -205,14 +223,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Gif, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Gif, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -225,14 +245,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Gif, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Gif, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -245,14 +267,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveGif(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveGif(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Gif, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Gif, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
         #endregion
 
@@ -267,14 +291,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -287,14 +313,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -307,14 +335,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -327,14 +357,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -347,14 +379,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -367,14 +401,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveJpeg(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveJpeg(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Jpeg, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
         #endregion
 
@@ -389,14 +425,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -409,14 +447,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -429,14 +469,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -449,14 +491,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -469,14 +513,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Png, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -489,14 +535,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SavePng(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SavePng(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Png, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
         #endregion
 
@@ -511,14 +559,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Bmp, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Bmp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -531,14 +581,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Bmp, pdfAsBase64String, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Bmp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -551,14 +603,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Bmp, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Bmp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -571,14 +625,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Bmp, pdfAsByteArray, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Bmp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -591,14 +647,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageFilename, ImageFormat.Bmp, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageFilename, ImageFormat.Bmp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -611,14 +669,16 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static void SaveBmp(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static void SaveBmp(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            SaveImpl(imageStream, ImageFormat.Bmp, pdfStream, password, page, dpi, width, height);
+            SaveImpl(imageStream, ImageFormat.Bmp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
         #endregion
 
@@ -628,12 +688,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(string imageFilename, ImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(string imageFilename, ImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (imageFilename == null)
                 throw new ArgumentNullException(nameof(imageFilename));
 
-            ToImage(pdfAsBase64String, password, page, dpi, width, height).Save(imageFilename, format);
+            ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill).Save(imageFilename, format);
         }
 
 #if NET5_0_OR_GREATER
@@ -641,12 +701,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(Stream imageStream, ImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(Stream imageStream, ImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsBase64String, password, page, dpi, width, height).Save(imageStream, format);
+            ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill).Save(imageStream, format);
         }
 
 #if NET5_0_OR_GREATER
@@ -654,12 +714,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(string imageFilename, ImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(string imageFilename, ImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (imageFilename == null)
                 throw new ArgumentNullException(nameof(imageFilename));
 
-            ToImage(pdfAsByteArray, password, page, dpi, width, height).Save(imageFilename, format);
+            ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill).Save(imageFilename, format);
         }
 
 #if NET5_0_OR_GREATER
@@ -667,12 +727,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(Stream imageStream, ImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(Stream imageStream, ImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsByteArray, password, page, dpi, width, height).Save(imageStream, format);
+            ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill).Save(imageStream, format);
         }
 
 #if NET5_0_OR_GREATER
@@ -680,9 +740,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(string filename, ImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(string filename, ImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            ToImage(pdfStream, password, page, dpi, width, height).Save(filename, format);
+            ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill).Save(filename, format);
         }
 
 #if NET5_0_OR_GREATER
@@ -690,9 +750,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        internal static void SaveImpl(Stream stream, ImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        internal static void SaveImpl(Stream stream, ImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
-            ToImage(pdfStream, password, page, dpi, width, height).Save(stream, format);
+            ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill).Save(stream, format);
         }
         #endregion
 
@@ -706,18 +766,20 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The converted PDF page as an image.</returns>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static Image ToImage(string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static Image ToImage(string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            return ToImage(Convert.FromBase64String(pdfAsBase64String), password, page, dpi, width, height);
+            return ToImage(Convert.FromBase64String(pdfAsBase64String), password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -729,13 +791,15 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The converted PDF page as an image.</returns>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static Image ToImage(byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static Image ToImage(byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -743,7 +807,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            return ToImage(pdfStream, password, page, dpi, width, height);
+            return ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
         /// <summary>
@@ -755,13 +819,15 @@ namespace PDFtoImage
         /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
         /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF page as an image.</returns>
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
 #endif
-        public static Image ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null)
+        public static Image ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -775,11 +841,14 @@ namespace PDFtoImage
             if (width == null && height == null)
                 renderFlags |= PdfRenderFlags.CorrectFromDpi;
 
+            if (withAnnotations)
+                renderFlags |= PdfRenderFlags.Annotations;
+
             // Stream -> PdfiumViewer.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password);
 
             // PdfiumViewer.PdfDocument -> Image
-            return pdfDocument.Render(page, width ?? (int)pdfDocument.PageSizes[page].Width, height ?? (int)pdfDocument.PageSizes[page].Height, dpi, dpi, renderFlags);
+            return pdfDocument.Render(page, width ?? (int)pdfDocument.PageSizes[page].Width, height ?? (int)pdfDocument.PageSizes[page].Height, dpi, dpi, renderFlags, withFormFill);
         }
         #endregion
     }

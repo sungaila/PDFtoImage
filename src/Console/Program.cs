@@ -15,7 +15,7 @@ namespace PDFtoImage.Console
 
             try
             {
-                ParseArguments(args, out string? inputPath, out string? outputPath, out int page, out int dpi);
+                ParseArguments(args, out string? inputPath, out string? outputPath, out int page, out int dpi, out bool withAnnotations, out bool withFormFill);
 
                 if (inputPath == null)
                     throw new InvalidOperationException("There is no PDF file path.");
@@ -25,7 +25,7 @@ namespace PDFtoImage.Console
 
                 using var inputStream = new FileStream(inputPath, FileMode.Open, FileAccess.Read);
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NET5_0_OR_GREATER
                 if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
                     throw new PlatformNotSupportedException("Only win-x86, win-x64, linux-x64, osx-x64 and osx-arm64 are supported for PDF file conversion.");
 #endif
@@ -33,21 +33,21 @@ namespace PDFtoImage.Console
                 switch (Path.GetExtension(outputPath).ToLower())
                 {
                     case ".bmp":
-                        Conversion.SaveBmp(outputPath, inputStream, page: page - 1, dpi: dpi);
+                        Conversion.SaveBmp(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     case ".png":
-                        Conversion.SavePng(outputPath, inputStream, page: page - 1, dpi: dpi);
+                        Conversion.SavePng(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     case ".gif":
-                        Conversion.SaveGif(outputPath, inputStream, page: page - 1, dpi: dpi);
+                        Conversion.SaveGif(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     case ".jpg":
                     case ".jpeg":
-                        Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, dpi: dpi);
+                        Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     case ".tif":
                     case ".tiff":
-                        Conversion.SaveTiff(outputPath, inputStream, page: page - 1, dpi: dpi);
+                        Conversion.SaveTiff(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     default:
                         throw new InvalidOperationException("Only the following file extensions are supported: bmp, png, gif, jpg/jpeg and tif/tiff.");
@@ -64,7 +64,7 @@ namespace PDFtoImage.Console
             return 0;
         }
 
-        private static void ParseArguments(string[] args, out string? inputPath, out string? outputPath, out int page, out int dpi)
+        private static void ParseArguments(string[] args, out string? inputPath, out string? outputPath, out int page, out int dpi, out bool withAnnotations, out bool withFormFill)
         {
             if (args == null)
                 throw new ArgumentNullException(nameof(args));
@@ -130,6 +130,58 @@ namespace PDFtoImage.Console
                 {
                     dpi = 300;
                     System.Console.WriteLine($"Target DPI defaulting to {dpi}.");
+                }
+            }
+
+            withAnnotations = false;
+
+            if (args.Length >= 5)
+            {
+                outputPath = args[4];
+            }
+            else
+            {
+                System.Console.Write("Should annotations be rendered (y/n): ");
+
+                var input = System.Console.ReadLine();
+                if (input?.ToLowerInvariant() == "y")
+                {
+                    withAnnotations = true;
+                }
+                else if (input?.ToLowerInvariant() == "n")
+                {
+                    withAnnotations = false;
+                }
+                else
+                {
+                    withAnnotations = false;
+                    System.Console.WriteLine($"Annotations not rendered by default.");
+                }
+            }
+
+            withFormFill = false;
+
+            if (args.Length >= 5)
+            {
+                outputPath = args[4];
+            }
+            else
+            {
+                System.Console.Write("Should form filling be rendered (y/n): ");
+
+                var input = System.Console.ReadLine();
+                if (input?.ToLowerInvariant() == "y")
+                {
+                    withFormFill = true;
+                }
+                else if (input?.ToLowerInvariant() == "n")
+                {
+                    withFormFill = false;
+                }
+                else
+                {
+                    withFormFill = false;
+                    System.Console.WriteLine($"Form filling not rendered by default.");
                 }
             }
         }

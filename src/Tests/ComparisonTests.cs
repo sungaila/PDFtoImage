@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using static PDFtoImage.Conversion;
+using static PDFtoImage.Tests.TestUtils;
 [assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
 namespace Tests
@@ -19,28 +19,6 @@ namespace Tests
 #endif
         }
 
-        private static void CompareStreams(FileStream expectedStream, MemoryStream outputStream)
-        {
-            Assert.IsNotNull(outputStream);
-            Assert.AreNotEqual(0, outputStream.Length);
-
-#if NETCOREAPP3_0_OR_GREATER
-            // the expected images are for Windows
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return;
-#endif
-
-            Assert.AreEqual(expectedStream.Length, outputStream.Length);
-
-            expectedStream.Position = 0;
-            outputStream.Position = 0;
-
-            for (int i = 0; i < expectedStream.Length; i++)
-            {
-                Assert.AreEqual(expectedStream.ReadByte(), outputStream.ReadByte());
-            }
-        }
-
         [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
         [DataRow(1, DisplayName = "Page 2")]
@@ -62,13 +40,33 @@ namespace Tests
         [DataRow(17, DisplayName = "Page 18")]
         [DataRow(18, DisplayName = "Page 19")]
         [DataRow(19, DisplayName = "Page 20")]
-        public void SaveBmpPageNumber(int page)
+        [DataRow(0, true, DisplayName = "Page 1 (with annotations)")]
+        [DataRow(1, true, DisplayName = "Page 2 (with annotations)")]
+        [DataRow(2, true, DisplayName = "Page 3 (with annotations)")]
+        [DataRow(3, true, DisplayName = "Page 4 (with annotations)")]
+        [DataRow(4, true, DisplayName = "Page 5 (with annotations)")]
+        [DataRow(5, true, DisplayName = "Page 6 (with annotations)")]
+        [DataRow(6, true, DisplayName = "Page 7 (with annotations)")]
+        [DataRow(7, true, DisplayName = "Page 8 (with annotations)")]
+        [DataRow(8, true, DisplayName = "Page 9 (with annotations)")]
+        [DataRow(9, true, DisplayName = "Page 10 (with annotations)")]
+        [DataRow(10, true, DisplayName = "Page 11 (with annotations)")]
+        [DataRow(11, true, DisplayName = "Page 12 (with annotations)")]
+        [DataRow(12, true, DisplayName = "Page 13 (with annotations)")]
+        [DataRow(13, true, DisplayName = "Page 14 (with annotations)")]
+        [DataRow(14, true, DisplayName = "Page 15 (with annotations)")]
+        [DataRow(15, true, DisplayName = "Page 16 (with annotations)")]
+        [DataRow(16, true, DisplayName = "Page 17 (with annotations)")]
+        [DataRow(17, true, DisplayName = "Page 18 (with annotations)")]
+        [DataRow(18, true, DisplayName = "Page 19 (with annotations)")]
+        [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
+        public void SaveBmpPageNumber(int page, bool withAnnotations = false)
         {
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}.bmp"), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.bmp"), FileMode.Open, FileAccess.Read);
             using var outputStream = new MemoryStream();
 
-            SaveBmp(outputStream, inputStream, page: page, dpi: 40);
+            SaveBmp(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
             CompareStreams(expectedStream, outputStream);
         }
@@ -94,17 +92,33 @@ namespace Tests
         [DataRow(17, DisplayName = "Page 18")]
         [DataRow(18, DisplayName = "Page 19")]
         [DataRow(19, DisplayName = "Page 20")]
-        public void SavePngPageNumber(int page)
+        [DataRow(0, true, DisplayName = "Page 1 (with annotations)")]
+        [DataRow(1, true, DisplayName = "Page 2 (with annotations)")]
+        [DataRow(2, true, DisplayName = "Page 3 (with annotations)")]
+        [DataRow(3, true, DisplayName = "Page 4 (with annotations)")]
+        [DataRow(4, true, DisplayName = "Page 5 (with annotations)")]
+        [DataRow(5, true, DisplayName = "Page 6 (with annotations)")]
+        [DataRow(6, true, DisplayName = "Page 7 (with annotations)")]
+        [DataRow(7, true, DisplayName = "Page 8 (with annotations)")]
+        [DataRow(8, true, DisplayName = "Page 9 (with annotations)")]
+        [DataRow(9, true, DisplayName = "Page 10 (with annotations)")]
+        [DataRow(10, true, DisplayName = "Page 11 (with annotations)")]
+        [DataRow(11, true, DisplayName = "Page 12 (with annotations)")]
+        [DataRow(12, true, DisplayName = "Page 13 (with annotations)")]
+        [DataRow(13, true, DisplayName = "Page 14 (with annotations)")]
+        [DataRow(14, true, DisplayName = "Page 15 (with annotations)")]
+        [DataRow(15, true, DisplayName = "Page 16 (with annotations)")]
+        [DataRow(16, true, DisplayName = "Page 17 (with annotations)")]
+        [DataRow(17, true, DisplayName = "Page 18 (with annotations)")]
+        [DataRow(18, true, DisplayName = "Page 19 (with annotations)")]
+        [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
+        public void SavePngPageNumber(int page, bool withAnnotations = false)
         {
-#if !NETCOREAPP3_0_OR_GREATER
-            if (page == 4 || page == 13)
-                Assert.Inconclusive("Different results for .NET Framework 4.6.1.");
-#endif
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}.png"), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
             using var outputStream = new MemoryStream();
 
-            SavePng(outputStream, inputStream, page: page, dpi: 40);
+            SavePng(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
             CompareStreams(expectedStream, outputStream);
         }
@@ -130,13 +144,33 @@ namespace Tests
         [DataRow(17, DisplayName = "Page 18")]
         [DataRow(18, DisplayName = "Page 19")]
         [DataRow(19, DisplayName = "Page 20")]
-        public void SaveGifPageNumber(int page)
+        [DataRow(0, true, DisplayName = "Page 1 (with annotations)")]
+        [DataRow(1, true, DisplayName = "Page 2 (with annotations)")]
+        [DataRow(2, true, DisplayName = "Page 3 (with annotations)")]
+        [DataRow(3, true, DisplayName = "Page 4 (with annotations)")]
+        [DataRow(4, true, DisplayName = "Page 5 (with annotations)")]
+        [DataRow(5, true, DisplayName = "Page 6 (with annotations)")]
+        [DataRow(6, true, DisplayName = "Page 7 (with annotations)")]
+        [DataRow(7, true, DisplayName = "Page 8 (with annotations)")]
+        [DataRow(8, true, DisplayName = "Page 9 (with annotations)")]
+        [DataRow(9, true, DisplayName = "Page 10 (with annotations)")]
+        [DataRow(10, true, DisplayName = "Page 11 (with annotations)")]
+        [DataRow(11, true, DisplayName = "Page 12 (with annotations)")]
+        [DataRow(12, true, DisplayName = "Page 13 (with annotations)")]
+        [DataRow(13, true, DisplayName = "Page 14 (with annotations)")]
+        [DataRow(14, true, DisplayName = "Page 15 (with annotations)")]
+        [DataRow(15, true, DisplayName = "Page 16 (with annotations)")]
+        [DataRow(16, true, DisplayName = "Page 17 (with annotations)")]
+        [DataRow(17, true, DisplayName = "Page 18 (with annotations)")]
+        [DataRow(18, true, DisplayName = "Page 19 (with annotations)")]
+        [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
+        public void SaveGifPageNumber(int page, bool withAnnotations = false)
         {
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}.gif"), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.gif"), FileMode.Open, FileAccess.Read);
             using var outputStream = new MemoryStream();
 
-            SaveGif(outputStream, inputStream, page: page, dpi: 40);
+            SaveGif(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
             CompareStreams(expectedStream, outputStream);
         }
@@ -162,13 +196,33 @@ namespace Tests
         [DataRow(17, DisplayName = "Page 18")]
         [DataRow(18, DisplayName = "Page 19")]
         [DataRow(19, DisplayName = "Page 20")]
-        public void SaveJpegPageNumber(int page)
+        [DataRow(0, true, DisplayName = "Page 1 (with annotations)")]
+        [DataRow(1, true, DisplayName = "Page 2 (with annotations)")]
+        [DataRow(2, true, DisplayName = "Page 3 (with annotations)")]
+        [DataRow(3, true, DisplayName = "Page 4 (with annotations)")]
+        [DataRow(4, true, DisplayName = "Page 5 (with annotations)")]
+        [DataRow(5, true, DisplayName = "Page 6 (with annotations)")]
+        [DataRow(6, true, DisplayName = "Page 7 (with annotations)")]
+        [DataRow(7, true, DisplayName = "Page 8 (with annotations)")]
+        [DataRow(8, true, DisplayName = "Page 9 (with annotations)")]
+        [DataRow(9, true, DisplayName = "Page 10 (with annotations)")]
+        [DataRow(10, true, DisplayName = "Page 11 (with annotations)")]
+        [DataRow(11, true, DisplayName = "Page 12 (with annotations)")]
+        [DataRow(12, true, DisplayName = "Page 13 (with annotations)")]
+        [DataRow(13, true, DisplayName = "Page 14 (with annotations)")]
+        [DataRow(14, true, DisplayName = "Page 15 (with annotations)")]
+        [DataRow(15, true, DisplayName = "Page 16 (with annotations)")]
+        [DataRow(16, true, DisplayName = "Page 17 (with annotations)")]
+        [DataRow(17, true, DisplayName = "Page 18 (with annotations)")]
+        [DataRow(18, true, DisplayName = "Page 19 (with annotations)")]
+        [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
+        public void SaveJpegPageNumber(int page, bool withAnnotations = false)
         {
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}.jpg"), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
             using var outputStream = new MemoryStream();
 
-            SaveJpeg(outputStream, inputStream, page: page, dpi: 40);
+            SaveJpeg(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
             CompareStreams(expectedStream, outputStream);
         }
@@ -194,28 +248,54 @@ namespace Tests
         [DataRow(17, DisplayName = "Page 18")]
         [DataRow(18, DisplayName = "Page 19")]
         [DataRow(19, DisplayName = "Page 20")]
-        public void SaveTiffPageNumber(int page)
+        [DataRow(0, true, DisplayName = "Page 1 (with annotations)")]
+        [DataRow(1, true, DisplayName = "Page 2 (with annotations)")]
+        [DataRow(2, true, DisplayName = "Page 3 (with annotations)")]
+        [DataRow(3, true, DisplayName = "Page 4 (with annotations)")]
+        [DataRow(4, true, DisplayName = "Page 5 (with annotations)")]
+        [DataRow(5, true, DisplayName = "Page 6 (with annotations)")]
+        [DataRow(6, true, DisplayName = "Page 7 (with annotations)")]
+        [DataRow(7, true, DisplayName = "Page 8 (with annotations)")]
+        [DataRow(8, true, DisplayName = "Page 9 (with annotations)")]
+        [DataRow(9, true, DisplayName = "Page 10 (with annotations)")]
+        [DataRow(10, true, DisplayName = "Page 11 (with annotations)")]
+        [DataRow(11, true, DisplayName = "Page 12 (with annotations)")]
+        [DataRow(12, true, DisplayName = "Page 13 (with annotations)")]
+        [DataRow(13, true, DisplayName = "Page 14 (with annotations)")]
+        [DataRow(14, true, DisplayName = "Page 15 (with annotations)")]
+        [DataRow(15, true, DisplayName = "Page 16 (with annotations)")]
+        [DataRow(16, true, DisplayName = "Page 17 (with annotations)")]
+        [DataRow(17, true, DisplayName = "Page 18 (with annotations)")]
+        [DataRow(18, true, DisplayName = "Page 19 (with annotations)")]
+        [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
+        public void SaveTiffPageNumber(int page, bool withAnnotations = false)
         {
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}.tif"), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.tif"), FileMode.Open, FileAccess.Read);
             using var outputStream = new MemoryStream();
 
-            SaveTiff(outputStream, inputStream, page: page, dpi: 40);
+            SaveTiff(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
             CompareStreams(expectedStream, outputStream);
         }
 
         [TestMethod]
-        [DataRow(10)]
-        [DataRow(30)]
-        [DataRow(100)]
-        [DataRow(300)]
-        [DataRow(600)]
-        [DataRow(1200)]
-        public void SavePngDpi(int dpi)
+        [DataRow(10, DisplayName = "10 DPI")]
+        [DataRow(30, DisplayName = "30 DPI")]
+        [DataRow(100, DisplayName = "100 DPI")]
+        [DataRow(300, DisplayName = "300 DPI")]
+        [DataRow(600, DisplayName = "600 DPI")]
+        [DataRow(1200, DisplayName = "1200 DPI")]
+        [DataRow(10, true, DisplayName = "10 DPI (with annotations)")]
+        [DataRow(30, true, DisplayName = "30 DPI (with annotations)")]
+        [DataRow(100, true, DisplayName = "100 DPI (with annotations)")]
+        [DataRow(300, true, DisplayName = "300 DPI (with annotations)")]
+        [DataRow(600, true, DisplayName = "600 DPI (with annotations)")]
+        [DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
+        public void SavePngDpi(int dpi, bool withAnnotations = false)
         {
             using var pdfStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
-            using var image = ToImage(pdfStream, dpi: dpi);
+            using var image = ToImage(pdfStream, dpi: dpi, withAnnotations: withAnnotations);
 
             Assert.IsNotNull(image);
             Assert.AreEqual(dpi, image.HorizontalResolution);

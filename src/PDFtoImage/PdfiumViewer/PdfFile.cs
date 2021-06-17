@@ -33,20 +33,20 @@ namespace PDFtoImage.PdfiumViewer
 
         public PdfBookmarkCollection? Bookmarks { get; private set; }
 
-        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int dpiX, int dpiY, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
+        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             using (var pageData = new PageData(_document, _form, pageNumber))
             {
-                if (renderFormFill)
-                    flags &= ~NativeMethods.FPDF.ANNOT;
-
                 NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
 
                 if (renderFormFill)
+                {
+                    NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
                     NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+                }
             }
 
             return true;
@@ -174,7 +174,11 @@ namespace PDFtoImage.PdfiumViewer
                 if (_form != IntPtr.Zero)
                 {
                     NativeMethods.FORM_DoDocumentAAction(_form, NativeMethods.FPDFDOC_AACTION.WC);
-                    NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
+                    // this call is needed for PDFium builds with PDF_ENABLE_XFA enabled
+                    // and PDF_ENABLE_XFA implies JS support (PDF_ENABLE_V8 is needed for that)
+                    // since we don't ship PDFium with V8 we can skip this
+                    // otherwise we have to deal with some nasty unmanaged memory corruption
+                    //NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
                     _form = IntPtr.Zero;
                 }
 
