@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -22,7 +22,6 @@ namespace PDFtoImage.PdfiumViewer
 
             _pdfiumLibPath = Path.Combine(path, "runtimes");
 
-#if NETCOREAPP3_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
@@ -63,16 +62,8 @@ namespace PDFtoImage.PdfiumViewer
             NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, ImportResolver);
 
             return File.Exists(_pdfiumLibPath) && NativeLibrary.Load(_pdfiumLibPath) != IntPtr.Zero;
-#else
-            _pdfiumLibPath = Path.Combine(_pdfiumLibPath, Environment.Is64BitProcess ? "win-x64" : "win-x86");
-            _pdfiumLibPath = Path.Combine(_pdfiumLibPath, "native");
-            _pdfiumLibPath = Path.Combine(_pdfiumLibPath, "pdfium.dll");
-
-            return File.Exists(_pdfiumLibPath) && LoadLibrary(_pdfiumLibPath) != IntPtr.Zero;
-#endif
         }
 
-#if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
             if (_pdfiumLibPath == null || libraryName != "pdfium.dll")
@@ -80,9 +71,5 @@ namespace PDFtoImage.PdfiumViewer
 
             return NativeLibrary.Load(_pdfiumLibPath);
         }
-#else
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpFileName);
-#endif
     }
 }
