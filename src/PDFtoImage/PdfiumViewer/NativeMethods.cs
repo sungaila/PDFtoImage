@@ -25,7 +25,7 @@ namespace PDFtoImage.PdfiumViewer
 #if NETCOREAPP3_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.X86 => "win-x86",
                     Architecture.X64 => "win-x64",
@@ -36,7 +36,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.X64 => "linux-x64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 is supported on Linux.")
@@ -46,7 +46,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, (RuntimeInformation.ProcessArchitecture) switch
+                _pdfiumLibPath = Path.Combine(_pdfiumLibPath, RuntimeInformation.ProcessArchitecture switch
                 {
                     Architecture.X64 => "osx-x64",
                     Architecture.Arm64 => "osx-arm64",
@@ -57,12 +57,12 @@ namespace PDFtoImage.PdfiumViewer
             }
             else
             {
-                throw new NotSupportedException("Only win-x86, win-x64, linux-x64 and osx-x64 are supported.");
+                throw new NotSupportedException("Only win-x86, win-x64, linux-x64, osx-x64 and osx-arm64 are supported.");
             } 
 
             NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, ImportResolver);
 
-            return File.Exists(_pdfiumLibPath) && NativeLibrary.Load(_pdfiumLibPath) != IntPtr.Zero;
+            return File.Exists(_pdfiumLibPath) && NativeLibrary.Load(_pdfiumLibPath, Assembly.GetExecutingAssembly(), default) != IntPtr.Zero;
 #else
             _pdfiumLibPath = Path.Combine(_pdfiumLibPath, Environment.Is64BitProcess ? "win-x64" : "win-x86");
             _pdfiumLibPath = Path.Combine(_pdfiumLibPath, "native");
@@ -78,7 +78,7 @@ namespace PDFtoImage.PdfiumViewer
             if (_pdfiumLibPath == null || libraryName != "pdfium.dll")
                 return IntPtr.Zero;
 
-            return NativeLibrary.Load(_pdfiumLibPath);
+            return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
         }
 #else
         [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Auto)]

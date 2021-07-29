@@ -4,7 +4,7 @@ namespace PDFtoImage.PdfiumViewer
 {
     internal class PdfLibrary : IDisposable
     {
-        private static readonly object _syncRoot = new object();
+        private static readonly object _syncRoot = new();
         private static PdfLibrary? _library;
         private bool disposedValue;
 
