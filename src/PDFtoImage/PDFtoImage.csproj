@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
     <TargetFrameworks>net50;netcoreapp3.1;net461</TargetFrameworks>
@@ -13,7 +13,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>1.1.1</VersionPrefix>
-    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -40,14 +40,16 @@
   </PropertyGroup>
 
   <!-- Debug builds -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <VersionSuffix>debug</VersionSuffix>
   </PropertyGroup>
 
   <!-- Release builds -->
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <SignAssembly>true</SignAssembly>
     <Optimize>true</Optimize>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
