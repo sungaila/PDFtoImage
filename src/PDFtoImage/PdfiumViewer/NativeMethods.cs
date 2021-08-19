@@ -10,7 +10,7 @@ namespace PDFtoImage.PdfiumViewer
         static NativeMethods()
         {
             // Load the platform dependent Pdfium.dll if it exists.
-            LoadNativeLibrary(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!);
+            LoadNativeLibrary(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().GetName(false).CodeBase!).LocalPath)!);
         }
 
         private static string? _pdfiumLibPath;
