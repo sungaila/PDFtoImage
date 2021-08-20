@@ -43,5 +43,5 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build src\PDFtoImage.sln -c Debug -p:VersionSuffix=ci
-          dotnet test src\Tests\Tests.csproj
+          dotnet test src\Tests\Tests.csproj --logger trx --collect "Code Coverage"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
