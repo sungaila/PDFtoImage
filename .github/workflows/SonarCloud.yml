@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    name: Analyze
+    name: Run SonarScanner
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
@@ -44,5 +44,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build PDFtoZPL.sln -c Debug -p:VersionSuffix=ci
+          dotnet build src\PDFtoImage.sln -c Debug -p:VersionSuffix=ci
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
