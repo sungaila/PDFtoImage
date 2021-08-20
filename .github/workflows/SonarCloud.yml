@@ -1,4 +1,4 @@
-name: SonarCloud
+name: SonarScanner
 on:
   push:
     branches: [ master ]
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    name: Run SonarScanner
+    name: Build and analyze
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
