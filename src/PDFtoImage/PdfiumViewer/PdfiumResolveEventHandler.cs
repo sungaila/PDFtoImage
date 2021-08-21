@@ -2,7 +2,7 @@
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfiumResolveEventArgs : EventArgs
+    internal sealed class PdfiumResolveEventArgs : EventArgs
     {
         public string? PdfiumFileName { get; set; }
     }

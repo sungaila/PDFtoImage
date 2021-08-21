@@ -2,7 +2,7 @@
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfBookmark
+    internal sealed class PdfBookmark
     {
         public string? Title { get; set; }
         public int PageIndex { get; set; }

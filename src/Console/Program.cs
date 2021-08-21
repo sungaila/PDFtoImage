@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Reflection;
 
 namespace PDFtoImage.Console
 {
-    class Program
+    public static class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
             var entryAssembly = Assembly.GetEntryAssembly();
             System.Console.WriteLine($"{entryAssembly?.GetName()?.ToString() ?? "PDFtoImage"}");
@@ -125,7 +124,7 @@ namespace PDFtoImage.Console
             else
             {
                 System.Console.Write("Enter the target resolution in DPI: ");
-                
+
                 if (!int.TryParse(System.Console.ReadLine(), out dpi) || dpi <= 0)
                 {
                     dpi = 300;

@@ -11,11 +11,10 @@ namespace PDFtoImage.PdfiumViewer
     /// <summary>
     /// Provides functionality to render a PDF document.
     /// </summary>
-    internal class PdfDocument : IDisposable
+    internal sealed class PdfDocument : IDisposable
     {
         private bool _disposed;
         private PdfFile? _file;
-        private readonly List<SizeF> _pageSizes;
 
         /// <summary>
         /// Initializes a new instance of the PdfDocument class with the provided stream.
@@ -39,11 +38,11 @@ namespace PDFtoImage.PdfiumViewer
         {
             _file = new PdfFile(stream, password);
 
-            _pageSizes = _file.GetPDFDocInfo();
-            if (_pageSizes == null)
+            var pageSizes = _file.GetPDFDocInfo();
+            if (pageSizes == null)
                 throw new Win32Exception();
 
-            PageSizes = new ReadOnlyCollection<SizeF>(_pageSizes);
+            PageSizes = new ReadOnlyCollection<SizeF>(pageSizes);
         }
 
         /// <summary>

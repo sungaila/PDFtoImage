@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfException : Exception
+    public sealed class PdfException : Exception
     {
         public PdfError Error { get; private set; }
 
@@ -15,6 +15,21 @@ namespace PDFtoImage.PdfiumViewer
             : this(GetMessage(error))
         {
             Error = error;
+        }
+
+        public PdfException(string message)
+            : base(message)
+        {
+        }
+
+        public PdfException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        public PdfException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
         }
 
         private static string GetMessage(PdfError error)
@@ -29,21 +44,6 @@ namespace PDFtoImage.PdfiumViewer
                 PdfError.PageNotFound => "Page not found or content error",
                 _ => "Unknown error",
             };
-        }
-
-        public PdfException(string message)
-            : base(message)
-        {
-        }
-
-        public PdfException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-        protected PdfException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
         }
     }
 }

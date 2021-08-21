@@ -7,12 +7,11 @@ using System.Text;
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfFile : IDisposable
+    internal sealed class PdfFile : IDisposable
     {
         private IntPtr _document;
         private IntPtr _form;
         private bool _disposed;
-        private NativeMethods.FPDF_FORMFILLINFO? _formCallbacks;
         private GCHandle _formCallbacksHandle;
         private readonly int _id;
         private Stream? _stream;
@@ -75,23 +74,23 @@ namespace PDFtoImage.PdfiumViewer
             return new SizeF((float)width, (float)height);
         }
 
-        protected void LoadDocument(IntPtr document)
+        private void LoadDocument(IntPtr document)
         {
             _document = document;
 
             NativeMethods.FPDF_GetDocPermissions(_document);
 
-            _formCallbacks = new NativeMethods.FPDF_FORMFILLINFO();
-            _formCallbacksHandle = GCHandle.Alloc(_formCallbacks, GCHandleType.Pinned);
+            var formCallbacks = new NativeMethods.FPDF_FORMFILLINFO();
+            _formCallbacksHandle = GCHandle.Alloc(formCallbacks, GCHandleType.Pinned);
 
             // Depending on whether XFA support is built into the PDFium library, the version
             // needs to be 1 or 2. We don't really care, so we just try one or the other.
 
             for (int i = 1; i <= 2; i++)
             {
-                _formCallbacks.version = i;
+                formCallbacks.version = i;
 
-                _form = NativeMethods.FPDFDOC_InitFormFillEnvironment(_document, _formCallbacks);
+                _form = NativeMethods.FPDFDOC_InitFormFillEnvironment(_document, formCallbacks);
                 if (_form != IntPtr.Zero)
                     break;
             }
@@ -124,10 +123,6 @@ namespace PDFtoImage.PdfiumViewer
                 Title = GetBookmarkTitle(bookmark),
                 PageIndex = (int)GetBookmarkPageIndex(bookmark)
             };
-
-            //Action = NativeMethods.FPDF_BookmarkGetAction(_bookmark);
-            //if (Action != IntPtr.Zero)
-            //    ActionType = NativeMethods.FPDF_ActionGetType(Action);
 
             var child = NativeMethods.FPDF_BookmarkGetFirstChild(_document, bookmark);
             if (child != IntPtr.Zero)
@@ -165,7 +160,7 @@ namespace PDFtoImage.PdfiumViewer
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
@@ -201,7 +196,7 @@ namespace PDFtoImage.PdfiumViewer
             }
         }
 
-        private class PageData : IDisposable
+        private sealed class PageData : IDisposable
         {
             private readonly IntPtr _form;
             private bool _disposed;

@@ -2,7 +2,7 @@ using System;
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfLibrary : IDisposable
+    internal sealed class PdfLibrary : IDisposable
     {
         private static readonly object _syncRoot = new();
         private static PdfLibrary? _library;
@@ -27,7 +27,7 @@ namespace PDFtoImage.PdfiumViewer
             Dispose(disposing: false);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

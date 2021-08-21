@@ -1,6 +1,6 @@
 ﻿namespace PDFtoImage.PdfiumViewer
 {
-    internal class PdfiumResolver
+    internal static class PdfiumResolver
     {
         public static event PdfiumResolveEventHandler? Resolve;
 
