@@ -1,6 +1,6 @@
 ﻿namespace PDFtoImage.PdfiumViewer
 {
-    public enum PdfError
+    internal enum PdfError
     {
         Success = (int)NativeMethods.FPDF_ERR.SUCCESS,
         Unknown = (int)NativeMethods.FPDF_ERR.UNKNOWN,

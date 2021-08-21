@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace PDFtoImage.PdfiumViewer
 {
-    public sealed class PdfException : Exception
+    internal sealed class PdfException : Exception
     {
         public PdfError Error { get; private set; }
 
