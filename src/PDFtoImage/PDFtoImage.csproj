@@ -75,6 +75,12 @@
       <PackagePath>runtimes\linux-x64\native\libpdfium.so</PackagePath>
       <Visible>false</Visible>
     </None>
+    <None Include="runtimes\linux-arm\native\libpdfium.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm\native\libpdfium.so</PackagePath>
+      <Visible>false</Visible>
+    </None>
     <None Include="runtimes\osx-x64\native\libpdfium.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
@@ -92,6 +98,7 @@
   <!-- Remove Linux and macOS PDFium for .NET Framework targets -->
   <ItemGroup Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFrameworkVersion)'=='v4.6.1' or '$(TargetFrameworkVersion)'=='v4.6.2' or '$(TargetFrameworkVersion)'=='v4.7' or '$(TargetFrameworkVersion)'=='v4.7.1' or '$(TargetFrameworkVersion)'=='v4.7.2' or '$(TargetFrameworkVersion)'=='v4.8'">
     <None Remove="runtimes\linux-x64\native\libpdfium.so" />
+    <None Remove="runtimes\linux-arm\native\libpdfium.so" />
     <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
     <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
   </ItemGroup>

@@ -26,7 +26,7 @@ namespace PDFtoImage.Console
 
 #if NET5_0_OR_GREATER
                 if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                    throw new PlatformNotSupportedException("Only win-x86, win-x64, linux-x64, osx-x64 and osx-arm64 are supported for PDF file conversion.");
+                    throw new PlatformNotSupportedException("Only win-x86, win-x64, linux-x64, linux-arm, osx-x64 and osx-arm64 are supported for PDF file conversion.");
 #endif
 
                 switch (Path.GetExtension(outputPath).ToLower())
