@@ -1,6 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 [assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
@@ -72,6 +76,50 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public void SaveBmpPages(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.bmp"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Bmp);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public async Task SaveBmpPagesAsync(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.bmp"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Bmp);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+#endif
+
+        [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
         [DataRow(1, DisplayName = "Page 2")]
         [DataRow(2, DisplayName = "Page 3")]
@@ -128,6 +176,54 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public void SavePngPages(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+#if !NETCOREAPP3_0_OR_GREATER
+                if (page == 4 || page == 13)
+                    continue; // Different results for .NET Framework 4.6.1.
+#endif
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Png);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public async Task SavePngPagesAsync(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Png);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+#endif
+
+        [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
         [DataRow(1, DisplayName = "Page 2")]
         [DataRow(2, DisplayName = "Page 3")]
@@ -178,6 +274,50 @@ namespace Tests
 
             CompareStreams(expectedStream, outputStream);
         }
+
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public void SaveGifPages(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.gif"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Gif);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public async Task SaveGifPagesAsync(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.gif"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Gif);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+#endif
 
         [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
@@ -232,6 +372,50 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public void SaveJpegPages(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Jpeg);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public async Task SaveJpegPagesAsync(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Jpeg);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+#endif
+
+        [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
         [DataRow(1, DisplayName = "Page 2")]
         [DataRow(2, DisplayName = "Page 3")]
@@ -284,6 +468,50 @@ namespace Tests
         }
 
         [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public void SaveTiffPages(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.tif"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Tiff);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false, DisplayName = "Without annotations")]
+        [DataRow(true, DisplayName = "With annotations")]
+        public async Task SaveTiffPagesAsync(bool withAnnotations = false)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
+
+            int page = 0;
+
+            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            {
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.tif"), FileMode.Open, FileAccess.Read);
+                using var outputStream = new MemoryStream();
+                image.Save(outputStream, ImageFormat.Tiff);
+
+                CompareStreams(expectedStream, outputStream);
+
+                page++;
+            }
+        }
+#endif
+
+        [TestMethod]
         [DataRow(10, DisplayName = "10 DPI")]
         [DataRow(30, DisplayName = "30 DPI")]
         [DataRow(100, DisplayName = "100 DPI")]
@@ -305,5 +533,118 @@ namespace Tests
             Assert.AreEqual(dpi, image.HorizontalResolution);
             Assert.AreEqual(dpi, image.VerticalResolution);
         }
+
+        [TestMethod]
+        [DataRow(10, DisplayName = "10 DPI")]
+        [DataRow(30, DisplayName = "30 DPI")]
+        [DataRow(100, DisplayName = "100 DPI")]
+        [DataRow(300, DisplayName = "300 DPI")]
+        [DataRow(600, DisplayName = "600 DPI")]
+        [DataRow(1200, DisplayName = "1200 DPI")]
+        [DataRow(10, true, DisplayName = "10 DPI (with annotations)")]
+        [DataRow(30, true, DisplayName = "30 DPI (with annotations)")]
+        [DataRow(100, true, DisplayName = "100 DPI (with annotations)")]
+        [DataRow(300, true, DisplayName = "300 DPI (with annotations)")]
+        [DataRow(600, true, DisplayName = "600 DPI (with annotations)")]
+        [DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
+        public void SavePngDpiImages(int dpi, bool withAnnotations = false)
+        {
+            using var pdfStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            using var image = ToImages(pdfStream, dpi: dpi, withAnnotations: withAnnotations).Single();
+
+            Assert.IsNotNull(image);
+            Assert.AreEqual(dpi, image.HorizontalResolution);
+            Assert.AreEqual(dpi, image.VerticalResolution);
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow(10, DisplayName = "10 DPI")]
+        [DataRow(30, DisplayName = "30 DPI")]
+        [DataRow(100, DisplayName = "100 DPI")]
+        [DataRow(300, DisplayName = "300 DPI")]
+        [DataRow(600, DisplayName = "600 DPI")]
+        [DataRow(1200, DisplayName = "1200 DPI")]
+        [DataRow(10, true, DisplayName = "10 DPI (with annotations)")]
+        [DataRow(30, true, DisplayName = "30 DPI (with annotations)")]
+        [DataRow(100, true, DisplayName = "100 DPI (with annotations)")]
+        [DataRow(300, true, DisplayName = "300 DPI (with annotations)")]
+        [DataRow(600, true, DisplayName = "600 DPI (with annotations)")]
+        [DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
+        public async Task SavePngDpiImagesAsync(int dpi, bool withAnnotations = false)
+        {
+            using var pdfStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+
+            await foreach (var image in ToImagesAsync(pdfStream, dpi: dpi, withAnnotations: withAnnotations))
+            {
+                Assert.IsNotNull(image);
+                Assert.AreEqual(dpi, image.HorizontalResolution);
+                Assert.AreEqual(dpi, image.VerticalResolution);
+            }
+        }
+#endif
+
+        [TestMethod]
+        [DataRow("SocialPreview.pdf", 1)]
+        [DataRow("hundesteuer-anmeldung.pdf", 3)]
+        [DataRow("Wikimedia_Commons_web.pdf", 20)]
+        public void GetPageCountTest(string pdfFileName, int expectedPageCount)
+        {
+            using var pdfStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            Assert.AreEqual(expectedPageCount, GetPageCount(pdfStream), $"The expected and actual page count for the file {pdfFileName} are not equal.");
+        }
+
+#if NETCOREAPP3_0_OR_GREATER
+        [TestMethod]
+        [DataRow("SocialPreview.pdf")]
+        [DataRow("hundesteuer-anmeldung.pdf")]
+        [DataRow("Wikimedia_Commons_web.pdf")]
+        public async Task ToImagesAsyncTaskCanceledException(string pdfFileName)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            var token = new CancellationTokenSource();
+
+            await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
+            {
+                token.Cancel();
+
+                await foreach (var image in ToImagesAsync(inputStream, dpi: 1200, cancellationToken: token.Token))
+                {
+                }
+            });
+        }
+
+        [TestMethod]
+        [DataRow("SocialPreview.pdf")]
+        [DataRow("hundesteuer-anmeldung.pdf")]
+        [DataRow("Wikimedia_Commons_web.pdf")]
+        public async Task ToImagesAsyncOperationCanceledException(string pdfFileName)
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            var token = new CancellationTokenSource();
+            var pageCount = GetPageCount(inputStream);
+
+            using var inputStream2 = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+
+            if (pageCount < 2)
+            {
+                // no OperationCanceledException should be thrown if there are not multiple pages to iterate through
+                await foreach (var image in ToImagesAsync(inputStream2, dpi: 1200, cancellationToken: token.Token))
+                {
+                    token.Cancel();
+                }
+
+                return;
+            }
+
+            await Assert.ThrowsExceptionAsync<OperationCanceledException>(async () =>
+            {
+                await foreach (var image in ToImagesAsync(inputStream2, dpi: 1200, cancellationToken: token.Token))
+                {
+                    token.Cancel();
+                }
+            });
+        }
+#endif
     }
 }
