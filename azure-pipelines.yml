@@ -36,7 +36,6 @@ jobs:
       command: 'pack'
       arguments: '-c $(buildConfiguration)'
       packagesToPack: '$(Build.SourcesDirectory)\src\PDFtoImage\PDFtoImage.csproj'
-      nobuild: true
       versioningScheme: 'off'
       buildProperties: 'VersionSuffix=ci'
   - task: PublishPipelineArtifact@1
