@@ -1,18 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net50;netcoreapp3.1;net461</TargetFrameworks>
+    <TargetFrameworks>net5.0;netcoreapp3.1;net461</TargetFrameworks>
     <RuntimeIdentifiers>win-x86;win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
     <AssemblyOriginatorKeyFile>PDFtoImage.snk</AssemblyOriginatorKeyFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release;ReleaseSigned</Configurations>
   </PropertyGroup>
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>1.2.0</VersionPrefix>
+    <VersionPrefix>1.2.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -21,12 +22,13 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>Added functions to render all PDF pages at once (a)synchronously.</PackageReleaseNotes>
+    <PackageReleaseNotes>Assemblies, native libraries and NuGet package digitally signed.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -45,7 +47,7 @@
   </PropertyGroup>
 
   <!-- Release builds -->
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release' or '$(Configuration)'=='ReleaseSigned'">
     <SignAssembly>true</SignAssembly>
     <Optimize>true</Optimize>
     <Deterministic>true</Deterministic>
@@ -111,10 +113,8 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-    <None Include="..\..\etc\Icon_128.png">
-      <Pack>true</Pack>
-      <PackagePath></PackagePath>
-    </None>
+    <None Include="..\..\etc\Icon_128.png" Pack="true" PackagePath="" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <!-- SourceLink build steps and NuGet packages -->
@@ -129,4 +129,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <Import Project="PDFtoImage.PropertiesSigning.targets" />
+  <Import Project="PDFtoImage.CodeSigning.targets" />
+  <Import Project="PDFtoImage.PackageSigning.targets" />
 </Project>

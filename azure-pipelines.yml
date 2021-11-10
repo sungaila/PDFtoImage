@@ -99,5 +99,5 @@ jobs:
     condition: succeededOrFailed()
     inputs:
       command: 'test'
-      arguments: '$(Pipeline.Workspace)\**\net50\PDFtoImage.Tests.dll'
+      arguments: '$(Pipeline.Workspace)\**\net5.0\PDFtoImage.Tests.dll'
       testRunTitle: '.NET 5.0 ($(agent.os))'

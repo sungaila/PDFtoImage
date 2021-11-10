@@ -14,6 +14,15 @@ This .NET library is built on top of
 * [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
 * [PdfiumViewer](https://github.com/pvginkel/PdfiumViewer) (wrapper for PDFium)
 
+## Getting started
+Call a static method from `PDFtoImage.Conversion`:
+
+`SaveBmp`, `SaveGif`, `SaveJpeg`, `SavePng`, `SaveTiff` and `ToImage` for a **single page**.
+
+`ToImages` and `ToImagesAsync` for **multiple pages**.
+
+*Note: An [`System.Drawing.Image`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image) object can be exported with the [`Save`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image.save) method.*
+
 ## Prerequisite libgdiplus
 On platforms other than Windows you will have to have [libgdiplus](https://www.mono-project.com/docs/gui/libgdiplus/) installed.
 ### Debian-based Linux distributions

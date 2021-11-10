@@ -1,12 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net50;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0;net461</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <AssemblyName>PDFtoImage.Console</AssemblyName>
     <RootNamespace>PDFtoImage.Console</RootNamespace>
     <StartupObject>PDFtoImage.Console.Program</StartupObject>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
+    <Configurations>Debug;Release;ReleaseSigned</Configurations>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -24,4 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
+
+  <Import Project="..\PDFtoImage\PDFtoImage.PropertiesSigning.targets" />
+  <Import Project="..\PDFtoImage\PDFtoImage.CodeSigning.targets" />
 </Project>
