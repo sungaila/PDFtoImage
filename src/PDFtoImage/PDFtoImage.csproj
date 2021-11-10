@@ -89,6 +89,12 @@
       <PackagePath>runtimes\linux-arm\native\libpdfium.so</PackagePath>
       <Visible>false</Visible>
     </None>
+    <None Include="runtimes\linux-arm64\native\libpdfium.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm64\native\libpdfium.so</PackagePath>
+      <Visible>false</Visible>
+    </None>
     <None Include="runtimes\osx-x64\native\libpdfium.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
@@ -107,6 +113,7 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFrameworkVersion)'=='v4.6.1' or '$(TargetFrameworkVersion)'=='v4.6.2' or '$(TargetFrameworkVersion)'=='v4.7' or '$(TargetFrameworkVersion)'=='v4.7.1' or '$(TargetFrameworkVersion)'=='v4.7.2' or '$(TargetFrameworkVersion)'=='v4.8'">
     <None Remove="runtimes\linux-x64\native\libpdfium.so" />
     <None Remove="runtimes\linux-arm\native\libpdfium.so" />
+    <None Remove="runtimes\linux-arm64\native\libpdfium.so" />
     <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
     <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
   </ItemGroup>
@@ -119,12 +126,12 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.2">
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

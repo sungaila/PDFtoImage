@@ -40,6 +40,7 @@ namespace PDFtoImage.PdfiumViewer
                 {
                     Architecture.X64 => "linux-x64",
                     Architecture.Arm => "linux-arm",
+                    Architecture.Arm64 => "linux-arm64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm are supported on Linux.")
                 };
                 pdfiumLibName = "libpdfium.so";
@@ -56,7 +57,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else
             {
-                throw new NotSupportedException("Only win-x86, win-x64, linux-x64, linux-arm, osx-x64 and osx-arm64 are supported.");
+                throw new NotSupportedException("Only win-x86, win-x64, linux-x64, linux-arm, linux-arm64, osx-x64 and osx-arm64 are supported.");
             }
 
             if (File.Exists(Path.Combine(path, pdfiumLibName)))
