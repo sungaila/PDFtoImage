@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net461</TargetFrameworks>
+    <TargetFrameworks>net5.0;net461</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <AssemblyName>PDFtoImage.Console</AssemblyName>
     <RootNamespace>PDFtoImage.Console</RootNamespace>
