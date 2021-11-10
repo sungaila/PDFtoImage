@@ -12,6 +12,11 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET 6'
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
   - task: DotNetCoreCLI@2
     displayName: 'Build solution'
     inputs:
@@ -36,6 +41,7 @@ jobs:
       command: 'pack'
       arguments: '-c $(buildConfiguration)'
       packagesToPack: '$(Build.SourcesDirectory)\src\PDFtoImage\PDFtoImage.csproj'
+      nobuild: false
       versioningScheme: 'off'
       buildProperties: 'VersionSuffix=ci'
   - task: PublishPipelineArtifact@1
