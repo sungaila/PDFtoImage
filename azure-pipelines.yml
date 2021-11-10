@@ -67,6 +67,11 @@ jobs:
   steps:
   - checkout: none
     displayName: 'Skip checkout'
+  - task: UseDotNet@2
+    displayName: 'Use .NET 6'
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
   - task: Bash@3
     displayName: 'Install mono-libgdiplus'
     condition: eq(variables['agent.os'], 'Darwin')
