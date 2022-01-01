@@ -11,15 +11,15 @@ namespace Tests
     public class ApiTests
     {
         [TestMethod]
-        public void SaveBmpStringNullException()
+        public void SaveWebpStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveBmp((string)null!, (string)null!));
+            Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((string)null!, (string)null!));
         }
 
         [TestMethod]
-        public void SaveBmpStreamNullException()
+        public void SaveWebpStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveBmp((Stream)null!, (string)null!));
+            Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((Stream)null!, (string)null!));
         }
 
         [TestMethod]
@@ -35,18 +35,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void SaveGifStringNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveGif((string)null!, (string)null!));
-        }
-
-        [TestMethod]
-        public void SaveGifStreamNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveGif((Stream)null!, (string)null!));
-        }
-
-        [TestMethod]
         public void SaveJpegStringNullException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => SaveJpeg((string)null!, (string)null!));
@@ -56,18 +44,6 @@ namespace Tests
         public void SaveJpegStreamNullException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => SaveJpeg((Stream)null!, (string)null!));
-        }
-
-        [TestMethod]
-        public void SaveTiffStringNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveTiff((string)null!, (string)null!));
-        }
-
-        [TestMethod]
-        public void SaveTiffStreamNullException()
-        {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveTiff((Stream)null!, (string)null!));
         }
 
         [TestMethod]

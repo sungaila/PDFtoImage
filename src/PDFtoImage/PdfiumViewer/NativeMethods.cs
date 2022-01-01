@@ -9,11 +9,12 @@ namespace PDFtoImage.PdfiumViewer
     {
         static NativeMethods()
         {
-            // Load the platform dependent Pdfium.dll if it exists.
+            // Load the platform dependent Pdfium.dll and libSkiaSharp.dll if they exist.
             LoadNativeLibrary(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().GetName(false).CodeBase!).LocalPath)!);
         }
 
         private static string? _pdfiumLibPath;
+        private static string? _skiaSharpLibPath;
 
         private static void LoadNativeLibrary(string path)
         {
@@ -23,6 +24,7 @@ namespace PDFtoImage.PdfiumViewer
 #if NETCOREAPP3_0_OR_GREATER
             string runtimeIdentifier;
             string pdfiumLibName;
+            string skiaSharpLibName;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -33,6 +35,7 @@ namespace PDFtoImage.PdfiumViewer
                     _ => throw new PlatformNotSupportedException("Only x86-64 and x86 are supported on Windows.")
                 };
                 pdfiumLibName = "pdfium.dll";
+                skiaSharpLibName = "libSkiaSharp.dll";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -44,6 +47,7 @@ namespace PDFtoImage.PdfiumViewer
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm are supported on Linux.")
                 };
                 pdfiumLibName = "libpdfium.so";
+                skiaSharpLibName = "libSkiaSharp.so";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -54,6 +58,7 @@ namespace PDFtoImage.PdfiumViewer
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm64 are supported on macOS.")
                 };
                 pdfiumLibName = "libpdfium.dylib";
+                skiaSharpLibName = "libSkiaSharp.dylib";
             }
             else
             {
@@ -71,23 +76,43 @@ namespace PDFtoImage.PdfiumViewer
                 _pdfiumLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", pdfiumLibName);
             }
 
+            if (File.Exists(Path.Combine(path, skiaSharpLibName)))
+            {
+                // dotnet publish with a given runtime identifier (not portable) will put PDFium into the root folder
+                _skiaSharpLibPath = Path.Combine(path, skiaSharpLibName);
+            }
+            else
+            {
+                // in any other case there should be a runtimes folder
+                _skiaSharpLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", skiaSharpLibName);
+            }
+
             NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, ImportResolver);
 
             NativeLibrary.Load(_pdfiumLibPath, Assembly.GetExecutingAssembly(), default);
+            NativeLibrary.Load(_skiaSharpLibPath, Assembly.GetExecutingAssembly(), default);
 #else
             _pdfiumLibPath = Path.Combine(path, "runtimes", Environment.Is64BitProcess ? "win-x64" : "win-x86", "native", "pdfium.dll");
+            _skiaSharpLibPath = Path.Combine(path, "runtimes", Environment.Is64BitProcess ? "win-x64" : "win-x86", "native", "libSkiaSharp.dll");
 
             LoadLibrary(_pdfiumLibPath);
+            LoadLibrary(_skiaSharpLibPath);
 #endif
         }
 
 #if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (_pdfiumLibPath == null || libraryName != "pdfium.dll")
-                return IntPtr.Zero;
+            if (_pdfiumLibPath != null && libraryName == "pdfium.dll")
+            {
+                return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
+            }
+            else if (_skiaSharpLibPath != null && libraryName == "libSkiaSharp.dll")
+            {
+                return NativeLibrary.Load(_skiaSharpLibPath, assembly, searchPath);
+            }
 
-            return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
+            return IntPtr.Zero;
         }
 #else
         /// <summary>Loads the specified module into the address space of the calling process.</summary>

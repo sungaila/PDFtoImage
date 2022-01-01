@@ -100,9 +100,9 @@ jobs:
       arguments: '$(Pipeline.Workspace)\**\netcoreapp3.1\PDFtoImage.Tests.dll'
       testRunTitle: '.NET Core 3.1 ($(agent.os))'
   - task: DotNetCoreCLI@2
-    displayName: '.NET 5.0'
+    displayName: '.NET 6.0'
     condition: succeededOrFailed()
     inputs:
       command: 'test'
-      arguments: '$(Pipeline.Workspace)\**\net5.0\PDFtoImage.Tests.dll'
-      testRunTitle: '.NET 5.0 ($(agent.os))'
+      arguments: '$(Pipeline.Workspace)\**\net6.0\PDFtoImage.Tests.dll'
+      testRunTitle: '.NET 6.0 ($(agent.os))'

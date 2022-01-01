@@ -31,25 +31,18 @@ namespace PDFtoImage.Console
 
                 switch (Path.GetExtension(outputPath).ToLower())
                 {
-                    case ".bmp":
-                        Conversion.SaveBmp(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
-                        break;
                     case ".png":
                         Conversion.SavePng(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
-                        break;
-                    case ".gif":
-                        Conversion.SaveGif(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     case ".jpg":
                     case ".jpeg":
                         Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
-                    case ".tif":
-                    case ".tiff":
-                        Conversion.SaveTiff(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
+                    case ".webp":
+                        Conversion.SaveWebp(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
                         break;
                     default:
-                        throw new InvalidOperationException("Only the following file extensions are supported: bmp, png, gif, jpg/jpeg and tif/tiff.");
+                        throw new InvalidOperationException("Only the following file extensions are supported: png, jpg/jpeg and webp.");
                 }
             }
             catch (Exception ex)

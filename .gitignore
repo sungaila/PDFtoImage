@@ -351,5 +351,3 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# This project is used for testing on my machine only
-**/[Pp]DFtoZPLConsole/*

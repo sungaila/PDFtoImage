@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netcoreapp3.1;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0;netcoreapp3.1;net461</TargetFrameworks>
     <AssemblyName>PDFtoImage.Tests</AssemblyName>
     <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -24,236 +24,266 @@
     <None Remove="Assets\Expected\hundesteuer-anmeldung_False.jpg" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_False.png" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_False.tif" />
+    <None Remove="Assets\Expected\hundesteuer-anmeldung_False.webp" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.bmp" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.gif" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.jpg" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.png" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.tif" />
+    <None Remove="Assets\Expected\hundesteuer-anmeldung_True.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9.webp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.jpg" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.tif" />
+    <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.webp" />
     <None Remove="Assets\hundesteuer-anmeldung.pdf" />
     <None Remove="Assets\SocialPreview.pdf" />
     <None Remove="Assets\Wikimedia_Commons_web.pdf" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_False.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_False.gif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\Expected\hundesteuer-anmeldung_False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\hundesteuer-anmeldung_False.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_False.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_True.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_True.gif">
+    <Content Include="Assets\Expected\hundesteuer-anmeldung_False.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\hundesteuer-anmeldung_True.jpg">
@@ -262,13 +292,7 @@
     <Content Include="Assets\Expected\hundesteuer-anmeldung_True.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\hundesteuer-anmeldung_True.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.gif">
+    <Content Include="Assets\Expected\hundesteuer-anmeldung_True.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_0.jpg">
@@ -277,13 +301,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.jpg">
@@ -292,13 +310,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_0_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_1.jpg">
@@ -307,13 +319,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_10.jpg">
@@ -322,13 +328,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_10.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.jpg">
@@ -337,13 +337,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_10_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_11.jpg">
@@ -352,13 +346,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_11.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.jpg">
@@ -367,13 +355,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_11_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_12.jpg">
@@ -382,13 +364,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_12.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.jpg">
@@ -397,13 +373,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_12_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_13.jpg">
@@ -412,13 +382,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_13.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.jpg">
@@ -427,13 +391,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_13_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_14.jpg">
@@ -442,13 +400,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_14.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.jpg">
@@ -457,13 +409,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_14_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_15.jpg">
@@ -472,13 +418,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_15.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.jpg">
@@ -487,13 +427,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_15_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_16.jpg">
@@ -502,13 +436,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_16.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.jpg">
@@ -517,13 +445,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_16_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_17.jpg">
@@ -532,13 +454,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_17.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.jpg">
@@ -547,13 +463,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_17_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_18.jpg">
@@ -562,13 +472,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_18.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.jpg">
@@ -577,13 +481,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_18_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_19.jpg">
@@ -592,13 +490,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_19.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.jpg">
@@ -607,13 +499,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_19_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.jpg">
@@ -622,13 +508,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_1_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_2.jpg">
@@ -637,13 +517,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.jpg">
@@ -652,13 +526,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_2_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_3.jpg">
@@ -667,13 +535,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.jpg">
@@ -682,13 +544,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_3_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_4.jpg">
@@ -697,13 +553,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.jpg">
@@ -712,13 +562,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_4_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_5.jpg">
@@ -727,13 +571,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.jpg">
@@ -742,13 +580,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_5_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_6.jpg">
@@ -757,13 +589,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_6.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.jpg">
@@ -772,13 +598,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_6_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_7.jpg">
@@ -787,13 +607,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_7.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.jpg">
@@ -802,13 +616,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_7_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_8.jpg">
@@ -817,13 +625,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.jpg">
@@ -832,13 +634,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_8_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_9.jpg">
@@ -847,13 +643,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.tif">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.gif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.jpg">
@@ -862,7 +652,7 @@
     <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.tif">
+    <Content Include="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\hundesteuer-anmeldung.pdf">
