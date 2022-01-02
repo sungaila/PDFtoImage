@@ -27,7 +27,7 @@
 - SaveWebp added.
 - SaveBmp, SaveGif and SaveTiff deprecated.
     </PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium</PackageTags>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
@@ -69,17 +69,6 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </None>
-    <None Include="runtimes\win-x64\native\libSkiaSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\win-x64\native\libSkiaSharp.dll</PackagePath>
-    </None>
-    <None Include="runtimes\win-x86\native\libSkiaSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\win-x86\native\libSkiaSharp.dll</PackagePath>
-    </None>
-    
     <None Include="runtimes\win-x64\native\pdfium.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
@@ -115,6 +104,42 @@
       <Pack>true</Pack>
       <PackagePath>runtimes\osx-arm64\native\libpdfium.dylib</PackagePath>
     </None>
+
+    <None Include="runtimes\win-x64\native\libSkiaSharp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x64\native\libSkiaSharp.dll</PackagePath>
+    </None>
+    <None Include="runtimes\win-x86\native\libSkiaSharp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x86\native\libSkiaSharp.dll</PackagePath>
+    </None>
+    <None Include="runtimes\linux-x64\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-x64\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\linux-arm\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\linux-arm64\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm64\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\osx-x64\native\libSkiaSharp.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-x64\native\libSkiaSharp.dylib</PackagePath>
+    </None>
+    <None Include="runtimes\osx-arm64\native\libSkiaSharp.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-arm64\native\libSkiaSharp.dylib</PackagePath>
+    </None>
   </ItemGroup>
 
   <!-- Remove Linux and macOS PDFium for .NET Framework targets -->
@@ -124,6 +149,12 @@
     <None Remove="runtimes\linux-arm64\native\libpdfium.so" />
     <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
     <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
+
+    <None Remove="runtimes\linux-x64\native\libSkiaSharp.so" />
+    <None Remove="runtimes\linux-arm\native\libSkiaSharp.so" />
+    <None Remove="runtimes\linux-arm64\native\libSkiaSharp.so" />
+    <None Remove="runtimes\osx-x64\native\libSkiaSharp.dylib" />
+    <None Remove="runtimes\osx-arm64\native\libSkiaSharp.dylib" />
   </ItemGroup>
 
   <!-- NuGet Icon -->
@@ -134,6 +165,7 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.179" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -142,7 +174,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="2.80.3" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

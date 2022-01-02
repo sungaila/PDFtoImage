@@ -103,16 +103,10 @@ namespace PDFtoImage.PdfiumViewer
 #if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (_pdfiumLibPath != null && libraryName == "pdfium.dll")
-            {
-                return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
-            }
-            else if (_skiaSharpLibPath != null && libraryName == "libSkiaSharp.dll")
-            {
-                return NativeLibrary.Load(_skiaSharpLibPath, assembly, searchPath);
-            }
+            if (_pdfiumLibPath == null || libraryName != "pdfium.dll")
+                return IntPtr.Zero;
 
-            return IntPtr.Zero;
+            return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
         }
 #else
         /// <summary>Loads the specified module into the address space of the calling process.</summary>
