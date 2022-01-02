@@ -47,7 +47,7 @@ namespace PDFtoImage.PdfiumViewer
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm are supported on Linux.")
                 };
                 pdfiumLibName = "libpdfium.so";
-                skiaSharpLibName = "libSkiaSharp.so";
+                skiaSharpLibName = "SkiaSharp.so";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {

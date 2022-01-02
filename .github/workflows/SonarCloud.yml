@@ -1,9 +1,11 @@
 name: SonarCloud
 on:
   push:
-    branches: [ ** ]
+    branches:
+      - '**'
   pull_request:
-    branches: [ ** ]
+    branches:
+      - '**'
 jobs:
   build:
     name: Build and analyze
