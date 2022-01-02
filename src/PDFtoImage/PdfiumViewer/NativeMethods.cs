@@ -14,7 +14,10 @@ namespace PDFtoImage.PdfiumViewer
         }
 
         private static string? _pdfiumLibPath;
+        private static string? _pdfiumLibName;
+
         private static string? _skiaSharpLibPath;
+        private static string? _skiaSharpLibName;
 
         private static void LoadNativeLibrary(string path)
         {
@@ -23,8 +26,6 @@ namespace PDFtoImage.PdfiumViewer
 
 #if NETCOREAPP3_0_OR_GREATER
             string runtimeIdentifier;
-            string pdfiumLibName;
-            string skiaSharpLibName;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -34,8 +35,8 @@ namespace PDFtoImage.PdfiumViewer
                     Architecture.X64 => "win-x64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 and x86 are supported on Windows.")
                 };
-                pdfiumLibName = "pdfium.dll";
-                skiaSharpLibName = "libSkiaSharp.dll";
+                _pdfiumLibName = "pdfium.dll";
+                _skiaSharpLibName = "libSkiaSharp.dll";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -46,8 +47,8 @@ namespace PDFtoImage.PdfiumViewer
                     Architecture.Arm64 => "linux-arm64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm are supported on Linux.")
                 };
-                pdfiumLibName = "libpdfium.so";
-                skiaSharpLibName = "SkiaSharp.so";
+                _pdfiumLibName = "libpdfium.so";
+                _skiaSharpLibName = "libSkiaSharp.so";
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -57,34 +58,34 @@ namespace PDFtoImage.PdfiumViewer
                     Architecture.Arm64 => "osx-arm64",
                     _ => throw new PlatformNotSupportedException("Only x86-64 and arm64 are supported on macOS.")
                 };
-                pdfiumLibName = "libpdfium.dylib";
-                skiaSharpLibName = "libSkiaSharp.dylib";
+                _pdfiumLibName = "libpdfium.dylib";
+                _skiaSharpLibName = "libSkiaSharp.dylib";
             }
             else
             {
                 throw new NotSupportedException("Only win-x86, win-x64, linux-x64, linux-arm, linux-arm64, osx-x64 and osx-arm64 are supported.");
             }
 
-            if (File.Exists(Path.Combine(path, pdfiumLibName)))
+            if (File.Exists(Path.Combine(path, _pdfiumLibName)))
             {
                 // dotnet publish with a given runtime identifier (not portable) will put PDFium into the root folder
-                _pdfiumLibPath = Path.Combine(path, pdfiumLibName);
+                _pdfiumLibPath = Path.Combine(path, _pdfiumLibName);
             }
             else
             {
                 // in any other case there should be a runtimes folder
-                _pdfiumLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", pdfiumLibName);
+                _pdfiumLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", _pdfiumLibName);
             }
 
-            if (File.Exists(Path.Combine(path, skiaSharpLibName)))
+            if (File.Exists(Path.Combine(path, _skiaSharpLibName)))
             {
                 // dotnet publish with a given runtime identifier (not portable) will put PDFium into the root folder
-                _skiaSharpLibPath = Path.Combine(path, skiaSharpLibName);
+                _skiaSharpLibPath = Path.Combine(path, _skiaSharpLibName);
             }
             else
             {
                 // in any other case there should be a runtimes folder
-                _skiaSharpLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", skiaSharpLibName);
+                _skiaSharpLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", _skiaSharpLibName);
             }
 
             NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, ImportResolver);
@@ -103,10 +104,12 @@ namespace PDFtoImage.PdfiumViewer
 #if NETCOREAPP3_0_OR_GREATER
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (_pdfiumLibPath == null || libraryName != "pdfium.dll")
-                return IntPtr.Zero;
+            if (_pdfiumLibPath != null && libraryName == _pdfiumLibName)
+                return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
+            else if (_skiaSharpLibPath != null && libraryName == _skiaSharpLibName)
+                return NativeLibrary.Load(_skiaSharpLibPath, assembly, searchPath);
 
-            return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
+            return IntPtr.Zero;
         }
 #else
         /// <summary>Loads the specified module into the address space of the calling process.</summary>
