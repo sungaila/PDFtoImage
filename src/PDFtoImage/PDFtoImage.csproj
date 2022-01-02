@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netcoreapp3.1;net461</TargetFrameworks>
-    <RuntimeIdentifiers>win-x86;win-x64;linux-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <TargetFrameworks>net6.0;netcoreapp3.1;net461</TargetFrameworks>
+    <RuntimeIdentifiers>win-x86;win-x64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -13,8 +13,8 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>1.2.1</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -22,8 +22,12 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>Assemblies, native libraries and NuGet package digitally signed.</PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium</PackageTags>
+    <PackageReleaseNotes>
+- System.Drawing.Common (GDI+) replaced with SkiaSharp (cross-platform).
+- SaveWebp added.
+- SaveBmp, SaveGif and SaveTiff deprecated.
+    </PackageReleaseNotes>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
@@ -69,43 +73,72 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\win-x64\native\pdfium.dll</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\win-x86\native\pdfium.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\win-x86\native\pdfium.dll</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\linux-x64\native\libpdfium.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\linux-x64\native\libpdfium.so</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\linux-arm\native\libpdfium.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\linux-arm\native\libpdfium.so</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\linux-arm64\native\libpdfium.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\linux-arm64\native\libpdfium.so</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\osx-x64\native\libpdfium.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\osx-x64\native\libpdfium.dylib</PackagePath>
-      <Visible>false</Visible>
     </None>
     <None Include="runtimes\osx-arm64\native\libpdfium.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Pack>true</Pack>
       <PackagePath>runtimes\osx-arm64\native\libpdfium.dylib</PackagePath>
-      <Visible>false</Visible>
+    </None>
+
+    <None Include="runtimes\win-x64\native\libSkiaSharp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x64\native\libSkiaSharp.dll</PackagePath>
+    </None>
+    <None Include="runtimes\win-x86\native\libSkiaSharp.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\win-x86\native\libSkiaSharp.dll</PackagePath>
+    </None>
+    <None Include="runtimes\linux-x64\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-x64\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\linux-arm\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\linux-arm64\native\libSkiaSharp.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\linux-arm64\native\libSkiaSharp.so</PackagePath>
+    </None>
+    <None Include="runtimes\osx-x64\native\libSkiaSharp.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-x64\native\libSkiaSharp.dylib</PackagePath>
+    </None>
+    <None Include="runtimes\osx-arm64\native\libSkiaSharp.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Pack>true</Pack>
+      <PackagePath>runtimes\osx-arm64\native\libSkiaSharp.dylib</PackagePath>
     </None>
   </ItemGroup>
 
@@ -116,6 +149,12 @@
     <None Remove="runtimes\linux-arm64\native\libpdfium.so" />
     <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
     <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
+
+    <None Remove="runtimes\linux-x64\native\libSkiaSharp.so" />
+    <None Remove="runtimes\linux-arm\native\libSkiaSharp.so" />
+    <None Remove="runtimes\linux-arm64\native\libSkiaSharp.so" />
+    <None Remove="runtimes\osx-x64\native\libSkiaSharp.dylib" />
+    <None Remove="runtimes\osx-arm64\native\libSkiaSharp.dylib" />
   </ItemGroup>
 
   <!-- NuGet Icon -->
@@ -126,12 +165,12 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.179" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.3" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

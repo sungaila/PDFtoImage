@@ -12,24 +12,13 @@ A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into ima
 This .NET library is built on top of
 * [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
 * [PdfiumViewer](https://github.com/pvginkel/PdfiumViewer) (wrapper for PDFium)
+* [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
 
 ## Getting started
 Call a static method from `PDFtoImage.Conversion`:
 
-`SaveBmp`, `SaveGif`, `SaveJpeg`, `SavePng`, `SaveTiff` and `ToImage` for a **single page**.
+`SaveJpeg`, `SavePng`, `SaveWebp` and `ToImage` for a **single page**.
 
 `ToImages` and `ToImagesAsync` for **multiple pages**.
 
-*Note: An [`System.Drawing.Image`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image) object can be exported with the [`Save`](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.image.save) method.*
-
-## Prerequisite libgdiplus
-On platforms other than Windows you will have to have [libgdiplus](https://www.mono-project.com/docs/gui/libgdiplus/) installed.
-### Debian-based Linux distributions
-```console
-sudo apt-get install libgdiplus
-```
-
-### macOS (via [Homebrew](https://brew.sh/))
-```console
-brew install mono-libgdiplus
-```
+*Note: [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*

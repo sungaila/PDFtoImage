@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace PDFtoImage.PdfiumViewer
@@ -56,7 +56,7 @@ namespace PDFtoImage.PdfiumViewer
         /// <param name="flags">Flags used to influence the rendering.</param>
         /// <param name="renderFormFill">Render form fills.</param>
         /// <returns>The rendered image.</returns>
-        public Image Render(int page, int width, int height, float dpiX, float dpiY, PdfRenderFlags flags, bool renderFormFill)
+        public SKBitmap Render(int page, int width, int height, float dpiX, float dpiY, PdfRenderFlags flags, bool renderFormFill)
         {
             return Render(page, width, height, dpiX, dpiY, 0, flags, renderFormFill);
         }
@@ -73,7 +73,7 @@ namespace PDFtoImage.PdfiumViewer
         /// <param name="flags">Flags used to influence the rendering.</param>
         /// <param name="renderFormFill">Render form fills.</param>
         /// <returns>The rendered image.</returns>
-        public Image Render(int page, int width, int height, float dpiX, float dpiY, PdfRotation rotate, PdfRenderFlags flags, bool renderFormFill)
+        public SKBitmap Render(int page, int width, int height, float dpiX, float dpiY, PdfRotation rotate, PdfRenderFlags flags, bool renderFormFill)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -84,41 +84,30 @@ namespace PDFtoImage.PdfiumViewer
                 height = height * (int)dpiY / 72;
             }
 
-            var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            bitmap.SetResolution(dpiX, dpiY);
-
-            var data = bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            var bitmap = new SKBitmap(width, height);
+            var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, 4, bitmap.GetPixels(), width * 4);
 
             try
             {
-                var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, 4, data.Scan0, width * 4);
+                uint background = (flags & PdfRenderFlags.Transparent) == 0 ? 0xFFFFFFFF : 0x00FFFFFF;
 
-                try
-                {
-                    uint background = (flags & PdfRenderFlags.Transparent) == 0 ? 0xFFFFFFFF : 0x00FFFFFF;
+                NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, width, height, background);
 
-                    NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, width, height, background);
+                bool success = _file!.RenderPDFPageToBitmap(
+                    page,
+                    handle,
+                    0, 0, width, height,
+                    (int)rotate,
+                    FlagsToFPDFFlags(flags),
+                    renderFormFill
+                );
 
-                    bool success = _file!.RenderPDFPageToBitmap(
-                        page,
-                        handle,
-                        0, 0, width, height,
-                        (int)rotate,
-                        FlagsToFPDFFlags(flags),
-                        renderFormFill
-                    );
-
-                    if (!success)
-                        throw new Win32Exception();
-                }
-                finally
-                {
-                    NativeMethods.FPDFBitmap_Destroy(handle);
-                }
+                if (!success)
+                    throw new Win32Exception();
             }
             finally
             {
-                bitmap.UnlockBits(data);
+                NativeMethods.FPDFBitmap_Destroy(handle);
             }
 
             return bitmap;
