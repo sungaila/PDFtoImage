@@ -3,8 +3,9 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
-trigger:
-- master
+# Trigger on all branches
+#trigger:
+#- master
 
 jobs:
 - job: Build
@@ -67,19 +68,17 @@ jobs:
   steps:
   - checkout: none
     displayName: 'Skip checkout'
-  - task: Bash@3
-    displayName: 'Install mono-libgdiplus'
-    condition: eq(variables['agent.os'], 'Darwin')
-    inputs:
-      targetType: 'inline'
-      script: 'brew install mono-libgdiplus'
-      failOnStderr: true
   - task: DownloadPipelineArtifact@2
     displayName: 'Download test assemblies'
     inputs:
       buildType: 'current'
       artifactName: 'Tests'
       targetPath: '$(Pipeline.Workspace)'
+  - task: UseDotNet@2
+    displayName: 'Use .NET 6'
+    inputs:
+      packageType: 'sdk'
+      version: '6.x'
   - task: VSTest@2
     displayName: '.NET Framework 4.6.1'
     condition: eq(variables['agent.os'], 'Windows_NT')

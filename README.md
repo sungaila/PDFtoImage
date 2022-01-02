@@ -21,4 +21,4 @@ Call a static method from `PDFtoImage.Conversion`:
 
 `ToImages` and `ToImagesAsync` for **multiple pages**.
 
-*Note: An [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) object can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
+*Note: A [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) object can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
