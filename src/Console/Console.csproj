@@ -2,7 +2,7 @@
   <!-- Assembly -->
   <PropertyGroup>
     <TargetFrameworks>net6.0;net461</TargetFrameworks>
-    <RuntimeIdentifiers>win-x86;win-x64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
     <AssemblyName>PDFtoImage.Console</AssemblyName>
     <RootNamespace>PDFtoImage.Console</RootNamespace>

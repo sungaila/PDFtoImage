@@ -32,7 +32,8 @@ namespace PDFtoImage.PdfiumViewer
                 {
                     Architecture.X86 => "win-x86",
                     Architecture.X64 => "win-x64",
-                    _ => throw new PlatformNotSupportedException("Only x86-64 and x86 are supported on Windows.")
+                    Architecture.Arm64 => "win-arm64",
+                    _ => throw new PlatformNotSupportedException("Only x86-64, x86 and win-arm64 are supported on Windows.")
                 };
                 pdfiumLibName = "pdfium.dll";
                 skiaSharpLibName = "libSkiaSharp.dll";
@@ -62,7 +63,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else
             {
-                throw new NotSupportedException("Only win-x86, win-x64, linux-x64, linux-arm, linux-arm64, osx-x64 and osx-arm64 are supported.");
+                throw new NotSupportedException("Only win-x86, win-x64, win-arm64, linux-x64, linux-arm, linux-arm64, osx-x64 and osx-arm64 are supported.");
             }
 
             if (File.Exists(Path.Combine(path, pdfiumLibName)))
