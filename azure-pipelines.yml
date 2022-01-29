@@ -85,7 +85,7 @@ jobs:
       artifactName: 'Tests'
       targetPath: '$(Pipeline.Workspace)'
   - task: VSTest@2
-    displayName: '.NET Framework 4.6.1'
+    displayName: '.NET Framework 4.6.2'
     condition: eq(variables['agent.os'], 'Windows_NT')
     inputs:
       testSelector: 'testAssemblies'
