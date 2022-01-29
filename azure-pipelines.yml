@@ -89,11 +89,11 @@ jobs:
     condition: eq(variables['agent.os'], 'Windows_NT')
     inputs:
       testSelector: 'testAssemblies'
-      testAssemblyVer2: '$(Pipeline.Workspace)\**\net461\PDFtoImage.Tests.dll'
+      testAssemblyVer2: '$(Pipeline.Workspace)\**\net462\PDFtoImage.Tests.dll'
       searchFolder: '$(System.DefaultWorkingDirectory)'
       runTestsInIsolation: true
       codeCoverageEnabled: true
-      testRunTitle: '.NET Framework 4.6.1 ($(agent.os))'
+      testRunTitle: '.NET Framework 4.6.2 ($(agent.os))'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
   - task: DotNetCoreCLI@2

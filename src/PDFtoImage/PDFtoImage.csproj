@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netcoreapp3.1;net461</TargetFrameworks>
+    <TargetFrameworks>net6.0;netcoreapp3.1;net462</TargetFrameworks>
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
@@ -23,9 +23,9 @@
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>- System.Drawing.Common (GDI+) replaced with SkiaSharp (cross-platform).
-- SaveWebp added.
-- SaveBmp, SaveGif and SaveTiff deprecated.
-- Added win-arm64 runtime.</PackageReleaseNotes>
+      - SaveWebp added.
+      - SaveBmp, SaveGif and SaveTiff deprecated.
+      - Added win-arm64 runtime.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -108,58 +108,16 @@
       <Pack>true</Pack>
       <PackagePath>runtimes\osx-arm64\native\libpdfium.dylib</PackagePath>
     </None>
-
-    <None Include="runtimes\win-x64\native\libSkiaSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\win-x64\native\libSkiaSharp.dll</PackagePath>
-    </None>
-    <None Include="runtimes\win-x86\native\libSkiaSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\win-x86\native\libSkiaSharp.dll</PackagePath>
-    </None>
-    <None Include="runtimes\linux-x64\native\libSkiaSharp.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\linux-x64\native\libSkiaSharp.so</PackagePath>
-    </None>
-    <None Include="runtimes\linux-arm\native\libSkiaSharp.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\linux-arm\native\libSkiaSharp.so</PackagePath>
-    </None>
-    <None Include="runtimes\linux-arm64\native\libSkiaSharp.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\linux-arm64\native\libSkiaSharp.so</PackagePath>
-    </None>
-    <None Include="runtimes\osx-x64\native\libSkiaSharp.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\osx-x64\native\libSkiaSharp.dylib</PackagePath>
-    </None>
-    <None Include="runtimes\osx-arm64\native\libSkiaSharp.dylib">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Pack>true</Pack>
-      <PackagePath>runtimes\osx-arm64\native\libSkiaSharp.dylib</PackagePath>
-    </None>
   </ItemGroup>
 
   <!-- Remove Linux and macOS PDFium for .NET Framework targets -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net461' or '$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFrameworkVersion)'=='v4.6.1' or '$(TargetFrameworkVersion)'=='v4.6.2' or '$(TargetFrameworkVersion)'=='v4.7' or '$(TargetFrameworkVersion)'=='v4.7.1' or '$(TargetFrameworkVersion)'=='v4.7.2' or '$(TargetFrameworkVersion)'=='v4.8'">
-    <None Remove="runtimes\win-arm64\native\libpdfium.dll" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net47' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net472' or '$(TargetFramework)'=='net48' or '$(TargetFrameworkVersion)'=='v4.6.1' or '$(TargetFrameworkVersion)'=='v4.6.2' or '$(TargetFrameworkVersion)'=='v4.7' or '$(TargetFrameworkVersion)'=='v4.7.1' or '$(TargetFrameworkVersion)'=='v4.7.2' or '$(TargetFrameworkVersion)'=='v4.8'">
+    <None Remove="runtimes\win-arm64\native\pdfium.dll" />
     <None Remove="runtimes\linux-x64\native\libpdfium.so" />
     <None Remove="runtimes\linux-arm\native\libpdfium.so" />
     <None Remove="runtimes\linux-arm64\native\libpdfium.so" />
     <None Remove="runtimes\osx-x64\native\libpdfium.dylib" />
     <None Remove="runtimes\osx-arm64\native\libpdfium.dylib" />
-
-    <None Remove="runtimes\linux-x64\native\libSkiaSharp.so" />
-    <None Remove="runtimes\linux-arm\native\libSkiaSharp.so" />
-    <None Remove="runtimes\linux-arm64\native\libSkiaSharp.so" />
-    <None Remove="runtimes\osx-x64\native\libSkiaSharp.dylib" />
-    <None Remove="runtimes\osx-arm64\native\libSkiaSharp.dylib" />
   </ItemGroup>
 
   <!-- NuGet Icon -->
@@ -170,7 +128,6 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.179" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -179,6 +136,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.187" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0-preview.187" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.0-preview.187" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0-preview.187" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
