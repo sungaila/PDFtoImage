@@ -13,15 +13,5 @@
       <Link>runtimes\win-x64\native\pdfium.dll</Link>
       <Visible>false</Visible>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)..\runtimes\win-x86\native\libSkiaSharp.dll" >
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>runtimes\win-x86\native\libSkiaSharp.dll</Link>
-      <Visible>false</Visible>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\libSkiaSharp.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>runtimes\win-x64\native\libSkiaSharp.dll</Link>
-      <Visible>false</Visible>
-    </None>
   </ItemGroup>
 </Project>
