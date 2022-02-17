@@ -32,7 +32,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -55,7 +55,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -78,7 +78,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -101,7 +101,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -124,7 +124,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -147,7 +147,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveJpeg(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -172,7 +172,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -195,7 +195,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -218,7 +218,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -241,7 +241,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -264,7 +264,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -287,7 +287,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SavePng(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -312,7 +312,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -335,7 +335,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -358,7 +358,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -381,7 +381,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -404,7 +404,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -427,7 +427,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static void SaveWebp(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -440,7 +440,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -455,7 +455,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -469,7 +469,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -484,7 +484,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -498,7 +498,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -510,7 +510,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -535,7 +535,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static SKBitmap ToImage(string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -561,7 +561,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static SKBitmap ToImage(byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -590,7 +590,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static SKBitmap ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -636,7 +636,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static IEnumerable<SKBitmap> ToImages(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -664,7 +664,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static IEnumerable<SKBitmap> ToImages(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -695,7 +695,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
@@ -740,7 +740,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -769,7 +769,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -801,7 +801,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -842,7 +842,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static int GetPageCount(string pdfAsBase64String, string? password = null)
         {
@@ -862,7 +862,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static int GetPageCount(byte[] pdfAsByteArray, string? password = null)
         {
@@ -885,7 +885,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
-        [SupportedOSPlatform("Android31.0")]
+        [SupportedOSPlatform("Android28.0")]
 #endif
         public static int GetPageCount(Stream pdfStream, string? password = null)
         {
