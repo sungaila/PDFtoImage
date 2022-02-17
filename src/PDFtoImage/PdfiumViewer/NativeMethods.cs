@@ -31,10 +31,24 @@ namespace PDFtoImage.PdfiumViewer
                     Architecture.X86 => "win-x86",
                     Architecture.X64 => "win-x64",
                     Architecture.Arm64 => "win-arm64",
-                    _ => throw new PlatformNotSupportedException("Only x86-64, x86 and win-arm64 are supported on Windows.")
+                    _ => throw new PlatformNotSupportedException("Only x86-64, x86 and arm64 are supported on Windows.")
                 };
                 pdfiumLibName = "pdfium.dll";
             }
+#if NET6_0_OR_GREATER
+            else if (RuntimeInformation.RuntimeIdentifier.StartsWith("android"))
+            {
+                runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
+                {
+                    Architecture.X86 => "android-x86",
+                    Architecture.X64 => "android-x64",
+                    Architecture.Arm => "android-arm",
+                    Architecture.Arm64 => "android-arm64",
+                    _ => throw new PlatformNotSupportedException("Only x86, x86-64, arm and arm64 are supported on Android.")
+                };
+                pdfiumLibName = "libpdfium.so";
+            }
+#endif
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
@@ -42,7 +56,7 @@ namespace PDFtoImage.PdfiumViewer
                     Architecture.X64 => "linux-x64",
                     Architecture.Arm => "linux-arm",
                     Architecture.Arm64 => "linux-arm64",
-                    _ => throw new PlatformNotSupportedException("Only x86-64 and arm are supported on Linux.")
+                    _ => throw new PlatformNotSupportedException("Only x86-64, arm and arm64 are supported on Linux.")
                 };
                 pdfiumLibName = "libpdfium.so";
             }
@@ -58,7 +72,7 @@ namespace PDFtoImage.PdfiumViewer
             }
             else
             {
-                throw new NotSupportedException("Only win-x86, win-x64, win-arm64, linux-x64, linux-arm, linux-arm64, osx-x64 and osx-arm64 are supported.");
+                throw new NotSupportedException("Only win-x86, win-x64, win-arm64, linux-x64, linux-arm, linux-arm64, osx-x64, osx-arm64, android-x86, android-x64, android-arm and android-arm64 are supported.");
             }
 
             if (File.Exists(Path.Combine(path, pdfiumLibName)))

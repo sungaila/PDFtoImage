@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netcoreapp3.1;net462</TargetFrameworks>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
+    <TargetFrameworks>net6.0;net6.0-android31.0;netcoreapp3.1;net462</TargetFrameworks>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64;linux-x64;linux-arm;linux-arm64;osx-x64;osx-arm64;android-x86;android-x64;android-arm;android-arm64</RuntimeIdentifiers>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -14,7 +14,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>2.0.0</VersionPrefix>
-    <VersionSuffix>preview5</VersionSuffix>
+    <VersionSuffix>preview6</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -40,7 +40,7 @@
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <Features>strict</Features>
-    <WarningsAsErrors>nullable;RS0017;RS0024;RS0025;RS0026;RS0036;RS0037;RS0041;RS0048;RS0050</WarningsAsErrors>
+    <WarningsAsErrors>nullable;RS0024;RS0025;RS0026;RS0036;RS0037;RS0041;RS0048;RS0050</WarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
@@ -57,11 +57,17 @@
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="PublicAPI\net6.0-android31.0\PublicAPI.Shipped.txt" />
+    <None Remove="PublicAPI\net6.0-android31.0\PublicAPI.Unshipped.txt" />
+  </ItemGroup>
 
   <!-- Roslyn analyzer for public APIs -->
   <ItemGroup>
     <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Shipped.txt" />
     <AdditionalFiles Include="PublicAPI/$(TargetFramework)/PublicAPI.Unshipped.txt" />
+    <AdditionalFiles Include="PublicAPI\net6.0-android31.0\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI\net6.0-android31.0\PublicAPI.Unshipped.txt" />
   </ItemGroup>
 
   <!-- NuGet Icon -->
@@ -72,9 +78,7 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="100.0.4874" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="100.0.4874" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="100.0.4874" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.187" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -83,9 +87,24 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="2.88.0-preview.187" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='netcoreapp3.1'">
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="100.0.4888" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="100.0.4888" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="100.0.4888" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0-preview.187" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.0-preview.187" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0-preview.187" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0-android31.0'">
+    <PackageReference Include="bblanchon.PDFium.Android" Version="100.0.4888" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.0-preview.187" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net462'">
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="100.0.4888" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0-preview.187" />
   </ItemGroup>
 
