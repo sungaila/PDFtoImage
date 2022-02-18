@@ -60,9 +60,8 @@ jobs:
     displayName: 'Create NuGet package'
     inputs:
       command: 'pack'
-      arguments: '-c $(buildConfiguration)'
       packagesToPack: '$(Build.SourcesDirectory)\src\PDFtoImage\PDFtoImage.csproj'
-      nobuild: false
+      nobuild: true
       versioningScheme: 'off'
       buildProperties: 'VersionSuffix=ci'
   - task: PublishPipelineArtifact@1
