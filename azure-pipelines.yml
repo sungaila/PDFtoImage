@@ -60,7 +60,7 @@ jobs:
     displayName: 'Create NuGet package'
     inputs:
       solution: 'src\PDFtoImage.sln'
-      msbuildArgs: '-t:pack /p:VersionSuffix=ci'
+      msbuildArgs: '/t:pack /p:VersionSuffix=ci'
       configuration: '$(buildConfiguration)'
       maximumCpuCount: true
       msbuildArchitecture: 'x64'
