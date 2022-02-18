@@ -25,9 +25,9 @@ jobs:
       custom: 'workload'
       arguments: 'install android'
   - task: JavaToolInstaller@0
-    displayName: 'Install Java SDK 17'
+    displayName: 'Install Java SDK 11'
     inputs:
-      versionSpec: '17'
+      versionSpec: '11'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
   - task: DotNetCoreCLI@2
