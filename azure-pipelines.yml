@@ -31,8 +31,9 @@ jobs:
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
   - task: VSBuild@1
+    displayName: 'Build solution'
     inputs:
-      solution: 'PDFtoImage.sln'
+      solution: 'src\PDFtoImage.sln'
       msbuildArgs: '/p:VersionSuffix=ci'
       configuration: '$(buildConfiguration)'
       maximumCpuCount: true
