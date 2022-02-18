@@ -30,6 +30,12 @@ jobs:
       versionSpec: '11'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore solution'
+    inputs:
+      command: 'restore'
+      projects: 'src\PDFtoImage.sln'
+      feedsToUse: 'select'
   - task: VSBuild@1
     displayName: 'Build solution'
     inputs:
