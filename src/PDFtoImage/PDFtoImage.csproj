@@ -41,7 +41,7 @@
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <Features>strict</Features>
-    <WarningsAsErrors>nullable;RS0024;RS0025;RS0026;RS0036;RS0037;RS0041;RS0048;RS0050</WarningsAsErrors>
+    <WarningsAsErrors>nullable;RS0017;RS0024;RS0025;RS0026;RS0036;RS0037;RS0041;RS0048;RS0050</WarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
@@ -69,6 +69,12 @@
   <ItemGroup>
     <None Include="..\..\etc\Icon_128.png" Pack="true" PackagePath="" />
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <None Include="bblanchon.PDFium.Android.targets" Pack="true" PackagePath="build\monoandroid9.0\PDFtoImage.targets" />
+    <None Include="bblanchon.PDFium.Android.targets" Pack="true" PackagePath="buildTransitive\monoandroid9.0\PDFtoImage.targets" />
+    <None Include="runtimes\android-arm\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-arm\native\libpdfium.so" />
+    <None Include="runtimes\android-arm64\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-arm64\native\libpdfium.so" />
+    <None Include="runtimes\android-x64\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-x64\native\libpdfium.so" />
+    <None Include="runtimes\android-x86\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-x86\native\libpdfium.so" />
   </ItemGroup>
 
   <!-- SourceLink build steps and NuGet packages -->
@@ -94,7 +100,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-android28.0' or '$(TargetFramework)'=='monoandroid9.0'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="100.0.4888" PrivateAssets="analyzers" />
+    <!--<PackageReference Include="bblanchon.PDFium.Android" Version="100.0.4888" PrivateAssets="analyzers" />-->
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.0-preview.187" />
   </ItemGroup>
 

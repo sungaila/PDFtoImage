@@ -11,11 +11,11 @@ jobs:
     name: Build and analyze
     runs-on: windows-latest
     steps:
-      - name: Setup .NET 6.x
+      - name: Install .NET 6
         uses: actions/setup-dotnet@v1.9.0
         with:
           dotnet-version: 6.x
-      - name: Install Android workload
+      - name: Install .NET workload Android
         shell: powershell
         run: |
           dotnet workload install android
