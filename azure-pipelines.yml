@@ -13,10 +13,6 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
-  - task: NuGetToolInstaller@1
-    displayName: 'Install NuGet'
-    inputs:
-      versionSpec: 
   - task: UseDotNet@2
     displayName: 'Install .NET 6'
     inputs:
@@ -60,13 +56,14 @@ jobs:
       targetPath: '$(Build.SourcesDirectory)\src\Tests\bin\$(buildConfiguration)'
       artifact: 'Tests'
       publishLocation: 'pipeline'
-  - task: NuGetCommand@2
+  - task: VSBuild@1
     displayName: 'Create NuGet package'
     inputs:
-      command: 'pack'
-      packagesToPack: 'src\PDFtoImage\PDFtoImage.csproj'
-      versioningScheme: 'off'
-      basePath: 'src\PDFtoImage'
+      solution: 'src\PDFtoImage.sln'
+      msbuildArgs: '-t:pack /p:VersionSuffix=ci'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'
   - task: PublishPipelineArtifact@1
     displayName: 'Publish NuGet package'
     inputs:
