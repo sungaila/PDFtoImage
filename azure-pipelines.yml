@@ -30,12 +30,13 @@ jobs:
       versionSpec: '11'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
-  - task: DotNetCoreCLI@2
-    displayName: 'Build solution'
+  - task: VSBuild@1
     inputs:
-      command: 'build'
-      arguments: '-c $(buildConfiguration) -p:VersionSuffix=ci'
-      workingDirectory: 'src'
+      solution: 'PDFtoImage.sln'
+      msbuildArgs: '/p:VersionSuffix=ci'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'
   - task: PublishPipelineArtifact@1
     displayName: 'Publish project assemblies'
     inputs:
