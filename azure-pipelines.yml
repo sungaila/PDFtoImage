@@ -19,6 +19,12 @@ jobs:
       packageType: 'sdk'
       version: '6.x'
   - task: DotNetCoreCLI@2
+    displayName: 'Install Android workload'
+    inputs:
+      command: 'custom'
+      custom: 'workload'
+      arguments: 'install android'
+  - task: DotNetCoreCLI@2
     displayName: 'Build solution'
     inputs:
       command: 'build'
