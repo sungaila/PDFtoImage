@@ -28,7 +28,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -51,7 +51,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -74,7 +74,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -97,7 +97,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -120,7 +120,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -143,7 +143,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -168,7 +168,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -191,7 +191,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -214,7 +214,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -237,7 +237,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -260,7 +260,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -283,7 +283,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -308,7 +308,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -331,7 +331,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -354,7 +354,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -377,7 +377,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -400,7 +400,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -423,7 +423,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -436,7 +436,7 @@ namespace PDFtoImage
         #endregion
 
         #region Internal save impl
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -451,7 +451,7 @@ namespace PDFtoImage
             SaveImpl(fileStream, format, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -465,7 +465,7 @@ namespace PDFtoImage
             ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill).Encode(imageStream, format, 100);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -480,7 +480,7 @@ namespace PDFtoImage
             SaveImpl(fileStream, format, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -494,7 +494,7 @@ namespace PDFtoImage
             ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill).Encode(imageStream, format, 100);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -506,7 +506,7 @@ namespace PDFtoImage
             SaveImpl(fileStream, format, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -531,7 +531,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The converted PDF page as an image.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -557,7 +557,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The converted PDF page as an image.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -586,7 +586,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF page as an image.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -632,7 +632,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -660,7 +660,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -691,7 +691,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -736,7 +736,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -765,7 +765,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -797,7 +797,7 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -838,7 +838,7 @@ namespace PDFtoImage
         /// <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <returns>The page count of the given PDF.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -858,7 +858,7 @@ namespace PDFtoImage
         /// <param name="pdfAsByteArray">The PDF as a byte array.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <returns>The page count of the given PDF.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
@@ -881,7 +881,7 @@ namespace PDFtoImage
         /// <param name="pdfStream">The PDF as a stream.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <returns>The page count of the given PDF.</returns>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
