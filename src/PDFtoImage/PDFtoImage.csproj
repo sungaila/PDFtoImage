@@ -23,11 +23,11 @@
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>- System.Drawing.Common (GDI+) replaced with SkiaSharp (cross-platform).
-- SaveWebp added.
-- SaveBmp, SaveGif and SaveTiff deprecated.
-- Added win-arm64 runtime.
-- Include PDFium binaries via bblanchon.PDFium.
-- Added Android as target framework.</PackageReleaseNotes>
+- SaveWebp, GetPageSize and GetPageSizes added.
+- SaveBmp, SaveGif and SaveTiff removed.
+- Runtime win-arm64 added.
+- PDFium binaries included via bblanchon.PDFium.
+- Target framework Android added.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

@@ -2,7 +2,9 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Threading;
@@ -895,6 +897,146 @@ namespace PDFtoImage
             using var pdfDocument = PdfDocument.Load(pdfStream, password);
 
             return pdfDocument.PageSizes.Count;
+        }
+        #endregion
+
+        #region GetPageSize
+        /// <summary>
+        /// Returns the PDF page size for a given page number.
+        /// </summary>
+        /// <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+        /// <param name="page">The specific page to query the size for.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page size containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static SizeF GetPageSize(string pdfAsBase64String, int page, string? password = null)
+        {
+            if (pdfAsBase64String == null)
+                throw new ArgumentNullException(nameof(pdfAsBase64String));
+
+            return GetPageSize(Convert.FromBase64String(pdfAsBase64String), page, password);
+        }
+
+        /// <summary>
+        /// Returns the PDF page size for a given page number.
+        /// </summary>
+        /// <param name="pdfAsByteArray">The PDF as a byte array.</param>
+        /// <param name="page">The specific page to query the size for.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page size containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static SizeF GetPageSize(byte[] pdfAsByteArray, int page, string? password = null)
+        {
+            if (pdfAsByteArray == null)
+                throw new ArgumentNullException(nameof(pdfAsByteArray));
+
+            // Base64 string -> byte[] -> MemoryStream
+            using var pdfStream = new MemoryStream(pdfAsByteArray, false);
+
+            return GetPageSize(pdfStream, page, password);
+        }
+
+        /// <summary>
+        /// Returns the PDF page size for a given page number.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="page">The specific page to query the size for.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page size containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static SizeF GetPageSize(Stream pdfStream, int page, string? password = null)
+        {
+            if (pdfStream == null)
+                throw new ArgumentNullException(nameof(pdfStream));
+
+            if (page < 0)
+                throw new ArgumentOutOfRangeException(nameof(page), "The page number must be 0 or greater.");
+
+            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+
+            return pdfDocument.PageSizes[page];
+        }
+        #endregion
+
+        #region GetPageSizes
+        /// <summary>
+        /// Returns the sizes of all PDF pages.
+        /// </summary>
+        /// <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page sizes containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static IList<SizeF> GetPageSizes(string pdfAsBase64String, string? password = null)
+        {
+            if (pdfAsBase64String == null)
+                throw new ArgumentNullException(nameof(pdfAsBase64String));
+
+            return GetPageSizes(Convert.FromBase64String(pdfAsBase64String), password);
+        }
+
+        /// <summary>
+        /// Returns the sizes of all PDF pages.
+        /// </summary>
+        /// <param name="pdfAsByteArray">The PDF as a byte array.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page sizes containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static IList<SizeF> GetPageSizes(byte[] pdfAsByteArray, string? password = null)
+        {
+            if (pdfAsByteArray == null)
+                throw new ArgumentNullException(nameof(pdfAsByteArray));
+
+            // Base64 string -> byte[] -> MemoryStream
+            using var pdfStream = new MemoryStream(pdfAsByteArray, false);
+
+            return GetPageSizes(pdfStream, password);
+        }
+
+        /// <summary>
+        /// Returns the sizes of all PDF pages.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page sizes containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static IList<SizeF> GetPageSizes(Stream pdfStream, string? password = null)
+        {
+            if (pdfStream == null)
+                throw new ArgumentNullException(nameof(pdfStream));
+
+            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+
+            return pdfDocument.PageSizes.ToList().AsReadOnly();
         }
         #endregion
     }

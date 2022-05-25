@@ -83,6 +83,42 @@ namespace Tests
         }
 
         [TestMethod]
+        public void GetPageSizePdfStringNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((string)null!, 0));
+        }
+
+        [TestMethod]
+        public void GetPageSizePdfArrayNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((byte[])null!, 0));
+        }
+
+        [TestMethod]
+        public void GetPageSizePdfStreamNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((Stream)null!, 0));
+        }
+
+        [TestMethod]
+        public void GetPageSizesPdfStringNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((string)null!));
+        }
+
+        [TestMethod]
+        public void GetPageSizesPdfArrayNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((byte[])null!));
+        }
+
+        [TestMethod]
+        public void GetPageSizesPdfStreamNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((Stream)null!));
+        }
+
+        [TestMethod]
         public void ToImagesPdfStringNullException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => ToImages((string)null!).ToList());
