@@ -26,9 +26,9 @@
 - SaveWebp added.
 - SaveBmp, SaveGif and SaveTiff deprecated.
 - Added win-arm64 runtime.
-- PDFium binaries included via bblanchon.PDFium.
-- Android as target framework added.</PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP</PackageTags>
+- Include PDFium binaries via bblanchon.PDFium.
+- Added Android as target framework.</PackageReleaseNotes>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>
@@ -69,17 +69,11 @@
   <ItemGroup>
     <None Include="..\..\etc\Icon_128.png" Pack="true" PackagePath="" />
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
-    <None Include="bblanchon.PDFium.Android.targets" Pack="true" PackagePath="build\monoandroid9.0\PDFtoImage.targets" />
-    <None Include="bblanchon.PDFium.Android.targets" Pack="true" PackagePath="buildTransitive\monoandroid9.0\PDFtoImage.targets" />
-    <None Include="runtimes\android-arm\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-arm\native\libpdfium.so" />
-    <None Include="runtimes\android-arm64\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-arm64\native\libpdfium.so" />
-    <None Include="runtimes\android-x64\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-x64\native\libpdfium.so" />
-    <None Include="runtimes\android-x86\native\libpdfium.so" Pack="true" PackagePath="runtimes\android-x86\native\libpdfium.so" />
   </ItemGroup>
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.0" PrivateAssets="analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -93,7 +87,7 @@
   <!-- .NET Framework packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
     <PackageReference Include="bblanchon.PDFium.Win32" Version="104.0.5079" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- .NET packages -->
@@ -101,17 +95,18 @@
     <PackageReference Include="bblanchon.PDFium.Linux" Version="104.0.5079" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" Version="104.0.5079" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.Win32" Version="104.0.5079" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" />
-    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.0" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.0" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
     <PackageReference Include="bblanchon.PDFium.Android" Version="104.0.5079" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
+  <Import Project="PDFtoImage.Android.targets" />
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
   <Import Project="PDFtoImage.CodeSigning.targets" />
   <Import Project="PDFtoImage.PackageSigning.targets" />

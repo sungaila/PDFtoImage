@@ -59,7 +59,7 @@ jobs:
   - task: VSBuild@1
     displayName: 'Create NuGet package'
     inputs:
-      solution: 'src\PDFtoImage.sln'
+      solution: 'src\PDFtoImage\PDFtoImage.csproj'
       msbuildArgs: '/t:pack /p:VersionSuffix=ci /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)'
       configuration: '$(buildConfiguration)'
       maximumCpuCount: true
