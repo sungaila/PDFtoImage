@@ -14,16 +14,36 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET 6'
+    displayName: 'Install .NET 6'
     inputs:
       packageType: 'sdk'
       version: '6.x'
   - task: DotNetCoreCLI@2
+    displayName: 'Install .NET workload Android'
+    inputs:
+      command: 'custom'
+      custom: 'workload'
+      arguments: 'install android'
+  - task: JavaToolInstaller@0
+    displayName: 'Install Java SDK 11'
+    inputs:
+      versionSpec: '11'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore solution'
+    inputs:
+      command: 'restore'
+      projects: 'src\PDFtoImage.sln'
+      feedsToUse: 'select'
+  - task: VSBuild@1
     displayName: 'Build solution'
     inputs:
-      command: 'build'
-      arguments: '-c $(buildConfiguration) -p:VersionSuffix=ci'
-      workingDirectory: 'src'
+      solution: 'src\PDFtoImage.sln'
+      msbuildArgs: '/p:VersionSuffix=ci'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'
   - task: PublishPipelineArtifact@1
     displayName: 'Publish project assemblies'
     inputs:
@@ -36,15 +56,14 @@ jobs:
       targetPath: '$(Build.SourcesDirectory)\src\Tests\bin\$(buildConfiguration)'
       artifact: 'Tests'
       publishLocation: 'pipeline'
-  - task: DotNetCoreCLI@2
+  - task: VSBuild@1
     displayName: 'Create NuGet package'
     inputs:
-      command: 'pack'
-      arguments: '-c $(buildConfiguration)'
-      packagesToPack: '$(Build.SourcesDirectory)\src\PDFtoImage\PDFtoImage.csproj'
-      nobuild: false
-      versioningScheme: 'off'
-      buildProperties: 'VersionSuffix=ci'
+      solution: 'src\PDFtoImage.sln'
+      msbuildArgs: '/t:pack /p:VersionSuffix=ci'
+      configuration: '$(buildConfiguration)'
+      maximumCpuCount: true
+      msbuildArchitecture: 'x64'
   - task: PublishPipelineArtifact@1
     displayName: 'Publish NuGet package'
     inputs:
@@ -69,12 +88,12 @@ jobs:
   - checkout: none
     displayName: 'Skip checkout'
   - task: UseDotNet@2
-    displayName: 'Use .NET Core 3.1'
+    displayName: 'Install .NET Core 3.1'
     inputs:
       packageType: 'sdk'
       version: '3.1.x'
   - task: UseDotNet@2
-    displayName: 'Use .NET 6'
+    displayName: 'Install .NET 6'
     inputs:
       packageType: 'sdk'
       version: '6.x'

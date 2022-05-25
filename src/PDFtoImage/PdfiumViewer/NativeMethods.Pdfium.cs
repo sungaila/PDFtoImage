@@ -263,6 +263,9 @@ namespace PDFtoImage.PdfiumViewer
         /// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
         public static IntPtr FPDF_LoadCustomDocument(Stream input, string? password, int id)
         {
+            if (!input.CanSeek)
+                throw new NotSupportedException("The input stream must support seek to load a PDF document.");
+
             var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
 
             var access = new FPDF_FILEACCESS
