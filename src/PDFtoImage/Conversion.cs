@@ -596,6 +596,30 @@ namespace PDFtoImage
 #endif
         public static SKBitmap ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
+            return ToImage(pdfStream, false, password, page, dpi, width, height, withAnnotations, withFormFill);
+        }
+
+        /// <summary>
+        /// Renders a single page of a given PDF into an image.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="page">The specific page to be converted.</param>
+        /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+        /// <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+        /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <returns>The rendered PDF page as an image.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static SKBitmap ToImage(Stream pdfStream, bool leaveOpen, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
@@ -612,7 +636,7 @@ namespace PDFtoImage
                 renderFlags |= PdfRenderFlags.Annotations;
 
             // Stream -> PdfiumViewer.PdfDocument
-            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             if (page >= pdfDocument.PageSizes.Count)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number {page} does not exist. Highest page number available is {pdfDocument.PageSizes.Count - 1}.");
@@ -701,6 +725,29 @@ namespace PDFtoImage
 #endif
         public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
         {
+            return ToImages(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill);
+        }
+
+        /// <summary>
+        /// Renders all pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+        /// <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+        /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
@@ -714,7 +761,7 @@ namespace PDFtoImage
                 renderFlags |= PdfRenderFlags.Annotations;
 
             // Stream -> PdfiumViewer.PdfDocument
-            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
             {
@@ -725,7 +772,7 @@ namespace PDFtoImage
         #endregion
 
         #region ToImagesAsnyc
-#if NETCOREAPP3_0_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         /// <summary>
         /// Renders all pages of a given PDF into images.
         /// </summary>
@@ -807,6 +854,33 @@ namespace PDFtoImage
 #endif
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
+            await foreach (var image in ToImagesAsync(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill, cancellationToken))
+            {
+                yield return image;
+            }
+        }
+
+        /// <summary>
+        /// Renders all pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+        /// <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+        /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+        /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+        /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
@@ -820,7 +894,7 @@ namespace PDFtoImage
                 renderFlags |= PdfRenderFlags.Annotations;
 
             // Stream -> PdfiumViewer.PdfDocument
-            using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password), cancellationToken);
+            using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
             {
@@ -891,10 +965,28 @@ namespace PDFtoImage
 #endif
         public static int GetPageCount(Stream pdfStream, string? password = null)
         {
+            return GetPageCount(pdfStream, false, password);
+        }
+
+        /// <summary>
+        /// Returns the page count of a given PDF.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page count of the given PDF.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static int GetPageCount(Stream pdfStream, bool leaveOpen, string? password = null)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             return pdfDocument.PageSizes.Count;
         }
@@ -961,13 +1053,32 @@ namespace PDFtoImage
 #endif
         public static SizeF GetPageSize(Stream pdfStream, int page, string? password = null)
         {
+            return GetPageSize(pdfStream, false, page, password);
+        }
+
+        /// <summary>
+        /// Returns the PDF page size for a given page number.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="page">The specific page to query the size for.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page size containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static SizeF GetPageSize(Stream pdfStream, bool leaveOpen, int page, string? password = null)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
             if (page < 0)
                 throw new ArgumentOutOfRangeException(nameof(page), "The page number must be 0 or greater.");
 
-            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             return pdfDocument.PageSizes[page];
         }
@@ -1031,10 +1142,28 @@ namespace PDFtoImage
 #endif
         public static IList<SizeF> GetPageSizes(Stream pdfStream, string? password = null)
         {
+            return GetPageSizes(pdfStream, false, password);
+        }
+
+        /// <summary>
+        /// Returns the sizes of all PDF pages.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <returns>The page sizes containing width and height.</returns>
+#if NET6_0_OR_GREATER
+        [SupportedOSPlatform("Windows")]
+        [SupportedOSPlatform("Linux")]
+        [SupportedOSPlatform("macOS")]
+        [SupportedOSPlatform("Android31.0")]
+#endif
+        public static IList<SizeF> GetPageSizes(Stream pdfStream, bool leaveOpen, string? password = null)
+        {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            using var pdfDocument = PdfDocument.Load(pdfStream, password);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             return pdfDocument.PageSizes.ToList().AsReadOnly();
         }

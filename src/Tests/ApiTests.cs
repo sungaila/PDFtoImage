@@ -136,7 +136,7 @@ namespace Tests
             Assert.ThrowsException<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
         }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         [TestMethod]
         public async Task ToImagesAsyncPdfStringNullException()
         {
@@ -170,5 +170,232 @@ namespace Tests
             });
         }
 #endif
+
+        [TestMethod]
+        public void ToImageStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            ToImage(inputStream);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public void ToImageStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            ToImage(inputStream, false);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public void ToImageStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            ToImage(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+
+        [TestMethod]
+        public void ToImagesStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImages(inputStream);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            foreach (var _ in result) ;
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public void ToImagesStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImages(inputStream, false);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            foreach (var _ in result) ;
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public void ToImagesStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImages(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            foreach (var _ in result) ;
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+
+#if NETCOREAPP3_1_OR_GREATER
+        [TestMethod]
+        public async Task ToImagesAsyncStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImagesAsync(inputStream);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            await foreach (var _ in result) ;
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public async Task ToImagesAsyncStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImagesAsync(inputStream, false);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            await foreach (var _ in result) ;
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public async Task ToImagesAsyncStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            var result = ToImagesAsync(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
+
+            await foreach (var _ in result) ;
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+#endif
+
+        [TestMethod]
+        public void GetPageCountStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageCount(inputStream);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public void GetPageCountStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageCount(inputStream, false);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public void GetPageCountStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageCount(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+
+        [TestMethod]
+        public void GetPageSizeStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSize(inputStream, 0);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public void GetPageSizeStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSize(inputStream, false, 0);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public void GetPageSizeStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSize(inputStream, true, 0);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+
+        [TestMethod]
+        public void GetPageSizesStreamLeaveOpenDefault()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSizes(inputStream);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
+        }
+
+        [TestMethod]
+        public void GetPageSizesStreamLeaveOpenFalse()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSizes(inputStream, false);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+        }
+
+        [TestMethod]
+        public void GetPageSizesStreamLeaveOpenTrue()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageSizes(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+        }
+
+        [TestMethod]
+        public void StreamMultipleCallsLeaveOpen()
+        {
+            using var inputStream = new FileStream(Path.Combine("Assets", "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
+            Assert.IsTrue(inputStream.CanRead);
+
+            GetPageCount(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            GetPageSizes(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            var image1 = ToImage(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            var image2 = ToImage(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            Assert.IsTrue(image1.ByteCount > 0, "The rendered image should have content.");
+            Assert.AreEqual(image1.ByteCount, image2.ByteCount, "Both images should be equal (in byte size).");
+
+            GetPageSizes(inputStream, false);
+            Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
+
+            Assert.ThrowsException<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
+        }
     }
 }
