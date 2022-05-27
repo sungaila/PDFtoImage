@@ -136,7 +136,7 @@ namespace Tests
             Assert.ThrowsException<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
         }
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         [TestMethod]
         public async Task ToImagesAsyncPdfStringNullException()
         {

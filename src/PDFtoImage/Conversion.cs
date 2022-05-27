@@ -725,7 +725,7 @@ namespace PDFtoImage
         #endregion
 
         #region ToImagesAsnyc
-#if NETCOREAPP3_0_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         /// <summary>
         /// Renders all pages of a given PDF into images.
         /// </summary>

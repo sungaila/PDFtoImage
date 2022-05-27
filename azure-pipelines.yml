@@ -88,6 +88,11 @@ jobs:
   - checkout: none
     displayName: 'Skip checkout'
   - task: UseDotNet@2
+    displayName: 'Install .NET Core 3.1'
+    inputs:
+      packageType: 'sdk'
+      version: '3.1.x'
+  - task: UseDotNet@2
     displayName: 'Install .NET 6'
     inputs:
       packageType: 'sdk'
@@ -110,6 +115,13 @@ jobs:
       testRunTitle: '.NET Framework 4.6.2 ($(agent.os))'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    displayName: '.NET Core 3.1'
+    condition: succeededOrFailed()
+    inputs:
+      command: 'test'
+      arguments: '$(Pipeline.Workspace)\**\netcoreapp3.1\PDFtoImage.Tests.dll'
+      testRunTitle: '.NET Core 3.1 ($(agent.os))'
   - task: DotNetCoreCLI@2
     displayName: '.NET 6.0'
     condition: succeededOrFailed()

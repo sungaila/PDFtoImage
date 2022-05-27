@@ -12,7 +12,7 @@ namespace Tests
         [TestInitialize]
         public void Initialize()
         {
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
             if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
                 Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
 #endif

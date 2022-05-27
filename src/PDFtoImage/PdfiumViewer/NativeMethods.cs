@@ -22,7 +22,7 @@ namespace PDFtoImage.PdfiumViewer
             LoadNativeLibraryAndroid(path);
 #elif MONOANDROID
             LoadNativeLibraryMonoAndroid(path);
-#elif NETCOREAPP3_0_OR_GREATER
+#elif NETCOREAPP3_1_OR_GREATER
             LoadNativeLibraryNetCore(path);
 #elif NETFRAMEWORK
             LoadNativeLibraryNetFX(path);
@@ -62,7 +62,7 @@ namespace PDFtoImage.PdfiumViewer
 
             Java.Lang.JavaSystem.LoadLibrary("pdfium");
         }
-#elif NETCOREAPP3_0_OR_GREATER
+#elif NETCOREAPP3_1_OR_GREATER
         private static void LoadNativeLibraryNetCore(string path)
         {
             string runtimeIdentifier;
@@ -113,7 +113,7 @@ namespace PDFtoImage.PdfiumViewer
         private static string? _pdfiumLibPath;
 #endif
 
-#if NETCOREAPP3_0_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
         private static void LoadLibrary(string path, string runtimeIdentifier, string pdfiumLibName)
         {
             if (File.Exists(Path.Combine(path, pdfiumLibName)))
