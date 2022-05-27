@@ -15,7 +15,7 @@ namespace PDFtoImage.PdfiumViewer
         private GCHandle _formCallbacksHandle;
         private readonly int _id;
         private Stream? _stream;
-        private bool _disposeStream;
+        private readonly bool _disposeStream;
 
         public PdfFile(Stream stream, string? password, bool disposeStream)
         {
