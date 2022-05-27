@@ -383,8 +383,14 @@ namespace Tests
             GetPageSizes(inputStream, true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
-            ToImage(inputStream, true);
+            var image1 = ToImage(inputStream, true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            var image2 = ToImage(inputStream, true);
+            Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
+
+            Assert.IsTrue(image1.ByteCount > 0, "The rendered image should have content.");
+            Assert.AreEqual(image1.ByteCount, image2.ByteCount, "Both images should be equal (in byte size).");
 
             GetPageSizes(inputStream, false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
