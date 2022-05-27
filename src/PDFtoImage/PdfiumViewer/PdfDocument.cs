@@ -21,12 +21,13 @@ namespace PDFtoImage.PdfiumViewer
         /// </summary>
         /// <param name="stream">Stream for the PDF document.</param>
         /// <param name="password">Password for the PDF document.</param>
-        public static PdfDocument Load(Stream stream, string? password)
+        /// <param name="disposeStream">Decides if <paramref name="stream"/> will closed on dispose as well.</param>
+        public static PdfDocument Load(Stream stream, string? password, bool disposeStream)
         {
             if (stream == null)
                 throw new ArgumentNullException(nameof(stream));
 
-            return new PdfDocument(stream, password);
+            return new PdfDocument(stream, password, disposeStream);
         }
 
         /// <summary>
@@ -34,9 +35,9 @@ namespace PDFtoImage.PdfiumViewer
         /// </summary>
         public IList<SizeF> PageSizes { get; private set; }
 
-        private PdfDocument(Stream stream, string? password)
+        private PdfDocument(Stream stream, string? password, bool disposeStream)
         {
-            _file = new PdfFile(stream, password);
+            _file = new PdfFile(stream, password, disposeStream);
 
             var pageSizes = _file.GetPDFDocInfo();
             if (pageSizes == null)

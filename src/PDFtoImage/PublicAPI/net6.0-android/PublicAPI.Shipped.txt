@@ -39,3 +39,9 @@ static PDFtoImage.Conversion.ToImagesAsync(System.IO.Stream! pdfStream, string? 
 PDFtoImage.Resource
 PDFtoImage.Resource.Attribute
 PDFtoImage.Resource.Resource() -> void
+static PDFtoImage.Conversion.GetPageCount(System.IO.Stream! pdfStream, bool leaveOpen, string? password = null) -> int
+static PDFtoImage.Conversion.GetPageSize(System.IO.Stream! pdfStream, bool leaveOpen, int page, string? password = null) -> System.Drawing.SizeF
+static PDFtoImage.Conversion.GetPageSizes(System.IO.Stream! pdfStream, bool leaveOpen, string? password = null) -> System.Collections.Generic.IList<System.Drawing.SizeF>!
+static PDFtoImage.Conversion.ToImage(System.IO.Stream! pdfStream, bool leaveOpen, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false) -> SkiaSharp.SKBitmap!
+static PDFtoImage.Conversion.ToImages(System.IO.Stream! pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false) -> System.Collections.Generic.IEnumerable<SkiaSharp.SKBitmap!>!
+static PDFtoImage.Conversion.ToImagesAsync(System.IO.Stream! pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!

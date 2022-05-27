@@ -15,19 +15,22 @@ namespace PDFtoImage.PdfiumViewer
         private GCHandle _formCallbacksHandle;
         private readonly int _id;
         private Stream? _stream;
+        private bool _disposeStream;
 
-        public PdfFile(Stream stream, string? password)
+        public PdfFile(Stream stream, string? password, bool disposeStream)
         {
             PdfLibrary.EnsureLoaded();
 
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
             _id = StreamManager.Register(stream);
+            _disposeStream = disposeStream;
 
             var document = NativeMethods.FPDF_LoadCustomDocument(stream, password, _id);
             if (document == IntPtr.Zero)
                 throw new PdfException((PdfError)NativeMethods.FPDF_GetLastError());
 
             LoadDocument(document);
+            _disposeStream=disposeStream;
         }
 
         public PdfBookmarkCollection? Bookmarks { get; private set; }
@@ -186,7 +189,7 @@ namespace PDFtoImage.PdfiumViewer
                 if (_formCallbacksHandle!.IsAllocated)
                     _formCallbacksHandle!.Free();
 
-                if (_stream != null)
+                if (_stream != null && _disposeStream)
                 {
                     _stream.Dispose();
                     _stream = null;
