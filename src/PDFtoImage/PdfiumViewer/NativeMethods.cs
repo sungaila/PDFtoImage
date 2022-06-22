@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,7 +11,11 @@ namespace PDFtoImage.PdfiumViewer
         static NativeMethods()
         {
             // Load the platform dependent Pdfium.dll if it exist.
-            LoadNativeLibrary(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().GetName(false).CodeBase!).LocalPath)!);
+            var workingDirectory =
+                Assembly.GetExecutingAssembly().GetName(false).CodeBase
+                ?? Process.GetCurrentProcess().MainModule!.FileName!;
+
+            LoadNativeLibrary(Path.GetDirectoryName(new Uri(workingDirectory).LocalPath)!);
         }
 
         private static void LoadNativeLibrary(string path)

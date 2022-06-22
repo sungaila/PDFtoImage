@@ -13,7 +13,7 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>2.1.0</VersionPrefix>
+    <VersionPrefix>2.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -22,8 +22,7 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- .NET Core 3.1 reintroduced as target framework.
-- Added leaveOpen parameter to avoid disposing of passed streams.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Fixed native library loading for single-file app scenarios.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -82,15 +81,15 @@
 
   <!-- .NET Framework packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="104.0.5079" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="105.0.5131" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- .NET packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1' or '$(TargetFramework)'=='net6.0'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="104.0.5079" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="104.0.5079" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="104.0.5079" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="105.0.5131" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="105.0.5131" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="105.0.5131" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.0" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" PrivateAssets="analyzers" />
@@ -98,7 +97,7 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net6.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="104.0.5079" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="105.0.5131" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
