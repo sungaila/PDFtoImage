@@ -15,6 +15,8 @@ namespace PDFtoImage.PdfiumViewer
                 Assembly.GetExecutingAssembly().GetName(false).CodeBase
                 ?? Process.GetCurrentProcess().MainModule!.FileName!;
 
+            workingDirectory = workingDirectory ?? AppContext.BaseDirectory;
+
             LoadNativeLibrary(Path.GetDirectoryName(new Uri(workingDirectory).LocalPath)!);
         }
 
