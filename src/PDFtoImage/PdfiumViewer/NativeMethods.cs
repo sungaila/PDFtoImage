@@ -13,7 +13,8 @@ namespace PDFtoImage.PdfiumViewer
             // Load the platform dependent Pdfium.dll if it exist.
             var workingDirectory =
                 Assembly.GetExecutingAssembly().GetName(false).CodeBase
-                ?? Process.GetCurrentProcess().MainModule!.FileName!;
+                ?? Process.GetCurrentProcess().MainModule!.FileName!
+                ?? AppContext.BaseDirectory;
 
             LoadNativeLibrary(Path.GetDirectoryName(new Uri(workingDirectory).LocalPath)!);
         }
