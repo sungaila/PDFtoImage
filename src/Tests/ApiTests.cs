@@ -136,7 +136,7 @@ namespace Tests
             Assert.ThrowsException<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         public async Task ToImagesAsyncPdfStringNullException()
         {
@@ -240,7 +240,7 @@ namespace Tests
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenDefault()
         {

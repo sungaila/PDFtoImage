@@ -96,7 +96,7 @@ namespace Tests
             }
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]
         [DataRow(true, DisplayName = "With annotations")]
@@ -192,7 +192,7 @@ namespace Tests
             }
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]
         [DataRow(true, DisplayName = "With annotations")]
@@ -288,7 +288,7 @@ namespace Tests
             }
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]
         [DataRow(true, DisplayName = "With annotations")]
@@ -363,7 +363,7 @@ namespace Tests
             Assert.IsTrue(Math.Abs(image.Height - image2.Height * (dpi / 300.0)) < 3);
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(10, DisplayName = "10 DPI")]
         [DataRow(30, DisplayName = "30 DPI")]
@@ -398,7 +398,7 @@ namespace Tests
             Assert.AreEqual(expectedPageCount, GetPageCount(pdfStream), $"The expected and actual page count for the file {pdfFileName} are not equal.");
         }
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow("SocialPreview.pdf")]
         [DataRow("hundesteuer-anmeldung.pdf")]

@@ -21,14 +21,9 @@ namespace PDFtoImage.PdfiumViewer
 
         private static void LoadNativeLibrary(string path)
         {
-            if (path == null)
-                return;
-
-#if ANDROID
-            LoadNativeLibraryAndroid(path);
-#elif MONOANDROID
-            LoadNativeLibraryMonoAndroid(path);
-#elif NETCOREAPP3_1_OR_GREATER
+#if ANDROID || MONOANDROID
+            LoadNativeLibraryAndroid();
+#elif NET6_0_OR_GREATER
             LoadNativeLibraryNetCore(path);
 #elif NETFRAMEWORK
             LoadNativeLibraryNetFX(path);
@@ -37,23 +32,8 @@ namespace PDFtoImage.PdfiumViewer
 #endif
         }
 
-#if ANDROID
-        private static void LoadNativeLibraryAndroid(string path)
-        {
-            var runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
-            {
-                Architecture.X86 => "android-x86",
-                Architecture.X64 => "android-x64",
-                Architecture.Arm => "android-arm",
-                Architecture.Arm64 => "android-arm64",
-                _ => throw new PlatformNotSupportedException("Only x86, x86-64, arm and arm64 are supported on Android.")
-            };
-            var pdfiumLibName = "libpdfium.so";
-
-            LoadLibrary(path, runtimeIdentifier, pdfiumLibName);
-        }
-#elif MONOANDROID
-        private static void LoadNativeLibraryMonoAndroid(string path)
+#if ANDROID || MONOANDROID
+        private static void LoadNativeLibraryAndroid()
         {
             switch (RuntimeInformation.ProcessArchitecture)
             {
@@ -68,9 +48,12 @@ namespace PDFtoImage.PdfiumViewer
 
             Java.Lang.JavaSystem.LoadLibrary("pdfium");
         }
-#elif NETCOREAPP3_1_OR_GREATER
+#elif NET6_0_OR_GREATER
         private static void LoadNativeLibraryNetCore(string path)
         {
+            if (path == null)
+                return;
+
             string runtimeIdentifier;
             string pdfiumLibName;
 
@@ -115,11 +98,11 @@ namespace PDFtoImage.PdfiumViewer
         }
 #endif
 
-#if !MONOANDROID
+#if !MONOANDROID && !ANDROID
         private static string? _pdfiumLibPath;
 #endif
 
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER && !ANDROID
         private static void LoadLibrary(string path, string runtimeIdentifier, string pdfiumLibName)
         {
             if (File.Exists(Path.Combine(path, pdfiumLibName)))
@@ -139,7 +122,7 @@ namespace PDFtoImage.PdfiumViewer
 
         private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         {
-            if (_pdfiumLibPath != null && libraryName == "pdfium.dll")
+            if (_pdfiumLibPath != null && libraryName != null && libraryName.Contains("pdfium"))
                 return NativeLibrary.Load(_pdfiumLibPath, assembly, searchPath);
 
             return IntPtr.Zero;
@@ -147,6 +130,9 @@ namespace PDFtoImage.PdfiumViewer
 #elif NETFRAMEWORK
         private static void LoadNativeLibraryNetFX(string path)
         {
+            if (path == null)
+                return;
+
             _pdfiumLibPath = Path.Combine(path, "runtimes", Environment.Is64BitProcess ? "win-x64" : "win-x86", "native", "pdfium.dll");
             LoadLibrary(_pdfiumLibPath);
         }

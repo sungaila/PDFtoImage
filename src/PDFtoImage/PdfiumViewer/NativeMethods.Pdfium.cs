@@ -332,113 +332,113 @@ namespace PDFtoImage.PdfiumViewer
 
         private static class Imports
         {
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_InitLibrary();
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_DestroyLibrary();
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
             public static extern IntPtr FPDF_LoadCustomDocument([MarshalAs(UnmanagedType.LPStruct)] FPDF_FILEACCESS access, string? password);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_CloseDocument(IntPtr document);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDF_GetPageCount(IntPtr document);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDF_GetDocPermissions(IntPtr document);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_DoDocumentJSAction(IntPtr hHandle);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_DoDocumentOpenAction(IntPtr hHandle);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFDOC_ExitFormFillEnvironment(IntPtr hHandle);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_DoDocumentAAction(IntPtr hHandle, FPDFDOC_AACTION aaType);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFText_LoadPage(IntPtr page);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_DoPageAAction(IntPtr page, IntPtr _form, FPDFPAGE_AACTION fPDFPAGE_AACTION);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern double FPDF_GetPageWidth(IntPtr page);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern double FPDF_GetPageHeight(IntPtr page);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_OnBeforeClosePage(IntPtr page, IntPtr _form);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFText_ClosePage(IntPtr text_page);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_ClosePage(IntPtr page);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_RenderPage(IntPtr dc, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFBitmap_Destroy(IntPtr bitmapHandle);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDFDest_GetDestPageIndex(IntPtr document, IntPtr dest);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFBookmark_GetFirstChild(IntPtr document, IntPtr bookmark);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFBookmark_GetNextSibling(IntPtr document, IntPtr bookmark);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDFBookmark_GetTitle(IntPtr bookmark, byte[]? buffer, uint buflen);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFBookmark_GetDest(IntPtr document, IntPtr bookmark);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDF_GetLastError();
 
             #region Save/Edit APIs
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
 
-            [DllImport("pdfium.dll", CallingConvention = CallingConvention.Cdecl)]
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
             #endregion
         }
