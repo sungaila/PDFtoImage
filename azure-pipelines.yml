@@ -116,13 +116,6 @@ jobs:
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
   - task: DotNetCoreCLI@2
-    displayName: '.NET Core 3.1'
-    condition: succeededOrFailed()
-    inputs:
-      command: 'test'
-      arguments: '$(Pipeline.Workspace)\**\netcoreapp3.1\PDFtoImage.Tests.dll'
-      testRunTitle: '.NET Core 3.1 ($(agent.os))'
-  - task: DotNetCoreCLI@2
     displayName: '.NET 6.0'
     condition: succeededOrFailed()
     inputs:

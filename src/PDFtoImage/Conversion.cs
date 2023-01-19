@@ -772,7 +772,7 @@ namespace PDFtoImage
         #endregion
 
         #region ToImagesAsnyc
-#if NETCOREAPP3_1_OR_GREATER
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Renders all pages of a given PDF into images.
         /// </summary>
@@ -785,12 +785,10 @@ namespace PDFtoImage
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
         /// <returns>The rendered PDF pages as images.</returns>
-#if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
-#endif
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (pdfAsBase64String == null)
