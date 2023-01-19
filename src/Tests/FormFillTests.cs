@@ -73,23 +73,5 @@ namespace Tests
 
             CompareStreams(expectedStream, outputStream);
         }
-
-#if NET6_0_OR_GREATER
-        [TestMethod]
-        public async Task MeinTest()
-        {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            var base64Images = new List<string>();
-
-            var sKBitmaps = PDFtoImage.Conversion.ToImagesAsync(inputStream, null, dpi: 100);
-
-            await foreach (var sKBitmap in sKBitmaps)
-            {
-
-                using var sKData = sKBitmap.Encode(SkiaSharp.SKEncodedImageFormat.Jpeg, 70);
-                base64Images.Add(Convert.ToBase64String(sKData.ToArray()));
-            }
-        }
-#endif
     }
 }

@@ -22,7 +22,7 @@ namespace PDFtoImage.PdfiumViewer
         private static void LoadNativeLibrary(string path)
         {
 #if ANDROID || MONOANDROID
-            LoadNativeLibraryAndroid(path);
+            LoadNativeLibraryAndroid();
 #elif NET6_0_OR_GREATER
             LoadNativeLibraryNetCore(path);
 #elif NETFRAMEWORK
@@ -33,7 +33,7 @@ namespace PDFtoImage.PdfiumViewer
         }
 
 #if ANDROID || MONOANDROID
-        private static void LoadNativeLibraryAndroid(string path)
+        private static void LoadNativeLibraryAndroid()
         {
             switch (RuntimeInformation.ProcessArchitecture)
             {
@@ -98,11 +98,11 @@ namespace PDFtoImage.PdfiumViewer
         }
 #endif
 
-#if !MONOANDROID
+#if !MONOANDROID && !ANDROID
         private static string? _pdfiumLibPath;
 #endif
 
-#if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER && !ANDROID
         private static void LoadLibrary(string path, string runtimeIdentifier, string pdfiumLibName)
         {
             if (File.Exists(Path.Combine(path, pdfiumLibName)))
