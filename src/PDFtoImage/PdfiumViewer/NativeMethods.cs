@@ -135,13 +135,13 @@ namespace PDFtoImage.PdfiumViewer
 
             var runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
             {
-                Architecture.X64 => "win-x64",
-                Architecture.X86 => "win-x86",
-                Architecture.Arm64 => "win-arm64",
-                _ => throw new PlatformNotSupportedException("Only x86-64 and arm64 are supported on macOS.")
+                Architecture.X64 => "x64",
+                Architecture.X86 => "x86",
+                Architecture.Arm64 => "arm64",
+                _ => throw new PlatformNotSupportedException("Only x86-64, x86 and arm64 are supported on Windows.")
             };
 
-            _pdfiumLibPath = Path.Combine(path, "runtimes", runtimeIdentifier, "native", "pdfium.dll");
+            _pdfiumLibPath = Path.Combine(path, runtimeIdentifier, "pdfium.dll");
             LoadLibrary(_pdfiumLibPath);
         }
 
