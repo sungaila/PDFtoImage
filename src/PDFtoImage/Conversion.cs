@@ -30,15 +30,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -53,15 +54,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -76,15 +78,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -99,15 +102,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -122,15 +126,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -145,15 +150,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveJpeg(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveJpeg(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
         #endregion
 
@@ -170,15 +176,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -193,15 +200,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -216,15 +224,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -239,15 +248,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -262,15 +272,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -285,15 +296,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SavePng(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SavePng(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
         #endregion
 
@@ -310,15 +322,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(string imageFilename, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -333,15 +346,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(Stream imageStream, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -356,15 +370,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(string imageFilename, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -379,15 +394,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(Stream imageStream, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -402,15 +418,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(string imageFilename, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -425,15 +442,16 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static void SaveWebp(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static void SaveWebp(Stream imageStream, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
         #endregion
 
@@ -444,13 +462,13 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (imageFilename == null)
                 throw new ArgumentNullException(nameof(imageFilename));
 
             using var fileStream = new FileStream(imageFilename, FileMode.Create, FileAccess.Write);
-            SaveImpl(fileStream, format, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(fileStream, format, pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
 #if NET6_0_OR_GREATER
@@ -459,12 +477,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill).Encode(imageStream, format, 100);
+            ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio).Encode(imageStream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -473,13 +491,13 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (imageFilename == null)
                 throw new ArgumentNullException(nameof(imageFilename));
 
             using var fileStream = new FileStream(imageFilename, FileMode.Create, FileAccess.Write);
-            SaveImpl(fileStream, format, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(fileStream, format, pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
 #if NET6_0_OR_GREATER
@@ -488,12 +506,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill).Encode(imageStream, format, 100);
+            ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio).Encode(imageStream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -502,10 +520,10 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             using var fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write);
-            SaveImpl(fileStream, format, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            SaveImpl(fileStream, format, pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
 #if NET6_0_OR_GREATER
@@ -514,9 +532,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill).Encode(stream, format, 100);
+            ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio).Encode(stream, format, 100);
         }
         #endregion
 
@@ -532,6 +550,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The converted PDF page as an image.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -539,12 +558,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static SKBitmap ToImage(string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static SKBitmap ToImage(string pdfAsBase64String, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            return ToImage(Convert.FromBase64String(pdfAsBase64String), password, page, dpi, width, height, withAnnotations, withFormFill);
+            return ToImage(Convert.FromBase64String(pdfAsBase64String), password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -558,6 +577,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The converted PDF page as an image.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -565,7 +585,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static SKBitmap ToImage(byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static SKBitmap ToImage(byte[] pdfAsByteArray, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -573,7 +593,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            return ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill);
+            return ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -587,6 +607,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF page as an image.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -594,9 +615,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static SKBitmap ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static SKBitmap ToImage(Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            return ToImage(pdfStream, false, password, page, dpi, width, height, withAnnotations, withFormFill);
+            return ToImage(pdfStream, false, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -611,6 +632,7 @@ namespace PDFtoImage
         /// <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF page as an image.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -618,7 +640,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static SKBitmap ToImage(Stream pdfStream, bool leaveOpen, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static SKBitmap ToImage(Stream pdfStream, bool leaveOpen, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -641,8 +663,14 @@ namespace PDFtoImage
             if (page >= pdfDocument.PageSizes.Count)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number {page} does not exist. Highest page number available is {pdfDocument.PageSizes.Count - 1}.");
 
+            var pageSize = pdfDocument.PageSizes[page];
+
+            // correct aspect ratio if requested
+            if (withAspectRatio)
+                AdjustForAspectRatio(ref width, ref height, pageSize);
+
             // PdfiumViewer.PdfDocument -> Image
-            return pdfDocument.Render(page, width ?? (int)pdfDocument.PageSizes[page].Width, height ?? (int)pdfDocument.PageSizes[page].Height, dpi, dpi, renderFlags, withFormFill);
+            return pdfDocument.Render(page, width ?? (int)pageSize.Width, height ?? (int)pageSize.Height, dpi, dpi, renderFlags, withFormFill);
         }
         #endregion
 
@@ -657,6 +685,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -664,12 +693,12 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static IEnumerable<SKBitmap> ToImages(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static IEnumerable<SKBitmap> ToImages(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            foreach (var image in ToImages(Convert.FromBase64String(pdfAsBase64String), password, dpi, width, height, withAnnotations, withFormFill))
+            foreach (var image in ToImages(Convert.FromBase64String(pdfAsBase64String), password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio))
             {
                 yield return image;
             }
@@ -685,6 +714,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -692,7 +722,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static IEnumerable<SKBitmap> ToImages(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static IEnumerable<SKBitmap> ToImages(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -700,7 +730,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            foreach (var image in ToImages(pdfStream, password, dpi, width, height, withAnnotations, withFormFill))
+            foreach (var image in ToImages(pdfStream, password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio))
             {
                 yield return image;
             }
@@ -716,6 +746,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -723,9 +754,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
-            return ToImages(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill);
+            return ToImages(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio);
         }
 
         /// <summary>
@@ -739,6 +770,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -746,7 +778,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false)
+        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -765,8 +797,16 @@ namespace PDFtoImage
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
             {
+                var currentWidth = width;
+                var currentHeight = height;
+                var pageSize = pdfDocument.PageSizes[i];
+
+                // correct aspect ratio if requested
+                if (withAspectRatio)
+                    AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
+
                 // PdfiumViewer.PdfDocument -> Image
-                yield return pdfDocument.Render(i, width ?? (int)pdfDocument.PageSizes[i].Width, height ?? (int)pdfDocument.PageSizes[i].Height, dpi, dpi, renderFlags, withFormFill);
+                yield return pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, dpi, dpi, renderFlags, withFormFill);
             }
         }
         #endregion
@@ -784,17 +824,18 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
         [SupportedOSPlatform("Windows")]
         [SupportedOSPlatform("Linux")]
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
-        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(string pdfAsBase64String, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), password, dpi, width, height, withAnnotations, withFormFill, cancellationToken))
+            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, cancellationToken))
             {
                 yield return image;
             }
@@ -811,6 +852,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -818,7 +860,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(byte[] pdfAsByteArray, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -826,7 +868,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            await foreach (var image in ToImagesAsync(pdfStream, password, dpi, width, height, withAnnotations, withFormFill, cancellationToken))
+            await foreach (var image in ToImagesAsync(pdfStream, password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, cancellationToken))
             {
                 yield return image;
             }
@@ -843,6 +885,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -850,9 +893,9 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            await foreach (var image in ToImagesAsync(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill, cancellationToken))
+            await foreach (var image in ToImagesAsync(pdfStream, false, password, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, cancellationToken))
             {
                 yield return image;
             }
@@ -870,6 +913,7 @@ namespace PDFtoImage
         /// <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
         /// <param name="withAnnotations">Specifies whether annotations be rendered.</param>
         /// <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+        /// <param name="withAspectRatio">Specifies that width and height should be adjusted for aspect ratio if either is <see langword="null"/>.</param>
         /// <returns>The rendered PDF pages as images.</returns>
 #if NET6_0_OR_GREATER
         [SupportedOSPlatform("Windows")]
@@ -877,7 +921,7 @@ namespace PDFtoImage
         [SupportedOSPlatform("macOS")]
         [SupportedOSPlatform("Android31.0")]
 #endif
-        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen, string? password = null, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -898,8 +942,16 @@ namespace PDFtoImage
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
+                var currentWidth = width;
+                var currentHeight = height;
+                var pageSize = pdfDocument.PageSizes[i];
+
+                // correct aspect ratio if requested
+                if (withAspectRatio)
+                    AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
+
                 // PdfiumViewer.PdfDocument -> Image
-                yield return await Task.Run(() => pdfDocument.Render(i, width ?? (int)pdfDocument.PageSizes[i].Width, height ?? (int)pdfDocument.PageSizes[i].Height, dpi, dpi, renderFlags, withFormFill), cancellationToken);
+                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, dpi, dpi, renderFlags, withFormFill), cancellationToken);
             }
         }
 #endif
@@ -1166,5 +1218,17 @@ namespace PDFtoImage
             return pdfDocument.PageSizes.ToList().AsReadOnly();
         }
         #endregion
+
+        private static void AdjustForAspectRatio(ref int? width, ref int? height, SizeF pageSize)
+        {
+            if (width == null && height != null)
+            {
+                width = (int)Math.Round((pageSize.Width / pageSize.Height) * height.Value);
+            }
+            else if (width != null && height == null)
+            {
+                height = (int)Math.Round((pageSize.Height / pageSize.Width) * width.Value);
+            }
+        }
     }
 }
