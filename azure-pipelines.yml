@@ -14,10 +14,15 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - task: UseDotNet@2
-    displayName: 'Install .NET 6'
+    displayName: 'Install .NET 6.0'
     inputs:
       packageType: 'sdk'
       version: '6.x'
+  - task: UseDotNet@2
+    displayName: 'Install .NET 7.0'
+    inputs:
+      packageType: 'sdk'
+      version: '7.x'
   - task: DotNetCoreCLI@2
     displayName: 'Install .NET workload Android'
     inputs:
@@ -88,10 +93,15 @@ jobs:
   - checkout: none
     displayName: 'Skip checkout'
   - task: UseDotNet@2
-    displayName: 'Install .NET 6'
+    displayName: 'Install .NET 6.0'
     inputs:
       packageType: 'sdk'
       version: '6.x'
+  - task: UseDotNet@2
+    displayName: 'Install .NET 7.0'
+    inputs:
+      packageType: 'sdk'
+      version: '7.x'
   - task: DownloadPipelineArtifact@2
     displayName: 'Download test assemblies'
     inputs:
@@ -129,3 +139,10 @@ jobs:
       command: 'test'
       arguments: '$(Pipeline.Workspace)\**\net6.0\PDFtoImage.Tests.dll'
       testRunTitle: '.NET 6.0 ($(agent.os))'
+  - task: DotNetCoreCLI@2
+    displayName: '.NET 7.0'
+    condition: succeededOrFailed()
+    inputs:
+      command: 'test'
+      arguments: '$(Pipeline.Workspace)\**\net7.0\PDFtoImage.Tests.dll'
+      testRunTitle: '.NET 7.0 ($(agent.os))'
