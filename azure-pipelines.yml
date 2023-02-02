@@ -110,6 +110,18 @@ jobs:
       testRunTitle: '.NET Framework 4.6.2 ($(agent.os))'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
+  - task: VSTest@2
+    displayName: '.NET Framework 4.8.1'
+    condition: eq(variables['agent.os'], 'Windows_NT')
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: '$(Pipeline.Workspace)\**\net481\PDFtoImage.Tests.dll'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      runTestsInIsolation: true
+      codeCoverageEnabled: true
+      testRunTitle: '.NET Framework 4.8.1 ($(agent.os))'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
   - task: DotNetCoreCLI@2
     displayName: '.NET 6.0'
     condition: succeededOrFailed()
