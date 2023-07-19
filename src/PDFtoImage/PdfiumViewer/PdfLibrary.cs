@@ -12,8 +12,7 @@ namespace PDFtoImage.PdfiumViewer
         {
             lock (_syncRoot)
             {
-                if (_library == null)
-                    _library = new PdfLibrary();
+                _library ??= new PdfLibrary();
             }
         }
 
