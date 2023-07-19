@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Code sign assemblies -->
   <Target Name="CodeSignAssembliesBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)'=='ReleaseSigned'">
-    <Exec Command="powershell &quot;cd $(OutDir); &amp;'$(SignToolPath)signtool.exe' sign /n '$(SignSubjectName)' /t '$(SignTimestampServerUrl)' /fd certHash /v ((Get-ChildItem -Include ('*.dll', '*.exe') -Recurse . | select -ExpandProperty FullName | ForEach-Object {'\&quot;' + $_ + '\&quot;\&quot;'}) -join ' ')&quot;" />
+    <Exec Command="powershell &quot;cd $(OutDir); &amp;'$(SignToolPath)signtool.exe' sign /n '$(SignSubjectName)' /tr '$(SignTimestampServerUrl)' /fd certHash /td certHash /tdchw /v ((Get-ChildItem -Include ('*.dll', '*.exe') -Recurse . | select -ExpandProperty FullName | ForEach-Object {'\&quot;' + $_ + '\&quot;\&quot;'}) -join ' ')&quot;" />
   </Target>
 
   <Target Name="CodeSignAssembliesPublish" AfterTargets="Publish" Condition="'$(Configuration)'=='ReleaseSigned'">
-    <Exec Command="powershell &quot;cd $(PublishDir); &amp;'$(SignToolPath)signtool.exe' sign /n '$(SignSubjectName)' /t '$(SignTimestampServerUrl)' /fd certHash /v ((Get-ChildItem -Include ('*.dll', '*.exe') -Recurse . | select -ExpandProperty FullName | ForEach-Object {'\&quot;' + $_ + '\&quot;\&quot;'}) -join ' ')&quot;" />
+    <Exec Command="powershell &quot;cd $(PublishDir); &amp;'$(SignToolPath)signtool.exe' sign /n '$(SignSubjectName)' /tr '$(SignTimestampServerUrl)' /fd certHash /td certHash /tdchw /v ((Get-ChildItem -Include ('*.dll', '*.exe') -Recurse . | select -ExpandProperty FullName | ForEach-Object {'\&quot;' + $_ + '\&quot;\&quot;'}) -join ' ')&quot;" />
   </Target>
 </Project>

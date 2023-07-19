@@ -54,22 +54,6 @@ namespace PDFtoImage.PdfiumViewer
         /// <param name="height">Height of the rendered image.</param>
         /// <param name="dpiX">Horizontal DPI.</param>
         /// <param name="dpiY">Vertical DPI.</param>
-        /// <param name="flags">Flags used to influence the rendering.</param>
-        /// <param name="renderFormFill">Render form fills.</param>
-        /// <returns>The rendered image.</returns>
-        public SKBitmap Render(int page, int width, int height, float dpiX, float dpiY, PdfRenderFlags flags, bool renderFormFill)
-        {
-            return Render(page, width, height, dpiX, dpiY, 0, flags, renderFormFill);
-        }
-
-        /// <summary>
-        /// Renders a page of the PDF document to an image.
-        /// </summary>
-        /// <param name="page">Number of the page to render.</param>
-        /// <param name="width">Width of the rendered image.</param>
-        /// <param name="height">Height of the rendered image.</param>
-        /// <param name="dpiX">Horizontal DPI.</param>
-        /// <param name="dpiY">Vertical DPI.</param>
         /// <param name="rotate">Rotation.</param>
         /// <param name="flags">Flags used to influence the rendering.</param>
         /// <param name="renderFormFill">Render form fills.</param>
@@ -78,6 +62,12 @@ namespace PDFtoImage.PdfiumViewer
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
+
+            if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
+            {
+                (width, height) = (height, width);
+                (dpiX, dpiY) = (dpiY, dpiX);
+            }
 
             if ((flags & PdfRenderFlags.CorrectFromDpi) != 0)
             {

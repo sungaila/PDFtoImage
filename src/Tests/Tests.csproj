@@ -269,6 +269,49 @@
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.png" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.tif" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.webp" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.jpg" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.webp" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200x200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200x200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.jpg" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.webp" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200x200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200x200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.jpg" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.webp" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200x200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200x200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullx200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.jpg" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.webp" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200x200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200x200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_True.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_False.png" />
+    <None Remove="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_True.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.bmp" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.gif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_0.jpg" />
@@ -1253,6 +1296,135 @@
     <Content Include="Assets\Expected\hundesteuer-anmeldung_True.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Expected\Wikimedia_Commons_web_0.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1631,8 +1803,8 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
   </ItemGroup>
 </Project>
