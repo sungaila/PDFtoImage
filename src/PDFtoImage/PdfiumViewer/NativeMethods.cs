@@ -12,20 +12,23 @@ namespace PDFtoImage.PdfiumViewer
         {
             // Load the platform dependent Pdfium.dll if it exist.
 #if NET7_0_OR_GREATER
-            var workingDirectory =
-                Assembly.GetExecutingAssembly().Location
-                ?? Environment.ProcessPath!
-                ?? AppContext.BaseDirectory;
+            string workingDirectory = Assembly.GetExecutingAssembly().Location;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = Environment.ProcessPath!;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = AppContext.BaseDirectory;
 #elif NET6_0_OR_GREATER
-            var workingDirectory =
-                Assembly.GetExecutingAssembly().GetName(false).CodeBase
-                ?? Environment.ProcessPath!
-                ?? AppContext.BaseDirectory;
+            var workingDirectory = Assembly.GetExecutingAssembly().GetName(false).CodeBase;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = Environment.ProcessPath!;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = AppContext.BaseDirectory;
 #else
-            var workingDirectory =
-                Assembly.GetExecutingAssembly().GetName(false).CodeBase
-                ?? Process.GetCurrentProcess().MainModule!.FileName!
-                ?? AppContext.BaseDirectory;
+            var workingDirectory =Assembly.GetExecutingAssembly().GetName(false).CodeBase;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory =  Process.GetCurrentProcess().MainModule!.FileName!;
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = AppContext.BaseDirectory;
 #endif
 
             LoadNativeLibrary(Path.GetDirectoryName(new Uri(workingDirectory).LocalPath)!);
