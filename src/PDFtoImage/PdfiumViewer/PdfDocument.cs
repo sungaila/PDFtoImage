@@ -75,7 +75,7 @@ namespace PDFtoImage.PdfiumViewer
                 height = height * (int)dpiY / 72;
             }
 
-            var bitmap = new SKBitmap(width, height);
+            var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
             var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, 4, bitmap.GetPixels(), width * 4);
 
             try
