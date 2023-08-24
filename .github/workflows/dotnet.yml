@@ -107,12 +107,12 @@ jobs:
         if: always()
         with:
           files: test-results/**/*.trx
-          #check_name: Test results (${{ matrix.os }})
+          check_name: Test results (${{ matrix.os }})
   sonarcloud:
     name: SonarCloud
     needs: build
     runs-on: windows-latest
-    if: secrets.SONAR_TOKEN != ''
+    if: github.repository == 'sungaila/PDFtoImage'
     steps:
       - name: Setup .NET 7
         uses: actions/setup-dotnet@main
