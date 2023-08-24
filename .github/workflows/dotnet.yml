@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
-        run: dotnet pack src/PDFtoImage.sln --no-restore --no-build --configuration ${{env.BUILD_CONFIGURATION}} --output NuGet /p:VersionSuffix=ci
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false /p:OutputDir=NuGet
       - name: Publish libraries
         uses: actions/upload-artifact@main
         with:
