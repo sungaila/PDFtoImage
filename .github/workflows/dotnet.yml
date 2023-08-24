@@ -46,7 +46,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Build
-        run: msbuild src/PDFtoImage.sln /c:${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
         run: dotnet pack src/PDFtoImage.sln --no-restore --no-build --configuration ${{env.BUILD_CONFIGURATION}} --output NuGet /p:VersionSuffix=ci
       - name: Publish libraries
