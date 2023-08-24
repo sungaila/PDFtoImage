@@ -107,7 +107,7 @@ jobs:
         if: always()
         with:
           files: test-results/**/*.trx
-          check_name: Test results (${{ matrix.os }})
+          #check_name: Test results (${{ matrix.os }})
   sonarcloud:
     name: SonarCloud
     needs: build
