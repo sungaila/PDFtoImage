@@ -128,7 +128,7 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 7.0.306 # TEMP FIX: SDK 7.0.400 broke the Android builds
-      - name: Setup 
+      - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup .NET workload Android
         run: dotnet workload install android
@@ -164,7 +164,6 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet restore src/PDFtoImage.sln
-          msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:RestorePackages=false
-           collect "dotnet test" -f xml -o "coverage.xml"
+          msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}}
+          collect "dotnet test" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
