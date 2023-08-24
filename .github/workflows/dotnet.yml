@@ -79,9 +79,6 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    permissions:
-      checks: write
-      pull-requests: write
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
@@ -107,11 +104,29 @@ jobs:
       - name: .NET 7
         if: always()
         run: dotnet test net7.0/*.Tests.dll --logger trx
-      - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action/composite@master
+      - name: Upload test results
         if: always()
+        uses: actions/upload-artifact@main
         with:
-          files: /**/*.trx
+          name: Test results (${{ matrix.os }})
+          path: /**/*.trx
+  publish-test-results:
+    name: "Publish tests results"
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    if: always()
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@main
+        with:
+          path: artifacts
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@master
+        with:
+          files: artifacts/**/*.trx
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
