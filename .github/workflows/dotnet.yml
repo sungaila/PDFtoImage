@@ -53,17 +53,19 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Library assemblies
-          path: PDFtoImage/src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}
+          path: |
+            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}
+            !src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/NuGet
           if-no-files-found: error
       - name: Publish tests
         uses: actions/upload-artifact@main
         with:
           name: Test assemblies
-          path: PDFtoImage/src/Tests/bin/${{env.BUILD_CONFIGURATION}}
+          path: src/Tests/bin/${{env.BUILD_CONFIGURATION}}
           if-no-files-found: error
       - name: Publish NuGet packages
         uses: actions/upload-artifact@main
         with:
           name: NuGet packages
-          path: PDFtoImage/src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/NuGet
+          path: src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/NuGet
           if-no-files-found: error
