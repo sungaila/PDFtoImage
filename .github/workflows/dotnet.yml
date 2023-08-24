@@ -79,6 +79,9 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    permissions:
+      checks: write
+      pull-requests: write
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
@@ -96,18 +99,19 @@ jobs:
         if: runner.os == 'Windows'
         run: dotnet test net462/*.Tests.dll --logger trx
       - name: .NET Framework 4.8.1
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && always()
         run: dotnet test net481/*.Tests.dll --logger trx
       - name: .NET 6
+        if: always()
         run: dotnet test net6.0/*.Tests.dll --logger trx
       - name: .NET 7
+        if: always()
         run: dotnet test net7.0/*.Tests.dll --logger trx
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action/composite@master
         if: always()
         with:
           files: /**/*.trx
-          check_name: Test results (${{ matrix.os }})
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
