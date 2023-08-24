@@ -48,14 +48,15 @@ jobs:
       - name: Build
         run: msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false /p:OutputDir=NuGet
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
         uses: actions/upload-artifact@main
         with:
           name: Library assemblies
           path: |
             src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}
-            !src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/NuGet
+            !**/*.nupkg
+            !**/*.snupkg
           if-no-files-found: error
       - name: Publish tests
         uses: actions/upload-artifact@main
@@ -67,5 +68,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: NuGet packages
-          path: src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/NuGet
+          path: |
+            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/*.nupkg
+            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/*.snupkg
           if-no-files-found: error
