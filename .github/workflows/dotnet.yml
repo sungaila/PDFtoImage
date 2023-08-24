@@ -103,8 +103,8 @@ jobs:
       - name: .NET 7
         run: dotnet test net7.0/*.Tests.dll --logger trx --collect "Code Coverage"
       - name: Upload test results
+        if: ${{ always() }}
         uses: actions/upload-artifact@main
         with:
           name: Test results ${{ matrix.os }}
           path: TestResults*
-          if: ${{ always() }}
