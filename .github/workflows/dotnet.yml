@@ -110,7 +110,6 @@ jobs:
           check_name: Test results (${{ matrix.os }})
   sonarcloud:
     name: SonarCloud
-    needs: build
     runs-on: windows-latest
     if: github.repository == 'sungaila/PDFtoImage'
     steps:
