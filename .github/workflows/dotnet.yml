@@ -30,7 +30,7 @@ jobs:
       - name: Setup .NET 7
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 7.0.9 # TEMP FIX: SDK 7.0.306 broke the Android builds
+          dotnet-version: 7.0.306 # TEMP FIX: SDK 7.0.400 broke the Android builds
       - name: Setup .NET workload Android
         run: dotnet workload install android
       - name: Setup JDK 17
