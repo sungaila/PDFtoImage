@@ -73,7 +73,7 @@ jobs:
             src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/*.snupkg
           if-no-files-found: error
   test:
-    name: Test (${{ runner.os }})
+    name: Test (${{ matrix.os }})
     needs: build
     strategy:
       matrix:
@@ -92,8 +92,19 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
+      - name: .NET Framework 4.6.2
+        if: runner.os == 'Windows'
+        run: dotnet test net462/*.Tests.dll --logger trx --collect "Code Coverage"
+      - name: .NET Framework 4.8.1
+        if: runner.os == 'Windows'
+        run: dotnet test net481/*.Tests.dll --logger trx --collect "Code Coverage"
       - name: .NET 6
-        run: dotnet test net6.0/PDFtoImage.Tests.dll
+        run: dotnet test net6.0/*.Tests.dll --logger trx --collect "Code Coverage"
       - name: .NET 7
-        run: dotnet test net7.0
-      
+        run: dotnet test net7.0/*.Tests.dll --logger trx --collect "Code Coverage"
+      - name: Upload test results
+        uses: actions/upload-artifact@main
+        with:
+          name: Test results ${{ matrix.os }}
+          path: TestResults*
+          if: ${{ always() }}
