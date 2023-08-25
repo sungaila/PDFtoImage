@@ -64,6 +64,7 @@ jobs:
           name: Test assemblies
           path: src/Tests/bin/${{env.BUILD_CONFIGURATION}}
           if-no-files-found: error
+          retention-days: 1
       - name: Publish NuGet packages
         uses: actions/upload-artifact@main
         with:
@@ -110,6 +111,7 @@ jobs:
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
+          retention-days: 1
   publish-test-results:
     name: "Publish tests results"
     needs: test
