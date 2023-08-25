@@ -109,7 +109,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Test results (${{ matrix.os }})
-          path: ~/**/*.trx
+          path: ./**/*.trx
   publish-test-results:
     name: "Publish tests results"
     needs: test
