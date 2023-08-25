@@ -130,6 +130,7 @@ jobs:
         with:
           files: artifacts/**/*.trx
           check_name: Test results
+          compare_to_earlier_commit: false
           action_fail_on_inconclusive: true
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
