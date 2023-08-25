@@ -10,13 +10,7 @@ namespace PDFtoImage.Tests
         {
             Assert.IsNotNull(outputStream);
             Assert.AreNotEqual(0, outputStream.Length);
-
-#if NET6_0_OR_GREATER
-            // the expected images are for Windows
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return;
-#endif
-
+            
             Assert.AreEqual(expectedStream.Length, outputStream.Length);
 
             expectedStream.Position = 0;
