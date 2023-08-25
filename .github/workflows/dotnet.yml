@@ -97,16 +97,16 @@ jobs:
         if: runner.os == 'Windows'
         run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed
       - name: .NET Framework 4.8.1
-        if: runner.os == 'Windows' && always()
+        if: runner.os == 'Windows' && (success() || failure())
         run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed
       - name: .NET 6
-        if: always()
+        if: success() || failure()
         run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed
       - name: .NET 7
-        if: always()
+        if: success() || failure()
         run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed
       - name: Upload test results
-        if: always()
+        if: success() || failure()
         uses: actions/upload-artifact@main
         with:
           name: Test results (${{ matrix.os }})
@@ -119,7 +119,7 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
-    if: always()
+    if: success() || failure()
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@main
