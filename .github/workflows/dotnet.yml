@@ -133,7 +133,7 @@ jobs:
           action_fail_on_inconclusive: true
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
-        if: github.repository == 'sungaila/PDFtoImage' && GITHUB_REF == 'refs/heads/master'
+        if: github.repository == 'sungaila/PDFtoImage' && $GITHUB_REF == 'refs/heads/master'
         uses: exuanbo/actions-deploy-gist@main
         with:
           token: ${{ secrets.GIST_TOKEN }}
