@@ -129,6 +129,16 @@ jobs:
           files: artifacts/**/*.trx
           check_name: Test results
           action_fail_on_inconclusive: true
+          json_file: test-results.json
+      - name: Deploy
+        uses: exuanbo/actions-deploy-gist@main
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 003e8ab2211221897e4b3c0e564ed7b6
+          gist_description: ${{ github.repository }} test results as JSON
+          gist_file_name: ${{ github.repository }}_test-results.json
+          file_path: test-results.json
+          file_type: text
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
