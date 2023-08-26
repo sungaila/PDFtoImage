@@ -1,21 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using PDFtoImage.Tests;
 using System.IO;
 
 namespace Tests
 {
     [TestClass]
-    public class QueryTests
+    public class QueryTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow("hundesteuer-anmeldung.pdf", 3)]
         [DataRow("SocialPreview.pdf", 1)]

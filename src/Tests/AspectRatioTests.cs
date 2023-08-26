@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using PDFtoImage.Tests;
 using System.IO;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
@@ -7,17 +7,8 @@ using static PDFtoImage.Tests.TestUtils;
 namespace Tests
 {
     [TestClass]
-    public class AspectRatioTests
+    public class AspectRatioTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow("hundesteuer-anmeldung.pdf")]
         [DataRow("hundesteuer-anmeldung.pdf", 100, null, null)]
@@ -143,9 +134,11 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 10000, 10000, 1200)]
         public void WithoutAspectRatio(string fileName, int? width = null, int? height = null, int? dpi = null)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, false));
+
             using var inputStream = new FileStream(Path.Combine("Assets", fileName), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, false)), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (dpi != null)
                 SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: false, dpi: dpi.Value);
@@ -280,9 +273,11 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 10000, 10000, 1200)]
         public void WithAspectRatio(string fileName, int? width = null, int? height = null, int? dpi = null)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, true));
+
             using var inputStream = new FileStream(Path.Combine("Assets", fileName), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, true)), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (dpi != null)
                 SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: true, dpi: dpi.Value);
@@ -351,12 +346,14 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 10000, 10000, true)]
         public void IgnoreDpi(string fileName, int? width = null, int? height = null, bool withAspectRatio = false)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, withAspectRatio));
+
             using var inputStream = new FileStream(Path.Combine("Assets", fileName), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, withAspectRatio)), FileMode.Open, FileAccess.Read);
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
 
             for (int i = 72; i < 600; i += 100)
             {
-                using var outputStream = new MemoryStream();
+                using var outputStream = CreateOutputStream(expectedPath);
 
                 ToImage(inputStream, true, dpi: i, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: withAspectRatio).Encode(outputStream, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
                 CompareStreams(expectedStream, outputStream);
@@ -375,10 +372,12 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 10000, 10000)]
         public void IgnoreAspectRatio(string fileName, int width, int height)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, true));
+
             using var inputStream = new FileStream(Path.Combine("Assets", fileName), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, true)), FileMode.Open, FileAccess.Read);
-            using var outputStream1 = new MemoryStream();
-            using var outputStream2 = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream1 = CreateOutputStream(expectedPath);
+            using var outputStream2 = CreateOutputStream(expectedPath);
 
             ToImage(inputStream, true, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: false).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
             ToImage(inputStream, true, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: true).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
@@ -399,10 +398,12 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 600)]
         public void IgnoreAspectRatioWithDpi(string fileName, int dpi)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", null, null, dpi, true));
+
             using var inputStream = new FileStream(Path.Combine("Assets", fileName), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "AspectRatio", GetExpectedFilename(fileName, "jpg", null, null, dpi, true)), FileMode.Open, FileAccess.Read);
-            using var outputStream1 = new MemoryStream();
-            using var outputStream2 = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream1 = CreateOutputStream(expectedPath);
+            using var outputStream2 = CreateOutputStream(expectedPath);
 
             ToImage(inputStream, true, dpi: dpi, withAnnotations: true, withFormFill: true, withAspectRatio: false).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
             ToImage(inputStream, true, dpi: dpi, withAnnotations: true, withFormFill: true, withAspectRatio: true).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);

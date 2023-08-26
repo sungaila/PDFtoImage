@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PDFtoImage.Tests;
 using SkiaSharp;
 using System;
 using System.IO;
@@ -12,17 +13,8 @@ using static PDFtoImage.Tests.TestUtils;
 namespace Tests
 {
     [TestClass]
-    public class ComparisonTests
+    public class ComparisonTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow(0, DisplayName = "Page 1")]
         [DataRow(1, DisplayName = "Page 2")]
@@ -66,9 +58,11 @@ namespace Tests
         [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
         public void SaveWebpPageNumber(int page, bool withAnnotations = false)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream = CreateOutputStream(expectedPath);
 
             SaveWebp(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
@@ -86,8 +80,10 @@ namespace Tests
 
             foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+
+                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp"), FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
                 CompareStreams(expectedStream, outputStream);
@@ -108,8 +104,10 @@ namespace Tests
 
             await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+
+                using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
                 CompareStreams(expectedStream, outputStream);
@@ -162,9 +160,11 @@ namespace Tests
         [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
         public void SavePngPageNumber(int page, bool withAnnotations = false)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream = CreateOutputStream(expectedPath);
 
             SavePng(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
@@ -182,8 +182,10 @@ namespace Tests
 
             foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+
+                using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedStream, outputStream);
@@ -204,8 +206,10 @@ namespace Tests
 
             await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+
+                using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedStream, outputStream);
@@ -258,9 +262,11 @@ namespace Tests
         [DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
         public void SaveJpegPageNumber(int page, bool withAnnotations = false)
         {
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+
             using var inputStream = new FileStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var outputStream = CreateOutputStream(expectedPath);
 
             SaveJpeg(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
 
@@ -278,8 +284,10 @@ namespace Tests
 
             foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+
+                using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
 
                 CompareStreams(expectedStream, outputStream);
@@ -300,8 +308,10 @@ namespace Tests
 
             await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
             {
-                using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg"), FileMode.Open, FileAccess.Read);
-                using var outputStream = new MemoryStream();
+                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+
+                using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+                using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
 
                 CompareStreams(expectedStream, outputStream);

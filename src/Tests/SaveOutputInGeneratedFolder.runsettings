@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <TestRunParameters>
+    <!-- Save the output streams as files in the Generated folder -->
+    <Parameter name="SaveOutputInGeneratedFolder" value="true"/>
+  </TestRunParameters>
+</RunSettings>

@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PDFtoImage.Tests;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using static PDFtoImage.Conversion;
 namespace Tests
 {
     [TestClass]
-    public class ApiTests
+    public class ApiTests : TestBase
     {
         [TestMethod]
         public void SaveWebpStringNullException()
