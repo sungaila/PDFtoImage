@@ -31,7 +31,7 @@ namespace PDFtoImage.Tests
 
         public static string GetPlatformAsString()
         {
-#if NET471_OR_GREATER
+#if NET471_OR_GREATER || NETCOREAPP
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return OSPlatform.Windows.ToString();
