@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Tests;
 using System.IO;
+using static PDFtoImage.Tests.TestUtils;
 
 namespace Tests
 {
@@ -13,7 +14,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 20)]
         public void GetPageCount(string pdfFileName, int expectedPageCount)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             Assert.AreEqual(expectedPageCount, PDFtoImage.Conversion.GetPageCount(inputStream), "Expected and actual PDF page count differs.");
         }
@@ -45,7 +46,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 19, 419.528f, 595.276f)]
         public void GetPageSize(string pdfFileName, int page, float expectedPageWidth, float expectedPageHeight)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             var result = PDFtoImage.Conversion.GetPageSize(inputStream, page);
 
@@ -59,7 +60,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 20)]
         public void GetPageSizes(string pdfFileName, int expectedSizeCount)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             var result = PDFtoImage.Conversion.GetPageSizes(inputStream);
 

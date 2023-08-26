@@ -26,8 +26,8 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.webp");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
@@ -46,8 +46,8 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.png");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
@@ -66,8 +66,8 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)

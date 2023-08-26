@@ -21,8 +21,7 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.webp");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
@@ -30,7 +29,7 @@ namespace Tests
             else
                 SaveWebp(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -43,8 +42,7 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.png");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
@@ -52,7 +50,7 @@ namespace Tests
             else
                 SavePng(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -65,8 +63,7 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.jpg");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
@@ -74,7 +71,7 @@ namespace Tests
             else
                 SaveJpeg(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -122,8 +119,7 @@ namespace Tests
         {
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}_{width?.ToString() ?? "null"}x{height?.ToString() ?? "null"}_{withAspectRatio}.png");
 
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(expectedPath, FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
@@ -131,7 +127,7 @@ namespace Tests
             else
                 SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
     }
 }

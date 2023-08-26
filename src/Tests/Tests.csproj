@@ -17,22 +17,343 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_False.jpg" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_False.png" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_False.webp" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_True.jpg" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_True.png" />
+    <None Remove="Assets\Expected\OSX\hundesteuer-anmeldung_True.webp" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.jpg" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.webp" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200x200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200x200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.jpg" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.webp" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200x200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200x200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.jpg" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.webp" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200x200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200x200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullx200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.jpg" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.webp" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200x200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200x200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_True.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_False.png" />
+    <None Remove="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_True.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9.webp" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.jpg" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.png" />
+    <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.webp" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -65,14 +386,22 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -89,6 +418,14 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
@@ -97,22 +434,6 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -145,14 +466,22 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -169,6 +498,14 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
@@ -177,22 +514,6 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -225,14 +546,22 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg" />
-    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -249,6 +578,14 @@
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg" />
@@ -552,6 +889,10 @@
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.png" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.tif" />
     <None Remove="Assets\Expected\Wikimedia_Commons_web_9_ANNOT.webp" />
+    <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20.png" />
+    <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.png" />
     <None Remove="Assets\hundesteuer-anmeldung.pdf" />
     <None Remove="Assets\SocialPreview.pdf" />
     <None Remove="Assets\Wikimedia_Commons_web.pdf" />
@@ -559,52 +900,1015 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=600_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=600_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_False.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\hundesteuer-anmeldung_True.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate0_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate180_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate270_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200x200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200x200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_200xnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullx200_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_False.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Rotation\hundesteuer-anmeldung_Rotate90_nullxnull_True.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_0_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_10_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_11_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_12_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_13_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_14_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_15_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_16_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_17_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_18_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_19_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_1_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_2_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_3_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_4_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_5_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_6_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_7_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_8_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -703,28 +2007,52 @@
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -775,6 +2103,30 @@
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -797,54 +2149,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -943,28 +2247,52 @@
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -1015,6 +2343,30 @@
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1037,54 +2389,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\SocialPreview.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=1200_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=1200_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=300_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=300_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=96_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=96_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=null_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=10000_dpi=null_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=1200_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=1200_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=300_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=300_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=96_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=96_aspectratio=True.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=null_aspectratio=False.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=10000_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -1183,28 +2487,52 @@
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=100_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=1200_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=1200_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=1200_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=300_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=300_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=300_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=300_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=96_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=96_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=96_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=96_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=null_aspectratio=False.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=null_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=10000_dpi=null_aspectratio=True.jpg">
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=2000_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=2000_h=null_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=1000_dpi=1200_aspectratio=False.jpg">
@@ -1253,6 +2581,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=100_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=1200_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=1200_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=300_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=300_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=96_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=96_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=null_aspectratio=False.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=2000_dpi=null_aspectratio=True.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=300_aspectratio=False.jpg">
@@ -1649,6 +3001,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_2.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\Wikimedia_Commons_web_2_ANNOT.jpg">
