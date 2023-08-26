@@ -1,8 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
@@ -26,16 +24,17 @@ namespace Tests
         [DataRow(false, DisplayName = "No form fill")]
         public void SaveWebpPageNumber(bool? withFormFill)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"hundesteuer-anmeldung_{withFormFill ?? false}.webp"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.webp");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
                 SaveWebp(outputStream, inputStream, dpi: 40);
             else
                 SaveWebp(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -44,16 +43,17 @@ namespace Tests
         [DataRow(false, DisplayName = "No form fill")]
         public void SavePngPageNumber(bool? withFormFill)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"hundesteuer-anmeldung_{withFormFill ?? false}.png"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
                 SavePng(outputStream, inputStream, dpi: 40);
             else
                 SavePng(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -62,16 +62,17 @@ namespace Tests
         [DataRow(false, DisplayName = "No form fill")]
         public void SaveJpegPageNumber(bool? withFormFill)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
                 SaveJpeg(outputStream, inputStream, dpi: 40);
             else
                 SaveJpeg(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
     }
 }

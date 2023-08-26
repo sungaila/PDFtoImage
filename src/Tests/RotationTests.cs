@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage;
+using PDFtoImage.Tests;
 using System;
 using System.IO;
 using static PDFtoImage.Conversion;
@@ -8,17 +9,8 @@ using static PDFtoImage.Tests.TestUtils;
 namespace Tests
 {
     [TestClass]
-    public class RotationTests
+    public class RotationTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow(null, DisplayName = "Default (no rotation)")]
         [DataRow(PdfRotation.Rotate0, DisplayName = "No rotation")]
@@ -27,16 +19,17 @@ namespace Tests
         [DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
         public void SaveWebpPageNumber(PdfRotation? rotation)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.webp"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.webp");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
                 SaveWebp(outputStream, inputStream, dpi: 40);
             else
                 SaveWebp(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -47,16 +40,17 @@ namespace Tests
         [DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
         public void SavePngPageNumber(PdfRotation? rotation)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.png"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
                 SavePng(outputStream, inputStream, dpi: 40);
             else
                 SavePng(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -67,16 +61,17 @@ namespace Tests
         [DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
         public void SaveJpegPageNumber(PdfRotation? rotation)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.jpg"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.jpg");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
                 SaveJpeg(outputStream, inputStream, dpi: 40);
             else
                 SaveJpeg(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -122,16 +117,17 @@ namespace Tests
         [DataRow(PdfRotation.Rotate270, 200, 200, true)]
         public void WithWidthHeightAspect(PdfRotation? rotation, int? width, int? height, bool withAspectRatio)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"), FileMode.Open, FileAccess.Read);
-            using var expectedStream = new FileStream(Path.Combine("Assets", "Expected", "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}_{width?.ToString() ?? "null"}x{height?.ToString() ?? "null"}_{withAspectRatio}.png"), FileMode.Open, FileAccess.Read);
-            using var outputStream = new MemoryStream();
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}_{width?.ToString() ?? "null"}x{height?.ToString() ?? "null"}_{withAspectRatio}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation == null)
                 SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio);
             else
                 SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio, rotation: rotation.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
     }
 }

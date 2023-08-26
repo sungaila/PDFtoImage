@@ -1,28 +1,20 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using PDFtoImage.Tests;
 using System.IO;
+using static PDFtoImage.Tests.TestUtils;
 
 namespace Tests
 {
     [TestClass]
-    public class QueryTests
+    public class QueryTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow("hundesteuer-anmeldung.pdf", 3)]
         [DataRow("SocialPreview.pdf", 1)]
         [DataRow("Wikimedia_Commons_web.pdf", 20)]
         public void GetPageCount(string pdfFileName, int expectedPageCount)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             Assert.AreEqual(expectedPageCount, PDFtoImage.Conversion.GetPageCount(inputStream), "Expected and actual PDF page count differs.");
         }
@@ -54,7 +46,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 19, 419.528f, 595.276f)]
         public void GetPageSize(string pdfFileName, int page, float expectedPageWidth, float expectedPageHeight)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             var result = PDFtoImage.Conversion.GetPageSize(inputStream, page);
 
@@ -68,7 +60,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 20)]
         public void GetPageSizes(string pdfFileName, int expectedSizeCount)
         {
-            using var inputStream = new FileStream(Path.Combine("Assets", pdfFileName), FileMode.Open, FileAccess.Read);
+            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
             var result = PDFtoImage.Conversion.GetPageSizes(inputStream);
 

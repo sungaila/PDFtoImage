@@ -14,6 +14,7 @@ on:
 
 env:
   BUILD_CONFIGURATION: Debug
+  SAVE_OUTPUT: false
 
 jobs:
   build:
@@ -77,6 +78,7 @@ jobs:
     name: Test (${{ matrix.os }})
     needs: build
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -94,23 +96,30 @@ jobs:
         with:
           name: Test assemblies
       - name: .NET Framework 4.6.2
-        if: runner.os == 'Windows'
-        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed
+        if: runner.os == 'Windows' && success()
+        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed
+        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 6
         if: success() || failure()
-        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed
+        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 7
         if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed
+        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
+          retention-days: 1
+      - name: Upload generated assets
+        if: env.SAVE_OUTPUT == true && (success() || failure())
+        uses: actions/upload-artifact@main
+        with:
+          name: Generated assets (${{ matrix.os }})
+          path: ./**/Assets/Generated
           retention-days: 1
   publish-test-results:
     name: Publish tests results
@@ -134,7 +143,7 @@ jobs:
           action_fail_on_inconclusive: true
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
-        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master'
+        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master' && success()
         uses: exuanbo/actions-deploy-gist@main
         with:
           token: ${{ secrets.GIST_TOKEN }}
