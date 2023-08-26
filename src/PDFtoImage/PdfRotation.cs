@@ -3,7 +3,7 @@
     /// <summary>
     /// Specifies the rotation of pages shown in the PDF renderer.
     /// </summary>
-    public enum PdfRotation : int
+    public enum PdfRotation
     {
         /// <summary>
         /// No rotation.

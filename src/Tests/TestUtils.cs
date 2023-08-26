@@ -31,6 +31,7 @@ namespace PDFtoImage.Tests
 
         public static string GetPlatformAsString()
         {
+#if NET471_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return OSPlatform.Windows.ToString();
@@ -44,7 +45,13 @@ namespace PDFtoImage.Tests
                 return OSPlatform.OSX.ToString();
             }
 
+
             throw new PlatformNotSupportedException();
+#else
+            return Environment.OSVersion.Platform == PlatformID.Win32NT
+                ? "WINDOWS"
+                : "LINUX";
+#endif
         }
 
         public static FileStream GetInputStream(string filePath)

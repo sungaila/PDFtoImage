@@ -39,10 +39,7 @@ namespace PDFtoImage.PdfiumViewer
         {
             _file = new PdfFile(stream, password, disposeStream);
 
-            var pageSizes = _file.GetPDFDocInfo();
-            if (pageSizes == null)
-                throw new Win32Exception();
-
+            var pageSizes = _file.GetPDFDocInfo() ?? throw new Win32Exception();
             PageSizes = new ReadOnlyCollection<SizeF>(pageSizes);
         }
 

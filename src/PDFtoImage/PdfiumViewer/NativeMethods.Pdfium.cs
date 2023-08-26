@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.PdfiumViewer
 {
+#pragma warning disable SYSLIB1054 // LibraryImportAttribute cannot substitute most of the following DllImportAttributes
     internal static partial class NativeMethods
     {
         // Interned strings are cached over AppDomains. This means that when we
@@ -315,7 +316,7 @@ namespace PDFtoImage.PdfiumViewer
 
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
-            var stream = StreamManager.Get((int)param);
+            var stream = StreamManager.Get(checked((int)param));
             if (stream == null)
                 return 0;
             byte[] managedBuffer = new byte[size];

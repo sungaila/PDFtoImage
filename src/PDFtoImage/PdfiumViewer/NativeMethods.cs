@@ -24,7 +24,7 @@ namespace PDFtoImage.PdfiumViewer
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 workingDirectory = AppContext.BaseDirectory;
 #else
-            var workingDirectory =Assembly.GetExecutingAssembly().GetName(false).CodeBase;
+            var workingDirectory = Assembly.GetExecutingAssembly().GetName(false).CodeBase;
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 workingDirectory =  Process.GetCurrentProcess().MainModule!.FileName!;
             if (string.IsNullOrWhiteSpace(workingDirectory))
@@ -148,13 +148,23 @@ namespace PDFtoImage.PdfiumViewer
             if (path == null)
                 return;
 
-            var runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
+            string runtimeIdentifier;
+            
+#if NET471_OR_GREATER
+            runtimeIdentifier = RuntimeInformation.ProcessArchitecture switch
             {
                 Architecture.X64 => "x64",
                 Architecture.X86 => "x86",
                 Architecture.Arm64 => "arm64",
                 _ => throw new PlatformNotSupportedException("Only x86-64, x86 and arm64 are supported on Windows.")
             };
+#else
+            runtimeIdentifier = Environment.Is64BitProcess switch
+            {
+                true => "x64",
+                false => "x86"
+            };
+#endif
 
             _pdfiumLibPath = Path.Combine(path, runtimeIdentifier, "pdfium.dll");
             LoadLibrary(_pdfiumLibPath);
@@ -175,5 +185,5 @@ namespace PDFtoImage.PdfiumViewer
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpLibFileName);
 #endif
-    }
+        }
 }
