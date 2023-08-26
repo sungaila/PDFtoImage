@@ -14,7 +14,7 @@ on:
 
 env:
   BUILD_CONFIGURATION: Debug
-  SAVE_OUTPUT: true
+  SAVE_OUTPUT: false
 
 jobs:
   build:

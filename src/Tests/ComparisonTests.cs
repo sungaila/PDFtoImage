@@ -81,11 +81,10 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
-                using var expectedStream = GetInputStream(Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp"));
                 using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
-                CompareStreams(expectedStream, outputStream);
+                CompareStreams(expectedPath, outputStream);
 
                 page++;
             }

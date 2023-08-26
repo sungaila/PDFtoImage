@@ -27,7 +27,6 @@ namespace Tests
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.webp");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
-            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
@@ -35,7 +34,7 @@ namespace Tests
             else
                 SaveWebp(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -47,7 +46,6 @@ namespace Tests
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
-            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
@@ -55,7 +53,7 @@ namespace Tests
             else
                 SavePng(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
 
         [TestMethod]
@@ -67,7 +65,6 @@ namespace Tests
             var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
-            using var expectedStream = GetInputStream(expectedPath);
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill == null)
@@ -75,7 +72,7 @@ namespace Tests
             else
                 SaveJpeg(outputStream, inputStream, dpi: 40, withFormFill: withFormFill.Value);
 
-            CompareStreams(expectedStream, outputStream);
+            CompareStreams(expectedPath, outputStream);
         }
     }
 }
