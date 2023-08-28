@@ -78,10 +78,13 @@
   </ItemGroup>
 
   <!-- .NET Framework packages -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net462'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net481'">
     <PackageReference Include="bblanchon.PDFium.Win32" Version="118.0.5961" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.5" PrivateAssets="analyzers" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <!-- .NET packages -->
