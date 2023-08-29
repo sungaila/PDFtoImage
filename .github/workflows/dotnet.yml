@@ -14,6 +14,16 @@ on:
         - Release
         required: true
         default: 'Debug'
+      run_build:
+        type: boolean
+        description: Run build
+        required: true
+        default: true
+      run_tests:
+        type: boolean
+        description: Run tests
+        required: true
+        default: true
       generate_assets:
         type: boolean
         description: Generate assets from test runs
@@ -41,6 +51,7 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    if: inputs.run_build == true
     steps:
       - uses: actions/checkout@main
         with:
@@ -103,7 +114,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: success() || failure()
+    if: (success() || failure()) && inputs.run_tests == true
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
@@ -137,7 +148,7 @@ jobs:
           path: ./**/*.trx
           retention-days: 1
       - name: Upload generated assets
-        if: inputs.generate_assets == true && (success() || failure())
+        if: (success() || failure()) && inputs.generate_assets == true
         uses: actions/upload-artifact@main
         with:
           name: Generated assets (${{ matrix.os }})
