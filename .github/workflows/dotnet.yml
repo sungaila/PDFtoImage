@@ -51,7 +51,7 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
-    if: inputs.run_build == true
+    if: (inputs.run_build || true) == true
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -80,15 +80,15 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Build
-        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ inputs.build_configuration || 'Debug' }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ inputs.build_configuration || 'Debug' }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
         uses: actions/upload-artifact@main
         with:
           name: Library assemblies
           path: |
-            src/PDFtoImage/bin/${{ inputs.build_configuration }}
+            src/PDFtoImage/bin/${{ inputs.build_configuration || 'Debug' }}
             !**/*.nupkg
             !**/*.snupkg
           if-no-files-found: error
@@ -96,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Test assemblies
-          path: src/Tests/bin/${{ inputs.build_configuration }}
+          path: src/Tests/bin/${{ inputs.build_configuration || 'Debug' }}
           if-no-files-found: error
           retention-days: 1
       - name: Publish NuGet packages
@@ -104,8 +104,8 @@ jobs:
         with:
           name: NuGet packages
           path: |
-            src/PDFtoImage/bin/${{ inputs.build_configuration }}/*.nupkg
-            src/PDFtoImage/bin/${{ inputs.build_configuration }}/*.snupkg
+            src/PDFtoImage/bin/${{ inputs.build_configuration || 'Debug' }}/*.nupkg
+            src/PDFtoImage/bin/${{ inputs.build_configuration || 'Debug' }}/*.snupkg
           if-no-files-found: error
   test:
     name: Test (${{ matrix.os }})
@@ -115,7 +115,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: success() && inputs.run_tests == true
+    if: success() && (inputs.run_tests || true) == true
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
@@ -131,16 +131,16 @@ jobs:
           name: Test assemblies
       - name: .NET Framework 4.6.2
         if: runner.os == 'Windows' && success()
-        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ inputs.generate_assets == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ (inputs.generate_assets || true) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ inputs.generate_assets == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ (inputs.generate_assets || true) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 6
         if: success() || failure()
-        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ inputs.generate_assets == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ (inputs.generate_assets || true) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 7
         if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ inputs.generate_assets == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ (inputs.generate_assets || true) == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -149,7 +149,7 @@ jobs:
           path: ./**/*.trx
           retention-days: 1
       - name: Upload generated assets
-        if: (success() || failure()) && inputs.generate_assets == true
+        if: (success() || failure()) && (inputs.generate_assets || true) == true
         uses: actions/upload-artifact@main
         with:
           name: Generated assets (${{ matrix.os }})
@@ -162,7 +162,7 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
-    if: (success() || failure()) && inputs.publish_testresults == true
+    if: (success() || failure()) && (inputs.publish_testresults || true) == true
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@main
@@ -189,7 +189,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
-    if: (github.repository == 'sungaila/PDFtoImage' && inputs.run_sonarcloud) && inputs.run_sonarcloud == true
+    if: (github.repository == 'sungaila/PDFtoImage' && success()) && (inputs.run_sonarcloud || true) == true
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -244,6 +244,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet restore src/PDFtoImage.sln
-          msbuild src/PDFtoImage.sln /p:Configuration=${{ inputs.build_configuration }} 
+          msbuild src/PDFtoImage.sln /p:Configuration=${{ (inputs.build_configuration || 'Debug') }} 
           dotnet-coverage collect "dotnet test src/PDFtoImage.sln --verbosity detailed" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
