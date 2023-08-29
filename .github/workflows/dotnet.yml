@@ -115,7 +115,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: (success() || failure()) && inputs.run_tests == true
+    if: success() && inputs.run_tests == true
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
