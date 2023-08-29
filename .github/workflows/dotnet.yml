@@ -80,15 +80,15 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Build
-        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ inputs.build_configuration }}  /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ inputs.build_configuration }}  /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
         uses: actions/upload-artifact@main
         with:
           name: Library assemblies
           path: |
-            src/PDFtoImage/bin/${{ inputs.build_configuration }} 
+            src/PDFtoImage/bin/${{ inputs.build_configuration }}
             !**/*.nupkg
             !**/*.snupkg
           if-no-files-found: error
@@ -96,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Test assemblies
-          path: src/Tests/bin/${{ inputs.build_configuration }} 
+          path: src/Tests/bin/${{ inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
       - name: Publish NuGet packages
@@ -104,8 +104,8 @@ jobs:
         with:
           name: NuGet packages
           path: |
-            src/PDFtoImage/bin/${{ inputs.build_configuration }} /*.nupkg
-            src/PDFtoImage/bin/${{ inputs.build_configuration }} /*.snupkg
+            src/PDFtoImage/bin/${{ inputs.build_configuration }}/*.nupkg
+            src/PDFtoImage/bin/${{ inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
   test:
     name: Test (${{ matrix.os }})
