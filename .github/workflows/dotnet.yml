@@ -14,21 +14,6 @@ on:
         - Release
         required: true
         default: 'Debug'
-      test_windows:
-        type: boolean
-        description: Test windows-latest
-        required: true
-        default: true
-      test_ubuntu:
-        type: boolean
-        description: Test ubuntu-latest
-        required: true
-        default: true
-      test_macos:
-        type: boolean
-        description: Test macos-latest
-        required: true
-        default: true
       generate_assets:
         type: boolean
         description: Generate assets from test runs
@@ -118,7 +103,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: (success() || failure()) && ((matrix.os == 'windows-latest' && inputs.test_windows == true) || (matrix.os == 'ubuntu-latest' && inputs.test_ubuntu == true) || (matrix.os == 'macos-latest' && inputs.test_macos == true))
+    if: success() || failure()
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
