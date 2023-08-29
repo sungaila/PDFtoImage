@@ -20,9 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bblanchon.PDFium.WebAssembly" Version="118.0.5975" />
+    <PackageReference Include="bblanchon.PDFium.WebAssembly" Version="1.0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +32,7 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <NativeFileReference Include="pdfium.wasm" />
+    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st\*.a" />
   </ItemGroup>
 
 </Project>
