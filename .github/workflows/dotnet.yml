@@ -53,7 +53,8 @@ jobs:
     runs-on: windows-latest
     if: inputs.run_build == true
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
       - name: Setup MSBuild
@@ -190,7 +191,8 @@ jobs:
     runs-on: windows-latest
     if: (github.repository == 'sungaila/PDFtoImage' && inputs.run_sonarcloud) && inputs.run_sonarcloud == true
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
       - name: Setup MSBuild
