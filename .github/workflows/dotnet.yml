@@ -5,6 +5,40 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      build_configuration:
+        type: choice
+        description: Build configuration
+        options: 
+        - Debug
+        - Release
+        required: true
+        default: 'Debug'
+      run_build:
+        type: boolean
+        description: Run build
+        required: true
+        default: true
+      run_tests:
+        type: boolean
+        description: Run tests
+        required: true
+        default: true
+      generate_assets:
+        type: boolean
+        description: Generate assets from test runs
+        required: true
+        default: false
+      publish_testresults:
+        type: boolean
+        description: Publish test results
+        required: true
+        default: true
+      run_sonarcloud:
+        type: boolean
+        description: Run SonarCloud
+        required: true
+        default: true
   push:
     branches:
       - 'master'
@@ -13,16 +47,14 @@ on:
     branches:
       - '**'
 
-env:
-  BUILD_CONFIGURATION: Debug
-  SAVE_OUTPUT: false
-
 jobs:
   build:
     name: Build
     runs-on: windows-latest
+    if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
       - name: Setup MSBuild
@@ -48,15 +80,15 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Build
-        run: msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
         uses: actions/upload-artifact@main
         with:
           name: Library assemblies
           path: |
-            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}
+            src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
             !**/*.nupkg
             !**/*.snupkg
           if-no-files-found: error
@@ -64,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Test assemblies
-          path: src/Tests/bin/${{env.BUILD_CONFIGURATION}}
+          path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
       - name: Publish NuGet packages
@@ -72,8 +104,8 @@ jobs:
         with:
           name: NuGet packages
           path: |
-            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/*.nupkg
-            src/PDFtoImage/bin/${{env.BUILD_CONFIGURATION}}/*.snupkg
+            src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
+            src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
   test:
     name: Test (${{ matrix.os }})
@@ -83,6 +115,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
@@ -98,16 +131,16 @@ jobs:
           name: Test assemblies
       - name: .NET Framework 4.6.2
         if: runner.os == 'Windows' && success()
-        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 6
         if: success() || failure()
-        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 7
         if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ env.SAVE_OUTPUT == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -116,7 +149,7 @@ jobs:
           path: ./**/*.trx
           retention-days: 1
       - name: Upload generated assets
-        if: env.SAVE_OUTPUT == true && (success() || failure())
+        if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
         uses: actions/upload-artifact@main
         with:
           name: Generated assets (${{ matrix.os }})
@@ -129,7 +162,7 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
-    if: success() || failure()
+    if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@main
@@ -156,9 +189,10 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
-    if: github.repository == 'sungaila/PDFtoImage'
+    if: (github.repository == 'sungaila/PDFtoImage' && success()) && (github.event_name != 'workflow_dispatch' && true || inputs.run_sonarcloud) == true
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
       - name: Setup MSBuild
@@ -210,6 +244,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet restore src/PDFtoImage.sln
-          msbuild src/PDFtoImage.sln /p:Configuration=${{env.BUILD_CONFIGURATION}}
+          msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} 
           dotnet-coverage collect "dotnet test src/PDFtoImage.sln --verbosity detailed" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

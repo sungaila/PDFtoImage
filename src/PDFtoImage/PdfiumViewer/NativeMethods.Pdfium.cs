@@ -263,7 +263,12 @@ namespace PDFtoImage.PdfiumViewer
 		/// <param name="password">Password, if the PDF is protected. Can be null.</param>
 		/// <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
 		/// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-		public static unsafe IntPtr FPDF_LoadCustomDocument(Stream input, string? password, int id)
+
+		public static
+#if NET6_0_OR_GREATER
+			unsafe
+#endif
+			IntPtr FPDF_LoadCustomDocument(Stream input, string? password, int id)
 		{
 #if NET6_0_OR_GREATER
 			delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
@@ -569,7 +574,11 @@ namespace PDFtoImage.PdfiumViewer
 
 		#region Save/Edit Structs and Flags
 		[StructLayout(LayoutKind.Sequential)]
-		public unsafe class FPDF_FILEACCESS
+		public
+#if NET6_0_OR_GREATER
+			unsafe
+#endif
+			class FPDF_FILEACCESS
 		{
 			public uint m_FileLen;
 #if NET6_0_OR_GREATER
