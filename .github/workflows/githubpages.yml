@@ -18,10 +18,6 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@main
-        with:
-          msbuild-architecture: x64
       - name: Setup .NET 7
         uses: actions/setup-dotnet@main
         with:
