@@ -1,0 +1,66 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Deploy to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@main
+        with:
+          msbuild-architecture: x64
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: 6.x
+      - name: Setup .NET 7
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: 7.0.306 # TEMP FIX: SDK 7.0.400 broke the Android builds
+      - name: Setup .NET workload Android
+        run: dotnet workload install android
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools
+      - name: Setup JDK 17
+        uses: actions/setup-java@main
+        with:
+          java-version: 17
+          java-package: jdk
+          distribution: 'zulu'
+      - name: Restore
+        run: dotnet restore src/PDFtoImage.sln
+      - name: Publish
+        run: msbuild src/WebConverter/WebConverter.csproj /p:RestorePackages=false /p:DeployOnBuild=true /p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@main
+        with:
+          path: src/WebConverter/bin/Publish
+  deploy:
+    needs: publish
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+      
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@main

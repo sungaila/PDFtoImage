@@ -71,6 +71,8 @@ jobs:
           dotnet-version: 7.0.306 # TEMP FIX: SDK 7.0.400 broke the Android builds
       - name: Setup .NET workload Android
         run: dotnet workload install android
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools
       - name: Setup JDK 17
         uses: actions/setup-java@main
         with:
@@ -211,6 +213,8 @@ jobs:
         run: dotnet tool install --global dotnet-coverage
       - name: Setup .NET workload Android
         run: dotnet workload install android
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools
       - name: Setup JDK 17
         uses: actions/setup-java@main
         with:
