@@ -44,7 +44,7 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
-            return fetchEvent.respondWith((async () => {
+            return event.respondWith((async () => {
                 const formData = await event.request.formData();
 
                 const title = formData.get('title');
