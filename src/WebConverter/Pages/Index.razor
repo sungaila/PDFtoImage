@@ -50,7 +50,7 @@
 							<label for="fileUpload" class="col-sm-3 col-form-label">File</label>
 							<div class="col-sm">
 								<div class="row">
-									<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept=".pdf,application/pdf" aria-describedby="uploadHint" />
+									<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" aria-describedby="uploadHint" />
 								</div>
 								<div class="row">
 									<small id="uploadHint" class="form-text text-muted">@($"Max. file size of {ByteSize.FromBytes(MaxAllowedSize).ToString()}.")</small>
