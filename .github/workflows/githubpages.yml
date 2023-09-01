@@ -42,6 +42,9 @@ jobs:
       - name: Update action in manifest.webmanifest
         run: |
             sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
+      - name: Update share_target in manifest.webmanifest
+        run: |
+            sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net7.0/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes
