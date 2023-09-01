@@ -12,7 +12,7 @@ on:
 jobs:
   publish:
     name: Publish
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -31,7 +31,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Publish
-        run: msbuild src/WebConverter/WebConverter.csproj /p:RestorePackages=false /p:DeployOnBuild=true /p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml
+        run: dotnet publish src/WebConverter/WebConverter.csproj /p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@main
         with:
@@ -39,6 +39,7 @@ jobs:
   deploy:
     name: Deploy
     needs: publish
+    runs-on: ubuntu-latest
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
@@ -49,7 +50,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@main
