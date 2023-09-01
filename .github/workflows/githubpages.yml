@@ -35,9 +35,6 @@ jobs:
             sed -i 's/<base href="\/" \/>/<base href="\/${{github.event.repository.name}}\/" \/>/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/index.html
       - name: Update scope in manifest.webmanifest
         run: |
-            sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
-      - name: Update scope in manifest.webmanifest
-        run: |
             sed -i 's/"scope": "\/"/"scope": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
       - name: Update start_url in manifest.webmanifest
         run: |
