@@ -22,8 +22,10 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 7.x
-      - name: Setup .NET workloads
-        run: dotnet workload restore src/PDFtoImage.sln
+      - name: Setup .NET workload android
+        run: dotnet workload install android
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Publish
