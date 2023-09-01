@@ -31,6 +31,7 @@
 
   <PropertyGroup Condition="'$(Configuration)'!='Debug'">
     <EmccCompileOptimizationFlag>-O3 -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 -s DEMANGLE_SUPPORT=0</EmccCompileOptimizationFlag>
+    <RunAOTCompilation>true</RunAOTCompilation>
   </PropertyGroup>
 
   <ItemGroup>
