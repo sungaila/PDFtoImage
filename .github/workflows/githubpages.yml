@@ -22,8 +22,8 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 7.x
-      - name: Setup .NET workloads
-        run: dotnet workload restore src/WebConverter/WebConverter.csproj
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools 
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Publish
