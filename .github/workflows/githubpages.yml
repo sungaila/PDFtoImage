@@ -38,7 +38,10 @@ jobs:
             sed -i 's/"scope": "\/"/"scope": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
       - name: Update start_url in manifest.webmanifest
         run: |
-            sed -i 's/"start_url": "\/"/<"start_url": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
+            sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
+      - name: Update action in manifest.webmanifest
+        run: |
+            sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net7.0/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes
