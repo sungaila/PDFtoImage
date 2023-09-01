@@ -7,7 +7,6 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <WasmNativeStrip>false</WasmNativeStrip>
     <Version>2.3.2</Version>
   </PropertyGroup>
 
