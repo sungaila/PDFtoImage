@@ -44,24 +44,22 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
-            return event.respondWith((async () => {
-                const formData = await event.request.formData();
+            const formData = await event.request.formData();
 
-                const title = formData.get('title');
-                const text = formData.get('text');
-                const url = formData.get('url');
-                console.log(title + ' ' + text + ' ' + url);
+            const title = formData.get('title');
+            const text = formData.get('text');
+            const url = formData.get('url');
+            console.log(title + ' ' + text + ' ' + url);
 
-                const files = formData.getAll('pdfs');
+            const files = formData.getAll('pdfs');
 
-                const keys = await caches.keys();
-                const mediaCache = await caches.open(keys.filter((key) => key.startsWith('media'))[0]);
-                await mediaCache.put('shared-file', new Response(files));
+            const keys = await caches.keys();
+            const mediaCache = await caches.open(keys.filter((key) => key.startsWith('media'))[0]);
+            await mediaCache.put('shared-file', new Response(files));
 
-                return Response.redirect('/', 303);
-            }));
+            return Response.redirect('/', 303);
         }
     }
 
     return cachedResponse || fetch(event.request);
-}
+}/* Manifest version: PlCy8FxE */
