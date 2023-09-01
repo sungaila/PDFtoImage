@@ -5,10 +5,10 @@
 [![SonarCloud Quality Gate](https://img.shields.io/sonar/quality_gate/sungaila_PDFtoImage?server=https%3A%2F%2Fsonarcloud.io&style=flat-square&logo=sonarcloud&logoColor=white)](https://sonarcloud.io/dashboard?id=sungaila_PDFtoImage)
 [![NuGet version](https://img.shields.io/nuget/v/PDFtoImage.svg?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/PDFtoImage/)
 [![NuGet downloads](https://img.shields.io/nuget/dt/PDFtoImage.svg?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/PDFtoImage/)
-[![Website](https://img.shields.io/website?up_message=online&down_message=offline&url=https%3A%2F%2Fsungaila.github.io%2FPDFtoImage%2F&style=flat-square&label=GitHub%20Pages)](https://sungaila.github.io/PDFtoImage/)
+[![Website](https://img.shields.io/website?up_message=online&down_message=offline&url=https%3A%2F%2Fsungaila.github.io%2FPDFtoImage%2F&style=flat-square&label=website)](https://sungaila.github.io/PDFtoImage/)
 [![GitHub license](https://img.shields.io/github/license/sungaila/PDFtoImage?style=flat-square)](https://github.com/sungaila/PDFtoImage/blob/master/LICENSE)
 
-A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images.
+A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images. Give it a try on [GitHub Pages](https://sungaila.github.io/PDFtoImage/)!
 
 This .NET library is built on top of
 * [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
