@@ -26,9 +26,12 @@
 		<div class="nav-item px-3">
 			<NavLink class="nav-link" href="@ReleaseUrl" target="_blank">@SemanticVersion</NavLink>
 		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
-		</div>
+		@if (!string.IsNullOrEmpty(CommitId))
+		{
+			<div class="nav-item px-3">
+				<NavLink class="nav-link" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
+			</div>
+		}
 	</nav>
 </div>
 
@@ -47,7 +50,7 @@
 	private static string? ProductVersion { get; set; }
 	private static string? SemanticVersion => $"v{ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.First()}";
 	private static string? ReleaseUrl => SemanticVersion != null ? $"{GitHubUrl}/releases/tag/{SemanticVersion}" : GitHubUrl;
-	private static string? CommitId => ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.Last();
+	private static string? CommitId => ProductVersion != null && ProductVersion.Contains('+') ? ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.Last() : null;
 	private static string? CommitIdShort => CommitId?.Substring(0, Math.Min(7, CommitId.Length));
 	private static string CommitUrl => CommitId != null ? $"{GitHubUrl}/commit/{CommitId}" : GitHubUrl;
 
