@@ -29,7 +29,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Publish
-        run: dotnet publish src/WebConverter/WebConverter.csproj /p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
+        run: dotnet build -p:DeployOnBuild=true -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@main
         with:
