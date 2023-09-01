@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <!-- Assembly -->
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
+    <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
+    <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
+    <WasmNativeStrip>false</WasmNativeStrip>
+    <Version>2.3.2</Version>
+  </PropertyGroup>
+
+  <!-- C# compiler -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Features>strict</Features>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <NoWarn>CA1416</NoWarn>
+  </PropertyGroup>
+
+  <!-- WASM stuff -->
+  <PropertyGroup>
+    <WasmNativeStrip>false</WasmNativeStrip>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <EmccCompileOptimizationFlag>-O0 -g3 -s ASSERTIONS=2 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=1 -s DEMANGLE_SUPPORT=1</EmccCompileOptimizationFlag>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'!='Debug'">
+    <EmccCompileOptimizationFlag>-O3 -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 -s DEMANGLE_SUPPORT=0</EmccCompileOptimizationFlag>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="Markdig.Signed" Version="0.33.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.5" />
+    <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    <EmbeddedResource Include="..\..\README.md" Link="README.md" />
+    <NativeFileReference Include="libpdfium.a" />
+    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st\*.a" />
+  </ItemGroup>
+
+</Project>

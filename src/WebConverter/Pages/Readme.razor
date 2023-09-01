@@ -1,0 +1,21 @@
+﻿@page "/readme"
+@using System.IO;
+@using Markdig;
+
+<PageTitle>Read me</PageTitle>
+
+<div>@MarkdownHtml</div>
+
+@code {
+	private static MarkupString? MarkdownHtml { get; set; } = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (MarkdownHtml != null)
+			return;
+
+		using var resourceStream = typeof(Readme).Assembly.GetManifestResourceStream($"{typeof(Readme).Assembly.GetName().Name}.README.md")!;
+		using var reader = new StreamReader(resourceStream);
+		MarkdownHtml = (MarkupString)Markdown.ToHtml(await reader.ReadToEndAsync());
+	}
+}

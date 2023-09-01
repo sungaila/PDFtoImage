@@ -1,0 +1,32 @@
+{
+  "name": "PDFtoImage",
+  "short_name": "PDFtoImage",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1c4b1e",
+  "description": "Converts PDF files into images.",
+  "categories": [ "utilities" ],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "application/pdf": [ ".pdf" ]
+      }
+    }
+  ],
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
+}
