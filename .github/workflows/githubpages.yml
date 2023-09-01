@@ -32,11 +32,11 @@ jobs:
         run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
       - name: Update relative paths
         run: |
-            sed -i 's/<base href="\/" \/>/<base href="\/${{github.event.repository.name}}\/" \/>/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/index.html &&
-            sed -i 's/"scope": "\/"/"scope": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest &&
-            sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest &&
-            sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest &&
-            sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest &&
+            sed -i 's/<base href="\/" \/>/<base href="\/${{github.event.repository.name}}\/" \/>/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/index.html && \
+            sed -i 's/"scope": "\/"/"scope": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest && \
+            sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest && \
+            sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest && \
+            sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' src/WebConverter/bin/Release/net7.0/publish/wwwroot/manifest.webmanifest && \
             sed -i 's/return Response.redirect('\/', 303);/return Response.redirect('\/${{github.event.repository.name}}\/', 303);/g' src/WebConverter/wwwroot/service-worker.published.js
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net7.0/publish/wwwroot/.nojekyll
