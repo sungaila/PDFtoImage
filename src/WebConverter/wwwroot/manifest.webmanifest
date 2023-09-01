@@ -34,6 +34,22 @@
   "edge_side_panel": {
     "preferred_width": 0
   },
+  "share_target": {
+    "method": "POST",
+    "action": "/receive-webshare",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "pdfs",
+          "accept": [ "application/pdf", ".pdf" ]
+        }
+      ]
+    }
+  },
   "icons": [
     {
       "src": "icon-512.png",

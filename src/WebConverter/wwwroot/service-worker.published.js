@@ -42,6 +42,26 @@ async function onFetch(event) {
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
         cachedResponse = await cache.match(request);
+    } else if (event.request.method === 'POST') {
+        if (event.request.url.endsWith('/receive-webshare')) {
+            const formData = await event.request.formData();
+
+            return event.respondWith(async () => {
+                const title = formData.get('title');
+                const text = formData.get('text');
+                const url = formData.get('url');
+                const files = formData.getAll('pdfs');
+
+                console.log(title + ' ' + text + ' ' + url + ' ' + formData);
+
+                var jsObjectReference = DotNet.createJSObjectReference(files);
+                await DotNet.invokeMethodAsync('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', title, text, url, jsObjectReference);
+
+                DotNet.disposeJSObjectReference(jsObjectReference);
+
+                return Response.redirect('/', 303);
+            });
+        }
     }
 
     return cachedResponse || fetch(event.request);

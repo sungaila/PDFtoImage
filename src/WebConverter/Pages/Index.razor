@@ -9,9 +9,12 @@
 @using PDFtoImage.WebConverter.Models;
 @using SkiaSharp;
 @using System.Threading;
+@using Thinktecture.Blazor.WebShare;
+@using Thinktecture.Blazor.WebShare.Models;
 @inject ILogger<Index> Logger
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager;
+@inject WebShareService WebShareService;
 
 <PageTitle>Conversion</PageTitle>
 
@@ -47,7 +50,7 @@
 							<label for="fileUpload" class="col-sm-3 col-form-label">File</label>
 							<div class="col-sm">
 								<div class="row">
-									<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" aria-describedby="uploadHint" />
+									<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept=".pdf,application/pdf" aria-describedby="uploadHint" />
 								</div>
 								<div class="row">
 									<small id="uploadHint" class="form-text text-muted">@($"Max. file size of {ByteSize.FromBytes(MaxAllowedSize).ToString()}.")</small>
@@ -163,7 +166,17 @@
 
 		<div class="col-sm">
 			<div hidden="@(IsLoading || Model.Output == null || LastException != null)">
-				<input type="button" class="btn btn-secondary" value="Download" @onclick="DownloadImage" />
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-success" @onclick="DownloadImage">
+						<span class="oi oi-data-transfer-download" aria-hidden="true" /> Download
+					</button>
+					@if (IsWebShareSupported)
+					{
+						<button type="button" class="btn btn-outline-success" @onclick="ShareImage">
+							<span class="oi oi-share" aria-hidden="true" /> Share
+						</button>
+					}
+				</div>
 				<div class="card mt-3">
 					<div class="card-body">
 						<img id="outputImage" class="card-img-bottom" alt="The converted PDF output." style="max-width: 100%; width: auto; height: auto" />
@@ -177,14 +190,18 @@
 @code {
 	public RenderRequest Model { get; set; } = new();
 
+	public bool IsWebShareSupported { get; private set; } = false;
+
 	public bool IsLoading { get; private set; }
 
 	public Exception? LastException { get; private set; }
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
 		Program.FilesHandled -= OnFilesHandled;
 		Program.FilesHandled += OnFilesHandled;
+
+		IsWebShareSupported = await WebShareService.IsSupportedAsync();
 	}
 
 	private async void OnFilesHandled(object? sender, Program.HandledFileArgs args)
@@ -314,18 +331,64 @@
 		if (Model.Output == null)
 			return;
 
-		Model.Output.Position = 0;
-		using var fs = new MemoryStream();
-		await Model.Output.CopyToAsync(fs);
-		fs.Position = 0;
+		try
+		{
+			Model.Output.Position = 0;
+			using var fs = new MemoryStream();
+			await Model.Output.CopyToAsync(fs);
+			fs.Position = 0;
 
-		using var streamRef = new DotNetStreamReference(fs);
-		await JS.InvokeVoidAsync("downloadFileFromStream", $"{Model.File!.Name}.{Model.Format.ToString().ToLowerInvariant()}", streamRef);
+			using var streamRef = new DotNetStreamReference(fs);
+			await JS.InvokeVoidAsync("downloadFileFromStream", RenderRequest.GetOutputFileName(Model), streamRef);
+		}
+		catch (Exception ex)
+		{
+			Logger.LogError(ex, $"Failed to download {Model}.");
+		}
+	}
+
+	private async Task ShareImage()
+	{
+		if (Model.Output == null)
+			return;
+
+		try
+		{
+			Model.Output.Position = 0;
+			using var fs = new MemoryStream();
+			await Model.Output.CopyToAsync(fs);
+			fs.Position = 0;
+
+			using var streamRef = new DotNetStreamReference(fs);
+
+			var file = await JS.InvokeAsync<IJSObjectReference>("createFileFromStream", RenderRequest.GetOutputFileName(Model), RenderRequest.GetMimeType(Model.Format), streamRef);
+			var data = new WebShareDataModel
+				{
+					Files = new[] { file }
+				};
+
+			if (!await WebShareService.CanShareAsync(data))
+			{
+				Logger.LogWarning($"Cannot web share {Model}.");
+				return;
+			}
+
+			await WebShareService.ShareAsync(data);
+		}
+		catch (Exception ex)
+		{
+			Logger.LogError(ex, $"Failed to web share {Model}.");
+		}
 	}
 }
 
-
 <script>
+	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
+		const arrayBuffer = await contentStreamReference.arrayBuffer();
+		const blob = new Blob([arrayBuffer], { type: mimeType });
+		return new File([blob], fileName, { type: blob.type });
+	}
+
 	window.downloadFileFromStream = async (fileName, contentStreamReference) => {
 		const arrayBuffer = await contentStreamReference.arrayBuffer();
 		const blob = new Blob([arrayBuffer]);

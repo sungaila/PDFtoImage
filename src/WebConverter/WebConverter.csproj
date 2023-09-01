@@ -40,6 +40,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.10" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.5" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
+    <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

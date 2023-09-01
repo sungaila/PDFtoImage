@@ -64,6 +64,16 @@ namespace PDFtoImage.WebConverter.Models
 			_ => throw new ArgumentOutOfRangeException(nameof(rotation))
 		};
 
+		public static string GetMimeType(SKEncodedImageFormat format) => format switch
+		{
+			SKEncodedImageFormat.Png => "image/png",
+			SKEncodedImageFormat.Jpeg => "image/jpeg",
+			SKEncodedImageFormat.Webp => "image/webp",
+			_ => throw new ArgumentOutOfRangeException(nameof(format))
+		};
+
+		public static string GetOutputFileName(RenderRequest model) => $"{model.File!.Name}.{model.Format.ToString().ToLowerInvariant()}";
+
 		public Stream? Input { get; set; }
 
 		public Stream? Output { get; set; }
