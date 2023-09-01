@@ -33,7 +33,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@main
         with:
-          path: src/WebConverter/bin/Publish
+          path: src/WebConverter/bin/Publish/wwwroot
   deploy:
     name: Deploy
     needs: publish
