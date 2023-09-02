@@ -8,6 +8,10 @@
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
     <Version>2.3.2</Version>
+    <RunAOTCompilation>true</RunAOTCompilation>
+    <WasmNativeStrip>true</WasmNativeStrip>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>full</TrimMode>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -19,18 +23,12 @@
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
 
-  <!-- WASM stuff -->
-  <PropertyGroup>
-    <WasmNativeStrip>false</WasmNativeStrip>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <EmccCompileOptimizationFlag>-O0 -g3 -s ASSERTIONS=2 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=1 -s DEMANGLE_SUPPORT=1</EmccCompileOptimizationFlag>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'!='Debug'">
     <EmccCompileOptimizationFlag>-O3 -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 -s DEMANGLE_SUPPORT=0</EmccCompileOptimizationFlag>
-    <RunAOTCompilation>true</RunAOTCompilation>
   </PropertyGroup>
 
   <ItemGroup>

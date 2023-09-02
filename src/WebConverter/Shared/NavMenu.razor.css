@@ -4,7 +4,7 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #1B5E20;
 }
 
 .navbar-brand {
@@ -50,7 +50,7 @@
     color: white;
 }
 
-@media (min-width: 641px) {
+@media (min-width: 1000px) {
     .navbar-toggler {
         display: none;
     }
