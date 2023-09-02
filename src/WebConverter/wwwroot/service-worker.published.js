@@ -6,13 +6,13 @@ self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
-self.addEventListener("message", event => {
+self.addEventListener('message', event => {
     if (event.data === 'receive-webshare') {
         console.log('Send: ' + webShareFormData);
 
         const response = {
-            type = 'receive-webshare',
-            payload = JSON.stringify(webShareFormData)
+            type: 'receive-webshare',
+            payload: JSON.stringify(webShareFormData)
         };
 
         console.log('Send: ' + response);
