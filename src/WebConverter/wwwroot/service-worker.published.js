@@ -17,7 +17,7 @@ self.addEventListener('message', event => {
                 title: webShareFormData.get('title'),
                 text: webShareFormData.get('text'),
                 url: webShareFormData.get('url'),
-                pdfs: webShareFormData.getAll('pdfs'),
+                pdfs: JSON.stringify(webShareFormData.getAll('pdfs')),
             };
         }
 
