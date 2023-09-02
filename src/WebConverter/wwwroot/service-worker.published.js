@@ -9,7 +9,8 @@ self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 self.addEventListener("message", event => {
     if (event.data === 'receive-webshare') {
         console.log('Send: ' + webShareFormData);
-        evt.source.postMessage(webShareFormData);
+        event.source.postMessage(webShareFormData);
+        webShareFormData = null;
     }
 });
 
