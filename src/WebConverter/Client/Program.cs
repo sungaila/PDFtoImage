@@ -63,9 +63,21 @@ namespace PDFtoImage.WebConverter
 		}
 
 		[JSInvokable]
-		public static void ReceiveWebShareTarget(string title, string text, string url, IJSObjectReference objRef)
+		public static async Task ReceiveWebShareTarget(IJSObjectReference formData)
 		{
-			logger?.LogWarning($"Hey! {title}, {text}, {url}, {objRef}");
+			logger?.LogWarning("ReceiveWebShareTarget");
+
+			var title = await formData.InvokeAsync<string>("get", "title");
+			var text = await formData.InvokeAsync<string>("get", "text");
+			var url = await formData.InvokeAsync<string>("get", "url");
+
+			logger?.LogWarning("Hey! {title} {text} {url}", title, text, url);
+
+			var data = formData.InvokeAsync<object>("getAll", "pdfs");
+
+			logger?.LogWarning("Hey! {data}", data);
+
+			await Task.CompletedTask;
 		}
 	}
 }

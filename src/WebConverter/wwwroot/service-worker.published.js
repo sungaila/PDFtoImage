@@ -46,20 +46,13 @@ async function onFetch(event) {
         if (event.request.url.endsWith('/receive-webshare')) {
             const formData = await event.request.formData();
 
-            const title = formData.get('title');
-            const text = formData.get('text');
-            const url = formData.get('url');
-            console.log(title + ' ' + text + ' ' + url);
+            var jsObjectReference = DotNet.createJSObjectReference(formData);
+            await DotNet.invokeMethodAsync('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', jsObjectReference);
+            DotNet.disposeJSObjectReference(jsObjectReference);
 
-            const files = formData.getAll('pdfs');
-
-            const keys = await caches.keys();
-            const mediaCache = await caches.open(keys.filter((key) => key.startsWith('media'))[0]);
-            await mediaCache.put('shared-file', new Response(files));
-
-            return Response.redirect('/PDFtoImage/', 303);
+            return Response.redirect(document.baseURI, 303);
         }
     }
 
     return cachedResponse || fetch(event.request);
-}/* Manifest version: PlCy8FxE */
+}
