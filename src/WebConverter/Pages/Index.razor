@@ -390,9 +390,10 @@
 <script>
 	navigator.serviceWorker.addEventListener("message", event => {
 		console.log('Receive: ' + event.data);
+		console.log('Receive: ' + JSON.stringify(event.data));
 
 		if (event.data?.type === 'receive-webshare') {
-			console.log(event.data.payload);
+			console.log(JSON.stringify(event.data.payload));
 			DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', event.data.payload);
 		}
 	});
