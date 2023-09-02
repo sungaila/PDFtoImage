@@ -405,7 +405,7 @@
 
 	webShareChannel.onmessage = (event) => {
 		var jsObjectReference = DotNet.createJSObjectReference(event.data);
-		await DotNet.invokeMethodAsync('ReceiveWebShareTarget', jsObjectReference);
+		DotNet.invokeMethod('ReceiveWebShareTarget', jsObjectReference);
 		DotNet.disposeJSObjectReference(jsObjectReference);
 	}
 
