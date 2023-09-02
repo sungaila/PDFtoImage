@@ -57,7 +57,7 @@ async function onFetch(event) {
             const mediaCache = await caches.open(keys.filter((key) => key.startsWith('media'))[0]);
             await mediaCache.put('shared-file', new Response(files));
 
-            return Response.redirect('/', 303);
+            return Response.redirect('/PDFtoImage/', 303);
         }
     }
 
