@@ -380,9 +380,35 @@
 			Logger.LogError(ex, $"Failed to web share {Model}.");
 		}
 	}
+
+	[JSInvokable]
+	public async Task ReceiveWebShareTarget(IJSObjectReference formData)
+	{
+		Logger.LogWarning("ReceiveWebShareTarget");
+
+		var title = await formData.InvokeAsync<string>("get", "title");
+		var text = await formData.InvokeAsync<string>("get", "text");
+		var url = await formData.InvokeAsync<string>("get", "url");
+
+		Logger.LogWarning("Hey! {title} {text} {url}", title, text, url);
+
+		var pdfs = formData.InvokeAsync<object>("getAll", "pdfs");
+
+		Logger.LogWarning("Hey! {pdfs}", pdfs);
+
+		await Task.CompletedTask;
+	}
 }
 
 <script>
+	const webShareChannel = new BroadcastChannel('receive-webshare');
+
+	webShareChannel.onmessage = (event) => {
+		var jsObjectReference = DotNet.createJSObjectReference(event.data);
+		await DotNet.invokeMethodAsync('ReceiveWebShareTarget', jsObjectReference);
+		DotNet.disposeJSObjectReference(jsObjectReference);
+	}
+
 	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
 		const arrayBuffer = await contentStreamReference.arrayBuffer();
 		const blob = new Blob([arrayBuffer], { type: mimeType });

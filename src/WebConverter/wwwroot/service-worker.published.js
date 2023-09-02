@@ -1,5 +1,6 @@
 // Caution! Be sure you understand the caveats before publishing an application with
 // offline support. See https://aka.ms/blazor-offline-considerations
+const webShareChannel = new BroadcastChannel('receive-webshare');
 
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
@@ -46,9 +47,7 @@ async function onFetch(event) {
         if (event.request.url.endsWith('/receive-webshare')) {
             const formData = await event.request.formData();
 
-            var jsObjectReference = DotNet.createJSObjectReference(formData);
-            await DotNet.invokeMethodAsync('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', jsObjectReference);
-            DotNet.disposeJSObjectReference(jsObjectReference);
+            webShareChannel.postMessage(formData);
 
             return Response.redirect(document.baseURI, 303);
         }

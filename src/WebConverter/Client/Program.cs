@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -60,24 +59,6 @@ namespace PDFtoImage.WebConverter
 			{
 				File = file;
 			}
-		}
-
-		[JSInvokable]
-		public static async Task ReceiveWebShareTarget(IJSObjectReference formData)
-		{
-			logger?.LogWarning("ReceiveWebShareTarget");
-
-			var title = await formData.InvokeAsync<string>("get", "title");
-			var text = await formData.InvokeAsync<string>("get", "text");
-			var url = await formData.InvokeAsync<string>("get", "url");
-
-			logger?.LogWarning("Hey! {title} {text} {url}", title, text, url);
-
-			var data = formData.InvokeAsync<object>("getAll", "pdfs");
-
-			logger?.LogWarning("Hey! {data}", data);
-
-			await Task.CompletedTask;
 		}
 	}
 }
