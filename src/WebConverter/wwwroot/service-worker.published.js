@@ -46,10 +46,10 @@ async function onFetch(event) {
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
             const formData = await event.request.formData();
-            const obj = JSON.parse(JSON.stringify(formData));
-            console.log(obj);
+            const json = JSON.stringify(formData);
+            console.log('Send: ' + json);
 
-            webShareChannel.postMessage(obj);
+            webShareChannel.postMessage(json);
 
             return Response.redirect('/PDFtoImage/', 303);
         }

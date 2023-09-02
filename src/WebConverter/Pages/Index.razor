@@ -383,7 +383,7 @@
 	[JSInvokable]
 	public static void ReceiveWebShareTarget(string formData)
 	{
-		Console.WriteLine($"Hey! {formData}");
+		Console.WriteLine($".NET: {formData}");
 	}
 }
 
@@ -391,7 +391,7 @@
 	const webShareChannel = new BroadcastChannel('receive-webshare');
 
 	webShareChannel.onmessage = (event) => {
-		console.log(event);
+		console.log('Receive: ' + event);
 		DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', event.data.toString());
 	}
 
@@ -425,6 +425,7 @@
 	}
 
 	window.resetImage = async (imageElementId) => {
+		console.log(webShareChannel);
 		const image = document.getElementById(imageElementId);
 		image.src = 'favicon.png';
 	}
