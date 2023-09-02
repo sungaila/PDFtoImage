@@ -9,7 +9,13 @@ self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
 self.addEventListener("message", event => {
     if (event.data === 'receive-webshare') {
         console.log('Send: ' + webShareFormData);
-        event.source.postMessage(webShareFormData);
+
+        if (webShareFormData === undefined || webShareFormData === null) {
+            event.source.postMessage(null);
+        } else {
+            event.source.postMessage(JSON.stringify(webShareFormData));
+        }
+
         webShareFormData = null;
     }
 });
