@@ -391,14 +391,10 @@
 	navigator.serviceWorker.addEventListener("message", event => {
 		console.log('Receive: ' + event.data);
 
-		const data = JSON.parse(event.data);
-
-		if (data !== undefined && data !== null && data.type !== undefined && data.type === 'receive-webshare') {
-			console.log('Receive: ' + data);
-			console.log(data.payload);
-			DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', data.payload);
+		if (event.data?.type === 'receive-webshare') {
+			console.log(event.data.payload);
+			DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', event.data.payload);
 		}
-		
 	});
 
 	navigator.serviceWorker.ready
