@@ -388,12 +388,17 @@
 }
 
 <script>
-	const webShareChannel = new BroadcastChannel('receive-webshare');
-
-	webShareChannel.onmessage = (event) => {
-		console.log('Receive: ' + event);
+	navigator.serviceWorker.addEventListener("message", event => {
+		console.log('Receive: ' + event.data);
 		DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', event.data.toString());
-	}
+	});
+
+	navigator.serviceWorker.ready
+		.then(registration => {
+			if (registration.active) {
+				registration.active.postMessage('receive-webshare');
+			}
+		});
 
 	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
 		const arrayBuffer = await contentStreamReference.arrayBuffer();
@@ -425,7 +430,6 @@
 	}
 
 	window.resetImage = async (imageElementId) => {
-		console.log(webShareChannel);
 		const image = document.getElementById(imageElementId);
 		image.src = 'favicon.png';
 	}

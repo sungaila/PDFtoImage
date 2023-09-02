@@ -1,11 +1,17 @@
 // Caution! Be sure you understand the caveats before publishing an application with
 // offline support. See https://aka.ms/blazor-offline-considerations
-const webShareChannel = new BroadcastChannel('receive-webshare');
+var webShareFormData = null;
 
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
+self.addEventListener("message", event => {
+    if (event.data === 'receive-webshare') {
+        console.log('Send: ' + webShareFormData);
+        evt.source.postMessage(webShareFormData);
+    }
+});
 
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
@@ -45,12 +51,7 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
-            const formData = await event.request.formData();
-            const json = JSON.stringify(formData);
-            console.log('Send: ' + json);
-
-            webShareChannel.postMessage(json);
-
+            webShareFormData = await event.request.formData();
             return Response.redirect('/PDFtoImage/', 303);
         }
     }
