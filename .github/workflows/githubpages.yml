@@ -34,7 +34,7 @@ jobs:
             sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
             sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
             sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' manifest.webmanifest
-            sed -i "s/return Response.redirect('/', 303);/return Response.redirect('/${{github.event.repository.name}}/', 303);/g" service-worker.published.js
+            sed -i "s/return Response.redirect(\'\/\', 303);/return Response.redirect(\'\/${{github.event.repository.name}}\/\', 303);/g" service-worker.published.js
       - name: Restore
         run: dotnet restore src/PDFtoImage.sln
       - name: Publish
