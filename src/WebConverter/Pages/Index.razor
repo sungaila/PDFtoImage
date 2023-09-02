@@ -382,19 +382,9 @@
 	}
 
 	[JSInvokable]
-	public async Task ReceiveWebShareTarget(IJSObjectReference formData)
+	public async Task ReceiveWebShareTarget(string formData)
 	{
-		Logger.LogWarning("ReceiveWebShareTarget");
-
-		var title = await formData.InvokeAsync<string>("get", "title");
-		var text = await formData.InvokeAsync<string>("get", "text");
-		var url = await formData.InvokeAsync<string>("get", "url");
-
-		Logger.LogWarning("Hey! {title} {text} {url}", title, text, url);
-
-		var pdfs = formData.InvokeAsync<object>("getAll", "pdfs");
-
-		Logger.LogWarning("Hey! {pdfs}", pdfs);
+		Logger.LogWarning("ReceiveWebShareTarget: {formData}", formData);
 
 		await Task.CompletedTask;
 	}
@@ -404,9 +394,9 @@
 	const webShareChannel = new BroadcastChannel('receive-webshare');
 
 	webShareChannel.onmessage = (event) => {
-		var jsObjectReference = DotNet.createJSObjectReference(event.data);
-		DotNet.invokeMethod('ReceiveWebShareTarget', jsObjectReference);
-		DotNet.disposeJSObjectReference(jsObjectReference);
+		//var jsObjectReference = DotNet.createJSObjectReference(event.data);
+		DotNet.invokeMethod('ReceiveWebShareTarget', event.data.toString());
+		//DotNet.disposeJSObjectReference(jsObjectReference);
 	}
 
 	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {

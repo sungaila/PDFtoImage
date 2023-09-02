@@ -47,7 +47,7 @@ async function onFetch(event) {
         if (event.request.url.endsWith('/receive-webshare')) {
             const formData = await event.request.formData();
 
-            webShareChannel.postMessage(formData);
+            webShareChannel.postMessage(JSON.parse(JSON.stringify(formData)));
 
             return Response.redirect(document.baseURI, 303);
         }
