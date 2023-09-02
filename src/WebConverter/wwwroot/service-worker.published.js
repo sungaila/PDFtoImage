@@ -10,11 +10,14 @@ self.addEventListener("message", event => {
     if (event.data === 'receive-webshare') {
         console.log('Send: ' + webShareFormData);
 
-        if (webShareFormData === undefined || webShareFormData === null) {
-            event.source.postMessage(null);
-        } else {
-            event.source.postMessage(JSON.stringify(webShareFormData));
-        }
+        const response = {
+            type = 'receive-webshare',
+            payload = JSON.stringify(webShareFormData)
+        };
+
+        console.log('Send: ' + response);
+
+        event.source.postMessage(response);
 
         webShareFormData = null;
     }
