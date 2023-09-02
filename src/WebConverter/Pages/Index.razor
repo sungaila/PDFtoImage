@@ -173,7 +173,7 @@
 					@if (IsWebShareSupported)
 					{
 						<button type="button" class="btn btn-outline-success" @onclick="ShareImage">
-							<span class="oi oi-share" aria-hidden="true" /> Share
+							<span class="oi oi-share-boxed" aria-hidden="true" /> Share
 						</button>
 					}
 				</div>
@@ -241,20 +241,19 @@
 
 	private async Task SetImage()
 	{
-		if (Model.Output != null)
-		{
-			Model.Output.Position = 0;
-			using var fs = new MemoryStream();
-			await Model.Output.CopyToAsync(fs);
-			fs.Position = 0;
-
-			using var streamRef = new DotNetStreamReference(fs);
-			await JS.InvokeVoidAsync("setImage", "outputImage", streamRef);
-		}
-		else
+		if (Model.Output == null)
 		{
 			await JS.InvokeVoidAsync("resetImage", "outputImage");
+			return;
 		}
+
+		Model.Output.Position = 0;
+		using var fs = new MemoryStream();
+		await Model.Output.CopyToAsync(fs);
+		fs.Position = 0;
+
+		using var streamRef = new DotNetStreamReference(fs);
+		await JS.InvokeVoidAsync("setImage", "outputImage", streamRef);
 	}
 
 	private async Task Reset()
@@ -382,11 +381,9 @@
 	}
 
 	[JSInvokable]
-	public async Task ReceiveWebShareTarget(string formData)
+	public static void ReceiveWebShareTarget(string formData)
 	{
-		Logger.LogWarning("ReceiveWebShareTarget: {formData}", formData);
-
-		await Task.CompletedTask;
+		Console.WriteLine($"Hey! {formData}");
 	}
 }
 
@@ -394,9 +391,8 @@
 	const webShareChannel = new BroadcastChannel('receive-webshare');
 
 	webShareChannel.onmessage = (event) => {
-		//var jsObjectReference = DotNet.createJSObjectReference(event.data);
-		DotNet.invokeMethod('ReceiveWebShareTarget', event.data.toString());
-		//DotNet.disposeJSObjectReference(jsObjectReference);
+		console.log(event);
+		DotNet.invokeMethod('PDFtoImage.WebConverter', 'ReceiveWebShareTarget', event.data.toString());
 	}
 
 	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
