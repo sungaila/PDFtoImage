@@ -77,7 +77,7 @@
 					<h5 class="card-header">Output</h5>
 					<div class="card-body">
 						<div class="form-group row">
-							<label for="fileType" class="col-sm-3 col-form-label label-nowrap">Format</label>
+							<label for="fileType" class="col-sm-3 form-label col-form-label label-nowrap">Format</label>
 							<div class="col-sm">
 								<InputSelect @bind-Value="Model.Format" id="fileType" class="form-control form-control-sm">
 									@foreach (var format in RenderRequest.FormatWhitelist)
@@ -87,10 +87,9 @@
 								</InputSelect>
 							</div>
 
-							<label for="quality" class="col-sm-3 col-form-label label-nowrap">Quality</label>
-							<div class="col-sm">
-								<InputNumber @bind-Value="Model.Quality" id="quality" class="form-control form-control-sm" min="0" max="100" step="1" aria-describedby="qualityHint" />
-								<small id="qualityHint" class="form-text text-muted">Relevant for Jpeg only</small>
+							<label for="quality" class="col-sm-3 form-label col-form-label label-nowrap" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">Quality</label>
+							<div class="col-sm" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">
+								<InputNumber @bind-Value="Model.Quality" id="quality" class="form-control form-control-sm" min="0" max="100" step="1" />
 							</div>
 						</div>
 					</div>
