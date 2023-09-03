@@ -101,7 +101,7 @@ namespace PDFtoImage.WebConverter.Pages
 			fs.Position = 0;
 
 			using var streamRef = new DotNetStreamReference(fs);
-			await JS.InvokeVoidAsync("setImage", "outputImage", streamRef);
+			await JS.InvokeVoidAsync("setImage", "outputImage", RenderRequest.GetMimeType(Model.Format), streamRef);
 		}
 
 		private async Task Reset()
@@ -186,7 +186,7 @@ namespace PDFtoImage.WebConverter.Pages
 				fs.Position = 0;
 
 				using var streamRef = new DotNetStreamReference(fs);
-				await JS.InvokeVoidAsync("downloadFileFromStream", RenderRequest.GetOutputFileName(Model), streamRef);
+				await JS.InvokeVoidAsync("downloadFileFromStream", RenderRequest.GetOutputFileName(Model), RenderRequest.GetMimeType(Model.Format), streamRef);
 			}
 			catch (Exception ex)
 			{

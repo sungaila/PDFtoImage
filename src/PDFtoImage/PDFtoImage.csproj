@@ -95,6 +95,7 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.5" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.5" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.5" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.5" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Android packages -->

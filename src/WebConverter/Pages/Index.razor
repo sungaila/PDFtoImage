@@ -207,9 +207,9 @@
 		return new File([blob], fileName, { type: blob.type });
 	}
 
-	window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+	window.downloadFileFromStream = async (fileName, imageMime, contentStreamReference) => {
 		const arrayBuffer = await contentStreamReference.arrayBuffer();
-		const blob = new Blob([arrayBuffer]);
+		const blob = new Blob([arrayBuffer], { type: imageMime });
 		const url = URL.createObjectURL(blob);
 		const anchorElement = document.createElement('a');
 		anchorElement.href = url;
@@ -219,9 +219,9 @@
 		URL.revokeObjectURL(url);
 	}
 
-	window.setImage = async (imageElementId, imageStream) => {
+	window.setImage = async (imageElementId, imageMime, imageStream) => {
 		const arrayBuffer = await imageStream.arrayBuffer();
-		const blob = new Blob([arrayBuffer]);
+		const blob = new Blob([arrayBuffer], { type: imageMime });
 		const url = URL.createObjectURL(blob);
 		const image = document.getElementById(imageElementId);
 		image.onload = () => {
