@@ -49,25 +49,32 @@
   },
   "screenshots": [
     {
-      "src": "screenshots/narrow_light.png",
-      "sizes": "864x1791",
-      "type": "image/png",
+      "src": "screenshots/narrow_1.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "PDFtoImage on mobile (light theme)"
     },
     {
-      "src": "screenshots/narrow_dark.png",
-      "sizes": "864x1791",
-      "type": "image/png",
+      "src": "screenshots/narrow_2.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "PDFtoImage on mobile (dark theme)"
     },
     {
-      "src": "screenshots/wide_big_light.png",
+      "src": "screenshots/narrow_3.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "PDFtoImage on desktop (light theme)"
+    },
+    {
+      "src": "screenshots/wide_big_light.png.png",
       "sizes": "2097x1241",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "PDFtoImage on desktop (light theme)"
+      "label": "PDFtoImage on desktop (light theme; small)"
     },
     {
       "src": "screenshots/wide_small_light.png",
@@ -75,20 +82,6 @@
       "type": "image/png",
       "form_factor": "wide",
       "label": "PDFtoImage on desktop (light theme; small)"
-    },
-    {
-      "src": "screenshots/wide_big_dark.png",
-      "sizes": "2097x1241",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "PDFtoImage on desktop (dark theme)"
-    },
-    {
-      "src": "screenshots/wide_small_dark.png",
-      "sizes": "898x1241",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "PDFtoImage on desktop (dark theme; small)"
     }
   ],
   "icons": [
