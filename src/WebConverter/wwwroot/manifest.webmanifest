@@ -53,21 +53,21 @@
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "PDFtoImage on mobile (light theme)"
+      "label": "PDFtoImage on mobile"
     },
     {
       "src": "screenshots/narrow_2.jpg",
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "narrow",
-      "label": "PDFtoImage on mobile (dark theme)"
+      "label": "PDFtoImage with options"
     },
     {
       "src": "screenshots/narrow_3.jpg",
       "sizes": "1080x1920",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "PDFtoImage on desktop (light theme)"
+      "label": "PDFtoImage in dark theme"
     },
     {
       "src": "screenshots/wide_big_light.png.png",
