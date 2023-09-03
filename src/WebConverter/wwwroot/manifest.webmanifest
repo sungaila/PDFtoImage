@@ -3,7 +3,7 @@
   "name": "PDFtoImage",
   "short_name": "PDFtoImage",
   "start_url": "/",
-  "background_color": "#212529",
+  "background_color": "#FFFFFF",
   "theme_color": "#1B5E20",
   "description": "Converts PDF files into images.",
   "lang": "en",

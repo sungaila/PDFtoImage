@@ -102,3 +102,9 @@ a, .btn-link {
 .label-nowrap {
     word-wrap: normal !important;
 }
+
+@media (prefers-color-scheme: dark) {
+    .invert-on-dark {
+        filter: invert(1);
+    }
+}
