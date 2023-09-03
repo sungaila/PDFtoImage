@@ -1,10 +1,29 @@
 // Caution! Be sure you understand the caveats before publishing an application with
 // offline support. See https://aka.ms/blazor-offline-considerations
+const readAsDataURLAsync = (file) => {
+    const fileReader = new FileReader();
+
+    return new Promise((resolve, reject) => {
+        fileReader.onerror = error => {
+            fileReader.abort();
+            reject(new DOMException(error));
+        };
+
+        fileReader.onload = () => {
+            resolve(fileReader.result);
+        };
+
+        fileReader.readAsDataURL(file);
+    });
+};
+
+var webShareFormData = null;
 
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 self.addEventListener('fetch', event => event.respondWith(onFetch(event)));
+self.addEventListener('message', event => onMessage(event));
 
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
@@ -44,22 +63,51 @@ async function onFetch(event) {
         cachedResponse = await cache.match(request);
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
-            const formData = await event.request.formData();
-
-            const title = formData.get('title');
-            const text = formData.get('text');
-            const url = formData.get('url');
-            console.log(title + ' ' + text + ' ' + url);
-
-            const files = formData.getAll('pdfs');
-
-            const keys = await caches.keys();
-            const mediaCache = await caches.open(keys.filter((key) => key.startsWith('media'))[0]);
-            await mediaCache.put('shared-file', new Response(files));
-
+            webShareFormData = await event.request.formData();
             return Response.redirect('/PDFtoImage/', 303);
         }
     }
 
     return cachedResponse || fetch(event.request);
-}/* Manifest version: PlCy8FxE */
+}
+
+async function onMessage(event) {
+    if (event.data !== 'receive-webshare') {
+        return;
+    }
+
+    var payload = null;
+
+    if (webShareFormData !== undefined && webShareFormData !== null) {
+        var filesStringified = [];
+
+        for (const file of webShareFormData.getAll('pdfs')) {
+
+            var fileStringified = {
+                name: file.name,
+                lastModified: file.lastModified,
+                size: file.size,
+                type: file.type,
+                data: (await readAsDataURLAsync(file)).toString()
+            };
+
+            filesStringified.push(fileStringified);
+        }
+
+        payload = {
+            title: webShareFormData.get('title'),
+            text: webShareFormData.get('text'),
+            url: webShareFormData.get('url'),
+            files: filesStringified,
+        };
+    }
+
+    const response = {
+        type: 'receive-webshare',
+        payload: payload
+    };
+
+    event.source.postMessage(response);
+
+    webShareFormData = null;
+}

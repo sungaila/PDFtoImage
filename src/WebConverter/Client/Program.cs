@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -16,8 +14,6 @@ namespace PDFtoImage.WebConverter
 {
 	public class Program
 	{
-		private static Logger<Program>? logger;
-
 		public static event EventHandler<HandledFileArgs>? FilesHandled;
 
 		public static async Task Main(string[] args)
@@ -32,8 +28,6 @@ namespace PDFtoImage.WebConverter
 
 			var host = builder.Build();
 			var navigationManager = host.Services.GetService<NavigationManager>()!;
-
-			logger = host.Services.GetService<Logger<Program>>()!;
 
 			if (host.Services.GetService<FileHandlingService>() is FileHandlingService service && await service.IsSupportedAsync())
 			{
@@ -60,12 +54,6 @@ namespace PDFtoImage.WebConverter
 			{
 				File = file;
 			}
-		}
-
-		[JSInvokable]
-		public static void ReceiveWebShareTarget(string title, string text, string url, IJSObjectReference objRef)
-		{
-			logger?.LogWarning($"Hey! {title}, {text}, {url}, {objRef}");
 		}
 	}
 }

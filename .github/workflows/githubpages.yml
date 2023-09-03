@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - 'master'
+      - 'webconverter'
 
 jobs:
   publish:
@@ -40,12 +41,9 @@ jobs:
         run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net7.0/publish/wwwroot/.nojekyll
-      - name: Update relative paths
-        working-directory: src/WebConverter/bin/Release/net7.0/publish/wwwroot
-        run: |
-            sed -i "s/return Response.redirect(\'\/\', 303);/return Response.redirect(\'\/${{github.event.repository.name}}\/\', 303);/g" service-worker.js
       - name: Update service-worker-assets.js hashes
         working-directory: src/WebConverter/bin/Release/net7.0/publish/wwwroot
+        if: false
         run: |
           jsFile=$(<service-worker-assets.js)
           # remove JavaScript from contents so it can be interpreted as JSON

@@ -9,6 +9,7 @@
 @using PDFtoImage.WebConverter.Models;
 @using SkiaSharp;
 @using System.Threading;
+@using System.Text.Json;
 @using Thinktecture.Blazor.WebShare;
 @using Thinktecture.Blazor.WebShare.Models;
 @inject ILogger<Index> Logger
@@ -47,26 +48,21 @@
 					<h5 class="card-header">Input</h5>
 					<div class="card-body">
 						<div class="form-group row mb-1">
-							<label for="fileUpload" class="col-sm-3 col-form-label">File</label>
+							<label for="fileUpload" class="col-sm-3 col-form-label label-nowrap">File</label>
 							<div class="col-sm">
-								<div class="row">
-									<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" aria-describedby="uploadHint" />
-								</div>
-								<div class="row">
-									<small id="uploadHint" class="form-text text-muted">@($"Max. file size of {ByteSize.FromBytes(MaxAllowedSize).ToString()}.")</small>
-								</div>
+								<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" />
 							</div>
 						</div>
 
 						<div class="form-group row mb-1">
-							<label for="fileUploapPassword" class="col-sm-3 col-form-label">Password</label>
+							<label for="fileUploadPassword" class="col-sm-3 col-form-label label-nowrap">Password</label>
 							<div class="col-sm">
-								<InputText @bind-Value="Model.Password" type="password" autocomplete="current-password" id="fileUploapPassword" class="form-control form-control-sm" placeholder="if needed" />
+								<InputText @bind-Value="Model.Password" type="password" autocomplete="current-password" id="fileUploadPassword" class="form-control form-control-sm" placeholder="if needed" />
 							</div>
 						</div>
 
 						<div class="form-group row">
-							<label for="page" class="col-sm-3 col-form-label">Page</label>
+							<label for="page" class="col-sm-3 col-form-label label-nowrap">Page</label>
 							<div class="col-sm">
 								<InputNumber @bind-Value="Model.Page" id="page" class="form-control form-control-sm" min="0" max="@int.MaxValue" step="1" />
 							</div>
@@ -81,7 +77,7 @@
 					<h5 class="card-header">Output</h5>
 					<div class="card-body">
 						<div class="form-group row">
-							<label for="fileType" class="col-sm-3 col-form-label">Format</label>
+							<label for="fileType" class="col-sm-3 col-form-label label-nowrap">Format</label>
 							<div class="col-sm">
 								<InputSelect @bind-Value="Model.Format" id="fileType" class="form-control form-control-sm">
 									@foreach (var format in RenderRequest.FormatWhitelist)
@@ -91,7 +87,7 @@
 								</InputSelect>
 							</div>
 
-							<label for="quality" class="col-sm-3 col-form-label">Quality</label>
+							<label for="quality" class="col-sm-3 col-form-label label-nowrap">Quality</label>
 							<div class="col-sm">
 								<InputNumber @bind-Value="Model.Quality" id="quality" class="form-control form-control-sm" min="0" max="100" step="1" aria-describedby="qualityHint" />
 								<small id="qualityHint" class="form-text text-muted">Relevant for Jpeg only</small>
@@ -104,25 +100,25 @@
 					<h5 class="card-header">Sizing &amp; rotation</h5>
 					<div class="card-body">
 						<div class="form-group row mb-1">
-							<label for="width" class="col-sm-3 col-form-label">Width</label>
+							<label for="width" class="col-sm-3 col-form-label label-nowrap">Width</label>
 							<div class="col-sm">
 								<InputNumber @bind-Value="Model.Width" id="width" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
 							</div>
 
-							<label for="height" class="col-sm-3 col-form-label">Height</label>
+							<label for="height" class="col-sm-3 col-form-label label-nowrap">Height</label>
 							<div class="col-sm">
 								<InputNumber @bind-Value="Model.Height" id="height" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
 							</div>
 						</div>
 
 						<div class="form-group row mb-1">
-							<label for="dpi" class="col-sm-3 col-form-label" max="@int.MaxValue" step="1">DPI</label>
+							<label for="dpi" class="col-sm-3 col-form-label label-nowrap" max="@int.MaxValue" step="1">DPI</label>
 							<div class="col-sm">
 								<InputNumber @bind-Value="Model.Dpi" id="dpi" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" aria-describedby="dpiHint" disabled="@(Model.Width != null || Model.Height != null)" />
 								<small id="dpiHint" class="form-text text-muted">If width &amp; height unset</small>
 							</div>
 
-							<label for="rotation" class="col-sm-3 col-form-label">Rotation</label>
+							<label for="rotation" class="col-sm-3 col-form-label label-nowrap">Rotation</label>
 							<div class="col-sm">
 								<InputSelect @bind-Value="Model.Rotation" id="rotation" class="form-control form-control-sm" aria-describedby="rotationHint">
 									@foreach (var rotation in Enum.GetValues<PdfRotation>())
@@ -173,7 +169,7 @@
 					@if (IsWebShareSupported)
 					{
 						<button type="button" class="btn btn-outline-success" @onclick="ShareImage">
-							<span class="oi oi-share" aria-hidden="true" /> Share
+							<span class="oi oi-share-boxed" aria-hidden="true" /> Share
 						</button>
 					}
 				</div>
@@ -187,202 +183,24 @@
 	</div>
 </div>
 
-@code {
-	public RenderRequest Model { get; set; } = new();
-
-	public bool IsWebShareSupported { get; private set; } = false;
-
-	public bool IsLoading { get; private set; }
-
-	public Exception? LastException { get; private set; }
-
-	protected override async Task OnInitializedAsync()
-	{
-		Program.FilesHandled -= OnFilesHandled;
-		Program.FilesHandled += OnFilesHandled;
-
-		IsWebShareSupported = await WebShareService.IsSupportedAsync();
-	}
-
-	private async void OnFilesHandled(object? sender, Program.HandledFileArgs args)
-	{
-		if (args.File == null)
-			return;
-
-		Model.File = new DummyFile(
-			await args.File.GetNameAsync(),
-			await args.File.GetLastModifiedAsync(),
-			(long)await args.File.GetSizeAsync(),
-			await args.File.GetTypeAsync()
-		);
-
-		Logger.LogInformation($"Handle file {Model.File.Name}.");
-
-		Model.Input = new MemoryStream();
-		var arrayBuffer = await args.File.ArrayBufferAsync();
-		await Model.Input.WriteAsync(arrayBuffer);
-
-		await args.File.DisposeAsync();
-
-		this.StateHasChanged();
-	}
-
-	private async Task OnInputFileChange(InputFileChangeEventArgs e)
-	{
-		Model.File = e.File;
-		Model.Input?.Dispose();
-		Model.Input = null;
-		Model.Output?.Dispose();
-		Model.Output = null;
-		this.StateHasChanged();
-
-		await JS.InvokeVoidAsync("resetImage", "outputImage");
-	}
-
-	private async Task SetImage()
-	{
-		if (Model.Output != null)
-		{
-			Model.Output.Position = 0;
-			using var fs = new MemoryStream();
-			await Model.Output.CopyToAsync(fs);
-			fs.Position = 0;
-
-			using var streamRef = new DotNetStreamReference(fs);
-			await JS.InvokeVoidAsync("setImage", "outputImage", streamRef);
-		}
-		else
-		{
-			await JS.InvokeVoidAsync("resetImage", "outputImage");
-		}
-	}
-
-	private async Task Reset()
-	{
-		Model.Dispose();
-		Model = new();
-		LastException = null;
-		await JS.InvokeVoidAsync("resetImage", "outputImage");
-	}
-
-	private const long MaxAllowedSize = 250 * 1000 * 1000;
-
-	private async Task Submit()
-	{
-		Logger.LogInformation($"Converting {Model}.");
-
-		try
-		{
-			IsLoading = true;
-			LastException = null;
-
-			Model.Output = new MemoryStream();
-
-			if (Model.Input == null)
-			{
-				Model.Input = new MemoryStream();
-				await Model.File!.OpenReadStream(MaxAllowedSize).CopyToAsync(Model.Input);
-			}
-
-			Model.Input.Position = 0;
-			SKBitmap? bitmap = null;
-			bool encodeSuccess = false;
-
-			await Task.Run(() =>
-			{
-				bitmap = PDFtoImage.Conversion.ToImage(
-					Model.Input,
-					leaveOpen: true,
-					password: !string.IsNullOrEmpty(Model.Password) ? Model.Password : null,
-					page: Model.Page,
-					dpi: Model.Dpi,
-					width: Model.Width,
-					height: Model.Height,
-					withAnnotations: Model.WithAnnotations,
-					withFormFill: Model.WithFormFill,
-					withAspectRatio: Model.WithAspectRatio,
-					rotation: Model.Rotation
-
-				);
-				encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
-			});
-
-			if (!encodeSuccess)
-			{
-				Model.Output?.Dispose();
-				Model.Output = null;
-			}
-
-			await SetImage();
-		}
-		catch (Exception ex)
-		{
-			Logger.LogError(ex, $"Failed to convert {Model}.");
-			LastException = ex;
-		}
-		finally
-		{
-			IsLoading = false;
-		}
-	}
-
-	private async Task DownloadImage()
-	{
-		if (Model.Output == null)
-			return;
-
-		try
-		{
-			Model.Output.Position = 0;
-			using var fs = new MemoryStream();
-			await Model.Output.CopyToAsync(fs);
-			fs.Position = 0;
-
-			using var streamRef = new DotNetStreamReference(fs);
-			await JS.InvokeVoidAsync("downloadFileFromStream", RenderRequest.GetOutputFileName(Model), streamRef);
-		}
-		catch (Exception ex)
-		{
-			Logger.LogError(ex, $"Failed to download {Model}.");
-		}
-	}
-
-	private async Task ShareImage()
-	{
-		if (Model.Output == null)
-			return;
-
-		try
-		{
-			Model.Output.Position = 0;
-			using var fs = new MemoryStream();
-			await Model.Output.CopyToAsync(fs);
-			fs.Position = 0;
-
-			using var streamRef = new DotNetStreamReference(fs);
-
-			var file = await JS.InvokeAsync<IJSObjectReference>("createFileFromStream", RenderRequest.GetOutputFileName(Model), RenderRequest.GetMimeType(Model.Format), streamRef);
-			var data = new WebShareDataModel
-				{
-					Files = new[] { file }
-				};
-
-			if (!await WebShareService.CanShareAsync(data))
-			{
-				Logger.LogWarning($"Cannot web share {Model}.");
-				return;
-			}
-
-			await WebShareService.ShareAsync(data);
-		}
-		catch (Exception ex)
-		{
-			Logger.LogError(ex, $"Failed to web share {Model}.");
-		}
-	}
-}
-
 <script>
+	window.setDotNetHelper = dotNetHelper => {
+		window.dotNetHelper = dotNetHelper;
+	}
+
+	navigator.serviceWorker.onmessage = async event => {
+		if (event.data?.type === 'receive-webshare') {
+			await window.dotNetHelper.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
+		}
+	};
+
+	navigator.serviceWorker.ready
+		.then(registration => {
+			if (registration.active) {
+				registration.active.postMessage('receive-webshare');
+			}
+		});
+
 	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
 		const arrayBuffer = await contentStreamReference.arrayBuffer();
 		const blob = new Blob([arrayBuffer], { type: mimeType });

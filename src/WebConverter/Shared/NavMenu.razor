@@ -1,4 +1,6 @@
 ﻿@using System.Reflection;
+@inject IJSRuntime JS
+
 <div class="top-row navbar navbar-dark">
 	<div class="container-fluid">
 		<a class="navbar-brand" href=""><img src="icon-512.png" alt="PDFtoImage Logo" style="width: 32px; height: 32px;"> PDFtoImage Web Converter</a>
@@ -11,30 +13,51 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
 	<nav class="flex-column">
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="" Match="NavLinkMatch.All">
 				<span class="oi oi-image" aria-hidden="true"></span> Conversion
 			</NavLink>
 		</div>
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="readme">
+			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="readme">
 				<span class="oi oi-book" aria-hidden="true"></span> Read me
 			</NavLink>
 		</div>
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="@GitHubUrl" target="_blank">GitHub</NavLink>
+			<NavLink class="nav-link" style="padding: .5rem 1rem !important; cursor: pointer !important;" @onclick="ToggleTheme">
+				<span class="oi oi-lightbulb" aria-hidden="true"></span> Toggle theme
+			</NavLink>
 		</div>
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="@ReleaseUrl" target="_blank">@SemanticVersion</NavLink>
+			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@GitHubUrl" target="_blank">GitHub</NavLink>
+		</div>
+		<div class="nav-item px-3">
+			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@ReleaseUrl" target="_blank">@SemanticVersion</NavLink>
 		</div>
 		@if (!string.IsNullOrEmpty(CommitId))
 		{
 			<div class="nav-item px-3">
-				<NavLink class="nav-link" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
+				<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
 			</div>
 		}
 	</nav>
 </div>
 
+<script>
+	if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		document.documentElement.setAttribute('data-bs-theme', 'dark');
+	} else {
+		document.documentElement.setAttribute('data-bs-theme', 'light');
+	}
+
+	window.toggleTheme = () => {
+		if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
+			document.documentElement.setAttribute('data-bs-theme', 'light')
+		}
+		else {
+			document.documentElement.setAttribute('data-bs-theme', 'dark')
+		}
+	}
+</script>
 @code {
 	private bool collapseNavMenu = true;
 
@@ -60,5 +83,10 @@
 			return;
 
 		ProductVersion = typeof(MainLayout).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+	}
+
+	private async Task ToggleTheme()
+	{
+		await JS.InvokeVoidAsync("toggleTheme");
 	}
 }

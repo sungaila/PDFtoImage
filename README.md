@@ -8,7 +8,7 @@
 [![Website](https://img.shields.io/website?up_message=online&down_message=offline&url=https%3A%2F%2Fsungaila.github.io%2FPDFtoImage%2F&style=flat-square&label=website)](https://sungaila.github.io/PDFtoImage/)
 [![GitHub license](https://img.shields.io/github/license/sungaila/PDFtoImage?style=flat-square)](https://github.com/sungaila/PDFtoImage/blob/master/LICENSE)
 
-A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images. Give it a try on [GitHub Pages](https://sungaila.github.io/PDFtoImage/)!
+A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images.
 
 This .NET library is built on top of
 * [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
