@@ -70,6 +70,13 @@
       "label": "PDFtoImage in dark theme"
     },
     {
+      "src": "screenshots/narrow_4.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "PDFtoImage runs in any browser"
+    },
+    {
       "src": "screenshots/wide_big_light.png.png",
       "sizes": "2097x1241",
       "type": "image/png",
