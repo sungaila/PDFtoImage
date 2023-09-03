@@ -77,7 +77,7 @@
       "label": "PDFtoImage runs in any browser"
     },
     {
-      "src": "screenshots/wide_big_light.png.png",
+      "src": "screenshots/wide_big_light.png",
       "sizes": "2097x1241",
       "type": "image/png",
       "form_factor": "wide",
