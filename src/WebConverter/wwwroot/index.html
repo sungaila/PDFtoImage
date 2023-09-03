@@ -8,7 +8,7 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="favicon.png" />
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link href="PDFtoImage.WebConverter.styles.css" rel="stylesheet" />
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
@@ -17,11 +17,11 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
+        <img src="icon-512-monochrome.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 4rem; height: 4rem; opacity: 0.2" alt="PDFtoImage Logo" />
+        <svg class="loading-progress" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5">
             <circle r="40%" cx="50%" cy="50%" />
             <circle r="40%" cx="50%" cy="50%" />
         </svg>
-        <div class="loading-progress-text"></div>
     </div>
 
     <div id="blazor-error-ui">
