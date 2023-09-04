@@ -1,0 +1,10 @@
+[
+  {
+    "relation": [ "delegate_permission/common.handle_all_urls" ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "de.sungaila.pdftoimage",
+      "sha256_cert_fingerprints": [ "98:E3:1E:F8:4E:D8:14:CF:CB:13:0B:0B:03:37:4A:DD:AD:1F:CF:89:27:CF:80:DC:46:70:04:06:CF:40:DF:97" ]
+    }
+  }
+]
