@@ -117,3 +117,9 @@ a, .btn-link {
         top: 0;
     }
 }
+
+@media (prefers-color-scheme: dark) {
+    .body-dummy {
+        background-color: #212529;
+    }
+}

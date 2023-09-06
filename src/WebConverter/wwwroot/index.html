@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
 </head>
 
-<body>
+<body class="body-dummy">
     <div id="app">
         <div class="page">
             <div class="sidebar sidebar-dummy" style="background: #2E7D32;">
@@ -57,6 +57,8 @@
         } else {
             document.documentElement.setAttribute('data-bs-theme', 'light');
         }
+
+        document.body.classList.remove('body-dummy');
     </script>
 </body>
 </html>
