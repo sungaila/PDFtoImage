@@ -108,3 +108,12 @@ a, .btn-link {
         filter: invert(1);
     }
 }
+
+@media (min-width: 1000px) {
+    .sidebar-dummy {
+        width: 300px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+}

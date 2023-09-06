@@ -17,11 +17,23 @@
 
 <body>
     <div id="app">
-        <img src="icon-512-maskable.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 4rem; height: 4rem" alt="PDFtoImage Logo" />
-        <svg class="loading-progress" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
+        <div class="page">
+            <div class="sidebar sidebar-dummy" style="background: #2E7D32;">
+                <div class="top-row navbar navbar-dark" style="height: 3.5rem; background-color: #1B5E20">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" />
+                    </div>
+                </div>
+            </div>
+
+            <main>
+                <img src="icon-512-maskable.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 4rem; height: 4rem" alt="PDFtoImage Logo" />
+                <svg class="loading-progress" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.8">
+                    <circle r="40%" cx="50%" cy="50%" />
+                    <circle r="40%" cx="50%" cy="50%" />
+                </svg>
+            </main>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
