@@ -123,6 +123,7 @@ namespace PDFtoImage.WebConverter.Pages
 				IsLoading = true;
 				LastException = null;
 
+				Model.Output?.Dispose();
 				Model.Output = new MemoryStream();
 
 				if (Model.Input == null)
