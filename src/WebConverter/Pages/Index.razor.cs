@@ -46,7 +46,7 @@ namespace PDFtoImage.WebConverter.Pages
 			await JS.InvokeAsync<string>("setDotNetHelper", _objRef);
 		}
 
-		private async void OnFilesHandled(object? sender, Program.HandledFileArgs args)
+		private async void OnFilesHandled(object? sender, Program.HandledFileEventArgs args)
 		{
 			if (args.File == null)
 				return;
@@ -136,7 +136,7 @@ namespace PDFtoImage.WebConverter.Pages
 				SKBitmap? bitmap = null;
 				bool encodeSuccess = false;
 
-				await Task.Run(() =>
+				await Task.Factory.StartNew(() =>
 				{
 					bitmap = PDFtoImage.Conversion.ToImage(
 						Model.Input,
@@ -153,7 +153,7 @@ namespace PDFtoImage.WebConverter.Pages
 
 					);
 					encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
-				});
+				}, TaskCreationOptions.LongRunning);
 
 				if (!encodeSuccess)
 				{

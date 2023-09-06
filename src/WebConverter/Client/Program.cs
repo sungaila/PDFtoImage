@@ -1,5 +1,4 @@
 using KristofferStrube.Blazor.FileSystem;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +13,7 @@ namespace PDFtoImage.WebConverter
 {
 	public class Program
 	{
-		public static event EventHandler<HandledFileArgs>? FilesHandled;
+		public static event EventHandler<HandledFileEventArgs>? FilesHandled;
 
 		public static async Task Main(string[] args)
 		{
@@ -27,7 +26,6 @@ namespace PDFtoImage.WebConverter
 			builder.Services.AddWebShareService();
 
 			var host = builder.Build();
-			var navigationManager = host.Services.GetService<NavigationManager>()!;
 
 			if (host.Services.GetService<FileHandlingService>() is FileHandlingService service && await service.IsSupportedAsync())
 			{
@@ -38,7 +36,7 @@ namespace PDFtoImage.WebConverter
 
 					if (launchParams.Files[0] is FileSystemFileHandle fileSystemFileHandle)
 					{
-						FilesHandled?.Invoke(null, new HandledFileArgs(await fileSystemFileHandle.GetFileAsync()));
+						FilesHandled?.Invoke(null, new HandledFileEventArgs(await fileSystemFileHandle.GetFileAsync()));
 					}
 				});
 			}
@@ -46,11 +44,11 @@ namespace PDFtoImage.WebConverter
 			await host.RunAsync();
 		}
 
-		public class HandledFileArgs : EventArgs
+		public class HandledFileEventArgs : EventArgs
 		{
 			public KristofferStrube.Blazor.FileAPI.File File { get; }
 
-			public HandledFileArgs(KristofferStrube.Blazor.FileAPI.File file)
+			public HandledFileEventArgs(KristofferStrube.Blazor.FileAPI.File file)
 			{
 				File = file;
 			}
