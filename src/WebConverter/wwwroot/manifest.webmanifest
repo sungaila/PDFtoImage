@@ -17,6 +17,18 @@
   ],
   "orientation": "any",
   "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "windows",
+      "url": "https://www.microsoft.com/store/apps/9NKMFPQKXGR8",
+      "id": "42088DavidSungaila.45636C032D238"
+    },
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=de.sungaila.pdftoimage",
+      "id": "de.sungaila.pdftoimage"
+    }
+  ],
   "scope": "/",
   "handle_links": "not-preferred",
   "file_handlers": [
