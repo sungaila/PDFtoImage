@@ -71,8 +71,6 @@ jobs:
           dotnet-version: 7.x
       - name: Setup .NET workload android
         run: dotnet workload install android
-      - name: Setup .NET workload maccatalyst
-        run: dotnet workload install maccatalyst
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Setup JDK 17
@@ -211,13 +209,11 @@ jobs:
       - name: Setup .NET 7
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 7.0.306 # TEMP FIX: SDK 7.0.400 broke the Android builds
+          dotnet-version: 7.x
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup .NET workload android
         run: dotnet workload install android
-      - name: Setup .NET workload maccatalyst
-        run: dotnet workload install maccatalyst
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Setup JDK 17

@@ -11,7 +11,7 @@ namespace PDFtoImage.Exceptions
 		internal abstract FPDF_ERR Error { get; }
 
 		/// <inheritdoc/>
-		public PdfException(string message) : base(message) { }
+		protected PdfException(string message) : base(message) { }
 
 		internal static PdfException? CreateException(FPDF_ERR error) => error switch
 		{
