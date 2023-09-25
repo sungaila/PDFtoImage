@@ -2,10 +2,10 @@
 
 namespace PDFtoImage.PdfiumViewer
 {
-    internal sealed class PdfiumResolveEventArgs : EventArgs
-    {
-        public string? PdfiumFileName { get; set; }
-    }
+	internal sealed class PdfiumResolveEventArgs : EventArgs
+	{
+		public string? PdfiumFileName { get; set; }
+	}
 
-    internal delegate void PdfiumResolveEventHandler(object? sender, PdfiumResolveEventArgs e);
+	internal delegate void PdfiumResolveEventHandler(object? sender, PdfiumResolveEventArgs e);
 }

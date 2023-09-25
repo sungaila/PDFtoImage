@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\DummyImage.png" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -1375,6 +1376,11 @@
     <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.jpg" />
     <None Remove="Assets\Expected\WINDOWS\Wikimedia_Commons_web_20_ANNOT.png" />
     <None Remove="Assets\hundesteuer-anmeldung.pdf" />
+    <None Remove="Assets\SocialPreview with password 123456 %28AES-128%29.pdf" />
+    <None Remove="Assets\SocialPreview with password 123456 %28AES-256%29.pdf" />
+    <None Remove="Assets\SocialPreview with password 123456 %28AES-256%3b metadata encrypted%29.pdf" />
+    <None Remove="Assets\SocialPreview with password 123456 %28RC4-128%29.pdf" />
+    <None Remove="Assets\SocialPreview with password 123456 %28RC4-40%29.pdf" />
     <None Remove="Assets\SocialPreview.pdf" />
     <None Remove="Assets\Wikimedia_Commons_web.pdf" />
     <None Remove="SaveOutputInGeneratedFolder.runsettings" />
@@ -5077,6 +5083,21 @@
     <Content Include="Assets\hundesteuer-anmeldung.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\DummyImage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SocialPreview with password 123456 (AES-128).pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SocialPreview with password 123456 (AES-256).pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SocialPreview with password 123456 (RC4-128).pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\SocialPreview with password 123456 (RC4-40).pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\SocialPreview.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -5095,7 +5116,7 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
     <PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
   </ItemGroup>
