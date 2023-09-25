@@ -359,7 +359,7 @@ namespace PDFtoImage.PdfiumViewer
 			[DllImport(_dllName, CallingConvention = CallingConvention.Cdecl)]
 			public static extern void FPDF_DestroyLibrary();
 
-			[DllImport(_dllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+			[DllImport(_dllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
 			public static extern IntPtr FPDF_LoadCustomDocument([MarshalAs(UnmanagedType.LPStruct)] FPDF_FILEACCESS access, string? password);
 
 			[DllImport(_dllName, CallingConvention = CallingConvention.Cdecl)]
@@ -563,13 +563,40 @@ namespace PDFtoImage.PdfiumViewer
 
 		public enum FPDF_ERR : uint
 		{
-			SUCCESS = 0,        // No error.
-			UNKNOWN = 1,        // Unknown error.
-			FILE = 2,       // File not found or could not be opened.
-			FORMAT = 3,     // File not in PDF format or corrupted.
-			PASSWORD = 4,       // Password required or incorrect password.
-			SECURITY = 5,       // Unsupported security scheme.
-			PAGE = 6        // Page not found or content error.
+			/// <summary>
+			/// No error.
+			/// </summary>
+			SUCCESS = 0,
+
+			/// <summary>
+			/// Unknown error.
+			/// </summary>
+			UNKNOWN = 1,
+
+			/// <summary>
+			/// File not found or could not be opened.
+			/// </summary>
+			FILE = 2,
+
+			/// <summary>
+			/// File not in PDF format or corrupted.
+			/// </summary>
+			FORMAT = 3,
+
+			/// <summary>
+			/// Password required or incorrect password.
+			/// </summary>
+			PASSWORD = 4,
+
+			/// <summary>
+			/// Unsupported security scheme.
+			/// </summary>
+			SECURITY = 5,
+
+			/// <summary>
+			/// Page not found or content error.
+			/// </summary>
+			PAGE = 6
 		}
 
 		#region Save/Edit Structs and Flags

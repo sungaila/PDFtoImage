@@ -47,3 +47,17 @@ PDFtoImage.PdfRotation.Rotate0 = 0 -> PDFtoImage.PdfRotation
 PDFtoImage.PdfRotation.Rotate180 = 2 -> PDFtoImage.PdfRotation
 PDFtoImage.PdfRotation.Rotate270 = 3 -> PDFtoImage.PdfRotation
 PDFtoImage.PdfRotation.Rotate90 = 1 -> PDFtoImage.PdfRotation
+PDFtoImage.Exceptions.PdfCannotOpenFileException
+PDFtoImage.Exceptions.PdfCannotOpenFileException.PdfCannotOpenFileException() -> void
+PDFtoImage.Exceptions.PdfException
+PDFtoImage.Exceptions.PdfException.PdfException(string! message) -> void
+PDFtoImage.Exceptions.PdfInvalidFormatException
+PDFtoImage.Exceptions.PdfInvalidFormatException.PdfInvalidFormatException() -> void
+PDFtoImage.Exceptions.PdfPageNotFoundException
+PDFtoImage.Exceptions.PdfPageNotFoundException.PdfPageNotFoundException() -> void
+PDFtoImage.Exceptions.PdfPasswordProtectedException
+PDFtoImage.Exceptions.PdfPasswordProtectedException.PdfPasswordProtectedException() -> void
+PDFtoImage.Exceptions.PdfUnknownException
+PDFtoImage.Exceptions.PdfUnknownException.PdfUnknownException() -> void
+PDFtoImage.Exceptions.PdfUnsupportedSecuritySchemeException
+PDFtoImage.Exceptions.PdfUnsupportedSecuritySchemeException.PdfUnsupportedSecuritySchemeException() -> void
