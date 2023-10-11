@@ -6,11 +6,13 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.PdfiumViewer
 {
-	internal static partial class NativeMethods
-	{
-		static NativeMethods()
-		{
-			// Load the platform dependent Pdfium.dll if it exist.
+    internal static partial class NativeMethods
+    {
+        static NativeMethods()
+        {
+            string? path = null;
+            try
+            {
 #if NET7_0_OR_GREATER
 			string workingDirectory = Assembly.GetExecutingAssembly().Location;
 			if (string.IsNullOrWhiteSpace(workingDirectory))
@@ -24,18 +26,22 @@ namespace PDFtoImage.PdfiumViewer
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 workingDirectory = AppContext.BaseDirectory;
 #else
-            var workingDirectory = Assembly.GetExecutingAssembly().GetName(false).CodeBase;
-            if (string.IsNullOrWhiteSpace(workingDirectory))
-                workingDirectory =  Process.GetCurrentProcess().MainModule!.FileName!;
-            if (string.IsNullOrWhiteSpace(workingDirectory))
-                workingDirectory = AppContext.BaseDirectory;
+                var workingDirectory = Assembly.GetExecutingAssembly().GetName(false).CodeBase;
+                if (string.IsNullOrWhiteSpace(workingDirectory))
+                    workingDirectory =  Process.GetCurrentProcess().MainModule!.FileName!;
+                if (string.IsNullOrWhiteSpace(workingDirectory))
+                    workingDirectory = AppContext.BaseDirectory;
 #endif
 
-			LoadNativeLibrary(Path.GetDirectoryName(new Uri(workingDirectory).LocalPath)!);
-		}
+                path = Path.GetDirectoryName(new Uri(workingDirectory).LocalPath);
+            }
+            catch (Exception) { }
 
-		private static void LoadNativeLibrary(string path)
-		{
+            LoadNativeLibrary(path);
+        }
+
+        private static void LoadNativeLibrary(string? path = null)
+        {
 #if ANDROID || MONOANDROID
             LoadNativeLibraryAndroid();
 #elif NET6_0_OR_GREATER
@@ -45,7 +51,7 @@ namespace PDFtoImage.PdfiumViewer
 #else
             throw new PlatformNotSupportedException("Unkown framework and/or platform.");
 #endif
-		}
+        }
 
 #if ANDROID || MONOANDROID
         private static void LoadNativeLibraryAndroid()
@@ -64,7 +70,7 @@ namespace PDFtoImage.PdfiumViewer
             Java.Lang.JavaSystem.LoadLibrary("pdfium");
         }
 #elif NET6_0_OR_GREATER
-		private static void LoadNativeLibraryNetCore(string path)
+		private static void LoadNativeLibraryNetCore(string? path)
 		{
 			if (path == null)
 				return;
@@ -104,7 +110,19 @@ namespace PDFtoImage.PdfiumViewer
 				};
 				pdfiumLibName = "libpdfium.dylib";
 			}
-			else
+            else if (OperatingSystem.IsMacCatalyst())
+            {
+                throw new NotSupportedException("Mac Catalyst is not supported.");
+            }
+            else if (OperatingSystem.IsIOS())
+            {
+                throw new NotSupportedException("iOS and Mac Catalyst are not supported.");
+            }
+            else if (OperatingSystem.IsTvOS())
+            {
+                throw new NotSupportedException("tvOS is not supported.");
+            }
+            else
 			{
 				throw new NotSupportedException("Only win-x86, win-x64, win-arm64, linux-x64, linux-arm, linux-arm64, osx-x64, and osx-arm64 are supported.");
 			}
@@ -143,7 +161,7 @@ namespace PDFtoImage.PdfiumViewer
 			return IntPtr.Zero;
 		}
 #elif NETFRAMEWORK
-        private static void LoadNativeLibraryNetFX(string path)
+        private static void LoadNativeLibraryNetFX(string? path)
         {
             if (path == null)
                 return;
@@ -185,5 +203,5 @@ namespace PDFtoImage.PdfiumViewer
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPWStr)] string lpLibFileName);
 #endif
-	}
+    }
 }

@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.Console</AssemblyName>
     <RootNamespace>PDFtoImage.Console</RootNamespace>
     <StartupObject>PDFtoImage.Console.Program</StartupObject>
-    <Version>2.4.1</Version>
+    <Version>2.4.2</Version>
     <Configurations>Debug;Release;ReleaseSigned</Configurations>
   </PropertyGroup>
 
