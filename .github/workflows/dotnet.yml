@@ -226,8 +226,6 @@ jobs:
         run: dotnet tool install --global dotnet-coverage
       - name: Setup .NET workload android
         run: dotnet workload install android
-      - name: Setup .NET workload wasm-tools
-        run: dotnet workload install wasm-tools
       - name: Setup JDK 17
         uses: actions/setup-java@main
         with:
@@ -260,7 +258,7 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet restore src/PDFtoImage.sln
-          msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} 
-          dotnet-coverage collect "dotnet test src/PDFtoImage.sln --verbosity detailed" -f xml -o "coverage.xml"
+          dotnet restore src/PDFtoImage.SonarCloud.slnf
+          msbuild src/PDFtoImage.SonarCloud.slnf /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} 
+          dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
