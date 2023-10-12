@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 7.x
+      - name: Setup .NET workload android
+        run: dotnet workload install android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths
