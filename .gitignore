@@ -396,3 +396,36 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Xamarin
+*.userprefs
+*.user
+bin
+Configuration.Override.props
+Configuration.OperatingSystem.props
+obj
+packages
+.DS_Store
+.nuget
+*.nupkg
+TestResult.xml
+TestResult-*.xml
+TestResult-*.csv
+.vs/
+.vscode/
+.gradle/
+Resource.designer.cs
+logcat-*.txt
+apk-sizes-*.txt
+*.rawproto
+*.binlog
+*.ProjectImports.zip
+*~
+external/monodroid/
+external/mono/
+tests/api-compatibility/reference/*/*.dll
+tests/api-compatibility/reference/*/*.cs
+Novell
+*.patch
+*.keystore
+/omnisharp.json

@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <Version>2.4.2</Version>
+    <Version>2.5.0</Version>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
     <PublishTrimmed>true</PublishTrimmed>
@@ -52,7 +52,7 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
-    <NativeFileReference Include="libpdfium.a" />
+    <NativeFileReference Include="pdfium.a" />
     <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st\*.a" />
   </ItemGroup>
 
