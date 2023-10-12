@@ -38,7 +38,7 @@ jobs:
             sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
             sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' manifest.webmanifest
       - name: Restore
-        run: dotnet restore src/PDFtoImage.sln
+        run: dotnet restore src/WebConverter/WebConverter.csproj
       - name: Publish
         run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml --no-restore
       - name: Create .nojekyll file
