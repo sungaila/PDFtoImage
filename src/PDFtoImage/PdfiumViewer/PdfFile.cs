@@ -22,6 +22,19 @@ namespace PDFtoImage.PdfiumViewer
 		{
 			PdfLibrary.EnsureLoaded();
 
+			try
+			{
+				// test if the given stream is seekable by getting its length
+				var length = stream.Length;
+			}
+			catch (NotSupportedException ex)
+			{
+				if (!stream.CanSeek)
+					throw new ArgumentException("The given stream does not support seeking.", nameof(stream), ex);
+
+				throw;
+			}
+
 			_stream = stream ?? throw new ArgumentNullException(nameof(stream));
 			_id = StreamManager.Register(stream);
 			_disposeStream = disposeStream;

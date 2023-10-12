@@ -12,8 +12,8 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>2.4.2</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionPrefix>2.5.0</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -22,7 +22,7 @@
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>- Fixed an issue where Android release builds would fail to load libpdfium.</PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid MAUI WASM WebAssembly</PackageTags>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>

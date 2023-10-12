@@ -10,32 +10,14 @@ namespace PDFtoImage.PdfiumViewer
     {
         static NativeMethods()
         {
-#if ANDROID || MONOANDROID
-            LoadNativeLibraryAndroid();
-#elif NETFRAMEWORK
+#if NETFRAMEWORK
             LoadNativeLibraryNetFX();
 #else
-            // .NET (Core) resolves the pdfium lib on its own
+            // .NET (Core) and Xamarin resolve the pdfium lib on their own
 #endif
         }
 
-#if ANDROID || MONOANDROID
-        private static void LoadNativeLibraryAndroid()
-        {
-            switch (RuntimeInformation.ProcessArchitecture)
-            {
-                case Architecture.X86:
-                case Architecture.X64:
-                case Architecture.Arm:
-                case Architecture.Arm64:
-                    break;
-                default:
-                    throw new PlatformNotSupportedException("Only x86, x86-64, arm and arm64 are supported on Android.");
-            }
-
-            Java.Lang.JavaSystem.LoadLibrary("pdfium");
-        }
-#elif NETFRAMEWORK
+#if NETFRAMEWORK
         private static void LoadNativeLibraryNetFX()
         {
             var workingDirectory = Assembly.GetExecutingAssembly().GetName(false).CodeBase;

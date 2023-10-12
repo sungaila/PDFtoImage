@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PDFtoImage.FrameworkTests.MauiApp.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0"
+                             Spacing="25"
+                             VerticalOptions="Center">
+
+            <Image HeightRequest="200"
+                   HorizontalOptions="Center"
+                   SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                   Source="dotnet_bot.png" />
+
+            <Label FontSize="32"
+                   HorizontalOptions="Center"
+                   SemanticProperties.HeadingLevel="Level1"
+                   Text="Hello, World!" />
+
+            <Label x:Name="OutputLabel"
+                   FontSize="18"
+                   HorizontalOptions="Center"
+                   SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                   SemanticProperties.HeadingLevel="Level2"
+                   Text="Tab the button below to test PDFtoImage." />
+
+            <Button x:Name="CounterBtn"
+                    Clicked="OnCounterClicked"
+                    HorizontalOptions="Center"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Text="Click me" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
