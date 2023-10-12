@@ -334,7 +334,8 @@ namespace PDFtoImage.PdfiumViewer
 
         private static partial class Imports
         {
-#if NET7_0_OR_GREATER
+            // TODO: LibraryImportAttribute is not supported by Blazor WebAssembly right now
+#if NET7_0_OR_GREATER && FALSE
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvCdecl) })]
             public static partial void FPDF_InitLibrary();
