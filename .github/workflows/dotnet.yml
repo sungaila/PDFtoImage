@@ -71,6 +71,8 @@ jobs:
           dotnet-version: 7.x
       - name: Setup .NET workload android
         run: dotnet workload install android
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Setup JDK 17
