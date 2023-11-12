@@ -61,6 +61,7 @@ jobs:
         uses: microsoft/setup-msbuild@main
         with:
           msbuild-architecture: x64
+          vs-prerelease: true #TODO: Remove on final release of .NET 8
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
@@ -227,6 +228,7 @@ jobs:
         uses: microsoft/setup-msbuild@main
         with:
           msbuild-architecture: x64
+          vs-prerelease: true #TODO: Remove on final release of .NET 8
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
