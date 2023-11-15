@@ -32,14 +32,14 @@
 
   <ItemGroup>
     <!-- App Icon -->
-    <AndroidResource Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
-    <AndroidResource Include="Resources\Images\dotnet_bot.svg" />
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
     <!-- Splash Screen -->
-    <AndroidResource Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
     <!-- Images -->
     <MauiImage Include="Resources\Images\*" />
+    <MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
     <!-- Custom Fonts -->
     <MauiFont Include="Resources\Fonts\*" />
@@ -49,22 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MauiFont Remove="Resources\Fonts\OpenSans_Regular.ttf" />
-    <MauiFont Remove="Resources\Fonts\OpenSans_Semibold.ttf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <MauiImage Remove="Resources\Images\dotnet_bot.svg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AndroidResource Include="Resources\Fonts\OpenSans_Regular.ttf" />
-    <AndroidResource Include="Resources\Fonts\OpenSans_Semibold.ttf" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.2.9530" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.3" />
   </ItemGroup>
 
   <ItemGroup>

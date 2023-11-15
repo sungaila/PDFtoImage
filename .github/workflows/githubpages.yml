@@ -27,7 +27,6 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 8.x
-          dotnet-quality: preview #TODO: Remove on final release of .NET 8
       - name: Setup .NET workload android
         run: dotnet workload install android
       - name: Setup .NET workload wasm-tools
