@@ -24,10 +24,14 @@ namespace PDFtoImage.WebConverter.Pages
 
         public Exception? LastException { get; private set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await SetupDotNetHelper();
+            await base.OnAfterRenderAsync(firstRender);
+        }
 
+        protected override async Task OnInitializedAsync()
+        {
             Program.FilesHandled -= OnFilesHandled;
             Program.FilesHandled += OnFilesHandled;
 
