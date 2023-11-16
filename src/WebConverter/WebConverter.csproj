@@ -35,7 +35,7 @@
     <PackageReference Include="ByteSize" Version="2.1.1" />
     <PackageReference Include="Markdig.Signed" Version="0.33.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
     <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />
