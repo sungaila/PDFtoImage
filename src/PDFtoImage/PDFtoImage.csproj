@@ -88,7 +88,7 @@
   </ItemGroup>
 
   <!-- .NET packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net7.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
     <PackageReference Include="bblanchon.PDFium.Linux" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.Win32" Version="121.0.6110" PrivateAssets="analyzers" />
@@ -99,7 +99,7 @@
   </ItemGroup>
 
   <!-- Android packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
     <PackageReference Include="bblanchon.PDFium.Android" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.6" PrivateAssets="analyzers" />
   </ItemGroup>
