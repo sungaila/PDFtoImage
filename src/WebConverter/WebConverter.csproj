@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
     <NativeFileReference Include="pdfium.a" />
     <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st\*.a" />
