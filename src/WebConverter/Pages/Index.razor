@@ -19,215 +19,162 @@
 <PageTitle>Conversion</PageTitle>
 
 <div class="mb-3">
-	<div class="row">
-		<div class="col-sm">
-			<EditForm Model=@Model OnValidSubmit="@Submit" @onreset="Reset">
-				<DataAnnotationsValidator />
+    <div class="row">
+        <div class="col-sm">
+            <EditForm Model=@Model OnValidSubmit="@Submit" @onreset="Reset">
+                <DataAnnotationsValidator />
 
-				<div class="btn-group" role="group">
-					<button type="submit" class="btn btn-primary" disabled="@(IsLoading || Model.File == null)">
-						<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="@(!IsLoading)"></span> Convert
-					</button>
-					<input type="reset" class="btn btn-outline-secondary" value="Reset" disabled="@IsLoading" />
-				</div>
+                <div class="btn-group" role="group">
+                    <button type="submit" class="btn btn-primary" disabled="@(IsLoading || Model.File == null)">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="@(!IsLoading)"></span> Convert
+                    </button>
+                    <input type="reset" class="btn btn-outline-secondary" value="Reset" disabled="@IsLoading" />
+                </div>
 
-				<div class="mt-3 mx-auto">
-					<ValidationSummary class="validation-errors alert alert-warning" role="list" />
-				</div>
+                <div class="mt-3 mx-auto">
+                    <ValidationSummary class="validation-errors alert alert-warning" role="list" />
+                </div>
 
-				<div class="alert alert-danger mx-auto" role="alert" hidden="@(LastException == null)">
-					@LastException?.Message
-				</div>
+                <div class="alert alert-danger mx-auto" role="alert" hidden="@(LastException == null)">
+                    @LastException?.Message
+                </div>
 
-				<div class="alert alert-info mx-auto" role="alert" hidden="@(Model.File == null || Model.Output != null)">
-					@(Model.File != null ? $"{Model.File.Name} ({ByteSize.FromBytes(Model.File.Size).ToString()}, {Model.File.ContentType})" : null)
-				</div>
+                <div class="alert alert-info mx-auto" role="alert" hidden="@(Model.File == null || Model.Output != null)">
+                    @(Model.File != null ? $"{Model.File.Name} ({ByteSize.FromBytes(Model.File.Size).ToString()}, {Model.File.ContentType})" : null)
+                </div>
 
-				<div class="card mt-3 mb-3">
-					<h5 class="card-header">Input</h5>
-					<div class="card-body">
-						<div class="form-group row mb-1">
-							<label for="fileUpload" class="col-sm-3 col-form-label label-nowrap">File</label>
-							<div class="col-sm">
-								<InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" />
-							</div>
-						</div>
+                <div class="card mt-3 mb-3">
+                    <h5 class="card-header">Input</h5>
+                    <div class="card-body">
+                        <div class="form-group row mb-1">
+                            <label for="fileUpload" class="col-sm-3 col-form-label label-nowrap">File</label>
+                            <div class="col-sm">
+                                <InputFile OnChange="OnInputFileChange" id="fileUpload" single class="custom-file-input form-control-file" accept="application/pdf" />
+                            </div>
+                        </div>
 
-						<div class="form-group row mb-1">
-							<label for="fileUploadPassword" class="col-sm-3 col-form-label label-nowrap">Password</label>
-							<div class="col-sm">
-								<InputText @bind-Value="Model.Password" type="password" autocomplete="current-password" id="fileUploadPassword" class="form-control form-control-sm" placeholder="if needed" />
-							</div>
-						</div>
+                        <div class="form-group row mb-1">
+                            <label for="fileUploadPassword" class="col-sm-3 col-form-label label-nowrap">Password</label>
+                            <div class="col-sm">
+                                <InputText @bind-Value="Model.Password" type="password" autocomplete="current-password" id="fileUploadPassword" class="form-control form-control-sm" placeholder="if needed" />
+                            </div>
+                        </div>
 
-						<div class="form-group row">
-							<label for="page" class="col-sm-3 col-form-label label-nowrap">Page</label>
-							<div class="col-sm">
-								<InputNumber @bind-Value="Model.Page" id="page" class="form-control form-control-sm" min="0" max="@int.MaxValue" step="1" />
-							</div>
+                        <div class="form-group row">
+                            <label for="page" class="col-sm-3 col-form-label label-nowrap">Page</label>
+                            <div class="col-sm">
+                                <InputNumber @bind-Value="Model.Page" id="page" class="form-control form-control-sm" min="0" max="@int.MaxValue" step="1" />
+                            </div>
 
-							<div class="col-sm" />
-							<div class="col-sm" />
-						</div>
-					</div>
-				</div>
+                            <div class="col-sm" />
+                            <div class="col-sm" />
+                        </div>
+                    </div>
+                </div>
 
-				<div class="card mb-3">
-					<h5 class="card-header">Output</h5>
-					<div class="card-body">
-						<div class="form-group row">
-							<label for="fileType" class="col-sm-3 form-label col-form-label label-nowrap">Format</label>
-							<div class="col-sm">
-								<InputSelect @bind-Value="Model.Format" id="fileType" class="form-control form-control-sm">
-									@foreach (var format in RenderRequest.FormatWhitelist)
-									{
-										<option value="@format">@format</option>
-									}
-								</InputSelect>
-							</div>
+                <div class="card mb-3">
+                    <h5 class="card-header">Output</h5>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="fileType" class="col-sm-3 form-label col-form-label label-nowrap">Format</label>
+                            <div class="col-sm">
+                                <InputSelect @bind-Value="Model.Format" id="fileType" class="form-control form-control-sm">
+                                    @foreach (var format in RenderRequest.FormatWhitelist)
+                                    {
+                                        <option value="@format">@format</option>
+                                    }
+                                </InputSelect>
+                            </div>
 
-							<label for="quality" class="col-sm-3 form-label col-form-label label-nowrap" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">Quality</label>
-							<div class="col-sm" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">
-								<InputNumber @bind-Value="Model.Quality" id="quality" class="form-control form-control-sm" min="0" max="100" step="1" />
-							</div>
-						</div>
-					</div>
-				</div>
+                            <label for="quality" class="col-sm-3 form-label col-form-label label-nowrap" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">Quality</label>
+                            <div class="col-sm" hidden="@(Model.Format != SKEncodedImageFormat.Jpeg)">
+                                <InputNumber @bind-Value="Model.Quality" id="quality" class="form-control form-control-sm" min="0" max="100" step="1" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<div class="card mb-3">
-					<h5 class="card-header">Sizing &amp; rotation</h5>
-					<div class="card-body">
-						<div class="form-group row mb-1">
-							<label for="width" class="col-sm-3 col-form-label label-nowrap">Width</label>
-							<div class="col-sm">
-								<InputNumber @bind-Value="Model.Width" id="width" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
-							</div>
+                <div class="card mb-3">
+                    <h5 class="card-header">Sizing &amp; rotation</h5>
+                    <div class="card-body">
+                        <div class="form-group row mb-1">
+                            <label for="width" class="col-sm-3 col-form-label label-nowrap">Width</label>
+                            <div class="col-sm">
+                                <InputNumber @bind-Value="Model.Width" id="width" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
+                            </div>
 
-							<label for="height" class="col-sm-3 col-form-label label-nowrap">Height</label>
-							<div class="col-sm">
-								<InputNumber @bind-Value="Model.Height" id="height" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
-							</div>
-						</div>
+                            <label for="height" class="col-sm-3 col-form-label label-nowrap">Height</label>
+                            <div class="col-sm">
+                                <InputNumber @bind-Value="Model.Height" id="height" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" />
+                            </div>
+                        </div>
 
-						<div class="form-group row mb-1">
-							<label for="dpi" class="col-sm-3 col-form-label label-nowrap" max="@int.MaxValue" step="1">DPI</label>
-							<div class="col-sm">
-								<InputNumber @bind-Value="Model.Dpi" id="dpi" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" aria-describedby="dpiHint" disabled="@(Model.Width != null || Model.Height != null)" />
-								<small id="dpiHint" class="form-text text-muted">If width &amp; height unset</small>
-							</div>
+                        <div class="form-group row mb-1">
+                            <label for="dpi" class="col-sm-3 col-form-label label-nowrap" max="@int.MaxValue" step="1">DPI</label>
+                            <div class="col-sm">
+                                <InputNumber @bind-Value="Model.Dpi" id="dpi" class="form-control form-control-sm" min="1" max="@int.MaxValue" step="1" aria-describedby="dpiHint" disabled="@(Model.Width != null || Model.Height != null)" />
+                                <small id="dpiHint" class="form-text text-muted">If width &amp; height unset</small>
+                            </div>
 
-							<label for="rotation" class="col-sm-3 col-form-label label-nowrap">Rotation</label>
-							<div class="col-sm">
-								<InputSelect @bind-Value="Model.Rotation" id="rotation" class="form-control form-control-sm" aria-describedby="rotationHint">
-									@foreach (var rotation in Enum.GetValues<PdfRotation>())
-									{
-										<option value="@rotation">@(RenderRequest.GetRotationLocalized(rotation))</option>
-									}
-								</InputSelect>
-								<small id="rotationHint" class="form-text text-muted">Degrees are clockwise</small>
-							</div>
-						</div>
+                            <label for="rotation" class="col-sm-3 col-form-label label-nowrap">Rotation</label>
+                            <div class="col-sm">
+                                <InputSelect @bind-Value="Model.Rotation" id="rotation" class="form-control form-control-sm" aria-describedby="rotationHint">
+                                    @foreach (var rotation in Enum.GetValues<PdfRotation>())
+                                    {
+                                        <option value="@rotation">@(RenderRequest.GetRotationLocalized(rotation))</option>
+                                    }
+                                </InputSelect>
+                                <small id="rotationHint" class="form-text text-muted">Degrees are clockwise</small>
+                            </div>
+                        </div>
 
-						<div class="form-group row">
-							<div class="col-sm">
-								<InputCheckbox @bind-Value="Model.WithAspectRatio" id="withAspectRatio" class="form-check-input" disabled="@((Model.Width == null && Model.Height == null) || (Model.Width != null && Model.Height != null))" />
-								<label for="withAspectRatio">Keep aspect ratio</label>
-							</div>
-						</div>
-					</div>
-				</div>
+                        <div class="form-group row">
+                            <div class="col-sm">
+                                <InputCheckbox @bind-Value="Model.WithAspectRatio" id="withAspectRatio" class="form-check-input" disabled="@((Model.Width == null && Model.Height == null) || (Model.Width != null && Model.Height != null))" />
+                                <label for="withAspectRatio">Keep aspect ratio</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<div class="card mb-3">
-					<h5 class="card-header">Render options</h5>
-					<div class="card-body">
-						<div class="form-group row mb-1">
-							<div>
-								<InputCheckbox @bind-Value="Model.WithAnnotations" id="withAnnotations" class="form-check-input" />
-								<label for="withAnnotations">Annotations</label>
-							</div>
-						</div>
+                <div class="card mb-3">
+                    <h5 class="card-header">Render options</h5>
+                    <div class="card-body">
+                        <div class="form-group row mb-1">
+                            <div>
+                                <InputCheckbox @bind-Value="Model.WithAnnotations" id="withAnnotations" class="form-check-input" />
+                                <label for="withAnnotations">Annotations</label>
+                            </div>
+                        </div>
 
-						<div class="form-group row">
-							<div>
-								<InputCheckbox @bind-Value="Model.WithFormFill" id="withFormFill" class="form-check-input" />
-								<label for="withFormFill">Form fill</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</EditForm>
-		</div>
+                        <div class="form-group row">
+                            <div>
+                                <InputCheckbox @bind-Value="Model.WithFormFill" id="withFormFill" class="form-check-input" />
+                                <label for="withFormFill">Form fill</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
 
-		<div class="col-sm">
-			<div hidden="@(IsLoading || Model.Output == null || LastException != null)">
-				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-success" @onclick="DownloadImage">
-						<span class="oi oi-data-transfer-download" aria-hidden="true" /> Download
-					</button>
-					@if (IsWebShareSupported)
-					{
-						<button type="button" class="btn btn-outline-success" @onclick="ShareImage">
-							<span class="oi oi-share-boxed" aria-hidden="true" /> Share
-						</button>
-					}
-				</div>
-				<div class="mt-3">
-					<img id="outputImage" alt="The converted PDF output" style="max-width: 100%; width: auto; height: auto; border-radius: 8px; padding: 0;border-style: solid; border-width: thin; border-color: var(--bs-border-color-translucent);" />
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="col-sm">
+            <div hidden="@(IsLoading || Model.Output == null || LastException != null)">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success" @onclick="DownloadImage">
+                        <span class="oi oi-data-transfer-download" aria-hidden="true" /> Download
+                    </button>
+                    @if (IsWebShareSupported)
+                    {
+                        <button type="button" class="btn btn-outline-success" @onclick="ShareImage">
+                            <span class="oi oi-share-boxed" aria-hidden="true" /> Share
+                        </button>
+                    }
+                </div>
+                <div class="mt-3">
+                    <img id="outputImage" alt="The converted PDF output" style="max-width: 100%; width: auto; height: auto; border-radius: 8px; padding: 0;border-style: solid; border-width: thin; border-color: var(--bs-border-color-translucent);" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<script>
-	window.setDotNetHelper = dotNetHelper => {
-		window.dotNetHelper = dotNetHelper;
-	}
-
-	navigator.serviceWorker.onmessage = async event => {
-		if (event.data?.type === 'receive-webshare') {
-			await window.dotNetHelper.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
-		}
-	};
-
-	navigator.serviceWorker.ready
-		.then(registration => {
-			if (registration.active) {
-				registration.active.postMessage('receive-webshare');
-			}
-		});
-
-	window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
-		const arrayBuffer = await contentStreamReference.arrayBuffer();
-		const blob = new Blob([arrayBuffer], { type: mimeType });
-		return new File([blob], fileName, { type: blob.type });
-	}
-
-	window.downloadFileFromStream = async (fileName, imageMime, contentStreamReference) => {
-		const arrayBuffer = await contentStreamReference.arrayBuffer();
-		const blob = new Blob([arrayBuffer], { type: imageMime });
-		const url = URL.createObjectURL(blob);
-		const anchorElement = document.createElement('a');
-		anchorElement.href = url;
-		anchorElement.download = fileName ?? '';
-		anchorElement.click();
-		anchorElement.remove();
-		URL.revokeObjectURL(url);
-	}
-
-	window.setImage = async (imageElementId, imageMime, imageStream) => {
-		const arrayBuffer = await imageStream.arrayBuffer();
-		const blob = new Blob([arrayBuffer], { type: imageMime });
-		const url = URL.createObjectURL(blob);
-		const image = document.getElementById(imageElementId);
-		image.onload = () => {
-			URL.revokeObjectURL(url);
-		}
-		image.src = url;
-	}
-
-	window.resetImage = async (imageElementId) => {
-		const image = document.getElementById(imageElementId);
-		image.src = 'favicon.png';
-	}
-</script>

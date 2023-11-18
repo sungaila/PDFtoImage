@@ -8,7 +8,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'webconverter'
       
 concurrency:
   group: "pages"
@@ -23,14 +22,16 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Setup .NET 7
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 7.x
+          dotnet-version: 8.x
       - name: Setup .NET workload android
         run: dotnet workload install android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
+      - name: Setup .NET workload wasm-tools-net7
+        run: dotnet workload install wasm-tools-net7
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         run: |

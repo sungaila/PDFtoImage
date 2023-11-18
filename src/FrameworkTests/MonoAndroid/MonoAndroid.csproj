@@ -112,8 +112,8 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.4" />
-    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.9.0.3" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.5" />
+    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.10.0.1" />
     <PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <Version>2.5.0</Version>
+    <Version>2.4.3</Version>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
     <PublishTrimmed>true</PublishTrimmed>
@@ -34,8 +34,8 @@
   <ItemGroup>
     <PackageReference Include="ByteSize" Version="2.1.1" />
     <PackageReference Include="Markdig.Signed" Version="0.33.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.12" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
     <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />

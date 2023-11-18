@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net462;net481;net6.0;net7.0;net7.0-android;monoandroid10.0</TargetFrameworks>
+    <TargetFrameworks>net462;net481;net6.0;net7.0;net7.0-android;net8.0;net8.0-android;monoandroid10.0</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -12,8 +12,8 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>2.5.0</VersionPrefix>
-    <VersionSuffix>preview</VersionSuffix>
+    <VersionPrefix>2.4.3</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -21,7 +21,7 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Fixed an issue where Android release builds would fail to load libpdfium.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Cleanup of native lib loading for .NET (Core).</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -83,15 +83,15 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net481'">
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="120.0.6056" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.6" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- .NET packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net7.0'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="120.0.6056" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="120.0.6056" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="120.0.6056" PrivateAssets="analyzers" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="121.0.6110" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="121.0.6110" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.6" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.6" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.6" PrivateAssets="analyzers" />
@@ -99,8 +99,8 @@
   </ItemGroup>
 
   <!-- Android packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="120.0.6056" PrivateAssets="analyzers" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
+    <PackageReference Include="bblanchon.PDFium.Android" Version="121.0.6110" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.6" PrivateAssets="analyzers" />
   </ItemGroup>
 
