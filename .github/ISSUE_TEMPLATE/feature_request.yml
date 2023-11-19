@@ -3,18 +3,14 @@ description: Suggest a new feature or requirement
 labels: ["enhancement"]
 assignees: ["sungaila"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-          Thanks for creating a feature request!
   - type: textarea
     id: request
     attributes:
       label: Detailed feature request
-      description: Please tell us in detail what new feature you wish for or what new requirement should be met.
+      description: Please let us know in detail which new feature you would like or which new requirement is to be fulfilled.
       placeholder: |
           What feature is missing and why is it important?
-          Is there a combination of OS and framework you want supported?
-          Would this new feature/requirement break existing apps using this library?
+          Would this new feature break existing apps?
+          Can you use this project in your app? Is it supported?
     validations:
       required: true

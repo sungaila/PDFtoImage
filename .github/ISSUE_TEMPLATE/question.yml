@@ -3,10 +3,6 @@ description: Ask a question related to this project
 labels: ["question"]
 assignees: ["sungaila"]
 body:
-  - type: markdown
-    attributes:
-      value: |
-          Thanks for asking a question!
   - type: textarea
     id: request
     attributes:

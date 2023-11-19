@@ -33,7 +33,7 @@ body:
     attributes:
       label: OS version
       description: Which operating system version was used?
-      placeholder: e.g. Windows 11 23H2, Ubuntu Server 23.10, macOS 14.1, Android 14, ...
+      placeholder: e.g. Windows 11 23H2, Ubuntu 23.10, macOS 14.1, Android 14, ...
     validations:
       required: false
   - type: dropdown
@@ -57,7 +57,7 @@ body:
       options:
         - .NET Framework
         - .NET (Core)
-        - MonoAndroid / Xamarin.Android
+        - Xamarin.Android (MonoAndroid)
         - (Other)
       default: 1
     validations:
@@ -76,10 +76,9 @@ body:
       label: Detailed bug report
       description: Please tell us in detail what happened and what you expected to happen instead.
       placeholder: |
-          What happened?
-          What should have happened?
+          What happened? What should have happened instead?
           Steps to reproduce this issue.
-          Exception messages with stack traces.
-          Example PDF files.
+          Exception messages including stack traces.
+          Screenshots or example PDF files.
     validations:
       required: true
