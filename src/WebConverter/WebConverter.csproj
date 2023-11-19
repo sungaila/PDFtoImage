@@ -39,7 +39,7 @@
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
     <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
