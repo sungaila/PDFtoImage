@@ -1,0 +1,20 @@
+name: Feature request
+description: Suggest a new feature or requirement
+labels: ["enhancement"]
+assignees: ["sungaila"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+          Thanks for creating a feature request!
+  - type: textarea
+    id: request
+    attributes:
+      label: Detailed feature request
+      description: Please tell us in detail what new feature you wish for or what new requirement should be met.
+      placeholder: |
+          What feature is missing and why is it important?
+          Is there a combination of OS and framework you want supported?
+          Would this new feature/requirement break existing apps using this library?
+    validations:
+      required: true
