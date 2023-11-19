@@ -1,0 +1,85 @@
+name: Bug report
+description: Something isn't working as expected
+labels: ["bug"]
+assignees: ["sungaila"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+          Thanks for creating a bug report! If possible, please check if your issue can be reproduced on the official web converter: <https://www.sungaila.de/PDFtoImage/>
+  - type: input
+    id: version
+    attributes:
+      label: PDFtoImage version
+      description: Which version of PDFtoImage is affected?
+      value: 2.4.3
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      description: Which operating system was used?
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Android
+        - (Other)
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS version
+      description: Which operating system version was used?
+      placeholder: e.g. Windows 11 23H2, Ubuntu Server 23.10, macOS 14.1, Android 14, ...
+    validations:
+      required: false
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Architecture
+      description: Which CPU architecture was used?
+      options:
+        - x86
+        - x64
+        - arm64
+        - (Other)
+      default: 1
+    validations:
+      required: true
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      description: Which framework was used?
+      options:
+        - .NET Framework
+        - .NET (Core)
+        - MonoAndroid / Xamarin.Android
+        - (Other)
+      default: 1
+    validations:
+      required: true
+  - type: input
+    id: appframework
+    attributes:
+      label: App framework
+      description: Which app framework was used?
+      placeholder: e.g. ASP.NET Core, .NET MAUI, WinUI, ...
+    validations:
+      required: false
+  - type: textarea
+    id: issue
+    attributes:
+      label: Detailed bug report
+      description: Please tell us in detail what happened and what you expected to happen instead.
+      placeholder: |
+          What happened?
+          What should have happened?
+          Steps to reproduce this issue.
+          Exception messages with stack traces.
+          Example PDF files.
+    validations:
+      required: true
