@@ -88,20 +88,20 @@
     <script>
         window.setDotNetHelper = dotNetHelper => {
             window.dotNetHelper = dotNetHelper;
-        }
 
-        navigator.serviceWorker.onmessage = async event => {
-            if (event.data?.type === 'receive-webshare') {
-                await window.dotNetHelper?.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
-            }
-        };
-
-        navigator.serviceWorker.ready
-            .then(registration => {
-                if (registration.active) {
-                    registration.active.postMessage('receive-webshare');
+            navigator.serviceWorker.onmessage = async event => {
+                if (event.data?.type === 'receive-webshare') {
+                    await window.dotNetHelper?.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
                 }
-            });
+            };
+
+            navigator.serviceWorker.ready
+                .then(registration => {
+                    if (registration.active) {
+                        registration.active.postMessage('receive-webshare');
+                    }
+                });
+        }
 
         window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
             const arrayBuffer = await contentStreamReference.arrayBuffer();
