@@ -42,7 +42,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'pdfium-updates'
   pull_request:
     branches:
       - '**'

@@ -92,7 +92,7 @@
 
         navigator.serviceWorker.onmessage = async event => {
             if (event.data?.type === 'receive-webshare') {
-                await window.dotNetHelper.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
+                await window.dotNetHelper?.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
             }
         };
 

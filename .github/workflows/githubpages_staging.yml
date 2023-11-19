@@ -1,15 +1,16 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: GitHub Pages
+name: GitHub Pages (staging)
 
 on:
-  push:
+  workflow_dispatch:
+  pull_request:
     branches:
-      - 'master'
+      - '**'
       
 concurrency:
-  group: "pages"
+  group: "pages-staging"
   cancel-in-progress: false
 
 jobs:
@@ -90,7 +91,7 @@ jobs:
       id-token: write   # to verify the deployment originates from an appropriate source
       
     environment:
-      name: github-pages
+      name: github-pages-staging
       url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
