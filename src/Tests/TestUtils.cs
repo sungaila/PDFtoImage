@@ -85,7 +85,7 @@ namespace PDFtoImage.Tests
 
                     return new FileStream(
                         outputPath,
-                        FileMode.Create,
+                        FileMode.CreateNew,
                         FileAccess.ReadWrite,
                         FileShare.Read,
                         4096,
