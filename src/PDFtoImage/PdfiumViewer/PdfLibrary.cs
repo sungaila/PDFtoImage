@@ -26,9 +26,9 @@ namespace PDFtoImage.PdfiumViewer
 			Dispose(disposing: false);
 		}
 
-		private void Dispose(bool disposing)
-		{
-			if (!disposedValue)
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
 			{
 				NativeMethods.FPDF_DestroyLibrary();
 				disposedValue = true;

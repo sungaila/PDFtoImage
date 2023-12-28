@@ -5,8 +5,10 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.PdfiumViewer
 {
+#if NET8_0_OR_GREATER
 #pragma warning disable CA2101 // Specify marshalling for P/Invoke string arguments
 #pragma warning disable SYSLIB1054 // Use LibraryImportAttribute instead of DllImportAttribute to generate p/invoke marshalling code at compile time.
+#endif
     internal static partial class NativeMethods
     {
         // Interned strings are cached over AppDomains. This means that when we
@@ -314,7 +316,7 @@ namespace PDFtoImage.PdfiumViewer
 #endif
 
 #if NET6_0_OR_GREATER
-        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
@@ -654,16 +656,77 @@ namespace PDFtoImage.PdfiumViewer
         [Flags]
         public enum FPDF
         {
+            /// <summary>
+            /// Set if annotations are to be rendered.
+            /// </summary>
             ANNOT = 0x01,
+
+            /// <summary>
+            /// Set if using text rendering optimized for LCD display. This flag will only take effect if anti-aliasing is enabled for text.
+            /// </summary>
             LCD_TEXT = 0x02,
+
+            /// <summary>
+            /// Don't use the native text output available on some platforms.
+            /// </summary>
             NO_NATIVETEXT = 0x04,
+
+            /// <summary>
+            /// Grayscale output.
+            /// </summary>
             GRAYSCALE = 0x08,
+
+            /// <summary>
+            /// Obsolete, has no effect, retained for compatibility.
+            /// </summary>
+            [Obsolete("Obsolete, has no effect, retained for compatibility.")]
             DEBUG_INFO = 0x80,
+
+            /// <summary>
+            /// Obsolete, has no effect, retained for compatibility.
+            /// </summary>
+            [Obsolete("Obsolete, has no effect, retained for compatibility.")]
             NO_CATCH = 0x100,
+
+            /// <summary>
+            /// Limit image cache size.
+            /// </summary>
             RENDER_LIMITEDIMAGECACHE = 0x200,
+
+            /// <summary>
+            /// Always use halftone for image stretching.
+            /// </summary>
             RENDER_FORCEHALFTONE = 0x400,
+
+            /// <summary>
+            /// Render for printing.
+            /// </summary>
             PRINTING = 0x800,
-            REVERSE_BYTE_ORDER = 0x10
+
+            /// <summary>
+            /// Set to disable anti-aliasing on text. This flag will also disable LCD optimization for text rendering.
+            /// </summary>
+            RENDER_NO_SMOOTHTEXT = 0x1000,
+
+            /// <summary>
+            /// Set to disable anti-aliasing on images.
+            /// </summary>
+            RENDER_NO_SMOOTHIMAGE = 0x2000,
+
+            /// <summary>
+            /// Set to disable anti-aliasing on paths.
+            /// </summary>
+            RENDER_NO_SMOOTHPATH = 0x4000,
+
+            /// <summary>
+            /// Set whether to render in a reverse Byte order, this flag is only used when rendering to a bitmap.
+            /// </summary>
+            REVERSE_BYTE_ORDER = 0x10,
+
+            /// <summary>
+            /// Set whether fill paths need to be stroked. This flag is only used when FPDF_COLORSCHEME is passed in, since with a single fill color for paths the boundaries of adjacent fill paths are less visible.
+            /// </summary>
+            CONVERT_FILL_TO_STROKE = 0x20
         }
 
         public enum FPDF_ERR : uint

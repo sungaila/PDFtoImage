@@ -8,6 +8,11 @@ using System.Text;
 
 namespace PDFtoImage.PdfiumViewer
 {
+#if NET8_0_OR_GREATER
+#pragma warning disable CA1513 // Use ObjectDisposedException throw helper
+#pragma warning disable IDE0056 // Use index operator
+#pragma warning disable IDE0057 // Use range operator
+#endif
     internal sealed class PdfFile : IDisposable
     {
         private IntPtr _document;
@@ -55,15 +60,14 @@ namespace PDFtoImage.PdfiumViewer
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            using (var pageData = new PageData(_document, _form, pageNumber))
-            {
-                NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+            using var pageData = new PageData(_document, _form, pageNumber);
 
-                if (renderFormFill)
-                {
-                    NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
-                    NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
-                }
+            NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+
+            if (renderFormFill)
+            {
+                NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
+                NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
             }
 
             return true;
@@ -119,7 +123,7 @@ namespace PDFtoImage.PdfiumViewer
             NativeMethods.FORM_DoDocumentJSAction(_form);
             NativeMethods.FORM_DoDocumentOpenAction(_form);
 
-            Bookmarks = new PdfBookmarkCollection();
+            Bookmarks = [];
 
             LoadBookmarks(Bookmarks, NativeMethods.FPDF_BookmarkGetFirstChild(document, IntPtr.Zero));
         }

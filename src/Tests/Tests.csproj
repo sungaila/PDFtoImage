@@ -836,6 +836,30 @@
     <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.jpg" />
     <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.png" />
     <None Remove="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png" />
+    <None Remove="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -1088,6 +1112,57 @@
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.png" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.tif" />
     <None Remove="Assets\Expected\hundesteuer-anmeldung_True.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.webp" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.jpg" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.png" />
+    <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.webp" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.jpg" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.png" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.webp" />
@@ -3841,6 +3916,78 @@
     <Content Include="Assets\Expected\OSX\Wikimedia_Commons_web_9_ANNOT.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -4559,6 +4706,159 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\AspectRatio\Wikimedia_Commons_web.pdf_w=null_h=null_dpi=null_aspectratio=True.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#00ffffff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64000000.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#640000ff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ff00.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#6400ffff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff0000.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ff00ff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffff00.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#64ffffff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff000000.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff0000ff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ff00.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ff00ffff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff0000.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffff00ff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffff00.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\hundesteuer-anmeldung_False.jpg">

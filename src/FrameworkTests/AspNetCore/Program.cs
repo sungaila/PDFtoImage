@@ -22,7 +22,9 @@ namespace PDFtoImage.FrameworkTests.AspNetCore
             {
                 using var input = new FileStream(Path.Combine(_hostingEnvironment!.WebRootPath, "SocialPreview.pdf"), FileMode.Open, FileAccess.Read);
 
+#pragma warning disable CA1416 // Validate platform compatibility
                 using var bitmap = PDFtoImage.Conversion.ToImage(input);
+#pragma warning restore CA1416 // Validate platform compatibility
 
                 return $"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}";
             }
