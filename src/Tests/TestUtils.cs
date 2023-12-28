@@ -71,7 +71,7 @@ namespace PDFtoImage.Tests
 
         public static Stream CreateOutputStream(string expectedPath)
         {
-            if (!TestBase.SaveOutputInGeneratedFolder)
+            if (false)
                 return new MemoryStream();
 
             var outputPath = expectedPath.Replace("Expected", "Generated");

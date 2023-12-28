@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
+//[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
 namespace Tests
 {
