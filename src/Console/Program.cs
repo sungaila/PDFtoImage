@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace PDFtoImage.Console
 {
+#if NET8_0_OR_GREATER
+#pragma warning disable CA1510 // Use ArgumentNullException throw helper
+#endif
     public static class Program
     {
         public static int Main(string[] args)

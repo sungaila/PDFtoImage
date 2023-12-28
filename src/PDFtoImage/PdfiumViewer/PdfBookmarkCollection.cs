@@ -11,7 +11,7 @@ namespace PDFtoImage.PdfiumViewer
 
 		public PdfBookmark()
 		{
-			Children = new PdfBookmarkCollection();
+            Children = [];
 		}
 	}
 

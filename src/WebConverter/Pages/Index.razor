@@ -147,10 +147,39 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-1">
                             <div>
                                 <InputCheckbox @bind-Value="Model.WithFormFill" id="withFormFill" class="form-check-input" />
                                 <label for="withFormFill">Form fill</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-1">
+                            <div>
+                                <InputCheckbox @bind-Value="Model.AntiAliasingText" id="antiAliasingText" class="form-check-input" />
+                                <label for="antiAliasingText">Anti-aliasing for text</label>
+                            </div>
+
+                            <div>
+                                <InputCheckbox @bind-Value="Model.AntiAliasingImages" id="antiAliasingImages" class="form-check-input" />
+                                <label for="antiAliasingImages">Anti-aliasing for images</label>
+                            </div>
+
+                            <div>
+                                <InputCheckbox @bind-Value="Model.AntiAliasingPaths" id="antiAliasingPaths" class="form-check-input" />
+                                <label for="antiAliasingPaths">Anti-aliasing for paths</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="backgroundColor" class="col-sm-3 col-form-label label-nowrap">Background</label>
+                            <div class="col-sm">
+                                <input @bind="Model.BackgroundColor" type="color" id="backgroundColor" />
+                            </div>
+
+                            <label for="opacity" class="col-sm-3 col-form-label label-nowrap">Opacity</label>
+                            <div class="col-sm">
+                                <InputNumber @bind-Value="Model.Opacity" id="opacity" class="form-control form-control-sm" min="@byte.MinValue" max="@byte.MaxValue" step="1" />
                             </div>
                         </div>
                     </div>

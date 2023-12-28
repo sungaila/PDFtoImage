@@ -2,75 +2,76 @@
 @inject IJSRuntime JS
 
 <div class="top-row navbar navbar-dark">
-	<div class="container-fluid">
-		<a class="navbar-brand" href=""><img src="icon-512.png" alt="PDFtoImage Logo" style="width: 32px; height: 32px;"> PDFtoImage Web Converter</a>
-		<button type="button" title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-	</div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href=""><img src="icon-512.png" alt="PDFtoImage Logo" style="width: 32px; height: 32px;"> PDFtoImage Web Converter</a>
+        <button type="button" title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-	<nav class="flex-column">
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="" Match="NavLinkMatch.All">
-				<span class="oi oi-image" aria-hidden="true"></span> Conversion
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="readme">
-				<span class="oi oi-book" aria-hidden="true"></span> Read me
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" style="padding: .5rem 1rem !important; cursor: pointer !important; user-select: none;" @onclick="ToggleTheme">
-				<span class="oi oi-lightbulb" aria-hidden="true"></span> Toggle theme
-			</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@GitHubUrl" target="_blank">GitHub</NavLink>
-		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@ReleaseUrl" target="_blank">@SemanticVersion</NavLink>
-		</div>
-		@if (!string.IsNullOrEmpty(CommitId))
-		{
-			<div class="nav-item px-3">
-				<NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
-			</div>
-		}
-	</nav>
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-image" aria-hidden="true"></span> Conversion
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="readme">
+                <span class="oi oi-book" aria-hidden="true"></span> Read me
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" style="padding: .5rem 1rem !important; cursor: pointer !important; user-select: none;" @onclick="ToggleTheme">
+                <span class="oi oi-lightbulb" aria-hidden="true"></span> Toggle theme
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@GitHubUrl" target="_blank">GitHub</NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@ReleaseUrl" target="_blank">@SemanticVersion</NavLink>
+            </div>
+            @if (!string.IsNullOrEmpty(CommitId))
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" style="padding: .5rem 1rem !important;" href="@CommitUrl" title="@CommitId" target="_blank">@CommitIdShort</NavLink>
+                </div>
+        }
+    </nav>
 </div>
 
 @code {
-	private bool collapseNavMenu = true;
+    private bool collapseNavMenu = true;
 
-	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-	private void ToggleNavMenu()
-	{
-		collapseNavMenu = !collapseNavMenu;
-	}
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
 
-	private const string GitHubUrl = "https://github.com/sungaila/PDFtoImage";
+    private const string GitHubUrl = "https://github.com/sungaila/PDFtoImage";
 
-	private static string? ProductVersion { get; set; }
-	private static string? SemanticVersion => $"v{ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.First()}";
-	private static string? ReleaseUrl => SemanticVersion != null ? $"{GitHubUrl}/releases/tag/{SemanticVersion}" : GitHubUrl;
-	private static string? CommitId => ProductVersion != null && ProductVersion.Contains('+') ? ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.Last() : null;
-	private static string? CommitIdShort => CommitId?.Substring(0, Math.Min(7, CommitId.Length));
-	private static string CommitUrl => CommitId != null ? $"{GitHubUrl}/commit/{CommitId}" : GitHubUrl;
+    private static string? ProductVersion { get; set; }
+    private static string? SemanticVersion => $"v{ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.First()}";
+    private static string? SemanticVersionWithoutSuffix => $"v{ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.First()?.Split('-', StringSplitOptions.RemoveEmptyEntries)?.First()}";
+    private static string? ReleaseUrl => SemanticVersionWithoutSuffix != null ? $"{GitHubUrl}/releases/tag/{SemanticVersionWithoutSuffix}" : GitHubUrl;
+    private static string? CommitId => ProductVersion != null && ProductVersion.Contains('+') ? ProductVersion?.Split('+', StringSplitOptions.RemoveEmptyEntries)?.Last() : null;
+    private static string? CommitIdShort => CommitId?.Substring(0, Math.Min(7, CommitId.Length));
+    private static string CommitUrl => CommitId != null ? $"{GitHubUrl}/commit/{CommitId}" : GitHubUrl;
 
-	protected override void OnInitialized()
-	{
-		if (ProductVersion != null)
-			return;
+    protected override void OnInitialized()
+    {
+        if (ProductVersion != null)
+            return;
 
-		ProductVersion = typeof(MainLayout).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
-	}
+        ProductVersion = typeof(MainLayout).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+    }
 
-	private async Task ToggleTheme()
-	{
-		await JS.InvokeVoidAsync("toggleTheme");
-	}
+    private async Task ToggleTheme()
+    {
+        await JS.InvokeVoidAsync("toggleTheme");
+    }
 }

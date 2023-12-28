@@ -11,47 +11,42 @@ using Thinktecture.Blazor.WebShare;
 
 namespace PDFtoImage.WebConverter
 {
-	public class Program
-	{
-		public static event EventHandler<HandledFileEventArgs>? FilesHandled;
+    public class Program
+    {
+        public static event EventHandler<HandledFileEventArgs>? FilesHandled;
 
-		public static async Task Main(string[] args)
-		{
-			var builder = WebAssemblyHostBuilder.CreateDefault(args);
-			builder.RootComponents.Add<App>("#app");
-			builder.RootComponents.Add<HeadOutlet>("head::after");
+        public static async Task Main(string[] args)
+        {
+            var builder = WebAssemblyHostBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
 
-			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-			builder.Services.AddFileHandlingService();
-			builder.Services.AddWebShareService();
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddFileHandlingService();
+            builder.Services.AddWebShareService();
 
-			var host = builder.Build();
+            var host = builder.Build();
 
-			if (host.Services.GetService<FileHandlingService>() is FileHandlingService service && await service.IsSupportedAsync())
-			{
-				await service.SetConsumerAsync(async (launchParams) =>
-				{
-					if (launchParams == null || !launchParams.Files.Any())
-						return;
+            if (host.Services.GetService<FileHandlingService>() is FileHandlingService service && await service.IsSupportedAsync())
+            {
+                await service.SetConsumerAsync(async (launchParams) =>
+                {
+                    if (launchParams == null || !launchParams.Files.Any())
+                        return;
 
-					if (launchParams.Files[0] is FileSystemFileHandle fileSystemFileHandle)
-					{
-						FilesHandled?.Invoke(null, new HandledFileEventArgs(await fileSystemFileHandle.GetFileAsync()));
-					}
-				});
-			}
+                    if (launchParams.Files[0] is FileSystemFileHandle fileSystemFileHandle)
+                    {
+                        FilesHandled?.Invoke(null, new HandledFileEventArgs(await fileSystemFileHandle.GetFileAsync()));
+                    }
+                });
+            }
 
-			await host.RunAsync();
-		}
+            await host.RunAsync();
+        }
 
-		public class HandledFileEventArgs : EventArgs
-		{
-			public KristofferStrube.Blazor.FileAPI.File File { get; }
-
-			public HandledFileEventArgs(KristofferStrube.Blazor.FileAPI.File file)
-			{
-				File = file;
-			}
-		}
-	}
+        public class HandledFileEventArgs(KristofferStrube.Blazor.FileAPI.File file) : EventArgs
+        {
+            public KristofferStrube.Blazor.FileAPI.File File { get; } = file;
+        }
+    }
 }

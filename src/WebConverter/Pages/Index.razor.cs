@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using PDFtoImage.WebConverter.Models;
 using SkiaSharp;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -135,6 +136,21 @@ namespace PDFtoImage.WebConverter.Pages
                 Model.Input.Position = 0;
                 SKBitmap? bitmap = null;
                 bool encodeSuccess = false;
+                PdfAntiAliasing antiAliasing = default;
+                var backgroundColor = SKColors.White;
+
+                if (Model.AntiAliasingText)
+                    antiAliasing |= PdfAntiAliasing.Text;
+                if (Model.AntiAliasingImages)
+                    antiAliasing |= PdfAntiAliasing.Images;
+                if (Model.AntiAliasingPaths)
+                    antiAliasing |= PdfAntiAliasing.Paths;
+
+                if (Model.BackgroundColor != null && Model.BackgroundColor.StartsWith('#') && uint.TryParse(Model.BackgroundColor[1..], NumberStyles.HexNumber, null, out var parsed))
+                {
+                    parsed += (uint)(Model.Opacity << 24);
+                    backgroundColor = (SKColor)parsed;
+                }
 
                 await Task.Factory.StartNew(() =>
                 {
@@ -149,8 +165,9 @@ namespace PDFtoImage.WebConverter.Pages
                         withAnnotations: Model.WithAnnotations,
                         withFormFill: Model.WithFormFill,
                         withAspectRatio: Model.WithAspectRatio,
-                        rotation: Model.Rotation
-
+                        rotation: Model.Rotation,
+                        antiAliasing: antiAliasing,
+                        backgroundColor: backgroundColor
                     );
                     encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
                 }, TaskCreationOptions.LongRunning);
@@ -212,7 +229,7 @@ namespace PDFtoImage.WebConverter.Pages
                 var file = await JS.InvokeAsync<IJSObjectReference>("createFileFromStream", RenderRequest.GetOutputFileName(Model), RenderRequest.GetMimeType(Model.Format), streamRef);
                 var data = new WebShareDataModel
                 {
-                    Files = new[] { file }
+                    Files = [file]
                 };
 
                 if (!await WebShareService.CanShareAsync(data))
