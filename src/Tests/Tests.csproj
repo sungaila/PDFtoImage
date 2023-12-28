@@ -18,6 +18,30 @@
 
   <ItemGroup>
     <None Remove="Assets\DummyImage.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png" />
+    <None Remove="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -478,6 +502,30 @@
     <None Remove="Assets\Expected\LINUX\Wikimedia_Commons_web_9_ANNOT.jpg" />
     <None Remove="Assets\Expected\LINUX\Wikimedia_Commons_web_9_ANNOT.png" />
     <None Remove="Assets\Expected\LINUX\Wikimedia_Commons_web_9_ANNOT.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png" />
+    <None Remove="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp" />
     <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg" />
     <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=True.jpg" />
     <None Remove="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=300_aspectratio=False.jpg" />
@@ -1564,6 +1612,78 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\LINUX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Expected\LINUX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2942,6 +3062,78 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\LINUX\Wikimedia_Commons_web_9_ANNOT.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_none.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_images_paths.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\OSX\AntiAliasing\hundesteuer-anmeldung_aliasing_text_paths.webp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\OSX\AspectRatio\hundesteuer-anmeldung.pdf_w=1000_h=1000_dpi=1200_aspectratio=False.jpg">
