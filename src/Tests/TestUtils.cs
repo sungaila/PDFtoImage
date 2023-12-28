@@ -5,32 +5,32 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Tests
 {
-	public static class TestUtils
-	{
-		public static void CompareStreams(string expectedFilePath, Stream outputStream)
-		{
-			using var expectedStream = GetExpectedStream(expectedFilePath);
-			CompareStreams(expectedStream, outputStream);
-		}
+    public static class TestUtils
+    {
+        public static void CompareStreams(string expectedFilePath, Stream outputStream)
+        {
+            using var expectedStream = GetExpectedStream(expectedFilePath);
+            CompareStreams(expectedStream, outputStream);
+        }
 
-		public static void CompareStreams(Stream expectedStream, Stream outputStream)
-		{
-			Assert.IsNotNull(outputStream);
-			Assert.AreNotEqual(0, outputStream.Length);
+        public static void CompareStreams(Stream expectedStream, Stream outputStream)
+        {
+            Assert.IsNotNull(outputStream);
+            Assert.AreNotEqual(0, outputStream.Length);
 
-			Assert.AreEqual(expectedStream.Length, outputStream.Length);
+            Assert.AreEqual(expectedStream.Length, outputStream.Length);
 
-			expectedStream.Position = 0;
-			outputStream.Position = 0;
+            expectedStream.Position = 0;
+            outputStream.Position = 0;
 
-			for (int i = 0; i < expectedStream.Length; i++)
-			{
-				Assert.AreEqual(expectedStream.ReadByte(), outputStream.ReadByte());
-			}
-		}
+            for (int i = 0; i < expectedStream.Length; i++)
+            {
+                Assert.AreEqual(expectedStream.ReadByte(), outputStream.ReadByte());
+            }
+        }
 
-		public static string GetPlatformAsString()
-		{
+        public static string GetPlatformAsString()
+        {
 #if NET471_OR_GREATER || NETCOREAPP
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -48,49 +48,52 @@ namespace PDFtoImage.Tests
 
             throw new PlatformNotSupportedException();
 #else
-			return Environment.OSVersion.Platform == PlatformID.Win32NT
-				? "WINDOWS"
-				: "LINUX";
+            return Environment.OSVersion.Platform == PlatformID.Win32NT
+                ? "WINDOWS"
+                : "LINUX";
 #endif
-		}
+        }
 
-		public static FileStream GetInputStream(string filePath)
-		{
-			return new FileStream(filePath, FileMode.Open, FileAccess.Read);
-		}
+        public static FileStream GetInputStream(string filePath)
+        {
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        }
 
-		public static FileStream GetExpectedStream(string filePath)
-		{
-			if (!File.Exists(filePath))
-				Assert.Inconclusive("The expected asset '{0}' could not be found.", filePath);
+        public static FileStream GetExpectedStream(string filePath)
+        {
+            if (!File.Exists(filePath))
+                Assert.Inconclusive("The expected asset '{0}' could not be found.", filePath);
 
-			return new FileStream(filePath, FileMode.Open, FileAccess.Read);
-		}
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        }
 
-		private static readonly object _lockObject = new();
+        private static readonly object _lockObject = new();
 
-		public static Stream CreateOutputStream(string expectedPath)
-		{
-			var outputPath = expectedPath.Replace("Expected", "Generated");
+        public static Stream CreateOutputStream(string expectedPath)
+        {
+            if (!TestBase.SaveOutputInGeneratedFolder)
+                return new MemoryStream();
 
-			lock (_lockObject)
-			{
-				if (!File.Exists(outputPath) && TestBase.SaveOutputInGeneratedFolder)
-				{
-					if (!Directory.Exists(outputPath))
-						Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+            var outputPath = expectedPath.Replace("Expected", "Generated");
 
-					return new FileStream(
-						outputPath,
-						FileMode.Create,
-						FileAccess.ReadWrite,
-						FileShare.Read,
-						4096,
-						FileOptions.SequentialScan);
-				}
-			}
+            lock (_lockObject)
+            {
+                if (!File.Exists(outputPath))
+                {
+                    if (!Directory.Exists(outputPath))
+                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
-			return new MemoryStream();
-		}
-	}
+                    return new FileStream(
+                        outputPath,
+                        FileMode.Create,
+                        FileAccess.ReadWrite,
+                        FileShare.Read,
+                        4096,
+                        FileOptions.SequentialScan);
+                }
+            }
+
+            return new MemoryStream();
+        }
+    }
 }
