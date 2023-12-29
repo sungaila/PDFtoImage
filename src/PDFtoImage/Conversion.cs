@@ -539,7 +539,8 @@ namespace PDFtoImage
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor).Encode(imageStream, format, 100);
+            using var bitmap = ToImage(pdfAsBase64String, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor);
+            bitmap.Encode(imageStream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -568,7 +569,8 @@ namespace PDFtoImage
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
 
-            ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor).Encode(imageStream, format, 100);
+            using var bitmap = ToImage(pdfAsByteArray, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor);
+            bitmap.Encode(imageStream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -591,7 +593,8 @@ namespace PDFtoImage
 #endif
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, string? password = null, int page = 0, int dpi = 300, int? width = null, int? height = null, bool withAnnotations = false, bool withFormFill = false, bool withAspectRatio = false, PdfRotation rotation = PdfRotation.Rotate0, PdfAntiAliasing antiAliasing = PdfAntiAliasing.All, SKColor? backgroundColor = null)
         {
-            ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor).Encode(stream, format, 100);
+            using var bitmap = ToImage(pdfStream, password, page, dpi, width, height, withAnnotations, withFormFill, withAspectRatio, rotation, antiAliasing, backgroundColor);
+            bitmap.Encode(stream, format, 100);
         }
         #endregion
 

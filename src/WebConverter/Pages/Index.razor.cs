@@ -118,6 +118,7 @@ namespace PDFtoImage.WebConverter.Pages
         private async Task Submit()
         {
             Logger.LogInformation("Converting {Model}.", Model);
+            SKBitmap? bitmap = null;
 
             try
             {
@@ -134,7 +135,6 @@ namespace PDFtoImage.WebConverter.Pages
                 }
 
                 Model.Input.Position = 0;
-                SKBitmap? bitmap = null;
                 bool encodeSuccess = false;
                 PdfAntiAliasing antiAliasing = default;
                 var backgroundColor = SKColors.White;
@@ -187,6 +187,7 @@ namespace PDFtoImage.WebConverter.Pages
             }
             finally
             {
+                bitmap?.Dispose();
                 IsLoading = false;
             }
         }

@@ -79,7 +79,7 @@ namespace PDFtoImage.PdfiumViewer
             }
 
             var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, 4, bitmap.GetPixels(), width * 4);
+            var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), width * 4);
 
             try
             {

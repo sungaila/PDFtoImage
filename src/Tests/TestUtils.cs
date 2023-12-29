@@ -56,7 +56,7 @@ namespace PDFtoImage.Tests
 
         public static FileStream GetInputStream(string filePath)
         {
-            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
         }
 
         public static FileStream GetExpectedStream(string filePath)
@@ -64,7 +64,7 @@ namespace PDFtoImage.Tests
             if (!File.Exists(filePath))
                 Assert.Inconclusive("The expected asset '{0}' could not be found.", filePath);
 
-            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
         }
 
         private static readonly object _lockObject = new();
@@ -87,7 +87,7 @@ namespace PDFtoImage.Tests
                         outputPath,
                         FileMode.CreateNew,
                         FileAccess.ReadWrite,
-                        FileShare.Read,
+                        FileShare.None,
                         4096,
                         FileOptions.SequentialScan);
                 }

@@ -194,11 +194,11 @@ namespace PDFtoImage.PdfiumViewer
             }
         }
 
-        public static IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride)
+        public static IntPtr FPDFBitmap_CreateEx(int width, int height, FPDFBitmap format, IntPtr first_scan, int stride)
         {
             lock (LockString)
             {
-                return Imports.FPDFBitmap_CreateEx(width, height, format, first_scan, stride);
+                return Imports.FPDFBitmap_CreateEx(width, height, (int)format, first_scan, stride);
             }
         }
 
@@ -651,6 +651,32 @@ namespace PDFtoImage.PdfiumViewer
         {
             OPEN = 0,
             CLOSE = 1
+        }
+
+        /// <summary>
+        /// A number indicating for bitmap format.
+        /// </summary>
+        public enum FPDFBitmap : int
+        {
+            /// <summary>
+            /// Gray scale bitmap, one byte per pixel.
+            /// </summary>
+            Gray = 1,
+
+            /// <summary>
+            /// 3 bytes per pixel, byte order: blue, green, red.
+            /// </summary>
+            BGR = 2,
+
+            /// <summary>
+            /// 4 bytes per pixel, byte order: blue, green, red, unused.
+            /// </summary>
+            BGRx = 3,
+
+            /// <summary>
+            /// 4 bytes per pixel, byte order: blue, green, red, alpha.
+            /// </summary>
+            BGRA = 4
         }
 
         [Flags]
