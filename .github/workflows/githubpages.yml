@@ -29,8 +29,6 @@ jobs:
         run: dotnet workload install android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
-      - name: Setup .NET workload wasm-tools-net7
-        run: dotnet workload install wasm-tools-net7
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         run: |

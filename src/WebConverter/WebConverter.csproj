@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
@@ -11,6 +11,8 @@
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
+    <WasmEnableSIMD>true</WasmEnableSIMD>
+    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
   </PropertyGroup>
@@ -40,7 +42,7 @@
   <ItemGroup>
     <PackageReference Include="ByteSize" Version="2.1.1" />
     <PackageReference Include="Markdig.Signed" Version="0.34.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
@@ -60,7 +62,7 @@
     <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
     <NativeFileReference Include="pdfium.a" />
-    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st\*.a" />
+    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\simd\libSkiaSharp.a" />
   </ItemGroup>
 
 </Project>
