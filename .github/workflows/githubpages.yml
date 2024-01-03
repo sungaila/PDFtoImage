@@ -29,8 +29,6 @@ jobs:
         run: dotnet workload install android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
-      - name: Setup .NET workload wasm-tools-net7
-        run: dotnet workload install wasm-tools-net7
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         run: |
@@ -44,9 +42,9 @@ jobs:
       - name: Publish
         run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
       - name: Create .nojekyll file
-        run: touch src/WebConverter/bin/Release/net7.0/publish/wwwroot/.nojekyll
+        run: touch src/WebConverter/bin/Release/net8.0/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes
-        working-directory: src/WebConverter/bin/Release/net7.0/publish/wwwroot
+        working-directory: src/WebConverter/bin/Release/net8.0/publish/wwwroot
         if: false
         run: |
           jsFile=$(<service-worker-assets.js)
@@ -78,7 +76,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@main
         with:
-          path: src/WebConverter/bin/Release/net7.0/publish/wwwroot
+          path: src/WebConverter/bin/Release/net8.0/publish/wwwroot
   deploy:
     name: Deploy
     needs: publish
