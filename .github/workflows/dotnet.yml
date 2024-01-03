@@ -187,6 +187,9 @@ jobs:
     permissions:
       checks: write
       pull-requests: write
+    concurrency:
+      group: "publish-test-results"
+      cancel-in-progress: false
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
