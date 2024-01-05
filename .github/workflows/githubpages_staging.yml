@@ -8,10 +8,6 @@ on:
   pull_request:
     branches:
       - '**'
-      
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   publish:
@@ -91,6 +87,10 @@ jobs:
     environment:
       name: github-pages-staging
       url: ${{ steps.deployment.outputs.page_url }}
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     
     steps:
       - name: Deploy to GitHub Pages
