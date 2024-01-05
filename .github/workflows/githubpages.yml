@@ -7,11 +7,7 @@ on:
   push:
     branches:
       - 'master'
-      
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
+- 
 jobs:
   publish:
     name: Publish
@@ -81,6 +77,10 @@ jobs:
     name: Deploy
     needs: publish
     runs-on: ubuntu-latest
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:

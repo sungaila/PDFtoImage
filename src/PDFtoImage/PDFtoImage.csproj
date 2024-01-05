@@ -21,8 +21,7 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Added optional parameter antiAliasing.
-- Added optional parameter backgroundColor.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added PDFium binaries for ASP.NET Core Blazor WebAssembly.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MonoAndroid MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -76,7 +75,7 @@
 
   <!-- .NET Framework packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net481'">
@@ -92,13 +91,18 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.6" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.6" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.6" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
     <PackageReference Include="bblanchon.PDFium.Android" Version="122.0.6219" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.6" PrivateAssets="analyzers" />
+  </ItemGroup>
+
+  <!-- Blazor WebAssembly stuff -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" PrivateAssets="analyzers" />
+    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="122.0.6229" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

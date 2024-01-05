@@ -11,8 +11,6 @@
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
-    <WasmEnableSIMD>true</WasmEnableSIMD>
-    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
   </PropertyGroup>
@@ -61,7 +59,6 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
-    <NativeFileReference Include="pdfium.a" />
     <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\simd\libSkiaSharp.a" />
   </ItemGroup>
 
