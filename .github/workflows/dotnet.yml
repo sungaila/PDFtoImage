@@ -95,7 +95,6 @@ jobs:
           java-package: jdk
           distribution: 'zulu'
       - name: Setup Android SDK 29
-        if: ${{ startswith(inputs.runner, 'windows') }}
         run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Restore
         run: msbuild src/PDFtoImage.sln /t:restore
