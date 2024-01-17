@@ -120,7 +120,7 @@ jobs:
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
       - name: Publish tests
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
