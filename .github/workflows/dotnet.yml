@@ -154,6 +154,9 @@ jobs:
       - name: .NET Framework 4.6.2
         if: runner.os == 'Windows' && success()
         run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET Framework 4.7.1
+        if: runner.os == 'Windows' && success()
+        run: dotnet test net471/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
         run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
