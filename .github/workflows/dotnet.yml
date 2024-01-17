@@ -150,7 +150,7 @@ jobs:
         with:
           dotnet-version: 8.x
       - name: Download test assemblies
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         with:
           name: Test assemblies
       - name: .NET Framework 4.6.2
@@ -180,7 +180,7 @@ jobs:
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
@@ -198,7 +198,7 @@ jobs:
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         with:
           path: artifacts
       - name: Publish test results
