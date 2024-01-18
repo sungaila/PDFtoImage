@@ -1,26 +1,26 @@
-﻿using SkiaSharp.Internals;
+﻿#if NETFRAMEWORK
+using SkiaSharp.Internals;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
 namespace PDFtoImage.PdfiumViewer
 {
-#if NETFRAMEWORK
     // Taken and modified from SkiaSharp for loading native libraries in .NET Framework
     // https://github.com/mono/SkiaSharp/blob/9274aeec807fd17eec2a3266ad4c2475c37d8a0c/binding/Binding.Shared/LibraryLoader.cs
     internal static class LibraryLoader
     {
-        static LibraryLoader()
+        public static string Extension { get; } = GetExtension();
+
+        private static string GetExtension()
         {
             if (PlatformConfiguration.IsWindows)
-                Extension = ".dll";
+                return ".dll";
             else if (PlatformConfiguration.IsMac)
-                Extension = ".dylib";
+                return ".dylib";
             else
-                Extension = ".so";
+                return ".so";
         }
-
-        public static string Extension { get; }
 
         public static IntPtr LoadLocalLibrary<T>(string libraryName)
         {
@@ -195,5 +195,5 @@ namespace PDFtoImage.PdfiumViewer
         }
 #pragma warning restore IDE1006 // Naming Styles
     }
-#endif
 }
+#endif
