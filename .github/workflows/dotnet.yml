@@ -254,6 +254,8 @@ jobs:
           java-version: 17
           java-package: jdk
           distribution: 'zulu'
+      - name: Setup Android SDK 29
+        run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
