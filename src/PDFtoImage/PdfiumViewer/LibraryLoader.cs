@@ -137,8 +137,10 @@ namespace PDFtoImage.PdfiumViewer
                 handle = Linux.dlopen(libraryName);
             else if (PlatformConfiguration.IsMac)
                 handle = Mac.dlopen(libraryName);
+            else if (RuntimeInformation.OSDescription.StartsWith("Unix"))
+                handle = Linux.dlopen(libraryName);
             else
-                throw new PlatformNotSupportedException($"Current platform is unknown, unable to load library '{libraryName}'.");
+                throw new PlatformNotSupportedException($"Current platform '{RuntimeInformation.OSDescription}' is unknown, unable to load library '{libraryName}'.");
 
             return handle;
         }
