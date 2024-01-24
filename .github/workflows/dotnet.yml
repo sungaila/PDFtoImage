@@ -127,6 +127,14 @@ jobs:
           path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
+      - name: Publish MonoConsole framework test
+        uses: actions/upload-artifact@v3
+        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
+        with:
+          name: MonoConsole
+          path: src/FrameworkTests/MonoConsole/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
+          if-no-files-found: error
+          retention-days: 1
   test:
     name: Test (${{ matrix.os }})
     needs: build
@@ -149,15 +157,32 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 8.x
+      - name: Setup Mono
+        if: runner.os == 'Windows' && success()
+        run: choco install mono -y
+      - name: Download MonoConsole framework test
+        uses: actions/download-artifact@v3
+        with:
+          name: MonoConsole
+      - name: Mono (.NET Framework 4.6.2)
+        if: success() || failure()
+        run: mono net462/PDFtoImage.FrameworkTests.MonoConsole.exe
+      - name: Mono (.NET Framework 4.7.1)
+        if: success() || failure()
+        run: mono net471/PDFtoImage.FrameworkTests.MonoConsole.exe
+      - name: Mono (.NET Framework 4.8.1)
+        if: success() || failure()
+        run: mono net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
+        if: success() || failure()
         uses: actions/download-artifact@v3
         with:
           name: Test assemblies
       - name: .NET Framework 4.6.2
-        if: runner.os == 'Windows' && success()
+        if: runner.os == 'Windows' && (success() || failure())
         run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.7.1
-        if: runner.os == 'Windows' && success()
+        if: runner.os == 'Windows' && (success() || failure())
         run: dotnet test net471/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
