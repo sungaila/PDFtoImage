@@ -2,43 +2,49 @@ using System;
 
 namespace PDFtoImage.PdfiumViewer
 {
-	internal sealed class PdfLibrary : IDisposable
-	{
-		private static readonly object _syncRoot = new();
-		private static PdfLibrary? _library;
-		private bool disposedValue;
+    internal sealed class PdfLibrary : IDisposable
+    {
+        private static readonly object _syncRoot = new();
+        private static PdfLibrary? _library;
+        private bool disposedValue;
 
-		public static void EnsureLoaded()
-		{
-			lock (_syncRoot)
-			{
-				_library ??= new PdfLibrary();
-			}
-		}
+        public static void EnsureLoaded()
+        {
+            lock (_syncRoot)
+            {
+#if NETFRAMEWORK
+                if (_library == null)
+                    LibraryLoader.LoadLocalLibrary<PdfDocument>("pdfium");
+#else
+				// .NET (Core) and Xamarin resolve the pdfium lib on their own
+#endif
+                _library ??= new PdfLibrary();
+            }
+        }
 
-		private PdfLibrary()
-		{
-			NativeMethods.FPDF_InitLibrary();
-		}
+        private PdfLibrary()
+        {
+            NativeMethods.FPDF_InitLibrary();
+        }
 
-		~PdfLibrary()
-		{
-			Dispose(disposing: false);
-		}
+        ~PdfLibrary()
+        {
+            Dispose(disposing: false);
+        }
 
         private void Dispose(bool disposing)
         {
             if (!disposedValue)
-			{
-				NativeMethods.FPDF_DestroyLibrary();
-				disposedValue = true;
-			}
-		}
+            {
+                NativeMethods.FPDF_DestroyLibrary();
+                disposedValue = true;
+            }
+        }
 
-		public void Dispose()
-		{
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
-		}
-	}
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+    }
 }

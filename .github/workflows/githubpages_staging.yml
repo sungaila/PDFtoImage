@@ -90,7 +90,7 @@ jobs:
 
     concurrency:
       group: "pages"
-      cancel-in-progress: false
+      cancel-in-progress: true
     
     steps:
       - name: Deploy to GitHub Pages

@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiApp", "FrameworkTests\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore", "FrameworkTests\AspNetCore\AspNetCore.csproj", "{451B5027-1F18-4132-B5AF-DB752DDE91FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoConsole", "FrameworkTests\MonoConsole\MonoConsole.csproj", "{4453B6F1-0470-420A-BD2C-7BE64EE8E256}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,12 @@ Global
 		{451B5027-1F18-4132-B5AF-DB752DDE91FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{451B5027-1F18-4132-B5AF-DB752DDE91FD}.ReleaseSigned|Any CPU.ActiveCfg = Release|Any CPU
 		{451B5027-1F18-4132-B5AF-DB752DDE91FD}.ReleaseSigned|Any CPU.Build.0 = Release|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.ReleaseSigned|Any CPU.ActiveCfg = Release|Any CPU
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256}.ReleaseSigned|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +97,7 @@ Global
 		{E6458852-9C48-48CE-AC1C-99374F3B3092} = {7BB9FE70-BACD-4FC6-B90A-B505265A66E0}
 		{F1B387C4-5E76-4079-991A-ED6684112317} = {7BB9FE70-BACD-4FC6-B90A-B505265A66E0}
 		{451B5027-1F18-4132-B5AF-DB752DDE91FD} = {7BB9FE70-BACD-4FC6-B90A-B505265A66E0}
+		{4453B6F1-0470-420A-BD2C-7BE64EE8E256} = {7BB9FE70-BACD-4FC6-B90A-B505265A66E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D6C1E6C9-335A-4797-9F4E-2DEB42A9B295}

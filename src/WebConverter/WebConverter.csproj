@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
@@ -38,17 +38,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="ByteSize" Version="2.1.2" />
     <PackageReference Include="Markdig.Signed" Version="0.34.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.1" PrivateAssets="all" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
     <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -61,5 +56,4 @@
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
     <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\simd\libSkiaSharp.a" />
   </ItemGroup>
-
 </Project>

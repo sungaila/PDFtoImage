@@ -94,6 +94,8 @@ jobs:
           java-version: 17
           java-package: jdk
           distribution: 'zulu'
+      - name: Setup Android SDK 29
+        run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Restore
         run: msbuild src/PDFtoImage.sln /t:restore
       - name: Build
@@ -101,7 +103,7 @@ jobs:
       - name: Pack
         run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: Library assemblies
           path: |
@@ -110,7 +112,7 @@ jobs:
             !**/*.snupkg
           if-no-files-found: error
       - name: Publish NuGet packages
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: NuGet packages
           path: |
@@ -118,11 +120,19 @@ jobs:
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
       - name: Publish tests
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
           path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
+          if-no-files-found: error
+          retention-days: 1
+      - name: Publish test project MonoConsole
+        uses: actions/upload-artifact@v4
+        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
+        with:
+          name: MonoConsole
+          path: src/FrameworkTests/MonoConsole/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
   test:
@@ -135,6 +145,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
+      - name: Setup Mono
+        if: runner.os == 'Windows'
+        run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
@@ -147,35 +160,53 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 8.x
+      - name: Download test project MonoConsole
+        uses: actions/download-artifact@v4
+        with:
+          name: MonoConsole
+          path: MonoConsole
+      - name: Mono (.NET Framework 4.6.2)
+        if: success() || failure()
+        run: mono MonoConsole/net462/PDFtoImage.FrameworkTests.MonoConsole.exe
+      - name: Mono (.NET Framework 4.7.1)
+        if: success() || failure()
+        run: mono MonoConsole/net471/PDFtoImage.FrameworkTests.MonoConsole.exe
+      - name: Mono (.NET Framework 4.8.1)
+        if: success() || failure()
+        run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
-        uses: actions/download-artifact@main
+        if: success() || failure()
+        uses: actions/download-artifact@v3
         with:
           name: Test assemblies
       - name: .NET Framework 4.6.2
-        if: runner.os == 'Windows' && success()
-        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        if: runner.os == 'Windows' && (success() || failure())
+        run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET Framework 4.7.1
+        if: runner.os == 'Windows' && (success() || failure())
+        run: dotnet test net471/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 6
         if: success() || failure()
-        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 7
         if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
-        run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v4
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
@@ -193,8 +224,10 @@ jobs:
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v4
         with:
+          pattern: Test results (*)
+          merge-multiple: true
           path: artifacts
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@master
@@ -249,6 +282,8 @@ jobs:
           java-version: 17
           java-package: jdk
           distribution: 'zulu'
+      - name: Setup Android SDK 29
+        run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
