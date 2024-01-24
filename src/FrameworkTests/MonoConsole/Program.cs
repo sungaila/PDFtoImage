@@ -10,6 +10,7 @@ namespace PDFtoImage.FrameworkTests.MonoConsole
 
         public static void Main()
         {
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(typeof(Program).Assembly.Location));
             using var input = new FileStream("SocialPreview.pdf", FileMode.Open, FileAccess.Read);
             using var bitmap = PDFtoImage.Conversion.ToImage(input);
 

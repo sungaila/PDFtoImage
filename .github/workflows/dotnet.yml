@@ -127,7 +127,7 @@ jobs:
           path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
-      - name: Publish MonoConsole framework test
+      - name: Publish test project MonoConsole
         uses: actions/upload-artifact@v3
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
@@ -145,6 +145,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
+      - name: Setup Mono
+        if: runner.os == 'Windows'
+        run: choco install mono -y
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
@@ -157,22 +160,20 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 8.x
-      - name: Setup Mono
-        if: runner.os == 'Windows' && success()
-        run: choco install mono -y
-      - name: Download MonoConsole framework test
+      - name: Download test project MonoConsole
         uses: actions/download-artifact@v3
         with:
           name: MonoConsole
+          path: MonoConsole
       - name: Mono (.NET Framework 4.6.2)
         if: success() || failure()
-        run: mono net462/PDFtoImage.FrameworkTests.MonoConsole.exe
+        run: mono MonoConsole/net462/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Mono (.NET Framework 4.7.1)
         if: success() || failure()
-        run: mono net471/PDFtoImage.FrameworkTests.MonoConsole.exe
+        run: mono MonoConsole/net471/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Mono (.NET Framework 4.8.1)
         if: success() || failure()
-        run: mono net481/PDFtoImage.FrameworkTests.MonoConsole.exe
+        run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
         if: success() || failure()
         uses: actions/download-artifact@v3

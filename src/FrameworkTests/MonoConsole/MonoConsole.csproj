@@ -17,14 +17,37 @@
     <NoWarn>CA1416</NoWarn>
   </PropertyGroup>
 
+  <!-- Remove these libs when updating pdfium nuget packages -->
+  <ItemGroup>
+    <None Remove="linux-arm64\libpdfium.so" />
+    <None Remove="linux-x64\libpdfium.so" />
+    <None Remove="linux-x86\libpdfium.so" />
+    <None Remove="osx-x64\libpdfium.dylib" />
+  </ItemGroup>
+
   <ItemGroup>
     <Content Include="..\..\Tests\Assets\SocialPreview.pdf" Link="SocialPreview.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="linux-arm64\libpdfium.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>arm64\libpdfium.so</TargetPath>
+    </Content>
+    <Content Include="linux-x64\libpdfium.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>x64\libpdfium.so</TargetPath>
+    </Content>
+    <Content Include="linux-x86\libpdfium.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>x86\libpdfium.so</TargetPath>
+    </Content>
+    <Content Include="osx-x64\libpdfium.dylib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>libpdfium.dylib</TargetPath>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
-
 </Project>
