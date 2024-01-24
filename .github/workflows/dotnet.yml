@@ -147,7 +147,7 @@ jobs:
     steps:
       - name: Setup Mono
         if: runner.os == 'Windows'
-        run: choco install mono -y && setx PATH "%PATH%;C:\Program Files\Mono\bin"
+        run: choco install mono -y && setx /m PATH "%PATH%;C:\Program Files\Mono\bin"
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
