@@ -80,7 +80,7 @@ jobs:
 
     concurrency:
       group: "pages"
-      cancel-in-progress: false
+      cancel-in-progress: true
 
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
