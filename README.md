@@ -23,3 +23,14 @@ Call a static method from `PDFtoImage.Conversion`:
 `ToImages` and `ToImagesAsync` for **multiple pages**.
 
 *Note: [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
+
+## Tested and supported frameworks
+* [ASP.NET](https://learn.microsoft.com/en-us/aspnet/overview)
+* [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
+* [Blazor WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly)
+* [Mono](https://www.mono-project.com)
+* [.NET (Core)](https://learn.microsoft.com/en-us/dotnet/core/introduction)
+* [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/get-started/overview)
+* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding macOS and iOS)
+* [Xamarin.Android](https://learn.microsoft.com/en-us/xamarin/android)
+* [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
