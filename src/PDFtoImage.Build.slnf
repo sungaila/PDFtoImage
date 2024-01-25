@@ -8,6 +8,7 @@
       "FrameworkTests\\MauiApp\\MauiApp.csproj",
       "FrameworkTests\\MonoAndroid\\MonoAndroid.csproj",
       "FrameworkTests\\MonoConsole\\MonoConsole.csproj",
+      "FrameworkTests\\Uwp\\Uwp.csproj",
       "PDFtoImage\\PDFtoImage.csproj",
       "Tests\\Tests.csproj",
       "WebConverter\\WebConverter.csproj"
