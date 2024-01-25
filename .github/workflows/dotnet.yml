@@ -97,11 +97,11 @@ jobs:
       - name: Setup Android SDK 29
         run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Setup Windows 11 SDK (10.0.22621.0)
-        uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.12
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@main
         with:
             sdk-version: 22621
       - name: Restore
-        run: msbuild src/PDFtoImage.sln /t:restore
+        run: msbuild src/PDFtoImage.sln /t:restore && dotnet restore src/FrameworkTests/AspNet/AspNet.csproj
       - name: Build
         run: msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack

@@ -8,7 +8,7 @@
 
   <Identity
     Name="24f8e800-c276-440b-9357-28330b85e64b"
-    Publisher="CN=David"
+    Publisher="CN=David Sungaila"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="24f8e800-c276-440b-9357-28330b85e64b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
