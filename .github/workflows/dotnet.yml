@@ -101,11 +101,11 @@ jobs:
         with:
             sdk-version: 22621
       - name: Restore
-        run: msbuild src/PDFtoImage.sln /t:restore && dotnet restore src/FrameworkTests/AspNet/AspNet.csproj
+        run: msbuild src/PDFtoImage.sln /t:restore
       - name: Build
-        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci
       - name: Publish libraries
         uses: actions/upload-artifact@v4
         with:

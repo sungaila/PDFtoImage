@@ -56,8 +56,8 @@
 
   <!-- Roslyn analyzer for public APIs -->
   <ItemGroup>
-    <AdditionalFiles Include="PublicAPI\net462\PublicAPI.Shipped.txt" />
-    <AdditionalFiles Include="PublicAPI\net462\PublicAPI.Unshipped.txt" />
+    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI\$(TargetFramework)\PublicAPI.Unshipped.txt" />
   </ItemGroup>
 
   <!-- NuGet Icon -->
