@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>PDFtoImage.FrameworkTests.MonoConsole</AssemblyName>
     <RootNamespace>PDFtoImage.FrameworkTests.MonoConsole</RootNamespace>
+    <StartupObject>PDFtoImage.FrameworkTests.MonoConsole.Program</StartupObject>
   </PropertyGroup>
 
   <!-- C# compiler -->
