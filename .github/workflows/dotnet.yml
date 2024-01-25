@@ -208,6 +208,7 @@ jobs:
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
+          if-no-files-found: error
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
@@ -215,6 +216,7 @@ jobs:
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
+          if-no-files-found: error
           retention-days: 1
   publish-test-results:
     name: Publish tests results
