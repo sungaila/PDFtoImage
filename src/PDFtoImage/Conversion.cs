@@ -736,7 +736,7 @@ namespace PDFtoImage
             if (!antiAliasing.HasFlag(PdfAntiAliasing.Paths))
                 renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHPATH;
 
-            // Stream -> PdfiumViewer.PdfDocument
+            // Stream -> Internals.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             if (page >= pdfDocument.PageSizes.Count)
@@ -748,7 +748,7 @@ namespace PDFtoImage
             if (withAspectRatio)
                 AdjustForAspectRatio(ref width, ref height, pageSize);
 
-            // PdfiumViewer.PdfDocument -> Image
+            // Internals.PdfDocument -> Image
             return pdfDocument.Render(page, width ?? (int)pageSize.Width, height ?? (int)pageSize.Height, dpi, dpi, rotation, renderFlags, withFormFill, correctFromDpi, backgroundColor ?? SKColors.White);
         }
         #endregion
@@ -890,7 +890,7 @@ namespace PDFtoImage
             if (!antiAliasing.HasFlag(PdfAntiAliasing.Paths))
                 renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHPATH;
 
-            // Stream -> PdfiumViewer.PdfDocument
+            // Stream -> Internals.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
@@ -903,7 +903,7 @@ namespace PDFtoImage
                 if (withAspectRatio)
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
-                // PdfiumViewer.PdfDocument -> Image
+                // Internals.PdfDocument -> Image
                 yield return pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, dpi, dpi, rotation, renderFlags, withFormFill, correctFromDpi, backgroundColor ?? SKColors.White);
             }
         }
@@ -1052,7 +1052,7 @@ namespace PDFtoImage
             if (!antiAliasing.HasFlag(PdfAntiAliasing.Paths))
                 renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHPATH;
 
-            // Stream -> PdfiumViewer.PdfDocument
+            // Stream -> Internals.PdfDocument
             using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
@@ -1067,7 +1067,7 @@ namespace PDFtoImage
                 if (withAspectRatio)
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
-                // PdfiumViewer.PdfDocument -> Image
+                // Internals.PdfDocument -> Image
                 yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, dpi, dpi, rotation, renderFlags, withFormFill, correctFromDpi, backgroundColor ?? SKColors.White), cancellationToken);
             }
         }
