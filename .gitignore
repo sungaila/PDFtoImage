@@ -429,3 +429,4 @@ Novell
 *.patch
 *.keystore
 /omnisharp.json
+!Uwp_TemporaryKey.pfx
