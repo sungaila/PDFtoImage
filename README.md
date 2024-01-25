@@ -12,7 +12,6 @@ A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into ima
 
 This .NET library is built on top of
 * [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
-* [PdfiumViewer](https://github.com/pvginkel/PdfiumViewer) (wrapper for PDFium)
 * [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
 
 ## Getting started
@@ -23,3 +22,17 @@ Call a static method from `PDFtoImage.Conversion`:
 `ToImages` and `ToImagesAsync` for **multiple pages**.
 
 *Note: [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
+
+## Supported runtimes
+* [.NET (Core)](https://learn.microsoft.com/en-us/dotnet/core/introduction)
+* [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/get-started/overview)
+* [Mono](https://www.mono-project.com)
+
+## Tested and supported frameworks
+* [ASP.NET](https://learn.microsoft.com/en-us/aspnet/overview)
+* [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
+* [Blazor WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly)
+* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding **macOS** and **iOS**)
+* [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
+* [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
+* [Xamarin.Android](https://learn.microsoft.com/en-us/xamarin/android)

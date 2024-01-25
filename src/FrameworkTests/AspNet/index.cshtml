@@ -1,0 +1,21 @@
+﻿@{
+    string output = "Hey";
+
+    using (var input = new FileStream(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SocialPreview.pdf"), FileMode.Open, FileAccess.Read))
+    {
+        using (var bitmap = PDFtoImage.Conversion.ToImage(input))
+        {
+            output = $"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}";
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <pre>@output</pre>
+</body>
+</html>

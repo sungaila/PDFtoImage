@@ -1,5 +1,5 @@
 ﻿using System;
-using static PDFtoImage.PdfiumViewer.NativeMethods;
+using static PDFtoImage.Internals.NativeMethods;
 
 namespace PDFtoImage.Exceptions
 {

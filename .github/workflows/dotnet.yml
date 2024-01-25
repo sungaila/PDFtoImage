@@ -96,10 +96,14 @@ jobs:
           distribution: 'zulu'
       - name: Setup Android SDK 29
         run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
+      - name: Setup Windows 11 SDK (10.0.22621.0)
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@main
+        with:
+            sdk-version: 22621
       - name: Restore
-        run: msbuild src/PDFtoImage.sln /t:restore
+        run: msbuild src/PDFtoImage.Build.slnf /t:restore
       - name: Build
-        run: msbuild src/PDFtoImage.sln /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: msbuild src/PDFtoImage.Build.slnf /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
         run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Publish libraries
@@ -127,6 +131,7 @@ jobs:
           path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
+          #compression-level: 0
       - name: Publish test project MonoConsole
         uses: actions/upload-artifact@v4
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
@@ -203,6 +208,7 @@ jobs:
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
+          if-no-files-found: error
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
@@ -210,6 +216,7 @@ jobs:
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
+          if-no-files-found: error
           retention-days: 1
   publish-test-results:
     name: Publish tests results
