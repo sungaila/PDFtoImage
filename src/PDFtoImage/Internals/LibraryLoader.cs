@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace PDFtoImage.PdfiumViewer
+namespace PDFtoImage.Internals
 {
     // Taken and modified from SkiaSharp for loading native libraries in .NET Framework
     // https://github.com/mono/SkiaSharp/blob/9274aeec807fd17eec2a3266ad4c2475c37d8a0c/binding/Binding.Shared/LibraryLoader.cs

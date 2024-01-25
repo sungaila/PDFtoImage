@@ -6,7 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace PDFtoImage.PdfiumViewer
+namespace PDFtoImage.Internals
 {
 #if NET8_0_OR_GREATER
 #pragma warning disable CA1513 // Use ObjectDisposedException throw helper

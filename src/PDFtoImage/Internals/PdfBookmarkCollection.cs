@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace PDFtoImage.PdfiumViewer
+namespace PDFtoImage.Internals
 {
 	internal sealed class PdfBookmark
 	{

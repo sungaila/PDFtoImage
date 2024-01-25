@@ -1,4 +1,4 @@
-﻿using PDFtoImage.PdfiumViewer;
+﻿using PDFtoImage.Internals;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace PDFtoImage.PdfiumViewer
+﻿namespace PDFtoImage.Internals
 {
 	internal static class PdfiumResolver
 	{

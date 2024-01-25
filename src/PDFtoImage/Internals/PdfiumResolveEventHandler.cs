@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PDFtoImage.PdfiumViewer
+namespace PDFtoImage.Internals
 {
 	internal sealed class PdfiumResolveEventArgs : EventArgs
 	{

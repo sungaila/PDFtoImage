@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 
-namespace PDFtoImage.PdfiumViewer
+namespace PDFtoImage.Internals
 {
 #if NET8_0_OR_GREATER
 #pragma warning disable CA1510 // Use ArgumentNullException throw helper
