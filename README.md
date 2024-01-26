@@ -33,7 +33,7 @@ Call a static method from `PDFtoImage.Conversion`:
 * [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
 * [Blazor WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly)
 * [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding **macOS** and **iOS**)
-* [Unity](https://docs.unity3d.com/Manual/Mono.html) (excluding **iOS**)
+* [Unity](https://docs.unity3d.com/Manual/Mono.html)
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 * [Xamarin.Android](https://learn.microsoft.com/en-us/xamarin/android)
