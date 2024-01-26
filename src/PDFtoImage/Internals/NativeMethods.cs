@@ -268,7 +268,7 @@ namespace PDFtoImage.Internals
 #if NET6_0_OR_GREATER
             delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
 #else
-			var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
+            var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
 #endif
 
             var access = new FPDF_FILEACCESS
@@ -309,14 +309,16 @@ namespace PDFtoImage.Internals
         }
 
 #if !NET6_0_OR_GREATER
-		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-		private delegate int FPDF_GetBlockDelegate(IntPtr param, uint position, IntPtr buffer, uint size);
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate int FPDF_GetBlockDelegate(IntPtr param, uint position, IntPtr buffer, uint size);
 
-		private static readonly FPDF_GetBlockDelegate _getBlockDelegate = FPDF_GetBlock;
+        private static readonly FPDF_GetBlockDelegate _getBlockDelegate = FPDF_GetBlock;
 #endif
 
 #if NET6_0_OR_GREATER
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+#else
+        [Mono.Util.MonoPInvokeCallback]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
@@ -804,7 +806,7 @@ namespace PDFtoImage.Internals
 #if NET6_0_OR_GREATER
             public delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> m_GetBlock;
 #else
-			public IntPtr m_GetBlock;
+            public IntPtr m_GetBlock;
 #endif
             public IntPtr m_Param;
         }
