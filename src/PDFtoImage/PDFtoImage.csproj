@@ -75,9 +75,9 @@
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net7.0-android' and '$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="122.0.6259" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="122.0.6259" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="122.0.6259" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="123.0.6268" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="123.0.6268" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="123.0.6268" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.7" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.7" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.7" PrivateAssets="analyzers" />
@@ -96,7 +96,7 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="122.0.6259" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="123.0.6268" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.7" PrivateAssets="analyzers" />
   </ItemGroup>
 
