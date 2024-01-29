@@ -53,13 +53,13 @@ body:
     id: framework
     attributes:
       label: Framework
-      description: Which framework was used?
+      description: Which runtime was used?
       options:
-        - .NET Framework
         - .NET (Core)
-        - Xamarin.Android (MonoAndroid)
+        - .NET Framework
+        - Mono
         - (Other)
-      default: 1
+      default: 0
     validations:
       required: true
   - type: input
