@@ -85,8 +85,8 @@
 
   <!-- .NET Framework packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" PrivateAssets="analyzers" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" PrivateAssets="analyzers" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" PrivateAssets="all" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- .NET packages -->
