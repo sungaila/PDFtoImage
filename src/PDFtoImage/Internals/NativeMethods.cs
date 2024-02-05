@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
 {
-#if NET8_0_OR_GREATER
+#if NET6_0_OR_GREATER
 #pragma warning disable CA2101 // Specify marshalling for P/Invoke string arguments
 #pragma warning disable SYSLIB1054 // Use LibraryImportAttribute instead of DllImportAttribute to generate p/invoke marshalling code at compile time.
 #endif
