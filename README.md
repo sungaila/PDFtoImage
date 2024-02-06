@@ -1,4 +1,4 @@
-# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_64.png) PDFtoImage
+﻿# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_64.png) PDFtoImage
 
 [![GitHub Workflow Build Status](https://img.shields.io/github/actions/workflow/status/sungaila/PDFtoImage/dotnet.yml?event=push&style=flat-square&logo=github&logoColor=white)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
 [![GitHub Workflow Test Runs Succeeded](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgist.githubusercontent.com%2Fsungaila%2F003e8ab2211221897e4b3c0e564ed7b6%2Fraw&query=%24.stats.runs_succ&suffix=%20passed&style=flat-square&logo=github&logoColor=white&label=tests&color=45cc11)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
@@ -22,6 +22,14 @@ Call a static method from `PDFtoImage.Conversion`:
 `ToImages` and `ToImagesAsync` for **multiple pages**.
 
 *Note: [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
+
+### Unity project installation
+1. Open your project and navigate to `Window` → `Package Manager`.
+1. Click on the `+` button (top-left corner) and select `Add package from git URL...`.
+1. Enter the following URL and confirm with the `Add` button:
+```
+https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
+```
 
 ## Supported runtimes
 * [.NET (Core)](https://learn.microsoft.com/en-us/dotnet/core/introduction)
