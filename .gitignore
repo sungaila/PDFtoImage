@@ -404,7 +404,7 @@ bin
 Configuration.Override.props
 Configuration.OperatingSystem.props
 obj
-packages
+#packages
 .DS_Store
 .nuget
 *.nupkg
@@ -503,3 +503,4 @@ crashlytics-build.properties
 
 !Uwp_TemporaryKey.pfx
 !etc/UnityCustomPackage/**/*.meta
+!*src/FrameworkTests/Unity2D/[Pp]ackages/*

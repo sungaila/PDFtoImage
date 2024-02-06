@@ -387,16 +387,16 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\2022.3.18f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>Library\PackageCache\de.sungaila.pdftoimage@eccd1b827f\Plugins\SkiaSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections@1.2.4\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PDFtoImage">
       <HintPath>Assets\PDFtoImage.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="SkiaSharp">
-      <HintPath>Assets\SkiaSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Antlr3.Runtime">
