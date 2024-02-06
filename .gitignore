@@ -502,5 +502,5 @@ crashlytics-build.properties
 [Aa]ssets/[Ss]treamingAssets/aa/*
 
 !Uwp_TemporaryKey.pfx
-!etc/UnityCustomPackage/**/*.meta
+!etc/UnityPackage/**/*.meta
 !*src/FrameworkTests/Unity2D/[Pp]ackages/*
