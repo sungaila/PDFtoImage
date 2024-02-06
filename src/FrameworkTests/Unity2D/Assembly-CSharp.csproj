@@ -384,7 +384,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="SkiaSharp">
-      <HintPath>Library\PackageCache\de.sungaila.pdftoimage@c50ec8a348\Plugins\SkiaSharp.dll</HintPath>
+      <HintPath>X:\Repos\sungaila\PDFtoImage\etc\UnityPackage\Plugins\SkiaSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
@@ -396,7 +396,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="PDFtoImage">
-      <HintPath>Library\PackageCache\de.sungaila.pdftoimage@c50ec8a348\Plugins\PDFtoImage.dll</HintPath>
+      <HintPath>X:\Repos\sungaila\PDFtoImage\etc\UnityPackage\Plugins\PDFtoImage.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Android.Types">

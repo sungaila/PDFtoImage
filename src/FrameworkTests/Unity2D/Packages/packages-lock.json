@@ -220,11 +220,10 @@
       "url": "https://packages.unity.com"
     },
     "de.sungaila.pdftoimage": {
-      "version": "https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage",
+      "version": "file:X:/Repos/sungaila/PDFtoImage/etc/UnityPackage",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "c1fd1c18c178b913f590b1dbd1fb078b478c09ca"
+      "source": "local",
+      "dependencies": {}
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
