@@ -152,7 +152,7 @@ jobs:
     steps:
       - name: Setup Mono
         if: runner.os == 'Windows'
-        run: choco install mono -y --checksum64 42416430485C1D91BFD4869F8905C70EDBEFCDCC052D8923B64D0D728B8A090A && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
+        run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
       - name: Setup .NET 6
         uses: actions/setup-dotnet@main
         with:
