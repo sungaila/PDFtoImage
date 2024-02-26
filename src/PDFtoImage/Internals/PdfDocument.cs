@@ -106,7 +106,6 @@ namespace PDFtoImage.Internals
         }
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             Dispose(true);
@@ -119,11 +118,8 @@ namespace PDFtoImage.Internals
         {
             if (!_disposed && disposing)
             {
-                if (_file != null)
-                {
-                    _file.Dispose();
-                    _file = null;
-                }
+                _file?.Dispose();
+                _file = null;
 
                 _disposed = true;
             }

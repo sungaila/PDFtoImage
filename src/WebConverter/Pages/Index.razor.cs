@@ -159,15 +159,17 @@ namespace PDFtoImage.WebConverter.Pages
                         leaveOpen: true,
                         password: !string.IsNullOrEmpty(Model.Password) ? Model.Password : null,
                         page: Model.Page,
-                        dpi: Model.Dpi,
-                        width: Model.Width,
-                        height: Model.Height,
-                        withAnnotations: Model.WithAnnotations,
-                        withFormFill: Model.WithFormFill,
-                        withAspectRatio: Model.WithAspectRatio,
-                        rotation: Model.Rotation,
-                        antiAliasing: antiAliasing,
-                        backgroundColor: backgroundColor
+                        new RenderOptions(
+                            Dpi: Model.Dpi,
+                            Width: Model.Width,
+                            Height: Model.Height,
+                            WithAnnotations: Model.WithAnnotations,
+                            WithFormFill: Model.WithFormFill,
+                            WithAspectRatio: Model.WithAspectRatio,
+                            Rotation: Model.Rotation,
+                            AntiAliasing: antiAliasing,
+                            BackgroundColor: backgroundColor
+                        )
                     );
                     encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
                 }, TaskCreationOptions.LongRunning);

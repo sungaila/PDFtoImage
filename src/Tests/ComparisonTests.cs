@@ -63,7 +63,7 @@ namespace Tests
 			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
-			SaveWebp(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
+			SaveWebp(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -77,7 +77,7 @@ namespace Tests
 
 			int page = 0;
 
-			foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
 				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
@@ -100,7 +100,7 @@ namespace Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
                 var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
@@ -162,7 +162,7 @@ namespace Tests
 			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
-			SavePng(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
+			SavePng(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -176,7 +176,7 @@ namespace Tests
 
 			int page = 0;
 
-			foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
 				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
@@ -199,7 +199,7 @@ namespace Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
                 var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
@@ -261,7 +261,7 @@ namespace Tests
 			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
-			SaveJpeg(outputStream, inputStream, page: page, dpi: 40, withAnnotations: withAnnotations);
+			SaveJpeg(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -275,7 +275,7 @@ namespace Tests
 
 			int page = 0;
 
-			foreach (var image in ToImages(inputStream, dpi: 40, withAnnotations: withAnnotations))
+			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
 				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
@@ -298,7 +298,7 @@ namespace Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, dpi: 40, withAnnotations: withAnnotations))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
                 var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
@@ -328,10 +328,10 @@ namespace Tests
 		public void SavePngDpi(int dpi, bool withAnnotations = false)
 		{
 			using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			using var image = ToImage(pdfStream, dpi: dpi, withAnnotations: withAnnotations);
+			using var image = ToImage(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations));
 
 			using var pdfStream2 = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			using var image2 = ToImage(pdfStream2, dpi: 300, withAnnotations: withAnnotations);
+			using var image2 = ToImage(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations));
 
 			Assert.IsNotNull(image);
 			Assert.IsTrue(Math.Abs(image.Width - image2.Width * (dpi / 300.0)) < 3);
@@ -354,10 +354,10 @@ namespace Tests
 		public void SavePngDpiImages(int dpi, bool withAnnotations = false)
 		{
 			using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			using var image = ToImages(pdfStream, dpi: dpi, withAnnotations: withAnnotations).Single();
+			using var image = ToImages(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations)).Single();
 
 			using var pdfStream2 = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			using var image2 = ToImages(pdfStream2, dpi: 300, withAnnotations: withAnnotations).Single();
+			using var image2 = ToImages(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations)).Single();
 
 			Assert.IsNotNull(image);
 			Assert.IsTrue(Math.Abs(image.Width - image2.Width * (dpi / 300.0)) < 3);
@@ -382,7 +382,7 @@ namespace Tests
         {
             using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
 
-            await foreach (var image in ToImagesAsync(pdfStream, dpi: dpi, withAnnotations: withAnnotations))
+            await foreach (var image in ToImagesAsync(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations)))
             {
                 Assert.IsNotNull(image);
             }
@@ -413,7 +413,7 @@ namespace Tests
             {
                 token.Cancel();
 
-                await foreach (var image in ToImagesAsync(inputStream, dpi: 1200, cancellationToken: token.Token))
+                await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 1200), cancellationToken: token.Token))
                 {
                 }
             });
@@ -434,7 +434,7 @@ namespace Tests
             if (pageCount < 2)
             {
                 // no OperationCanceledException should be thrown if there are not multiple pages to iterate through
-                await foreach (var image in ToImagesAsync(inputStream2, dpi: 1200, cancellationToken: token.Token))
+                await foreach (var image in ToImagesAsync(inputStream2, options: new(Dpi: 1200), cancellationToken: token.Token))
                 {
                     token.Cancel();
                 }
@@ -444,7 +444,7 @@ namespace Tests
 
             await Assert.ThrowsExceptionAsync<OperationCanceledException>(async () =>
             {
-                await foreach (var image in ToImagesAsync(inputStream2, dpi: 1200, cancellationToken: token.Token))
+                await foreach (var image in ToImagesAsync(inputStream2, options: new(Dpi: 1200), cancellationToken: token.Token))
                 {
                     token.Cancel();
                 }

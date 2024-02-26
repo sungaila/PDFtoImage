@@ -1,12 +1,13 @@
+#pragma warning disable CS0618
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage;
 using System;
 using System.IO;
 using System.Text;
-using static PDFtoImage.Conversion;
+using static PDFtoImage.Compatibility.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace Tests.Compatibility
 {
     [TestClass]
     public class AntiAliasingTests
@@ -39,9 +40,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
-                SaveJpeg(outputStream, inputStream, options: new(Dpi: 40));
+                SaveJpeg(outputStream, inputStream, dpi: 40);
             else
-                SaveJpeg(outputStream, inputStream, options: new(Dpi: 40, AntiAliasing: antiAliasing.Value));
+                SaveJpeg(outputStream, inputStream, dpi: 40, antiAliasing: antiAliasing.Value);
 
             CompareStreams(expectedPath, outputStream);
         }
@@ -65,9 +66,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
-                SavePng(outputStream, inputStream, options: new(Dpi: 40));
+                SavePng(outputStream, inputStream, dpi: 40);
             else
-                SavePng(outputStream, inputStream, options: new(Dpi: 40, AntiAliasing: antiAliasing.Value));
+                SavePng(outputStream, inputStream, dpi: 40, antiAliasing: antiAliasing.Value);
 
             CompareStreams(expectedPath, outputStream);
         }
@@ -91,9 +92,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
-                SaveWebp(outputStream, inputStream, options: new(Dpi: 40));
+                SaveWebp(outputStream, inputStream, dpi: 40);
             else
-                SaveWebp(outputStream, inputStream, options: new(Dpi: 40, AntiAliasing: antiAliasing.Value));
+                SaveWebp(outputStream, inputStream, dpi: 40, antiAliasing: antiAliasing.Value);
 
             CompareStreams(expectedPath, outputStream);
         }

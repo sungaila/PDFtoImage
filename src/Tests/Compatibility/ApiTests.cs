@@ -1,13 +1,14 @@
+#pragma warning disable CS0618
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Tests;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static PDFtoImage.Conversion;
+using static PDFtoImage.Compatibility.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace Tests.Compatibility
 {
 	[TestClass]
 	public class ApiTests : TestBase
@@ -15,8 +16,8 @@ namespace Tests
 		[TestMethod]
 		public void SaveWebpStringNullException()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((string)null!, (string)null!));
-		}
+            Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((string)null!, (string)null!));
+        }
 
 		[TestMethod]
 		public void SaveWebpStreamNullException()
@@ -64,60 +65,6 @@ namespace Tests
 		public void ToImagePdfStreamNullException()
 		{
 			Assert.ThrowsException<ArgumentNullException>(() => ToImage((Stream)null!));
-		}
-
-		[TestMethod]
-		public void GetPageCountPdfStringNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((string)null!));
-		}
-
-		[TestMethod]
-		public void GetPageCountPdfArrayNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((byte[])null!));
-		}
-
-		[TestMethod]
-		public void GetPageCountPdfStreamNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((Stream)null!));
-		}
-
-		[TestMethod]
-		public void GetPageSizePdfStringNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((string)null!, 0));
-		}
-
-		[TestMethod]
-		public void GetPageSizePdfArrayNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((byte[])null!, 0));
-		}
-
-		[TestMethod]
-		public void GetPageSizePdfStreamNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((Stream)null!, page:0));
-		}
-
-		[TestMethod]
-		public void GetPageSizesPdfStringNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((string)null!));
-		}
-
-		[TestMethod]
-		public void GetPageSizesPdfArrayNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((byte[])null!));
-		}
-
-		[TestMethod]
-		public void GetPageSizesPdfStreamNullException()
-		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((Stream)null!));
 		}
 
 		[TestMethod]
@@ -284,105 +231,15 @@ namespace Tests
 #endif
 
 		[TestMethod]
-		public void GetPageCountStreamLeaveOpenDefault()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageCount(inputStream);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
-		}
-
-		[TestMethod]
-		public void GetPageCountStreamLeaveOpenFalse()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageCount(inputStream, false);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
-		}
-
-		[TestMethod]
-		public void GetPageCountStreamLeaveOpenTrue()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageCount(inputStream, true);
-			Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
-		}
-
-		[TestMethod]
-		public void GetPageSizeStreamLeaveOpenDefault()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSize(inputStream, page: 0);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
-		}
-
-		[TestMethod]
-		public void GetPageSizeStreamLeaveOpenFalse()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSize(inputStream, false, 0);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
-		}
-
-		[TestMethod]
-		public void GetPageSizeStreamLeaveOpenTrue()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSize(inputStream, true, 0);
-			Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
-		}
-
-		[TestMethod]
-		public void GetPageSizesStreamLeaveOpenDefault()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSizes(inputStream);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
-		}
-
-		[TestMethod]
-		public void GetPageSizesStreamLeaveOpenFalse()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSizes(inputStream, false);
-			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
-		}
-
-		[TestMethod]
-		public void GetPageSizesStreamLeaveOpenTrue()
-		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
-			Assert.IsTrue(inputStream.CanRead);
-
-			GetPageSizes(inputStream, true);
-			Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
-		}
-
-		[TestMethod]
 		public void StreamMultipleCallsLeaveOpen()
 		{
 			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
-			GetPageCount(inputStream, true);
+            PDFtoImage.Conversion.GetPageCount(inputStream, true);
 			Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
-			GetPageSizes(inputStream, true);
+            PDFtoImage.Conversion.GetPageSizes(inputStream, true);
 			Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
 			var image1 = ToImage(inputStream, true);
@@ -394,10 +251,10 @@ namespace Tests
 			Assert.IsTrue(image1.ByteCount > 0, "The rendered image should have content.");
 			Assert.AreEqual(image1.ByteCount, image2.ByteCount, "Both images should be equal (in byte size).");
 
-			GetPageSizes(inputStream, false);
+            PDFtoImage.Conversion.GetPageSizes(inputStream, false);
 			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
 
-			Assert.ThrowsException<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
+			Assert.ThrowsException<ObjectDisposedException>(() => PDFtoImage.Conversion.GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace PDFtoImage.Internals
 {
@@ -178,11 +179,11 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags)
+        public static void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags)
         {
             lock (LockString)
             {
-                Imports.FPDF_RenderPageBitmap(bitmapHandle, page, start_x, start_y, size_x, size_y, rotate, flags);
+                Imports.FPDF_RenderPageBitmap(bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
             }
         }
 
@@ -526,7 +527,7 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_ClosePage(IntPtr page);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+            public static extern void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);

@@ -1,12 +1,13 @@
+#pragma warning disable CS0618
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage;
 using PDFtoImage.Tests;
 using System;
 using System.IO;
-using static PDFtoImage.Conversion;
+using static PDFtoImage.Compatibility.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace Tests.Compatibility
 {
 	[TestClass]
 	public class RotationTests : TestBase
@@ -25,9 +26,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SaveWebp(outputStream, inputStream, options: new(Dpi: 40));
+				SaveWebp(outputStream, inputStream, dpi: 40);
 			else
-				SaveWebp(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
+				SaveWebp(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -46,9 +47,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SavePng(outputStream, inputStream, options: new(Dpi: 40));
+				SavePng(outputStream, inputStream, dpi: 40);
 			else
-				SavePng(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
+				SavePng(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -67,9 +68,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SaveJpeg(outputStream, inputStream, options: new(Dpi: 40));
+				SaveJpeg(outputStream, inputStream, dpi: 40);
 			else
-				SaveJpeg(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
+				SaveJpeg(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -123,9 +124,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SavePng(outputStream, inputStream, options: new(Dpi: 40, Width: width, Height: height, WithAspectRatio: withAspectRatio));
+				SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio);
 			else
-				SavePng(outputStream, inputStream, options: new(Dpi: 40, Width: width, Height: height, WithAspectRatio: withAspectRatio, Rotation: rotation.Value));
+				SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio, rotation: rotation.Value);
 
 			CompareStreams(expectedPath, outputStream);
 		}
