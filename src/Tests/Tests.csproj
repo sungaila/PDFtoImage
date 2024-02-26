@@ -1313,6 +1313,97 @@
     <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.jpg" />
     <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.png" />
     <None Remove="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.webp" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-297,78-421,02.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-297,78-421,02_form.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-595,56-842,04.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-595,56-842,04_form.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-421,02-297,78-421,02.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-421,02-297,78-421,02_form.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-0-297,78-421,02.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-0-297,78-421,02_form.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-421,02-297,78-421,02.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-421,02-297,78-421,02_form.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-595,276.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-595,276.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-395,276-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_500x500.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_annot.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_nullxnull.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate180.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate270.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate90.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,52798-0-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,52798-395,276-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,528-0-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,528-395,276-200-200.png" />
+    <None Remove="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_default.png" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.jpg" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.png" />
     <None Remove="Assets\Expected\WINDOWS\Rotation\hundesteuer-anmeldung_Rotate0.webp" />
@@ -5459,6 +5550,279 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\BackgroundColor\hundesteuer-anmeldung_#ffffffff.webp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-297,78-421,02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-297,78-421,02_form.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-595,56-842,04.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-0-595,56-842,04_form.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-421,02-297,78-421,02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_0-421,02-297,78-421,02_form.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-0-297,78-421,02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-0-297,78-421,02_form.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-421,02-297,78-421,02.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\hundesteuer-anmeldung_297,78-421,02-297,78-421,02_form.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,76399-595,276.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-209,764-595,276.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,52798-595,276_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-0-419,528-595,276_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,76399-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-297,638-209,764-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_0-395,276-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-0-209,76399-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,76399-297,638-209,76399-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-0-209,764-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_500x500.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_annot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_nullxnull.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate270.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_209,764-297,638-209,764-297,638_Rotate90.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,52798-0-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,52798-395,276-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,528-0-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_219,528-395,276-200-200.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Expected\WINDOWS\Bounds\Wikimedia_Commons_web_default.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Expected\WINDOWS\hundesteuer-anmeldung_False.jpg">

@@ -2,7 +2,6 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -348,8 +347,8 @@ namespace PDFtoImage
             if (page >= pdfDocument.PageSizes.Count)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number {page} does not exist. Highest page number available is {pdfDocument.PageSizes.Count - 1}.");
 
-            var currentWidth = options.Width;
-            var currentHeight = options.Height;
+            var currentWidth = (float?)options.Width;
+            var currentHeight = (float?)options.Height;
             var pageSize = pdfDocument.PageSizes[page];
 
             // correct aspect ratio if requested
@@ -357,7 +356,7 @@ namespace PDFtoImage
                 AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
             // Internals.PdfDocument -> Image
-            return pdfDocument.Render(page, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White);
+            return pdfDocument.Render(page, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds);
         }
 
         /// <summary>
@@ -586,8 +585,8 @@ namespace PDFtoImage
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
             {
-                var currentWidth = options.Width;
-                var currentHeight = options.Height;
+                var currentWidth = (float?)options.Width;
+                var currentHeight = (float?)options.Height;
                 var pageSize = pdfDocument.PageSizes[i];
 
                 // correct aspect ratio if requested
@@ -595,7 +594,7 @@ namespace PDFtoImage
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
                 // Internals.PdfDocument -> Image
-                yield return pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White);
+                yield return pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds);
             }
         }
 
@@ -681,8 +680,8 @@ namespace PDFtoImage
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var currentWidth = options.Width;
-                var currentHeight = options.Height;
+                var currentWidth = (float?)options.Width;
+                var currentHeight = (float?)options.Height;
                 var pageSize = pdfDocument.PageSizes[i];
 
                 // correct aspect ratio if requested
@@ -690,20 +689,68 @@ namespace PDFtoImage
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? (int)pageSize.Width, currentHeight ?? (int)pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White), cancellationToken);
+                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds), cancellationToken);
             }
         }
 #endif
 
-        private static void AdjustForAspectRatio(ref int? width, ref int? height, SizeF pageSize)
+        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            if (imageFilename == null)
+                throw new ArgumentNullException(nameof(imageFilename));
+
+            using var fileStream = new FileStream(imageFilename, FileMode.Create, FileAccess.Write);
+            SaveImpl(fileStream, format, pdfAsBase64String, password, page, options);
+        }
+
+        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, string pdfAsBase64String, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            if (imageStream == null)
+                throw new ArgumentNullException(nameof(imageStream));
+
+            using var bitmap = ToImage(pdfAsBase64String, password, page, options);
+            bitmap.Encode(imageStream, format, 100);
+        }
+
+        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            if (imageFilename == null)
+                throw new ArgumentNullException(nameof(imageFilename));
+
+            using var fileStream = new FileStream(imageFilename, FileMode.Create, FileAccess.Write);
+            SaveImpl(fileStream, format, pdfAsByteArray, password, page, options);
+        }
+
+        internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, bool leaveOpen = false, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            using var fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write);
+            SaveImpl(fileStream, format, pdfStream, leaveOpen, password, page, options);
+        }
+
+        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            if (imageStream == null)
+                throw new ArgumentNullException(nameof(imageStream));
+
+            using var bitmap = ToImage(pdfAsByteArray, password, page, options);
+            bitmap.Encode(imageStream, format, 100);
+        }
+
+        internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, bool leaveOpen = false, string? password = null, int page = 0, RenderOptions options = default)
+        {
+            using var bitmap = ToImage(pdfStream, leaveOpen, password, page, options);
+            bitmap.Encode(stream, format, 100);
+        }
+
+        private static void AdjustForAspectRatio(ref float? width, ref float? height, SizeF pageSize)
         {
             if (width == null && height != null)
             {
-                width = (int)Math.Round((pageSize.Width / pageSize.Height) * height.Value);
+                width = pageSize.Width / pageSize.Height * height.Value;
             }
             else if (width != null && height == null)
             {
-                height = (int)Math.Round((pageSize.Height / pageSize.Width) * width.Value);
+                height = pageSize.Height / pageSize.Width * width.Value;
             }
         }
     }

@@ -60,8 +60,9 @@ namespace PDFtoImage.Internals
         /// <param name="renderFormFill">Render form fills.</param>
         /// <param name="correctFromDpi">Change <paramref name="width"/> and <paramref name="height"/> depending on the given <paramref name="dpiX"/> and <paramref name="dpiY"/>.</param>
         /// <param name="backgroundColor">The background color used for the output.</param>
+        /// <param name="bounds">Specifies the bounds for the page relative to <see cref="Conversion.GetPageSizes(string,string)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
         /// <returns>The rendered image.</returns>
-        public SKBitmap Render(int page, int width, int height, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, bool correctFromDpi, SKColor backgroundColor)
+        public SKBitmap Render(int page, float width, float height, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, bool correctFromDpi, SKColor backgroundColor, RectangleF? bounds)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -72,23 +73,76 @@ namespace PDFtoImage.Internals
                 (dpiX, dpiY) = (dpiY, dpiX);
             }
 
+            var pageWidth = PageSizes[page].Width;
+            var pageHeight = PageSizes[page].Height;
+
             if (correctFromDpi)
             {
-                width = width * (int)dpiX / 72;
-                height = height * (int)dpiY / 72;
+                width *= dpiX / 72f;
+                height *= dpiY / 72f;
+
+                pageWidth *= dpiX / 72f;
+                pageHeight *= dpiY / 72f;
+
+                if (bounds != null)
+                {
+                    bounds = new RectangleF(
+                        bounds.Value.X * (dpiX / 72f),
+                        bounds.Value.Y * (dpiY / 72f),
+                        bounds.Value.Width * (dpiX / 72f),
+                        bounds.Value.Height * (dpiY / 72f)
+                    );
+                }
             }
 
-            var bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            var handle = NativeMethods.FPDFBitmap_CreateEx(width, height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), width * 4);
+            if (bounds != null)
+            {
+                if (rotate == PdfRotation.Rotate90)
+                {
+                    bounds = new RectangleF(
+                        width - bounds.Value.Height - bounds.Value.Y,
+                        bounds.Value.X,
+                        bounds.Value.Width,
+                        bounds.Value.Height
+                        );
+                }
+                else if (rotate == PdfRotation.Rotate270)
+                {
+                    bounds = new RectangleF(
+                        bounds.Value.Y,
+                        height - bounds.Value.Width - bounds.Value.X,
+                        bounds.Value.Width,
+                        bounds.Value.Height
+                        );
+                }
+                else if (rotate == PdfRotation.Rotate180)
+                {
+                    bounds = new RectangleF(
+                        width - bounds.Value.Width - bounds.Value.X,
+                        height - bounds.Value.Height - bounds.Value.Y,
+                        bounds.Value.Width,
+                        bounds.Value.Height
+                        );
+                }
+            }
+
+            width = (float)Math.Round(width);
+            height = (float)Math.Round(height);
+
+            var bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
+            var handle = NativeMethods.FPDFBitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
 
             try
             {
-                NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, width, height, (uint)backgroundColor);
+                NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor);
 
                 bool success = _file!.RenderPDFPageToBitmap(
                     page,
                     handle,
-                    0, 0, width, height,
+                    bounds != null ? -(int)Math.Round(bounds.Value.X * (pageWidth / bounds.Value.Width)) : 0,
+                    bounds != null ? -(int)Math.Round(bounds.Value.Y * (pageHeight / bounds.Value.Height)) : 0,
+                    bounds != null ? (int)Math.Round(pageWidth * (width / bounds.Value.Width)) : (int)width,
+                    bounds != null ? (int)Math.Round(pageHeight * (height / bounds.Value.Height)) : (int)height,
                     (int)rotate,
                     flags,
                     renderFormFill
