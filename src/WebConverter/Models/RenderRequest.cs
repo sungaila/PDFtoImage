@@ -83,11 +83,11 @@ namespace PDFtoImage.WebConverter.Models
 
         [Required]
         [Range(float.MinValue, float.MaxValue)]
-        public float BoundsWidth { get; set; } = 100f;
+        public float BoundsWidth { get; set; } = 1000f;
 
         [Required]
         [Range(float.MinValue, float.MaxValue)]
-        public float BoundsHeight { get; set; } = 100f;
+        public float BoundsHeight { get; set; } = 1000f;
 
         public static string GetRotationLocalized(PdfRotation rotation) => rotation switch
         {

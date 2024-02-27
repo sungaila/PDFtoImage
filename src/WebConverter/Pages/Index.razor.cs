@@ -155,6 +155,13 @@ namespace PDFtoImage.WebConverter.Pages
 
                 await Task.Factory.StartNew(() =>
                 {
+                    if (!Model.UseBounds)
+                    {
+                        var pageSize = PDFtoImage.Conversion.GetPageSize(Model.Input, true, Model.Page, !string.IsNullOrEmpty(Model.Password) ? Model.Password : null);
+                        Model.BoundsWidth = pageSize.Width;
+                        Model.BoundsHeight = pageSize.Height;
+                    }
+
                     bitmap = PDFtoImage.Conversion.ToImage(
                         Model.Input,
                         leaveOpen: true,
