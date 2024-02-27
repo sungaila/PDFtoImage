@@ -48,7 +48,7 @@ namespace Tests
 		{
 			using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
 
-			var result = PDFtoImage.Conversion.GetPageSize(inputStream, page);
+			var result = PDFtoImage.Conversion.GetPageSize(inputStream, page: page);
 
 			Assert.AreEqual(expectedPageWidth, result.Width, 0.0001f, "Expected and actual PDF page width differs.");
 			Assert.AreEqual(expectedPageHeight, result.Height, 0.0001f, "Expected and actual PDF page height differs.");

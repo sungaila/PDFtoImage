@@ -123,15 +123,18 @@ jobs:
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
+      - name: Compress tests
+        shell: pwsh
+        run: Compress-Archive -Path src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/* -DestinationPath TestAssemblies.zip -CompressionLevel "Fastest"
       - name: Publish tests
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
-          path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
+          path: TestAssemblies.zip
           if-no-files-found: error
           retention-days: 1
-          #compression-level: 0
+          compression-level: 0
       - name: Publish test project MonoConsole
         uses: actions/upload-artifact@v4
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
@@ -181,9 +184,13 @@ jobs:
         run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
         if: success() || failure()
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Test assemblies
+      - name: Expand tests
+        if: success() || failure()
+        shell: pwsh
+        run: Expand-Archive -Path TestAssemblies.zip -DestinationPath .
       - name: .NET Framework 4.6.2
         if: runner.os == 'Windows' && (success() || failure())
         run: dotnet test net462/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net462/SaveOutputInGeneratedFolder.runsettings' || '' }}

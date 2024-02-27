@@ -25,9 +25,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SaveWebp(outputStream, inputStream, dpi: 40);
+				SaveWebp(outputStream, inputStream, options: new(Dpi: 40));
 			else
-				SaveWebp(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
+				SaveWebp(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -46,9 +46,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SavePng(outputStream, inputStream, dpi: 40);
+				SavePng(outputStream, inputStream, options: new(Dpi: 40));
 			else
-				SavePng(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
+				SavePng(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -67,9 +67,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SaveJpeg(outputStream, inputStream, dpi: 40);
+				SaveJpeg(outputStream, inputStream, options: new(Dpi: 40));
 			else
-				SaveJpeg(outputStream, inputStream, dpi: 40, rotation: rotation.Value);
+				SaveJpeg(outputStream, inputStream, options: new(Dpi: 40, Rotation: rotation.Value));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -123,9 +123,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
-				SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio);
+				SavePng(outputStream, inputStream, options: new(Dpi: 40, Width: width, Height: height, WithAspectRatio: withAspectRatio));
 			else
-				SavePng(outputStream, inputStream, dpi: 40, width: width, height: height, withAspectRatio: withAspectRatio, rotation: rotation.Value);
+				SavePng(outputStream, inputStream, options: new(Dpi: 40, Width: width, Height: height, WithAspectRatio: withAspectRatio, Rotation: rotation.Value));
 
 			CompareStreams(expectedPath, outputStream);
 		}

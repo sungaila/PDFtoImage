@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using PDFtoImage.WebConverter.Models;
 using SkiaSharp;
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -154,20 +155,30 @@ namespace PDFtoImage.WebConverter.Pages
 
                 await Task.Factory.StartNew(() =>
                 {
+                    if (!Model.UseBounds)
+                    {
+                        var pageSize = PDFtoImage.Conversion.GetPageSize(Model.Input, true, Model.Page, !string.IsNullOrEmpty(Model.Password) ? Model.Password : null);
+                        Model.BoundsWidth = pageSize.Width;
+                        Model.BoundsHeight = pageSize.Height;
+                    }
+
                     bitmap = PDFtoImage.Conversion.ToImage(
                         Model.Input,
                         leaveOpen: true,
                         password: !string.IsNullOrEmpty(Model.Password) ? Model.Password : null,
                         page: Model.Page,
-                        dpi: Model.Dpi,
-                        width: Model.Width,
-                        height: Model.Height,
-                        withAnnotations: Model.WithAnnotations,
-                        withFormFill: Model.WithFormFill,
-                        withAspectRatio: Model.WithAspectRatio,
-                        rotation: Model.Rotation,
-                        antiAliasing: antiAliasing,
-                        backgroundColor: backgroundColor
+                        new RenderOptions(
+                            Dpi: Model.Dpi,
+                            Width: Model.Width,
+                            Height: Model.Height,
+                            WithAnnotations: Model.WithAnnotations,
+                            WithFormFill: Model.WithFormFill,
+                            WithAspectRatio: Model.WithAspectRatio,
+                            Rotation: Model.Rotation,
+                            AntiAliasing: antiAliasing,
+                            BackgroundColor: backgroundColor,
+                            Bounds: Model.UseBounds ? new RectangleF(Model.BoundsX, Model.BoundsY, Model.BoundsWidth, Model.BoundsHeight) : null
+                        )
                     );
                     encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
                 }, TaskCreationOptions.LongRunning);

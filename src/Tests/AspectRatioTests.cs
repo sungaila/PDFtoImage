@@ -140,9 +140,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (dpi != null)
-				SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: false, dpi: dpi.Value);
+				SaveJpeg(outputStream, inputStream, options: new (Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: false, Dpi: dpi.Value));
 			else
-				SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: false);
+				SaveJpeg(outputStream, inputStream, options: new(Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: false));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -278,9 +278,9 @@ namespace Tests
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (dpi != null)
-				SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: true, dpi: dpi.Value);
+				SaveJpeg(outputStream, inputStream, options: new(Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: true, Dpi: dpi.Value));
 			else
-				SaveJpeg(outputStream, inputStream, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: true);
+				SaveJpeg(outputStream, inputStream, options: new(Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: true));
 
 			CompareStreams(expectedPath, outputStream);
 		}
@@ -352,7 +352,7 @@ namespace Tests
 			{
 				using var outputStream = CreateOutputStream(expectedPath);
 
-				ToImage(inputStream, true, dpi: i, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: withAspectRatio).Encode(outputStream, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
+				ToImage(inputStream, true, options: new(Dpi: i, Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: withAspectRatio)).Encode(outputStream, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
 				CompareStreams(expectedPath, outputStream);
 			}
 		}
@@ -375,8 +375,8 @@ namespace Tests
 			using var outputStream1 = CreateOutputStream(expectedPath);
 			using var outputStream2 = CreateOutputStream(expectedPath);
 
-			ToImage(inputStream, true, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: false).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
-			ToImage(inputStream, true, width: width, height: height, withAnnotations: true, withFormFill: true, withAspectRatio: true).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
+			ToImage(inputStream, true, options: new(Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: false)).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
+			ToImage(inputStream, true, options: new(Width: width, Height: height, WithAnnotations: true, WithFormFill: true, WithAspectRatio: true)).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
 
 			CompareStreams(expectedPath, outputStream1);
 			CompareStreams(expectedPath, outputStream2);
@@ -400,8 +400,8 @@ namespace Tests
 			using var outputStream1 = CreateOutputStream(expectedPath);
 			using var outputStream2 = CreateOutputStream(expectedPath);
 
-			ToImage(inputStream, true, dpi: dpi, withAnnotations: true, withFormFill: true, withAspectRatio: false).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
-			ToImage(inputStream, true, dpi: dpi, withAnnotations: true, withFormFill: true, withAspectRatio: true).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
+			ToImage(inputStream, true, options: new(Dpi: dpi, WithAnnotations: true, WithFormFill: true, WithAspectRatio: false)).Encode(outputStream1, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
+			ToImage(inputStream, true, options: new(Dpi: dpi, WithAnnotations: true, WithFormFill: true, WithAspectRatio: true)).Encode(outputStream2, SkiaSharp.SKEncodedImageFormat.Jpeg, 100);
 
 			CompareStreams(expectedPath, outputStream1);
 			CompareStreams(expectedPath, outputStream2);

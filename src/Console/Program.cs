@@ -35,14 +35,14 @@ namespace PDFtoImage.Console
                 switch (Path.GetExtension(outputPath).ToLower())
                 {
                     case ".png":
-                        Conversion.SavePng(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
+                        Conversion.SavePng(outputPath, inputStream, page: page - 1, options: new(Dpi: dpi, WithAnnotations: withAnnotations, WithFormFill: withFormFill));
                         break;
                     case ".jpg":
                     case ".jpeg":
-                        Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
+                        Conversion.SaveJpeg(outputPath, inputStream, page: page - 1, options: new(Dpi: dpi, WithAnnotations: withAnnotations, WithFormFill: withFormFill));
                         break;
                     case ".webp":
-                        Conversion.SaveWebp(outputPath, inputStream, page: page - 1, dpi: dpi, withAnnotations: withAnnotations, withFormFill: withFormFill);
+                        Conversion.SaveWebp(outputPath, inputStream, page: page - 1, options: new(Dpi: dpi, WithAnnotations: withAnnotations, WithFormFill: withFormFill));
                         break;
                     default:
                         throw new InvalidOperationException("Only the following file extensions are supported: png, jpg/jpeg and webp.");

@@ -99,7 +99,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizePdfStreamNullException()
 		{
-			Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((Stream)null!, 0));
+			Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((Stream)null!, page:0));
 		}
 
 		[TestMethod]
@@ -319,7 +319,7 @@ namespace Tests
 			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
-			GetPageSize(inputStream, 0);
+			GetPageSize(inputStream, page: 0);
 			Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling the default overload.");
 		}
 

@@ -171,7 +171,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row mb-1">
                             <label for="backgroundColor" class="col-sm-3 col-form-label label-nowrap">Background</label>
                             <div class="col-sm">
                                 <input @bind="Model.BackgroundColor" type="color" id="backgroundColor" />
@@ -180,6 +180,38 @@
                             <label for="opacity" class="col-sm-3 col-form-label label-nowrap">Opacity</label>
                             <div class="col-sm">
                                 <InputNumber @bind-Value="Model.Opacity" id="opacity" class="form-control form-control-sm" min="@byte.MinValue" max="@byte.MaxValue" step="1" />
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <InputCheckbox @bind-Value="Model.UseBounds" id="boundsText" class="form-check-input" />
+                                <label for="boundsText">Bounds</label>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group row mb-1">
+                                    <label for="boundsX" class="col-sm-3 col-form-label label-nowrap">X</label>
+                                    <div class="col-sm">
+                                        <InputNumber @bind-Value="Model.BoundsX" id="boundsX" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
+                                    </div>
+
+                                    <label for="boundsY" class="col-sm-3 col-form-label label-nowrap">Y</label>
+                                    <div class="col-sm">
+                                        <InputNumber @bind-Value="Model.BoundsY" id="boundsY" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label for="boundsWidth" class="col-sm-3 col-form-label label-nowrap">Width</label>
+                                    <div class="col-sm">
+                                        <InputNumber @bind-Value="Model.BoundsWidth" id="boundsWidth" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
+                                    </div>
+
+                                    <label for="boundsHeight" class="col-sm-3 col-form-label label-nowrap">Height</label>
+                                    <div class="col-sm">
+                                        <InputNumber @bind-Value="Model.BoundsHeight" id="boundsHeight" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

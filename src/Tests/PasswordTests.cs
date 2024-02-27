@@ -21,7 +21,7 @@ namespace Tests
 		public void WithCorrectPassword(string inputFile, string? password = null)
 		{
 			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
-			var output = GetPageCount(inputStream, password);
+			var output = GetPageCount(inputStream, password: password);
 			Assert.AreEqual(1, output, "Page count should be 1, if the password was correct.");
 		}
 
@@ -33,7 +33,7 @@ namespace Tests
 		public void ThrowsIncorrectPassword(string inputFile, string? password = null)
 		{
 			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
-			Assert.ThrowsException<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password));
+			Assert.ThrowsException<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: password));
 		}
 	}
 }

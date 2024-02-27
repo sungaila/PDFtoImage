@@ -46,9 +46,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)
-                SaveJpeg(outputStream, inputStream, dpi: 40);
+                SaveJpeg(outputStream, inputStream, options: new(Dpi: 40));
             else
-                SaveJpeg(outputStream, inputStream, dpi: 40, backgroundColor: backgroundColor.Value);
+                SaveJpeg(outputStream, inputStream, options: new(Dpi: 40, BackgroundColor: backgroundColor.Value));
 
             CompareStreams(expectedPath, outputStream);
         }
@@ -80,9 +80,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)
-                SavePng(outputStream, inputStream, dpi: 40);
+                SavePng(outputStream, inputStream, options: new(Dpi: 40));
             else
-                SavePng(outputStream, inputStream, dpi: 40, backgroundColor: backgroundColor.Value);
+                SavePng(outputStream, inputStream, options: new(Dpi: 40, BackgroundColor: backgroundColor.Value));
 
             CompareStreams(expectedPath, outputStream);
         }
@@ -114,9 +114,9 @@ namespace Tests
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)
-                SaveWebp(outputStream, inputStream, dpi: 40);
+                SaveWebp(outputStream, inputStream, options: new(Dpi: 40));
             else
-                SaveWebp(outputStream, inputStream, dpi: 40, backgroundColor: backgroundColor.Value);
+                SaveWebp(outputStream, inputStream, options: new(Dpi: 40, BackgroundColor: backgroundColor.Value));
 
             CompareStreams(expectedPath, outputStream);
         }
