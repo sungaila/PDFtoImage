@@ -188,6 +188,7 @@ jobs:
         with:
           name: Test assemblies
       - name: Expand tests
+        if: success() || failure()
         shell: pwsh
         run: Expand-Archive -Path Tests.zip -DestinationPath .
       - name: .NET Framework 4.6.2
