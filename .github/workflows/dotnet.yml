@@ -125,7 +125,7 @@ jobs:
           if-no-files-found: error
       - name: Compress tests
         shell: pwsh
-        run: Compress-Archive -Path src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.* -DestinationPath TestAssemblies.zip -CompressionLevel "Fastest"
+        run: Compress-Archive -Path src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/* -DestinationPath TestAssemblies.zip -CompressionLevel "Fastest"
       - name: Publish tests
         uses: actions/upload-artifact@v4
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
