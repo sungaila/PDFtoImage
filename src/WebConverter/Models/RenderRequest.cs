@@ -1,5 +1,4 @@
-﻿using KristofferStrube.Blazor.FileSystem;
-using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components.Forms;
 using SkiaSharp;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -70,6 +69,25 @@ namespace PDFtoImage.WebConverter.Models
 
         [Required]
         public PdfRotation Rotation { get; set; } = PdfRotation.Rotate0;
+
+        [Required]
+        public bool UseBounds { get; set; } = false;
+
+        [Required]
+        [Range(float.MinValue, float.MaxValue)]
+        public float BoundsX { get; set; } = 0f;
+
+        [Required]
+        [Range(float.MinValue, float.MaxValue)]
+        public float BoundsY { get; set; } = 0f;
+
+        [Required]
+        [Range(float.MinValue, float.MaxValue)]
+        public float BoundsWidth { get; set; } = 100f;
+
+        [Required]
+        [Range(float.MinValue, float.MaxValue)]
+        public float BoundsHeight { get; set; } = 100f;
 
         public static string GetRotationLocalized(PdfRotation rotation) => rotation switch
         {

@@ -4,6 +4,7 @@ using Microsoft.JSInterop;
 using PDFtoImage.WebConverter.Models;
 using SkiaSharp;
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -168,7 +169,8 @@ namespace PDFtoImage.WebConverter.Pages
                             WithAspectRatio: Model.WithAspectRatio,
                             Rotation: Model.Rotation,
                             AntiAliasing: antiAliasing,
-                            BackgroundColor: backgroundColor
+                            BackgroundColor: backgroundColor,
+                            Bounds: Model.UseBounds ? new RectangleF(Model.BoundsX, Model.BoundsY, Model.BoundsWidth, Model.BoundsHeight) : null
                         )
                     );
                     encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
