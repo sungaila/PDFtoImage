@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 namespace PDFtoImage.Internals
 {
@@ -47,6 +48,9 @@ namespace PDFtoImage.Internals
             PageSizes = new ReadOnlyCollection<SizeF>(pageSizes);
         }
 
+        private const int MaxTileWidth = 4000;
+        private const int MaxTileHeight = 4000;
+
         /// <summary>
         /// Renders a page of the PDF document to an image.
         /// </summary>
@@ -61,8 +65,10 @@ namespace PDFtoImage.Internals
         /// <param name="correctFromDpi">Change <paramref name="width"/> and <paramref name="height"/> depending on the given <paramref name="dpiX"/> and <paramref name="dpiY"/>.</param>
         /// <param name="backgroundColor">The background color used for the output.</param>
         /// <param name="bounds">Specifies the bounds for the page relative to <see cref="Conversion.GetPageSizes(string,string)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+        /// <param name="useTiling"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The rendered image.</returns>
-        public SKBitmap Render(int page, float width, float height, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, bool correctFromDpi, SKColor backgroundColor, RectangleF? bounds)
+        public SKBitmap Render(int page, float width, float height, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, bool correctFromDpi, SKColor backgroundColor, RectangleF? bounds, bool useTiling, CancellationToken cancellationToken = default)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -73,16 +79,10 @@ namespace PDFtoImage.Internals
                 (dpiX, dpiY) = (dpiY, dpiX);
             }
 
-            var pageWidth = PageSizes[page].Width;
-            var pageHeight = PageSizes[page].Height;
-
             if (correctFromDpi)
             {
                 width *= dpiX / 72f;
                 height *= dpiY / 72f;
-
-                pageWidth *= dpiX / 72f;
-                pageHeight *= dpiY / 72f;
 
                 if (bounds != null)
                 {
@@ -102,8 +102,8 @@ namespace PDFtoImage.Internals
                     bounds = new RectangleF(
                         width - bounds.Value.Height - bounds.Value.Y,
                         bounds.Value.X,
-                        bounds.Value.Width,
-                        bounds.Value.Height
+                        bounds.Value.Height,
+                        bounds.Value.Width
                         );
                 }
                 else if (rotate == PdfRotation.Rotate270)
@@ -111,8 +111,8 @@ namespace PDFtoImage.Internals
                     bounds = new RectangleF(
                         bounds.Value.Y,
                         height - bounds.Value.Width - bounds.Value.X,
-                        bounds.Value.Width,
-                        bounds.Value.Height
+                        bounds.Value.Height,
+                        bounds.Value.Width
                         );
                 }
                 else if (rotate == PdfRotation.Rotate180)
@@ -126,23 +126,93 @@ namespace PDFtoImage.Internals
                 }
             }
 
-            width = (float)Math.Round(width);
-            height = (float)Math.Round(height);
+            SKBitmap bitmap;
 
+            int horizontalTileCount = (int)Math.Ceiling(width / MaxTileWidth);
+            int verticalTileCount = (int)Math.Ceiling(height / MaxTileHeight);
+
+            if (!useTiling || (horizontalTileCount == 1 && verticalTileCount == 1))
+            {
+                bitmap = RenderSubset(_file!, page, width, height, rotate, flags, renderFormFill, backgroundColor, bounds, width, height, cancellationToken);
+            }
+            else
+            {
+                bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
+
+                cancellationToken.ThrowIfCancellationRequested();
+
+                float currentTileWidth = width / horizontalTileCount;
+                float currentTileHeight = height / verticalTileCount;
+                float boundsWidthFactor = bounds != null ? bounds.Value.Width / width : 0f;
+                float boundsHeightFactor = bounds != null ? bounds.Value.Height / height : 0f;
+
+                using var canvas = new SKCanvas(bitmap);
+                canvas.Clear(backgroundColor);
+
+                for (int y = 0; y < verticalTileCount; y++)
+                {
+                    for (int x = 0; x < horizontalTileCount; x++)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        RectangleF currentBounds;
+
+                        if (bounds != null)
+                        {
+                            currentBounds = new(
+                                (bounds.Value.X * (currentTileWidth / width)) + (currentTileWidth / horizontalTileCount * x * boundsWidthFactor),
+                                (bounds.Value.Y * (currentTileHeight / height)) + (currentTileHeight / verticalTileCount * y * boundsHeightFactor),
+                                currentTileWidth * boundsWidthFactor,
+                                currentTileHeight * boundsHeightFactor);
+                        }
+                        else
+                        {
+                            currentBounds = new(
+                                currentTileWidth / horizontalTileCount * x,
+                                currentTileHeight / verticalTileCount * y,
+                                currentTileWidth,
+                                currentTileHeight);
+                        }
+
+                        using var subsetBitmap = RenderSubset(_file!, page, currentTileWidth, currentTileHeight, rotate, flags, renderFormFill, backgroundColor, currentBounds, width, height, cancellationToken);
+
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        canvas.DrawBitmap(subsetBitmap, new SKRect(
+                            (float)Math.Floor(x * currentTileWidth),
+                            (float)Math.Floor(y * currentTileHeight),
+                            (float)Math.Floor(x * currentTileWidth + currentTileWidth),
+                            (float)Math.Floor(y * currentTileHeight + currentTileHeight)));
+                        canvas.Flush();
+                    }
+                }
+            }
+
+            return bitmap;
+        }
+
+        private static SKBitmap RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             var bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
-            var handle = NativeMethods.FPDFBitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
+            IntPtr handle = IntPtr.Zero;
 
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+                handle = NativeMethods.FPDFBitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
+
+                cancellationToken.ThrowIfCancellationRequested();
                 NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor);
 
-                bool success = _file!.RenderPDFPageToBitmap(
+                cancellationToken.ThrowIfCancellationRequested();
+                bool success = file.RenderPDFPageToBitmap(
                     page,
                     handle,
-                    bounds != null ? -(int)Math.Round(bounds.Value.X * (pageWidth / bounds.Value.Width)) : 0,
-                    bounds != null ? -(int)Math.Round(bounds.Value.Y * (pageHeight / bounds.Value.Height)) : 0,
-                    bounds != null ? (int)Math.Round(pageWidth * (width / bounds.Value.Width)) : (int)width,
-                    bounds != null ? (int)Math.Round(pageHeight * (height / bounds.Value.Height)) : (int)height,
+                    bounds != null ? -(int)Math.Floor(bounds.Value.X * (originalWidth / bounds.Value.Width)) : 0,
+                    bounds != null ? -(int)Math.Floor(bounds.Value.Y * (originalHeight / bounds.Value.Height)) : 0,
+                    bounds != null ? (int)Math.Ceiling(originalWidth * (width / bounds.Value.Width)) : (int)Math.Ceiling(width),
+                    bounds != null ? (int)Math.Ceiling(originalHeight * (height / bounds.Value.Height)) : (int)Math.Ceiling(height),
                     (int)rotate,
                     flags,
                     renderFormFill
@@ -151,23 +221,33 @@ namespace PDFtoImage.Internals
                 if (!success)
                     throw new Win32Exception();
             }
+            catch
+            {
+                bitmap?.Dispose();
+                throw;
+            }
             finally
             {
-                NativeMethods.FPDFBitmap_Destroy(handle);
+                if (handle != IntPtr.Zero)
+                    NativeMethods.FPDFBitmap_Destroy(handle);
             }
 
             return bitmap;
         }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        /// <param name="disposing">Whether this method is called from Dispose.</param>
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <param name="disposing">Whether this method is called from <see cref="Dispose()"/>.</param>
         private void Dispose(bool disposing)
         {
             if (!_disposed && disposing)

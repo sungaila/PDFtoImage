@@ -177,7 +177,8 @@ namespace PDFtoImage.WebConverter.Pages
                             Rotation: Model.Rotation,
                             AntiAliasing: antiAliasing,
                             BackgroundColor: backgroundColor,
-                            Bounds: Model.UseBounds ? new RectangleF(Model.BoundsX, Model.BoundsY, Model.BoundsWidth, Model.BoundsHeight) : null
+                            Bounds: Model.UseBounds ? new RectangleF(Model.BoundsX, Model.BoundsY, Model.BoundsWidth, Model.BoundsHeight) : null,
+                            UseTiling: Model.UseTiling
                         )
                     );
                     encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);

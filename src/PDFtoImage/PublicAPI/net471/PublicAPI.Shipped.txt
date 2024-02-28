@@ -11,7 +11,7 @@ PDFtoImage.RenderOptions.Dpi.init -> void
 PDFtoImage.RenderOptions.Height.get -> int?
 PDFtoImage.RenderOptions.Height.init -> void
 PDFtoImage.RenderOptions.RenderOptions() -> void
-PDFtoImage.RenderOptions.RenderOptions(int Dpi = 300, int? Width = null, int? Height = null, bool WithAnnotations = false, bool WithFormFill = false, bool WithAspectRatio = false, PDFtoImage.PdfRotation Rotation = PDFtoImage.PdfRotation.Rotate0, PDFtoImage.PdfAntiAliasing AntiAliasing = PDFtoImage.PdfAntiAliasing.All, SkiaSharp.SKColor? BackgroundColor = null, System.Drawing.RectangleF? Bounds = null) -> void
+PDFtoImage.RenderOptions.RenderOptions(int Dpi = 300, int? Width = null, int? Height = null, bool WithAnnotations = false, bool WithFormFill = false, bool WithAspectRatio = false, PDFtoImage.PdfRotation Rotation = PDFtoImage.PdfRotation.Rotate0, PDFtoImage.PdfAntiAliasing AntiAliasing = PDFtoImage.PdfAntiAliasing.All, SkiaSharp.SKColor? BackgroundColor = null, System.Drawing.RectangleF? Bounds = null, bool UseTiling = false) -> void
 PDFtoImage.RenderOptions.Rotation.get -> PDFtoImage.PdfRotation
 PDFtoImage.RenderOptions.Rotation.init -> void
 PDFtoImage.RenderOptions.Width.get -> int?
@@ -22,6 +22,8 @@ PDFtoImage.RenderOptions.WithAspectRatio.get -> bool
 PDFtoImage.RenderOptions.WithAspectRatio.init -> void
 PDFtoImage.RenderOptions.WithFormFill.get -> bool
 PDFtoImage.RenderOptions.WithFormFill.init -> void
+PDFtoImage.RenderOptions.UseTiling.get -> bool
+PDFtoImage.RenderOptions.UseTiling.init -> void
 PDFtoImage.PdfAntiAliasing
 PDFtoImage.PdfAntiAliasing.None = 0 -> PDFtoImage.PdfAntiAliasing
 PDFtoImage.PdfAntiAliasing.Text = 1 -> PDFtoImage.PdfAntiAliasing
