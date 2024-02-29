@@ -6,7 +6,7 @@ namespace PDFtoImage.FrameworkTests.MonoConsole
     public class Program
     {
         private const int ExpectedWidth = 5333;
-        private const int ExpectedHeight = 2667;
+        private const int ExpectedHeight = 2666;
 
         public static void Main()
         {
