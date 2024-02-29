@@ -356,7 +356,7 @@ namespace PDFtoImage
                 AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
             // Internals.PdfDocument -> Image
-            return pdfDocument.Render(page, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds);
+            return pdfDocument.Render(page, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace PDFtoImage
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
                 // Internals.PdfDocument -> Image
-                yield return pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds);
+                yield return pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling);
             }
         }
 
@@ -689,7 +689,7 @@ namespace PDFtoImage
                     AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
 
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds), cancellationToken);
+                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling, cancellationToken), cancellationToken);
             }
         }
 #endif
