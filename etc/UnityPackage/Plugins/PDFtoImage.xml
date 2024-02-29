@@ -4,12 +4,483 @@
         <name>PDFtoImage</name>
     </assembly>
     <members>
+        <member name="T:PDFtoImage.Compatibility.Conversion">
+            <summary>
+            Provides methods to render PDFs into images. Used for backward compatibility.
+            </summary>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveJpeg(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a JPEG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SavePng(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a PNG.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageFilename">The output image file path.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.SaveWebp(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF and saves it as a bitmap.
+            </summary>
+            <param name="imageStream">The output image stream.</param>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImage(System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF into an image.
+            </summary>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The converted PDF page as an image.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImage(System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF into an image.
+            </summary>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The converted PDF page as an image.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImage(System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF into an image.
+            </summary>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF page as an image.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImage(System.IO.Stream,System.Boolean,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders a single page of a given PDF into an image.
+            </summary>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="page">The specific page to be converted.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF page as an image.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImages(System.String,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImages(System.Byte[],System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImages(System.IO.Stream,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
+        <member name="M:PDFtoImage.Compatibility.Conversion.ToImages(System.IO.Stream,System.Boolean,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
+            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
+            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
         <member name="T:PDFtoImage.Conversion">
             <summary>
             Provides methods to render PDFs into images.
             </summary>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
@@ -17,17 +488,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
@@ -35,17 +498,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
@@ -53,17 +508,9 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
@@ -71,53 +518,31 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.String,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
             <param name="imageFilename">The output image file path.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveJpeg(System.IO.Stream,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a JPEG.
             </summary>
             <param name="imageStream">The output image stream.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
@@ -125,17 +550,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
@@ -143,17 +560,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
@@ -161,17 +570,9 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
@@ -179,53 +580,31 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.String,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
             <param name="imageFilename">The output image file path.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SavePng(System.IO.Stream,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a PNG.
             </summary>
             <param name="imageStream">The output image stream.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
@@ -233,17 +612,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
@@ -251,17 +622,9 @@
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
@@ -269,17 +632,9 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
@@ -287,107 +642,51 @@
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.String,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
             <param name="imageFilename">The output image file path.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.SaveWebp(System.IO.Stream,System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF and saves it as a bitmap.
             </summary>
             <param name="imageStream">The output image stream.</param>
             <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
         </member>
-        <member name="M:PDFtoImage.Conversion.ToImage(System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.ToImage(System.String,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF into an image.
             </summary>
             <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
             <returns>The converted PDF page as an image.</returns>
         </member>
-        <member name="M:PDFtoImage.Conversion.ToImage(System.Byte[],System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.ToImage(System.Byte[],System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF into an image.
             </summary>
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
             <returns>The converted PDF page as an image.</returns>
         </member>
-        <member name="M:PDFtoImage.Conversion.ToImage(System.IO.Stream,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
-            <summary>
-            Renders a single page of a given PDF into an image.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <returns>The rendered PDF page as an image.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.ToImage(System.IO.Stream,System.Boolean,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
+        <member name="M:PDFtoImage.Conversion.ToImage(System.IO.Stream,System.Boolean,System.String,System.Int32,PDFtoImage.RenderOptions)">
             <summary>
             Renders a single page of a given PDF into an image.
             </summary>
@@ -395,85 +694,8 @@
             <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <param name="page">The specific page to be converted.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the desired <paramref name="page"/>. Use <see langword="null"/> if the original width should be used.</param>
-            <param name="height">The height of the desired <paramref name="page"/>. Use <see langword="null"/> if the original height should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="options">Additional options for PDF rendering.</param>
             <returns>The rendered PDF page as an image.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.ToImages(System.String,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
-            <summary>
-            Renders all pages of a given PDF into images.
-            </summary>
-            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
-            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <returns>The rendered PDF pages as images.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.ToImages(System.Byte[],System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
-            <summary>
-            Renders all pages of a given PDF into images.
-            </summary>
-            <param name="pdfAsByteArray">The PDF as a byte array.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
-            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <returns>The rendered PDF pages as images.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.ToImages(System.IO.Stream,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
-            <summary>
-            Renders all pages of a given PDF into images.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
-            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <returns>The rendered PDF pages as images.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.ToImages(System.IO.Stream,System.Boolean,System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor})">
-            <summary>
-            Renders all pages of a given PDF into images.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
-            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <param name="dpi">The DPI scaling to use for rasterization of the PDF.</param>
-            <param name="width">The width of the all pages. Use <see langword="null"/> if the original width (per page) should be used.</param>
-            <param name="height">The height of all pages. Use <see langword="null"/> if the original height (per page) should be used.</param>
-            <param name="withAnnotations">Specifies whether annotations be rendered.</param>
-            <param name="withFormFill">Specifies whether form filling will be rendered.</param>
-            <param name="withAspectRatio">Specifies that <paramref name="width"/> or <paramref name="height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
-            <param name="rotation">Specifies the rotation at 90 degree intervals.</param>
-            <param name="antiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
-            <param name="backgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <returns>The rendered PDF pages as images.</returns>
         </member>
         <member name="M:PDFtoImage.Conversion.GetPageCount(System.String,System.String)">
             <summary>
@@ -488,14 +710,6 @@
             Returns the page count of a given PDF.
             </summary>
             <param name="pdfAsByteArray">The PDF as a byte array.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <returns>The page count of the given PDF.</returns>
-        </member>
-        <member name="M:PDFtoImage.Conversion.GetPageCount(System.IO.Stream,System.String)">
-            <summary>
-            Returns the page count of a given PDF.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <returns>The page count of the given PDF.</returns>
         </member>
@@ -526,15 +740,6 @@
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <returns>The page size containing width and height.</returns>
         </member>
-        <member name="M:PDFtoImage.Conversion.GetPageSize(System.IO.Stream,System.Int32,System.String)">
-            <summary>
-            Returns the PDF page size for a given page number.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
-            <param name="page">The specific page to query the size for.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <returns>The page size containing width and height.</returns>
-        </member>
         <member name="M:PDFtoImage.Conversion.GetPageSize(System.IO.Stream,System.Boolean,System.Int32,System.String)">
             <summary>
             Returns the PDF page size for a given page number.
@@ -561,14 +766,6 @@
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <returns>The page sizes containing width and height.</returns>
         </member>
-        <member name="M:PDFtoImage.Conversion.GetPageSizes(System.IO.Stream,System.String)">
-            <summary>
-            Returns the sizes of all PDF pages.
-            </summary>
-            <param name="pdfStream">The PDF as a stream.</param>
-            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
-            <returns>The page sizes containing width and height.</returns>
-        </member>
         <member name="M:PDFtoImage.Conversion.GetPageSizes(System.IO.Stream,System.Boolean,System.String)">
             <summary>
             Returns the sizes of all PDF pages.
@@ -577,6 +774,34 @@
             <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
             <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
             <returns>The page sizes containing width and height.</returns>
+        </member>
+        <member name="M:PDFtoImage.Conversion.ToImages(System.String,System.String,PDFtoImage.RenderOptions)">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="options">Additional options for PDF rendering.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
+        <member name="M:PDFtoImage.Conversion.ToImages(System.Byte[],System.String,PDFtoImage.RenderOptions)">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfAsByteArray">The PDF as a byte array.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="options">Additional options for PDF rendering.</param>
+            <returns>The rendered PDF pages as images.</returns>
+        </member>
+        <member name="M:PDFtoImage.Conversion.ToImages(System.IO.Stream,System.Boolean,System.String,PDFtoImage.RenderOptions)">
+            <summary>
+            Renders all pages of a given PDF into images.
+            </summary>
+            <param name="pdfStream">The PDF as a stream.</param>
+            <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+            <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+            <param name="options">Additional options for PDF rendering.</param>
+            <returns>The rendered PDF pages as images.</returns>
         </member>
         <member name="T:PDFtoImage.Exceptions.PdfCannotOpenFileException">
             <summary>
@@ -792,7 +1017,7 @@
             Size of each page in the PDF document.
             </summary>
         </member>
-        <member name="M:PDFtoImage.Internals.PdfDocument.Render(System.Int32,System.Int32,System.Int32,System.Single,System.Single,PDFtoImage.PdfRotation,PDFtoImage.Internals.NativeMethods.FPDF,System.Boolean,System.Boolean,SkiaSharp.SKColor)">
+        <member name="M:PDFtoImage.Internals.PdfDocument.Render(System.Int32,System.Single,System.Single,System.Single,System.Single,PDFtoImage.PdfRotation,PDFtoImage.Internals.NativeMethods.FPDF,System.Boolean,System.Boolean,SkiaSharp.SKColor,System.Nullable{System.Drawing.RectangleF},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Renders a page of the PDF document to an image.
             </summary>
@@ -806,15 +1031,21 @@
             <param name="renderFormFill">Render form fills.</param>
             <param name="correctFromDpi">Change <paramref name="width"/> and <paramref name="height"/> depending on the given <paramref name="dpiX"/> and <paramref name="dpiY"/>.</param>
             <param name="backgroundColor">The background color used for the output.</param>
+            <param name="bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+            <param name="useTiling"></param>
+            <param name="cancellationToken"></param>
             <returns>The rendered image.</returns>
         </member>
         <member name="M:PDFtoImage.Internals.PdfDocument.Dispose">
-            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-            <filterpriority>2</filterpriority>
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
         </member>
         <member name="M:PDFtoImage.Internals.PdfDocument.Dispose(System.Boolean)">
-            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-            <param name="disposing">Whether this method is called from Dispose.</param>
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <param name="disposing">Whether this method is called from <see cref="M:PDFtoImage.Internals.PdfDocument.Dispose"/>.</param>
         </member>
         <member name="T:PDFtoImage.PdfAntiAliasing">
             <summary>
@@ -869,6 +1100,76 @@
         <member name="F:PDFtoImage.PdfRotation.Rotate270">
             <summary>
             Rotated 90 degrees counter-clockwise.
+            </summary>
+        </member>
+        <member name="T:PDFtoImage.RenderOptions">
+            <summary>
+            Contains all relevant information to render a PDF page into an image.
+            </summary>
+            <param name="Dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="Width">The width of the desired page. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="Height">The height of the desired page. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="WithAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="WithFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="WithAspectRatio">Specifies that <paramref name="Width"/> or <paramref name="Height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="Rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="AntiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="BackgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+            <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
+        </member>
+        <member name="M:PDFtoImage.RenderOptions.#ctor(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor},System.Nullable{System.Drawing.RectangleF},System.Boolean)">
+            <summary>
+            Contains all relevant information to render a PDF page into an image.
+            </summary>
+            <param name="Dpi">The DPI scaling to use for rasterization of the PDF.</param>
+            <param name="Width">The width of the desired page. Use <see langword="null"/> if the original width should be used.</param>
+            <param name="Height">The height of the desired page. Use <see langword="null"/> if the original height should be used.</param>
+            <param name="WithAnnotations">Specifies whether annotations be rendered.</param>
+            <param name="WithFormFill">Specifies whether form filling will be rendered.</param>
+            <param name="WithAspectRatio">Specifies that <paramref name="Width"/> or <paramref name="Height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</param>
+            <param name="Rotation">Specifies the rotation at 90 degree intervals.</param>
+            <param name="AntiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
+            <param name="BackgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
+            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+            <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.Dpi">
+            <summary>The DPI scaling to use for rasterization of the PDF.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.Width">
+            <summary>The width of the desired page. Use <see langword="null"/> if the original width should be used.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.Height">
+            <summary>The height of the desired page. Use <see langword="null"/> if the original height should be used.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.WithAnnotations">
+            <summary>Specifies whether annotations be rendered.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.WithFormFill">
+            <summary>Specifies whether form filling will be rendered.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.WithAspectRatio">
+            <summary>Specifies that <paramref name="Width"/> or <paramref name="Height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.Rotation">
+            <summary>Specifies the rotation at 90 degree intervals.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.AntiAliasing">
+            <summary>Specifies which parts of the PDF should be anti-aliasing for rendering.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.BackgroundColor">
+            <summary>Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.Bounds">
+            <summary>Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.UseTiling">
+            <summary>Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</summary>
+        </member>
+        <member name="M:PDFtoImage.RenderOptions.#ctor">
+            <summary>
+            Constructs <see cref="T:PDFtoImage.RenderOptions"/> with default values.
             </summary>
         </member>
     </members>
