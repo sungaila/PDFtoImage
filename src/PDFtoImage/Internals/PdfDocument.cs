@@ -73,9 +73,13 @@ namespace PDFtoImage.Internals
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
+            var originalWidth = PageSizes[page].Width;
+            var originalHeight = PageSizes[page].Height;
+
             if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
             {
                 (width, height) = (height, width);
+                (originalWidth, originalHeight) = (originalHeight, originalWidth);
                 (dpiX, dpiY) = (dpiY, dpiX);
             }
 
@@ -83,6 +87,9 @@ namespace PDFtoImage.Internals
             {
                 width *= dpiX / 72f;
                 height *= dpiY / 72f;
+
+                originalWidth *= dpiX / 72f;
+                originalHeight *= dpiY / 72f;
 
                 if (bounds != null)
                 {
@@ -97,10 +104,13 @@ namespace PDFtoImage.Internals
 
             if (bounds != null)
             {
+                var factorX = width / originalWidth;
+                var factorY = height / originalHeight;
+
                 if (rotate == PdfRotation.Rotate90)
                 {
                     bounds = new RectangleF(
-                        width - bounds.Value.Height - bounds.Value.Y,
+                        ((originalWidth - bounds.Value.Height) * factorX) - bounds.Value.Y,
                         bounds.Value.X,
                         bounds.Value.Height,
                         bounds.Value.Width
@@ -110,7 +120,7 @@ namespace PDFtoImage.Internals
                 {
                     bounds = new RectangleF(
                         bounds.Value.Y,
-                        height - bounds.Value.Width - bounds.Value.X,
+                        ((originalHeight - bounds.Value.Width) * factorY) - bounds.Value.X,
                         bounds.Value.Height,
                         bounds.Value.Width
                         );
@@ -118,8 +128,8 @@ namespace PDFtoImage.Internals
                 else if (rotate == PdfRotation.Rotate180)
                 {
                     bounds = new RectangleF(
-                        width - bounds.Value.Width - bounds.Value.X,
-                        height - bounds.Value.Height - bounds.Value.Y,
+                        ((originalWidth - bounds.Value.Width) * factorX) - bounds.Value.X,
+                        ((originalHeight - bounds.Value.Height) * factorY) - bounds.Value.Y,
                         bounds.Value.Width,
                         bounds.Value.Height
                         );
@@ -133,7 +143,7 @@ namespace PDFtoImage.Internals
 
             if (!useTiling || (horizontalTileCount == 1 && verticalTileCount == 1))
             {
-                bitmap = RenderSubset(_file!, page, width, height, rotate, flags, renderFormFill, backgroundColor, bounds, width, height, cancellationToken);
+                bitmap = RenderSubset(_file!, page, width, height, rotate, flags, renderFormFill, backgroundColor, bounds, originalWidth, originalHeight, cancellationToken);
             }
             else
             {
@@ -143,8 +153,8 @@ namespace PDFtoImage.Internals
 
                 float currentTileWidth = width / horizontalTileCount;
                 float currentTileHeight = height / verticalTileCount;
-                float boundsWidthFactor = bounds != null ? bounds.Value.Width / width : 0f;
-                float boundsHeightFactor = bounds != null ? bounds.Value.Height / height : 0f;
+                float boundsWidthFactor = bounds != null ? bounds.Value.Width / originalWidth : 0f;
+                float boundsHeightFactor = bounds != null ? bounds.Value.Height / originalHeight : 0f;
 
                 using var canvas = new SKCanvas(bitmap);
                 canvas.Clear(backgroundColor);

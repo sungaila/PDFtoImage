@@ -188,6 +188,74 @@ namespace Tests
             CompareStreams(expectedPath, outputStream);
         }
 
+        [TestMethod]
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate0)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate0)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate90)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate90)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate180)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate180)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate270)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate270)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270)]
+        public void WithWidthAndHeightAndRotation(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null, PdfRotation? rotation = null)
+        {
+            var bounds = new RectangleF(x, y, width, height);
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
+
+            SavePng(outputStream, inputStream, options: new(Width: outputWidth, Height: outputHeight, Bounds: bounds, Rotation: rotation ?? default));
+
+            CompareStreams(expectedPath, outputStream);
+        }
+
         private static string GetFileName(RectangleF? input, PdfRotation? rotation, bool? withAnnotations, bool? withFormFill)
         {
             if (input == null)
