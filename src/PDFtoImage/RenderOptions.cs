@@ -28,7 +28,7 @@ namespace PDFtoImage
         PdfAntiAliasing AntiAliasing = PdfAntiAliasing.All,
         SKColor? BackgroundColor = null,
         RectangleF? Bounds = null,
-        bool UseTiling = false)
+        bool UseTiling = false) : IRenderOptions
     {
         /// <summary>
         /// Constructs <see cref="RenderOptions"/> with default values.

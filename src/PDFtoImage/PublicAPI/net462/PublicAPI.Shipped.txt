@@ -24,6 +24,29 @@ PDFtoImage.RenderOptions.WithFormFill.get -> bool
 PDFtoImage.RenderOptions.WithFormFill.init -> void
 PDFtoImage.RenderOptions.UseTiling.get -> bool
 PDFtoImage.RenderOptions.UseTiling.init -> void
+PDFtoImage.IRenderOptions
+PDFtoImage.IRenderOptions.AntiAliasing.get -> PDFtoImage.PdfAntiAliasing
+PDFtoImage.IRenderOptions.AntiAliasing.init -> void
+PDFtoImage.IRenderOptions.BackgroundColor.get -> SkiaSharp.SKColor?
+PDFtoImage.IRenderOptions.BackgroundColor.init -> void
+PDFtoImage.IRenderOptions.Bounds.get -> System.Drawing.RectangleF?
+PDFtoImage.IRenderOptions.Bounds.init -> void
+PDFtoImage.IRenderOptions.Dpi.get -> int
+PDFtoImage.IRenderOptions.Dpi.init -> void
+PDFtoImage.IRenderOptions.Height.get -> int?
+PDFtoImage.IRenderOptions.Height.init -> void
+PDFtoImage.IRenderOptions.Rotation.get -> PDFtoImage.PdfRotation
+PDFtoImage.IRenderOptions.Rotation.init -> void
+PDFtoImage.IRenderOptions.UseTiling.get -> bool
+PDFtoImage.IRenderOptions.UseTiling.init -> void
+PDFtoImage.IRenderOptions.Width.get -> int?
+PDFtoImage.IRenderOptions.Width.init -> void
+PDFtoImage.IRenderOptions.WithAnnotations.get -> bool
+PDFtoImage.IRenderOptions.WithAnnotations.init -> void
+PDFtoImage.IRenderOptions.WithAspectRatio.get -> bool
+PDFtoImage.IRenderOptions.WithAspectRatio.init -> void
+PDFtoImage.IRenderOptions.WithFormFill.get -> bool
+PDFtoImage.IRenderOptions.WithFormFill.init -> void
 PDFtoImage.PdfAntiAliasing
 PDFtoImage.PdfAntiAliasing.None = 0 -> PDFtoImage.PdfAntiAliasing
 PDFtoImage.PdfAntiAliasing.Text = 1 -> PDFtoImage.PdfAntiAliasing
