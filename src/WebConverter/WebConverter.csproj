@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <VersionPrefix>4.0.0</VersionPrefix>
+    <VersionPrefix>4.0.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
