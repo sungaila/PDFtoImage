@@ -1047,6 +1047,66 @@
             </summary>
             <param name="disposing">Whether this method is called from <see cref="M:PDFtoImage.Internals.PdfDocument.Dispose"/>.</param>
         </member>
+        <member name="T:PDFtoImage.IRenderOptions">
+            <summary>
+            Contains all relevant information to render a PDF page into an image.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.Dpi">
+            <summary>
+            The DPI scaling to use for rasterization of the PDF.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.Width">
+            <summary>
+            The width of the desired page. Use <see langword="null"/> if the original width should be used.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.Height">
+            <summary>
+            The height of the desired page. Use <see langword="null"/> if the original height should be used.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.WithAnnotations">
+            <summary>
+            Specifies whether annotations be rendered.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.WithFormFill">
+            <summary>
+            Specifies whether form filling will be rendered.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.WithAspectRatio">
+            <summary>
+            Specifies that <see cref="P:PDFtoImage.IRenderOptions.Width"/> or <see cref="P:PDFtoImage.IRenderOptions.Height"/> should be adjusted for aspect ratio (either one must be <see langword="null"/>).
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.Rotation">
+            <summary>
+            Specifies the rotation at 90 degree intervals.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.AntiAliasing">
+            <summary>
+            Specifies which parts of the PDF should be anti-aliasing for rendering.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.BackgroundColor">
+            <summary>
+            Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.Bounds">
+            <summary>
+            Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.UseTiling">
+            <summary>
+            Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.
+            </summary>
+        </member>
         <member name="T:PDFtoImage.PdfAntiAliasing">
             <summary>
             Specifies which parts of the PDF should be rendered with anti-aliasing.
