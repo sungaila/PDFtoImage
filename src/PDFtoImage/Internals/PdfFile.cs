@@ -53,8 +53,6 @@ namespace PDFtoImage.Internals
             _disposeStream=disposeStream;
         }
 
-        public PdfBookmarkCollection? Bookmarks { get; private set; }
-
         public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
         {
             if (_disposed)
@@ -119,60 +117,6 @@ namespace PDFtoImage.Internals
 
             NativeMethods.FPDF_SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
             NativeMethods.FPDF_SetFormFieldHighlightAlpha(_form, 100);
-
-            NativeMethods.FORM_DoDocumentJSAction(_form);
-            NativeMethods.FORM_DoDocumentOpenAction(_form);
-
-            Bookmarks = [];
-
-            LoadBookmarks(Bookmarks, NativeMethods.FPDF_BookmarkGetFirstChild(document, IntPtr.Zero));
-        }
-
-        private void LoadBookmarks(PdfBookmarkCollection bookmarks, IntPtr bookmark)
-        {
-            if (bookmark == IntPtr.Zero)
-                return;
-
-            bookmarks.Add(LoadBookmark(bookmark));
-            while ((bookmark = NativeMethods.FPDF_BookmarkGetNextSibling(_document, bookmark)) != IntPtr.Zero)
-                bookmarks.Add(LoadBookmark(bookmark));
-        }
-
-        private PdfBookmark LoadBookmark(IntPtr bookmark)
-        {
-            var result = new PdfBookmark
-            {
-                Title = GetBookmarkTitle(bookmark),
-                PageIndex = (int)GetBookmarkPageIndex(bookmark)
-            };
-
-            var child = NativeMethods.FPDF_BookmarkGetFirstChild(_document, bookmark);
-            if (child != IntPtr.Zero)
-                LoadBookmarks(result.Children, child);
-
-            return result;
-        }
-
-        private static string GetBookmarkTitle(IntPtr bookmark)
-        {
-            uint length = NativeMethods.FPDF_BookmarkGetTitle(bookmark, null, 0);
-            byte[] buffer = new byte[length];
-            NativeMethods.FPDF_BookmarkGetTitle(bookmark, buffer, length);
-
-            string result = Encoding.Unicode.GetString(buffer);
-            if (result.Length > 0 && result[result.Length - 1] == 0)
-                result = result.Substring(0, result.Length - 1);
-
-            return result;
-        }
-
-        private uint GetBookmarkPageIndex(IntPtr bookmark)
-        {
-            IntPtr dest = NativeMethods.FPDF_BookmarkGetDest(_document, bookmark);
-            if (dest != IntPtr.Zero)
-                return NativeMethods.FPDFDest_GetDestPageIndex(_document, dest);
-
-            return 0;
         }
 
         public void Dispose()
@@ -184,38 +128,37 @@ namespace PDFtoImage.Internals
 
         private void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (_disposed)
+                return;
+
+            StreamManager.Unregister(_id);
+
+            if (_form != IntPtr.Zero)
             {
-                StreamManager.Unregister(_id);
-
-                if (_form != IntPtr.Zero)
-                {
-                    NativeMethods.FORM_DoDocumentAAction(_form, NativeMethods.FPDFDOC_AACTION.WC);
-                    // this call is needed for PDFium builds with PDF_ENABLE_XFA enabled
-                    // and PDF_ENABLE_XFA implies JS support (PDF_ENABLE_V8 is needed for that)
-                    // since we don't ship PDFium with V8 we can skip this
-                    // otherwise we have to deal with some nasty unmanaged memory corruption
-                    //NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
-                    _form = IntPtr.Zero;
-                }
-
-                if (_document != IntPtr.Zero)
-                {
-                    NativeMethods.FPDF_CloseDocument(_document);
-                    _document = IntPtr.Zero;
-                }
-
-                if (_formCallbacksHandle!.IsAllocated)
-                    _formCallbacksHandle!.Free();
-
-                if (_stream != null && _disposeStream)
-                {
-                    _stream.Dispose();
-                    _stream = null;
-                }
-
-                _disposed = true;
+                // this call is needed for PDFium builds with PDF_ENABLE_XFA enabled
+                // and PDF_ENABLE_XFA implies JS support (PDF_ENABLE_V8 is needed for that)
+                // since we don't ship PDFium with V8 we can skip this
+                // otherwise we have to deal with some nasty unmanaged memory corruption
+                //NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
+                _form = IntPtr.Zero;
             }
+
+            if (_document != IntPtr.Zero)
+            {
+                NativeMethods.FPDF_CloseDocument(_document);
+                _document = IntPtr.Zero;
+            }
+
+            if (_formCallbacksHandle!.IsAllocated)
+                _formCallbacksHandle!.Free();
+
+            if (_stream != null && _disposeStream)
+            {
+                _stream.Dispose();
+                _stream = null;
+            }
+
+            _disposed = true;
         }
 
         private sealed class PageData : IDisposable
@@ -238,7 +181,6 @@ namespace PDFtoImage.Internals
                 Page = NativeMethods.FPDF_LoadPage(document, pageNumber);
                 TextPage = NativeMethods.FPDFText_LoadPage(Page);
                 NativeMethods.FORM_OnAfterLoadPage(Page, form);
-                NativeMethods.FORM_DoPageAAction(Page, form, NativeMethods.FPDFPAGE_AACTION.OPEN);
 
                 Width = NativeMethods.FPDF_GetPageWidth(Page);
                 Height = NativeMethods.FPDF_GetPageHeight(Page);
@@ -248,7 +190,6 @@ namespace PDFtoImage.Internals
             {
                 if (!_disposed)
                 {
-                    NativeMethods.FORM_DoPageAAction(Page, _form, NativeMethods.FPDFPAGE_AACTION.CLOSE);
                     NativeMethods.FORM_OnBeforeClosePage(Page, _form);
                     NativeMethods.FPDFText_ClosePage(TextPage);
                     NativeMethods.FPDF_ClosePage(Page);

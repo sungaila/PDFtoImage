@@ -16,10 +16,11 @@ namespace Tests.Compatibility
 #if NET6_0_OR_GREATER
             if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
                 Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
+#pragma warning disable CS0618
 #endif
-		}
+        }
 
-		[TestMethod]
+        [TestMethod]
 		[DataRow(null, DisplayName = "Default (no form fill)")]
 		[DataRow(true, DisplayName = "Form fill")]
 		[DataRow(false, DisplayName = "No form fill")]

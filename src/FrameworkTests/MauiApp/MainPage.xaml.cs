@@ -15,9 +15,7 @@
                 using var ms = new MemoryStream();
                 input.CopyTo(ms);
 
-#pragma warning disable CA1416 // Validate platform compatibility
                 using var bitmap = PDFtoImage.Conversion.ToImage(ms);
-#pragma warning restore CA1416 // Validate platform compatibility
 
                 OutputLabel.Text = $"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}";
             }

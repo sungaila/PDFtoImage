@@ -44,8 +44,7 @@ namespace PDFtoImage.Internals
         {
             _file = new PdfFile(stream, password, disposeStream);
 
-            var pageSizes = _file.GetPDFDocInfo() ?? throw new Win32Exception();
-            PageSizes = new ReadOnlyCollection<SizeF>(pageSizes);
+            PageSizes = new ReadOnlyCollection<SizeF>(_file.GetPDFDocInfo() ?? throw new Win32Exception());
         }
 
         private const int MaxTileWidth = 4000;

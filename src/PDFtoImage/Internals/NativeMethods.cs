@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Security;
 
 namespace PDFtoImage.Internals
 {
@@ -83,30 +82,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static void FORM_DoDocumentJSAction(IntPtr hHandle)
-        {
-            lock (LockString)
-            {
-                Imports.FORM_DoDocumentJSAction(hHandle);
-            }
-        }
-
-        public static void FORM_DoDocumentOpenAction(IntPtr hHandle)
-        {
-            lock (LockString)
-            {
-                Imports.FORM_DoDocumentOpenAction(hHandle);
-            }
-        }
-
-        public static void FORM_DoDocumentAAction(IntPtr hHandle, FPDFDOC_AACTION aaType)
-        {
-            lock (LockString)
-            {
-                Imports.FORM_DoDocumentAAction(hHandle, aaType);
-            }
-        }
-
         public static IntPtr FPDF_LoadPage(IntPtr document, int page_index)
         {
             lock (LockString)
@@ -128,14 +103,6 @@ namespace PDFtoImage.Internals
             lock (LockString)
             {
                 Imports.FORM_OnAfterLoadPage(page, _form);
-            }
-        }
-
-        public static void FORM_DoPageAAction(IntPtr page, IntPtr _form, FPDFPAGE_AACTION fPDFPAGE_AACTION)
-        {
-            lock (LockString)
-            {
-                Imports.FORM_DoPageAAction(page, _form, fPDFPAGE_AACTION);
             }
         }
 
@@ -225,30 +192,6 @@ namespace PDFtoImage.Internals
             {
                 return Imports.FPDFDest_GetDestPageIndex(document, dest);
             }
-        }
-
-        public static IntPtr FPDF_BookmarkGetFirstChild(IntPtr document, IntPtr bookmark)
-        {
-            lock (LockString)
-                return Imports.FPDFBookmark_GetFirstChild(document, bookmark);
-        }
-
-        public static IntPtr FPDF_BookmarkGetNextSibling(IntPtr document, IntPtr bookmark)
-        {
-            lock (LockString)
-                return Imports.FPDFBookmark_GetNextSibling(document, bookmark);
-        }
-
-        public static uint FPDF_BookmarkGetTitle(IntPtr bookmark, byte[]? buffer, uint buflen)
-        {
-            lock (LockString)
-                return Imports.FPDFBookmark_GetTitle(bookmark, buffer, buflen);
-        }
-
-        public static IntPtr FPDF_BookmarkGetDest(IntPtr document, IntPtr bookmark)
-        {
-            lock (LockString)
-                return Imports.FPDFBookmark_GetDest(document, bookmark);
         }
 
         /// <summary>
@@ -371,18 +314,6 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FORM_DoDocumentJSAction(IntPtr hHandle);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FORM_DoDocumentOpenAction(IntPtr hHandle);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FORM_DoDocumentAAction(IntPtr hHandle, FPDFDOC_AACTION aaType);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [LibraryImport("pdfium")]
@@ -392,10 +323,6 @@ namespace PDFtoImage.Internals
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FORM_DoPageAAction(IntPtr page, IntPtr _form, FPDFPAGE_AACTION fPDFPAGE_AACTION);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -443,22 +370,6 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDFBookmark_GetFirstChild(IntPtr document, IntPtr bookmark);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDFBookmark_GetNextSibling(IntPtr document, IntPtr bookmark);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvCdecl) })]
-            public static partial uint FPDFBookmark_GetTitle(IntPtr bookmark, byte[]? buffer, uint buflen);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDFBookmark_GetDest(IntPtr document, IntPtr bookmark);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial uint FPDF_GetLastError();
 
             [LibraryImport("pdfium")]
@@ -491,15 +402,6 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FORM_DoDocumentJSAction(IntPtr hHandle);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FORM_DoDocumentOpenAction(IntPtr hHandle);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FORM_DoDocumentAAction(IntPtr hHandle, FPDFDOC_AACTION aaType);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -507,9 +409,6 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FORM_DoPageAAction(IntPtr page, IntPtr _form, FPDFPAGE_AACTION fPDFPAGE_AACTION);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern double FPDF_GetPageWidth(IntPtr page);
@@ -543,18 +442,6 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDFDest_GetDestPageIndex(IntPtr document, IntPtr dest);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFBookmark_GetFirstChild(IntPtr document, IntPtr bookmark);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFBookmark_GetNextSibling(IntPtr document, IntPtr bookmark);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern uint FPDFBookmark_GetTitle(IntPtr bookmark, byte[]? buffer, uint buflen);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFBookmark_GetDest(IntPtr document, IntPtr bookmark);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDF_GetLastError();
@@ -639,21 +526,6 @@ namespace PDFtoImage.Internals
             private readonly IntPtr FFI_PostRequestURL;
 
             private readonly IntPtr FFI_PutRequestURL;
-        }
-
-        public enum FPDFDOC_AACTION
-        {
-            WC = 0x10,
-            WS = 0x11,
-            DS = 0x12,
-            WP = 0x13,
-            DP = 0x14
-        }
-
-        public enum FPDFPAGE_AACTION
-        {
-            OPEN = 0,
-            CLOSE = 1
         }
 
         /// <summary>
