@@ -113,9 +113,8 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@main
         with:
-          subject-path:
-            src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
-            src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
+          subject-path: |
+            'src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg'
       - name: Publish libraries
         uses: actions/upload-artifact@v4
         with:
