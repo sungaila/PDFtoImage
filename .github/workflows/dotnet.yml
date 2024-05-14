@@ -51,6 +51,10 @@ jobs:
     name: Build
     runs-on: windows-latest
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
+    permissions:
+      id-token: write
+      contents: read
+      attestations: write
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -106,6 +110,10 @@ jobs:
         run: msbuild src/PDFtoImage.Build.slnf /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
       - name: Pack
         run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@main
+        with:
+          subject-path: 'src/PDFtoImage/bin/**/*'
       - name: Publish libraries
         uses: actions/upload-artifact@v4
         with:

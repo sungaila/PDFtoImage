@@ -24,7 +24,7 @@ namespace PDFtoImage
     [SupportedOSPlatform("macOS")]
     [SupportedOSPlatform("Android31.0")]
 #endif
-    public static partial class Conversion
+    public static class Conversion
     {
         /// <summary>
         /// Renders a single page of a given PDF and saves it as a JPEG.
