@@ -17,7 +17,7 @@ namespace Tests
         [DataRow(default)]
         public void NullOrDefault(RectangleF? bounds = null)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default)}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -42,7 +42,7 @@ namespace Tests
         public void Normal(float x, float y, float width, float height)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default)}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -87,7 +87,7 @@ namespace Tests
         public void WithRotation(float x, float y, float width, float height, PdfRotation? rotation)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default)}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -119,7 +119,7 @@ namespace Tests
         public void WithAnnotations(float x, float y, float width, float height, bool? withAnnotations = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, withAnnotations, default)}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, withAnnotations, default, default)}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -151,7 +151,7 @@ namespace Tests
         public void WithFormFill(float x, float y, float width, float height, bool? withFormFill = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"hundesteuer-anmeldung_{GetFileName(bounds, default, default, withFormFill)}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"hundesteuer-anmeldung_{GetFileName(bounds, default, default, withFormFill, default)}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -178,7 +178,7 @@ namespace Tests
         public void WithWidthAndHeight(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -246,7 +246,7 @@ namespace Tests
         public void WithWidthAndHeightAndRotation(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null, PdfRotation? rotation = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
 
             using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
@@ -256,12 +256,229 @@ namespace Tests
             CompareStreams(expectedPath, outputStream);
         }
 
-        private static string GetFileName(RectangleF? input, PdfRotation? rotation, bool? withAnnotations, bool? withFormFill)
+        [TestMethod]
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, default, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, default, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, default, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, default, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, default, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, default, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, default, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, default, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, default, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, default, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate0, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate0, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate90, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate90, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate180, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate180, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate270, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate270, default)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, default)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, default)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, default)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, default)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, default, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, default, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, default, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, default, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, default, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, default, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, default, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, default, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, default, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, default, false)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate0, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate0, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, false)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate90, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate90, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, false)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate180, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate180, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, false)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate270, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate270, false)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, false)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, false)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, false)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, false)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, default, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, default, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, default, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, default, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, default, true)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, default, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, default, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, default, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, default, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, default, true)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate0, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate0, true)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate0, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate0, true)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate90, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate90, true)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate90, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate90, true)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate180, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate180, true)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate180, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate180, true)]
+
+        [DataRow(0f, 0f, 419.528f, 595.276f, default, default, PdfRotation.Rotate270, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, default, default, PdfRotation.Rotate270, true)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, 500, 500, PdfRotation.Rotate270, true)]
+        [DataRow(0f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, true)]
+        [DataRow(209.764f, 0f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, true)]
+        [DataRow(0f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, true)]
+        [DataRow(209.764f, 297.638f, 209.764f, 297.638f, 500, 500, PdfRotation.Rotate270, true)]
+        public void WithWidthAndHeightAndRotationAndDpiRelative(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null, PdfRotation? rotation = null, bool? dpiRelativeToBounds = null)
+        {
+            var bounds = new RectangleF(x, y, width, height);
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, dpiRelativeToBounds)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
+
+            if (dpiRelativeToBounds != null)
+                SavePng(outputStream, inputStream, options: new(Width: outputWidth, Height: outputHeight, Bounds: bounds, Rotation: rotation ?? default, DpiRelativeToBounds: dpiRelativeToBounds.Value));
+            else
+                SavePng(outputStream, inputStream, options: new(Width: outputWidth, Height: outputHeight, Bounds: bounds, Rotation: rotation ?? default));
+
+            CompareStreams(expectedPath, outputStream);
+        }
+
+        [TestMethod]
+        [DataRow(0f, 0f, 419.528f, 595.276f, default)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, false)]
+        [DataRow(0f, 0f, 419.528f, 595.276f, true)]
+
+        [DataRow(0f, 0f, 200f, 200f, default)]
+        [DataRow(0f, 0f, 200f, 200f, false)]
+        [DataRow(0f, 0f, 200f, 200f, true)]
+
+        [DataRow(200f, 0f, 200f, 200f, default)]
+        [DataRow(200f, 0f, 200f, 200f, false)]
+        [DataRow(200f, 0f, 200f, 200f, true)]
+
+        [DataRow(0f, 200f, 200f, 200f, default)]
+        [DataRow(0f, 200f, 200f, 200f, false)]
+        [DataRow(0f, 200f, 200f, 200f, true)]
+
+        [DataRow(200f, 200f, 200f, 200f, default)]
+        [DataRow(200f, 200f, 200f, 200f, false)]
+        [DataRow(200f, 200f, 200f, 200f, true)]
+        public void WithDpiRelative(float x, float y, float width, float height, bool? dpiRelativeToBounds = null)
+        {
+            var bounds = new RectangleF(x, y, width, height);
+            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, dpiRelativeToBounds)}.png");
+
+            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var outputStream = CreateOutputStream(expectedPath);
+
+            if (dpiRelativeToBounds != null)
+                SavePng(outputStream, inputStream, options: new(Dpi: 300, Bounds: bounds, DpiRelativeToBounds: dpiRelativeToBounds.Value));
+            else
+                SavePng(outputStream, inputStream, options: new(Dpi: 300, Bounds: bounds));
+
+            CompareStreams(expectedPath, outputStream);
+        }
+
+        private static string GetFileName(RectangleF? input, PdfRotation? rotation, bool? withAnnotations, bool? withFormFill, bool? dpiRelativeToBounds)
         {
             if (input == null)
                 return "default";
 
-            return $"{input.Value.X}-{input.Value.Y}-{input.Value.Width}-{input.Value.Height}{(rotation != null && rotation != PdfRotation.Rotate0 ? $"_{Enum.GetName(typeof(PdfRotation), rotation)}" : string.Empty)}{(withAnnotations == true ? "_annot" : string.Empty)}{(withFormFill == true ? "_form" : string.Empty)}".Replace('.', ',');
+            return $"{input.Value.X}-{input.Value.Y}-{input.Value.Width}-{input.Value.Height}{(rotation != null && rotation != PdfRotation.Rotate0 ? $"_{Enum.GetName(typeof(PdfRotation), rotation)}" : string.Empty)}{(withAnnotations == true ? "_annot" : string.Empty)}{(withFormFill == true ? "_form" : string.Empty)}{(dpiRelativeToBounds == true ? "_dpirelative" : string.Empty)}".Replace('.', ',');
         }
     }
 }
