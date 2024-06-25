@@ -91,6 +91,8 @@ namespace PDFtoImage.WebConverter.Models
 
         public bool UseTiling { get; set; } = true;
 
+        public bool DpiRelativeToBounds { get; set; } = false;
+
         public static string GetRotationLocalized(PdfRotation rotation) => rotation switch
         {
             PdfRotation.Rotate0 => "0°",

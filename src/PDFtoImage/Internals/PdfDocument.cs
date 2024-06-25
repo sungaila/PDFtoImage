@@ -16,10 +16,10 @@ namespace PDFtoImage.Internals
     /// <summary>
     /// Provides functionality to render a PDF document.
     /// </summary>
-    internal sealed class PdfDocument : IDisposable
+    internal struct PdfDocument : IDisposable
     {
         private bool _disposed;
-        private PdfFile? _file;
+        private PdfFile _file;
 
         /// <summary>
         /// Initializes a new instance of the PdfDocument class with the provided stream.
@@ -50,30 +50,52 @@ namespace PDFtoImage.Internals
         private const int MaxTileWidth = 4000;
         private const int MaxTileHeight = 4000;
 
-        /// <summary>
-        /// Renders a page of the PDF document to an image.
-        /// </summary>
-        /// <param name="page">Number of the page to render.</param>
-        /// <param name="width">Width of the rendered image.</param>
-        /// <param name="height">Height of the rendered image.</param>
-        /// <param name="dpiX">Horizontal DPI.</param>
-        /// <param name="dpiY">Vertical DPI.</param>
-        /// <param name="rotate">Rotation.</param>
-        /// <param name="flags">Flags used to influence the rendering.</param>
-        /// <param name="renderFormFill">Render form fills.</param>
-        /// <param name="correctFromDpi">Change <paramref name="width"/> and <paramref name="height"/> depending on the given <paramref name="dpiX"/> and <paramref name="dpiY"/>.</param>
-        /// <param name="backgroundColor">The background color used for the output.</param>
-        /// <param name="bounds">Specifies the bounds for the page relative to <see cref="Conversion.GetPageSizes(string,string)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
-        /// <param name="useTiling"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>The rendered image.</returns>
-        public SKBitmap Render(int page, float width, float height, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, bool correctFromDpi, SKColor backgroundColor, RectangleF? bounds, bool useTiling, CancellationToken cancellationToken = default)
+        public readonly SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
+            // correct the width and height for the given dpi
+            // but only if both width and height are not specified (so the original sizes are corrected)
+            var correctFromDpi = requestedWidth == null && requestedHeight == null;
+
             var originalWidth = PageSizes[page].Width;
             var originalHeight = PageSizes[page].Height;
+
+            if (withAspectRatio && !(dpiRelativeToBounds && bounds.HasValue))
+            {
+                AdjustForAspectRatio(ref requestedWidth, ref requestedHeight, PageSizes[page]);
+            }
+
+            float width = requestedWidth ?? originalWidth;
+            float height = requestedHeight ?? originalHeight;
+
+            if (dpiRelativeToBounds && bounds.HasValue)
+            {
+                float? boundsWidth = requestedWidth != null ? requestedWidth : null;
+                float? boundsHeight = requestedHeight != null ? requestedHeight : null;
+
+                if (withAspectRatio)
+                {
+                    AdjustForAspectRatio(ref boundsWidth, ref boundsHeight, new SizeF(bounds.Value.Width, bounds.Value.Height));
+                }
+
+                if (requestedWidth == null)
+                {
+                    width = boundsWidth ?? bounds.Value.Width;
+                }
+
+                if (requestedHeight == null)
+                {
+                    height = boundsHeight ?? bounds.Value.Height;
+                }
+
+                bounds = new RectangleF(
+                    bounds.Value.X * (width / originalWidth),
+                    bounds.Value.Y * (height / originalHeight),
+                    bounds.Value.Width,
+                    bounds.Value.Height);
+            }
 
             if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
             {
@@ -200,6 +222,18 @@ namespace PDFtoImage.Internals
             return bitmap;
         }
 
+        private static void AdjustForAspectRatio(ref float? width, ref float? height, SizeF pageSize)
+        {
+            if (width == null && height != null)
+            {
+                width = pageSize.Width / pageSize.Height * height.Value;
+            }
+            else if (width != null && height == null)
+            {
+                height = pageSize.Height / pageSize.Width * width.Value;
+            }
+        }
+
         private static SKBitmap RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -261,8 +295,7 @@ namespace PDFtoImage.Internals
         {
             if (!_disposed && disposing)
             {
-                _file?.Dispose();
-                _file = null;
+                _file.Dispose();
 
                 _disposed = true;
             }
