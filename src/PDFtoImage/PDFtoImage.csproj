@@ -73,9 +73,9 @@
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net7.0-android' and '$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="126.0.6476" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="126.0.6476" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="126.0.6476" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="128.0.6555" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="128.0.6555" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="128.0.6555" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.8" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.8" PrivateAssets="analyzers" />
@@ -94,14 +94,14 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="126.0.6476" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="128.0.6555" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.8" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Blazor WebAssembly stuff -->
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.8" PrivateAssets="analyzers" />
-    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="126.0.6476" PrivateAssets="analyzers" />
+    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="128.0.6555" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
