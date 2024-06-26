@@ -82,12 +82,12 @@ namespace PDFtoImage.Internals
 
                 if (requestedWidth == null)
                 {
-                    width = boundsWidth ?? bounds.Value.Width;
+                    width = (float)Math.Ceiling(boundsWidth ?? bounds.Value.Width);
                 }
 
                 if (requestedHeight == null)
                 {
-                    height = boundsHeight ?? bounds.Value.Height;
+                    height = (float)Math.Ceiling(boundsHeight ?? bounds.Value.Height);
                 }
 
                 bounds = new RectangleF(
