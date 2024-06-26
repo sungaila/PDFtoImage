@@ -80,21 +80,37 @@ namespace PDFtoImage.Internals
                     AdjustForAspectRatio(ref boundsWidth, ref boundsHeight, new SizeF(bounds.Value.Width, bounds.Value.Height));
                 }
 
+                var remainderX = 0f;
+                var remainderY = 0f;
+
                 if (requestedWidth == null)
                 {
-                    width = (float)Math.Ceiling(boundsWidth ?? bounds.Value.Width);
+                    var newWidth = boundsWidth ?? bounds.Value.Width;
+                    remainderX = 1 - (newWidth % 1);
+                    width = (float)Math.Ceiling(newWidth);
                 }
 
                 if (requestedHeight == null)
                 {
-                    height = (float)Math.Ceiling(boundsHeight ?? bounds.Value.Height);
+                    var newHeight = boundsHeight ?? bounds.Value.Height;
+                    remainderY = 1 - (newHeight % 1);
+                    height = (float)Math.Ceiling(newHeight);
                 }
 
                 bounds = new RectangleF(
                     bounds.Value.X * (width / originalWidth),
                     bounds.Value.Y * (height / originalHeight),
-                    bounds.Value.Width,
-                    bounds.Value.Height);
+                    bounds.Value.Width + remainderX,
+                    bounds.Value.Height + remainderY);
+
+                remainderX = bounds.Value.X % 1;
+                remainderY = bounds.Value.Y % 1;
+
+                bounds = new RectangleF(
+                    bounds.Value.X,
+                    bounds.Value.Y,
+                    bounds.Value.Width + remainderX,
+                    bounds.Value.Height + remainderY);
             }
 
             if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
