@@ -70,6 +70,32 @@ namespace PDFtoImage.Internals
             float width = requestedWidth ?? originalWidth;
             float height = requestedHeight ?? originalHeight;
 
+            if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
+            {
+                (width, height) = (height, width);
+                (originalWidth, originalHeight) = (originalHeight, originalWidth);
+                (dpiX, dpiY) = (dpiY, dpiX);
+            }
+
+            if (correctFromDpi)
+            {
+                width *= dpiX / 72f;
+                height *= dpiY / 72f;
+
+                originalWidth *= dpiX / 72f;
+                originalHeight *= dpiY / 72f;
+
+                if (bounds != null)
+                {
+                    bounds = new RectangleF(
+                        bounds.Value.X * (dpiX / 72f),
+                        bounds.Value.Y * (dpiY / 72f),
+                        bounds.Value.Width * (dpiX / 72f),
+                        bounds.Value.Height * (dpiY / 72f)
+                    );
+                }
+            }
+
             if (dpiRelativeToBounds && bounds.HasValue)
             {
                 float? boundsWidth = requestedWidth != null ? requestedWidth : null;
@@ -111,32 +137,6 @@ namespace PDFtoImage.Internals
                     bounds.Value.Y,
                     bounds.Value.Width + remainderX,
                     bounds.Value.Height + remainderY);
-            }
-
-            if (rotate == PdfRotation.Rotate90 || rotate == PdfRotation.Rotate270)
-            {
-                (width, height) = (height, width);
-                (originalWidth, originalHeight) = (originalHeight, originalWidth);
-                (dpiX, dpiY) = (dpiY, dpiX);
-            }
-
-            if (correctFromDpi)
-            {
-                width *= dpiX / 72f;
-                height *= dpiY / 72f;
-
-                originalWidth *= dpiX / 72f;
-                originalHeight *= dpiY / 72f;
-
-                if (bounds != null)
-                {
-                    bounds = new RectangleF(
-                        bounds.Value.X * (dpiX / 72f),
-                        bounds.Value.Y * (dpiY / 72f),
-                        bounds.Value.Width * (dpiX / 72f),
-                        bounds.Value.Height * (dpiY / 72f)
-                    );
-                }
             }
 
             if (bounds != null)
