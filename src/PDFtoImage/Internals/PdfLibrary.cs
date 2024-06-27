@@ -16,7 +16,7 @@ namespace PDFtoImage.Internals
                 if (_library == null)
                     LibraryLoader.LoadLocalLibrary<PdfDocument>("pdfium");
 #else
-				// .NET (Core) and Xamarin resolve the pdfium lib on their own
+                // .NET (Core) and Xamarin resolve the pdfium lib on their own
 #endif
                 _library ??= new PdfLibrary();
             }
@@ -32,6 +32,7 @@ namespace PDFtoImage.Internals
             Dispose(disposing: false);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
         private void Dispose(bool disposing)
         {
             if (!disposedValue)

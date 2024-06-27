@@ -5,10 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
 {
-#if NET6_0_OR_GREATER
-#pragma warning disable CA2101 // Specify marshalling for P/Invoke string arguments
-#pragma warning disable SYSLIB1054 // Use LibraryImportAttribute instead of DllImportAttribute to generate p/invoke marshalling code at compile time.
-#endif
     internal static partial class NativeMethods
     {
         // Interned strings are cached over AppDomains. This means that when we
@@ -282,8 +278,7 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-            // LibraryImport is not supported by Blazor WebAssembly
-#if NET7_0_OR_GREATER && FALSE
+#if NET7_0_OR_GREATER
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
@@ -379,6 +374,14 @@ namespace PDFtoImage.Internals
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
+
+            [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
 #else
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_InitLibrary();
@@ -451,17 +454,20 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
-#endif
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+#if NET6_0
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshalling for P/Invoke string arguments")]
+#endif
             public static extern IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+#endif
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public class FPDF_FORMFILLINFO
+        public struct FPDF_FORMFILLINFO
         {
             public int version;
 
@@ -673,7 +679,7 @@ namespace PDFtoImage.Internals
 #if NET6_0_OR_GREATER
             unsafe
 #endif
-            class FPDF_FILEACCESS
+            struct FPDF_FILEACCESS
         {
             public uint m_FileLen;
 #if NET6_0_OR_GREATER

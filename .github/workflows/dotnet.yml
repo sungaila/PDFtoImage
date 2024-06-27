@@ -115,7 +115,7 @@ jobs:
         with:
           subject-path: src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
       - name: Publish libraries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: Library assemblies
           path: |
@@ -124,7 +124,7 @@ jobs:
             !**/*.snupkg
           if-no-files-found: error
       - name: Publish NuGet packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: NuGet packages
           path: |
@@ -135,7 +135,7 @@ jobs:
         shell: pwsh
         run: Compress-Archive -Path src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/* -DestinationPath TestAssemblies.zip -CompressionLevel "Fastest"
       - name: Publish tests
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
@@ -144,7 +144,7 @@ jobs:
           retention-days: 1
           compression-level: 0
       - name: Publish test project MonoConsole
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: MonoConsole
@@ -177,7 +177,7 @@ jobs:
         with:
           dotnet-version: 8.x
       - name: Download test project MonoConsole
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@main
         with:
           name: MonoConsole
           path: MonoConsole
@@ -192,7 +192,7 @@ jobs:
         run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
         if: success() || failure()
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@main
         with:
           name: Test assemblies
       - name: Expand tests
@@ -219,7 +219,7 @@ jobs:
         run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
@@ -227,7 +227,7 @@ jobs:
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
@@ -246,7 +246,7 @@ jobs:
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@main
         with:
           pattern: Test results (*)
           merge-multiple: true
@@ -307,14 +307,14 @@ jobs:
       - name: Setup Android SDK 29
         run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+        uses: actions/cache@main
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
-        uses: actions/cache@v3
+        uses: actions/cache@main
         with:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner

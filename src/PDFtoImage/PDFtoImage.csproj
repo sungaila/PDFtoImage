@@ -9,6 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Configurations>Debug;Release;ReleaseSigned</Configurations>
     <ProjectGuid>{A6F86FA0-87FE-406E-BA86-5A128D59DA12}</ProjectGuid>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
   </PropertyGroup>
 
   <!-- NuGet -->

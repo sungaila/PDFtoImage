@@ -7,17 +7,12 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
 {
-#if NET8_0_OR_GREATER
-#pragma warning disable CA1513 // Use ObjectDisposedException throw helper
-#pragma warning disable IDE0056 // Use index operator
-#pragma warning disable IDE0057 // Use range operator
-#endif
     internal struct PdfFile : IDisposable
     {
         private IntPtr _document;
         private IntPtr _form;
         private bool _disposed;
-        private GCHandle _formCallbacksHandle;
+        private readonly GCHandle _formCallbacksHandle;
         private readonly int _id;
         private Stream? _stream;
         private readonly bool _disposeStream;
@@ -48,53 +43,8 @@ namespace PDFtoImage.Internals
             if (document == IntPtr.Zero)
                 throw PdfException.CreateException(NativeMethods.FPDF_GetLastError())!;
 
-            LoadDocument(document);
-            _disposeStream=disposeStream;
-        }
+            _disposeStream = disposeStream;
 
-        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
-
-            using var pageData = new PageData(_document, _form, pageNumber);
-
-            NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
-
-            if (renderFormFill)
-            {
-                NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
-                NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
-            }
-
-            return true;
-        }
-
-        public List<SizeF> GetPDFDocInfo()
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
-
-            int pageCount = NativeMethods.FPDF_GetPageCount(_document);
-            var result = new List<SizeF>(pageCount);
-
-            for (int i = 0; i < pageCount; i++)
-            {
-                result.Add(GetPDFDocInfo(i));
-            }
-
-            return result;
-        }
-
-        public readonly SizeF GetPDFDocInfo(int pageNumber)
-        {
-            NativeMethods.FPDF_GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
-
-            return new SizeF((float)width, (float)height);
-        }
-
-        private void LoadDocument(IntPtr document)
-        {
             _document = document;
 
             NativeMethods.FPDF_GetDocPermissions(_document);
@@ -118,6 +68,47 @@ namespace PDFtoImage.Internals
             NativeMethods.FPDF_SetFormFieldHighlightAlpha(_form, 100);
         }
 
+        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            using var pageData = new PageData(_document, _form, pageNumber);
+
+            NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+
+            if (renderFormFill)
+            {
+                NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
+                NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+            }
+
+            return true;
+        }
+
+        public readonly List<SizeF> GetPDFDocInfo()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().Name);
+
+            int pageCount = NativeMethods.FPDF_GetPageCount(_document);
+            var result = new List<SizeF>(pageCount);
+
+            for (int i = 0; i < pageCount; i++)
+            {
+                result.Add(GetPDFDocInfo(i));
+            }
+
+            return result;
+        }
+
+        public readonly SizeF GetPDFDocInfo(int pageNumber)
+        {
+            NativeMethods.FPDF_GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
+
+            return new SizeF((float)width, (float)height);
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -125,6 +116,7 @@ namespace PDFtoImage.Internals
             GC.SuppressFinalize(this);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
         private void Dispose(bool disposing)
         {
             if (_disposed)
@@ -134,11 +126,6 @@ namespace PDFtoImage.Internals
 
             if (_form != IntPtr.Zero)
             {
-                // this call is needed for PDFium builds with PDF_ENABLE_XFA enabled
-                // and PDF_ENABLE_XFA implies JS support (PDF_ENABLE_V8 is needed for that)
-                // since we don't ship PDFium with V8 we can skip this
-                // otherwise we have to deal with some nasty unmanaged memory corruption
-                //NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
                 _form = IntPtr.Zero;
             }
 
