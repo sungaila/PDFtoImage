@@ -278,7 +278,7 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-#if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER && !WASM
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
