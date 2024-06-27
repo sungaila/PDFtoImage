@@ -22,7 +22,6 @@
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CA1416</NoWarn>
-    <DefineConstants>$(DefineConstants);WASM</DefineConstants>
   </PropertyGroup>
 
   <!-- Debug builds -->

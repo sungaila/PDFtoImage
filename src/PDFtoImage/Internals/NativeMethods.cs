@@ -278,7 +278,8 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-#if NET7_0_OR_GREATER && !WASM
+            // LibraryImport is not supported by Blazor WebAssembly
+#if NET7_0_OR_GREATER && FALSE
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
@@ -383,6 +384,9 @@ namespace PDFtoImage.Internals
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
 #else
+#if NET7_0_OR_GREATER
+#pragma warning disable SYSLIB1054
+#endif
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_InitLibrary();
 
@@ -456,13 +460,16 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-#if NET6_0
+#if NET6_0_OR_GREATER
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshalling for P/Invoke string arguments")]
 #endif
             public static extern IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+#if NET7_0_OR_GREATER
+#pragma warning restore SYSLIB1054
+#endif
 #endif
         }
 
