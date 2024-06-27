@@ -15,8 +15,9 @@ namespace PDFtoImage
     /// <param name="Rotation">Specifies the rotation at 90 degree intervals.</param>
     /// <param name="AntiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
     /// <param name="BackgroundColor">Specifies the background color. Defaults to <see cref="SKColors.White"/>.</param>
-    /// <param name="Bounds">Specifies the bounds for the page relative to <see cref="Conversion.GetPageSizes(string,string)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+    /// <param name="Bounds">Specifies the bounds for the page relative to <see cref="Conversion.GetPageSizes(string,string)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page). The bound units are relative to the PDF size (at 72 DPI).</param>
     /// <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
+    /// <param name="DpiRelativeToBounds">Specifies that <see cref="Dpi"/> and <see cref="WithAspectRatio"/> will be calculated relative to <see cref="Bounds"/> instead of the original PDF.</param>
     public readonly record struct RenderOptions(
         int Dpi = 300,
         int? Width = null,
@@ -28,12 +29,13 @@ namespace PDFtoImage
         PdfAntiAliasing AntiAliasing = PdfAntiAliasing.All,
         SKColor? BackgroundColor = null,
         RectangleF? Bounds = null,
-        bool UseTiling = false) : IRenderOptions
+        bool UseTiling = false,
+        bool DpiRelativeToBounds = false) : IRenderOptions
     {
         /// <summary>
         /// Constructs <see cref="RenderOptions"/> with default values.
         /// </summary>
-        public RenderOptions() : this(300, null, null, false, false, false, PdfRotation.Rotate0, PdfAntiAliasing.All, null, null, false) { }
+        public RenderOptions() : this(300, null, null, false, false, false, PdfRotation.Rotate0, PdfAntiAliasing.All, null, null, false, false) { }
     }
 }
 #if NETSTANDARD || MONOANDROID || NETFRAMEWORK

@@ -325,10 +325,6 @@ namespace PDFtoImage
             if (options == default)
                 options = new();
 
-            // correct the width and height for the given dpi
-            // but only if both width and height are not specified (so the original sizes are corrected)
-            var correctFromDpi = options.Width == null && options.Height == null;
-
             NativeMethods.FPDF renderFlags = default;
 
             if (options.WithAnnotations)
@@ -347,16 +343,21 @@ namespace PDFtoImage
             if (page >= pdfDocument.PageSizes.Count)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number {page} does not exist. Highest page number available is {pdfDocument.PageSizes.Count - 1}.");
 
-            var currentWidth = (float?)options.Width;
-            var currentHeight = (float?)options.Height;
-            var pageSize = pdfDocument.PageSizes[page];
-
-            // correct aspect ratio if requested
-            if (options.WithAspectRatio)
-                AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
-
             // Internals.PdfDocument -> Image
-            return pdfDocument.Render(page, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling);
+            return pdfDocument.Render(
+                page,
+                options.Width,
+                options.Height,
+                options.Dpi,
+                options.Dpi,
+                options.Rotation,
+                renderFlags,
+                options.WithFormFill,
+                options.BackgroundColor ?? SKColors.White,
+                options.Bounds,
+                options.UseTiling,
+                options.WithAspectRatio,
+                options.DpiRelativeToBounds);
         }
 
         /// <summary>
@@ -564,10 +565,6 @@ namespace PDFtoImage
             if (options == default)
                 options = new();
 
-            // correct the width and height for the given dpi
-            // but only if both width and height are not specified (so the original sizes are corrected)
-            var correctFromDpi = options.Width == null && options.Height == null;
-
             NativeMethods.FPDF renderFlags = default;
 
             if (options.WithAnnotations)
@@ -585,16 +582,21 @@ namespace PDFtoImage
 
             for (int i = 0; i < pdfDocument.PageSizes.Count; i++)
             {
-                var currentWidth = (float?)options.Width;
-                var currentHeight = (float?)options.Height;
-                var pageSize = pdfDocument.PageSizes[i];
-
-                // correct aspect ratio if requested
-                if (options.WithAspectRatio)
-                    AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
-
                 // Internals.PdfDocument -> Image
-                yield return pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling);
+                yield return pdfDocument.Render(
+                    i,
+                    options.Width,
+                    options.Height,
+                    options.Dpi,
+                    options.Dpi,
+                    options.Rotation,
+                    renderFlags,
+                    options.WithFormFill,
+                    options.BackgroundColor ?? SKColors.White,
+                    options.Bounds,
+                    options.UseTiling,
+                    options.WithAspectRatio,
+                    options.DpiRelativeToBounds);
             }
         }
 
@@ -657,10 +659,6 @@ namespace PDFtoImage
             if (options == default)
                 options = new();
 
-            // correct the width and height for the given dpi
-            // but only if both width and height are not specified (so the original sizes are corrected)
-            var correctFromDpi = options.Width == null && options.Height == null;
-
             NativeMethods.FPDF renderFlags = default;
 
             if (options.WithAnnotations)
@@ -680,16 +678,22 @@ namespace PDFtoImage
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var currentWidth = (float?)options.Width;
-                var currentHeight = (float?)options.Height;
-                var pageSize = pdfDocument.PageSizes[i];
-
-                // correct aspect ratio if requested
-                if (options.WithAspectRatio)
-                    AdjustForAspectRatio(ref currentWidth, ref currentHeight, pageSize);
-
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => pdfDocument.Render(i, currentWidth ?? pageSize.Width, currentHeight ?? pageSize.Height, options.Dpi, options.Dpi, options.Rotation, renderFlags, options.WithFormFill, correctFromDpi, options.BackgroundColor ?? SKColors.White, options.Bounds, options.UseTiling, cancellationToken), cancellationToken);
+                yield return await Task.Run(() => pdfDocument.Render(
+                    i,
+                    options.Width,
+                    options.Height,
+                    options.Dpi,
+                    options.Dpi,
+                    options.Rotation,
+                    renderFlags,
+                    options.WithFormFill,
+                    options.BackgroundColor ?? SKColors.White,
+                    options.Bounds,
+                    options.UseTiling,
+                    options.WithAspectRatio,
+                    options.DpiRelativeToBounds,
+                    cancellationToken), cancellationToken);
             }
         }
 #endif
@@ -740,18 +744,6 @@ namespace PDFtoImage
         {
             using var bitmap = ToImage(pdfStream, leaveOpen, password, page, options);
             bitmap.Encode(stream, format, 100);
-        }
-
-        private static void AdjustForAspectRatio(ref float? width, ref float? height, SizeF pageSize)
-        {
-            if (width == null && height != null)
-            {
-                width = pageSize.Width / pageSize.Height * height.Value;
-            }
-            else if (width != null && height == null)
-            {
-                height = pageSize.Height / pageSize.Width * width.Value;
-            }
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PDFtoImage.Internals
 {
@@ -13,7 +12,7 @@ namespace PDFtoImage.Internals
 #pragma warning disable IDE0056 // Use index operator
 #pragma warning disable IDE0057 // Use range operator
 #endif
-    internal sealed class PdfFile : IDisposable
+    internal struct PdfFile : IDisposable
     {
         private IntPtr _document;
         private IntPtr _form;
@@ -53,7 +52,7 @@ namespace PDFtoImage.Internals
             _disposeStream=disposeStream;
         }
 
-        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
+        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -87,7 +86,7 @@ namespace PDFtoImage.Internals
             return result;
         }
 
-        public SizeF GetPDFDocInfo(int pageNumber)
+        public readonly SizeF GetPDFDocInfo(int pageNumber)
         {
             NativeMethods.FPDF_GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
 

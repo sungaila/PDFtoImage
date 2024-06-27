@@ -12,7 +12,7 @@ body:
     attributes:
       label: PDFtoImage version
       description: Which version of PDFtoImage is affected?
-      value: 4.0.1
+      value: 4.0.2
     validations:
       required: true
   - type: dropdown
@@ -33,7 +33,7 @@ body:
     attributes:
       label: OS version
       description: Which operating system version was used?
-      placeholder: e.g. Windows 11 23H2, Ubuntu 23.10, macOS 14.1, Android 14, ...
+      placeholder: e.g. Windows 11 24H2, Ubuntu 24.04, macOS 14.5, Android 14, ...
     validations:
       required: false
   - type: dropdown
@@ -58,6 +58,7 @@ body:
         - .NET (Core)
         - .NET Framework
         - Mono
+        - Unity
         - (Other)
       default: 0
     validations:

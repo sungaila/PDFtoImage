@@ -211,7 +211,7 @@ This option can help with rendering problems (e.g. missing text) at very high re
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="form-group row mb-1">
                                     <label for="boundsWidth" class="col-sm-3 col-form-label label-nowrap">Width</label>
                                     <div class="col-sm">
                                         <InputNumber @bind-Value="Model.BoundsWidth" id="boundsWidth" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
@@ -220,6 +220,13 @@ This option can help with rendering problems (e.g. missing text) at very high re
                                     <label for="boundsHeight" class="col-sm-3 col-form-label label-nowrap">Height</label>
                                     <div class="col-sm">
                                         <InputNumber @bind-Value="Model.BoundsHeight" id="boundsHeight" class="form-control form-control-sm" min="@float.MinValue" max="@float.MaxValue" step="0.000001" disabled="@(!Model.UseBounds)" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm">
+                                        <InputCheckbox @bind-Value="Model.DpiRelativeToBounds" id="dpiRelativeToBounds" class="form-check-input" disabled="@(!Model.UseBounds)" />
+                                        <label for="dpiRelativeToBounds">DPI relative to bounds</label>
                                     </div>
                                 </div>
                             </div>
