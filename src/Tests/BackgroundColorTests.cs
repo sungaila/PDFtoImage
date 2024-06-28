@@ -40,9 +40,9 @@ namespace Tests
         [DataRow((uint)0x00FFFFFF, DisplayName = "Transparent")]
         public void SaveJpegWithBackgroundColor(uint? backgroundColor)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.jpg");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.jpg");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)
@@ -74,9 +74,9 @@ namespace Tests
         [DataRow((uint)0x00FFFFFF, DisplayName = "Transparent")]
         public void SavePngWithBackgroundColor(uint? backgroundColor)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)
@@ -108,9 +108,9 @@ namespace Tests
         [DataRow((uint)0x00FFFFFF, DisplayName = "Transparent")]
         public void SaveWebpWithBackgroundColor(uint? backgroundColor)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.webp");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "BackgroundColor", $"hundesteuer-anmeldung_{GetFileName(backgroundColor ?? SKColors.White)}.webp");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (backgroundColor == null)

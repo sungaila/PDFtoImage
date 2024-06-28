@@ -134,9 +134,9 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 2000, 2000, 1200)]
 		public void WithoutAspectRatio(string fileName, int? width = null, int? height = null, int? dpi = null)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, false));
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, false));
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (dpi != null)
@@ -272,9 +272,9 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 2000, 2000, 1200)]
 		public void WithAspectRatio(string fileName, int? width = null, int? height = null, int? dpi = null)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, true));
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, dpi, true));
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (dpi != null)
@@ -344,9 +344,9 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 2000, 2000, true)]
 		public void IgnoreDpi(string fileName, int? width = null, int? height = null, bool withAspectRatio = false)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, withAspectRatio));
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, withAspectRatio));
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
 
 			for (int i = 72; i < 600; i += 100)
 			{
@@ -369,9 +369,9 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 2000, 2000)]
 		public void IgnoreAspectRatio(string fileName, int width, int height)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, true));
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", width, height, 300, true));
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
 			using var outputStream1 = CreateOutputStream(expectedPath);
 			using var outputStream2 = CreateOutputStream(expectedPath);
 
@@ -394,9 +394,9 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 600)]
 		public void IgnoreAspectRatioWithDpi(string fileName, int dpi)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", null, null, dpi, true));
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AspectRatio", GetExpectedFilename(fileName, "jpg", null, null, dpi, true));
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
 			using var outputStream1 = CreateOutputStream(expectedPath);
 			using var outputStream2 = CreateOutputStream(expectedPath);
 

@@ -19,9 +19,9 @@ namespace Tests
 		[DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
 		public void SaveWebpPageNumber(PdfRotation? rotation)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.webp");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.webp");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
@@ -40,9 +40,9 @@ namespace Tests
 		[DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
 		public void SavePngPageNumber(PdfRotation? rotation)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.png");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.png");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
@@ -61,9 +61,9 @@ namespace Tests
 		[DataRow(PdfRotation.Rotate270, DisplayName = "Rotated 90 degrees counter-clockwise")]
 		public void SaveJpegPageNumber(PdfRotation? rotation)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.jpg");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}.jpg");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)
@@ -117,9 +117,9 @@ namespace Tests
 		[DataRow(PdfRotation.Rotate270, 200, 200, true)]
 		public void WithWidthHeightAspect(PdfRotation? rotation, int? width, int? height, bool withAspectRatio)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}_{width?.ToString() ?? "null"}x{height?.ToString() ?? "null"}_{withAspectRatio}.png");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Rotation", $"hundesteuer-anmeldung_{Enum.GetName(typeof(PdfRotation), rotation ?? PdfRotation.Rotate0)}_{width?.ToString() ?? "null"}x{height?.ToString() ?? "null"}_{withAspectRatio}.png");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (rotation == null)

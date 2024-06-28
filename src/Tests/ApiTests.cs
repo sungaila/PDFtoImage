@@ -176,7 +176,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImageStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream);
@@ -186,7 +186,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImageStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream, false);
@@ -196,7 +196,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImageStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream, true);
@@ -206,7 +206,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream);
@@ -219,7 +219,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream, false);
@@ -232,7 +232,7 @@ namespace Tests
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream, true);
@@ -246,7 +246,7 @@ namespace Tests
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenDefault()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream);
@@ -259,7 +259,7 @@ namespace Tests
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenFalse()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream, false);
@@ -272,7 +272,7 @@ namespace Tests
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenTrue()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream, true);
@@ -286,7 +286,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageCountStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageCount(inputStream);
@@ -296,7 +296,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageCountStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageCount(inputStream, false);
@@ -306,7 +306,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageCountStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageCount(inputStream, true);
@@ -316,7 +316,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizeStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSize(inputStream, page: 0);
@@ -326,7 +326,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizeStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSize(inputStream, false, 0);
@@ -336,7 +336,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizeStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSize(inputStream, true, 0);
@@ -346,7 +346,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizesStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSizes(inputStream);
@@ -356,7 +356,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizesStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSizes(inputStream, false);
@@ -366,7 +366,7 @@ namespace Tests
 		[TestMethod]
 		public void GetPageSizesStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageSizes(inputStream, true);
@@ -376,7 +376,7 @@ namespace Tests
 		[TestMethod]
 		public void StreamMultipleCallsLeaveOpen()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			GetPageCount(inputStream, true);

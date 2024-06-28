@@ -14,7 +14,7 @@ namespace Tests
 		[TestMethod]
 		public void ThrowsInvalidFormat()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "DummyImage.png"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "DummyImage.png"));
 			Assert.ThrowsException<PdfInvalidFormatException>(() => GetPageCount(inputStream));
 		}
 
@@ -24,7 +24,7 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf")]
 		public void ThrowsPageNotFound(string inputFile)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
 		}
 	}

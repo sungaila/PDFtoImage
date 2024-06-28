@@ -58,9 +58,9 @@ namespace Tests
 		[DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
 		public void SaveWebpPageNumber(int page, bool withAnnotations = false)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			SaveWebp(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
@@ -73,13 +73,13 @@ namespace Tests
 		[DataRow(true, DisplayName = "With annotations")]
 		public void SaveWebpPages(bool withAnnotations = false)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
 			int page = 0;
 
 			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
-				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+				var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
 				using var outputStream = CreateOutputStream(expectedPath);
 				image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
@@ -96,13 +96,13 @@ namespace Tests
         [DataRow(true, DisplayName = "With annotations")]
         public async Task SaveWebpPagesAsync(bool withAnnotations = false)
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
             int page = 0;
 
             await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
-                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
                 using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
@@ -157,9 +157,9 @@ namespace Tests
 		[DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
 		public void SavePngPageNumber(int page, bool withAnnotations = false)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			SavePng(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
@@ -172,13 +172,13 @@ namespace Tests
 		[DataRow(true, DisplayName = "With annotations")]
 		public void SavePngPages(bool withAnnotations = false)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
 			int page = 0;
 
 			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
-				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+				var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
 				using var outputStream = CreateOutputStream(expectedPath);
 				image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
@@ -195,13 +195,13 @@ namespace Tests
         [DataRow(true, DisplayName = "With annotations")]
         public async Task SavePngPagesAsync(bool withAnnotations = false)
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
             int page = 0;
 
             await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
-                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
                 using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
@@ -256,9 +256,9 @@ namespace Tests
 		[DataRow(19, true, DisplayName = "Page 20 (with annotations)")]
 		public void SaveJpegPageNumber(int page, bool withAnnotations = false)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			SaveJpeg(outputStream, inputStream, page: page, options: new(Dpi: 40, WithAnnotations: withAnnotations));
@@ -271,13 +271,13 @@ namespace Tests
 		[DataRow(true, DisplayName = "With annotations")]
 		public void SaveJpegPages(bool withAnnotations = false)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
 			int page = 0;
 
 			foreach (var image in ToImages(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
 			{
-				var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+				var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
 				using var outputStream = CreateOutputStream(expectedPath);
 				image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
@@ -294,13 +294,13 @@ namespace Tests
         [DataRow(true, DisplayName = "With annotations")]
         public async Task SaveJpegPagesAsync(bool withAnnotations = false)
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
             int page = 0;
 
             await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
             {
-                var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
                 using var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
@@ -327,10 +327,10 @@ namespace Tests
 		[DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
 		public void SavePngDpi(int dpi, bool withAnnotations = false)
 		{
-			using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var pdfStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			using var image = ToImage(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations));
 
-			using var pdfStream2 = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var pdfStream2 = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			using var image2 = ToImage(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations));
 
 			Assert.IsNotNull(image);
@@ -353,10 +353,10 @@ namespace Tests
 		[DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
 		public void SavePngDpiImages(int dpi, bool withAnnotations = false)
 		{
-			using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var pdfStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			using var image = ToImages(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations)).Single();
 
-			using var pdfStream2 = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var pdfStream2 = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			using var image2 = ToImages(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations)).Single();
 
 			Assert.IsNotNull(image);
@@ -380,7 +380,7 @@ namespace Tests
         [DataRow(1200, true, DisplayName = "1200 DPI (with annotations)")]
         public async Task SavePngDpiImagesAsync(int dpi, bool withAnnotations = false)
         {
-            using var pdfStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var pdfStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 
             await foreach (var image in ToImagesAsync(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations)))
             {
@@ -395,7 +395,7 @@ namespace Tests
 		[DataRow("Wikimedia_Commons_web.pdf", 20)]
 		public void GetPageCountTest(string pdfFileName, int expectedPageCount)
 		{
-			using var pdfStream = GetInputStream(Path.Combine("Assets", pdfFileName));
+			using var pdfStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
 			Assert.AreEqual(expectedPageCount, GetPageCount(pdfStream), $"The expected and actual page count for the file {pdfFileName} are not equal.");
 		}
 
@@ -406,7 +406,7 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf")]
         public async Task ToImagesAsyncTaskCanceledException(string pdfFileName)
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
             var token = new CancellationTokenSource();
 
             await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
@@ -425,11 +425,11 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf")]
         public async Task ToImagesAsyncOperationCanceledException(string pdfFileName)
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", pdfFileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
             var token = new CancellationTokenSource();
             var pageCount = GetPageCount(inputStream);
 
-            using var inputStream2 = GetInputStream(Path.Combine("Assets", pdfFileName));
+            using var inputStream2 = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
 
             if (pageCount < 2)
             {

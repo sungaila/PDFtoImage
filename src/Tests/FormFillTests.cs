@@ -24,9 +24,9 @@ namespace Tests
 		[DataRow(false, DisplayName = "No form fill")]
 		public void SaveWebpPageNumber(bool? withFormFill)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.webp");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.webp");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (withFormFill == null)
@@ -43,9 +43,9 @@ namespace Tests
 		[DataRow(false, DisplayName = "No form fill")]
 		public void SavePngPageNumber(bool? withFormFill)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.png");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.png");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (withFormFill == null)
@@ -62,9 +62,9 @@ namespace Tests
 		[DataRow(false, DisplayName = "No form fill")]
 		public void SaveJpegPageNumber(bool? withFormFill)
 		{
-			var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg");
+			var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"hundesteuer-anmeldung_{withFormFill ?? false}.jpg");
 
-			using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
 			using var outputStream = CreateOutputStream(expectedPath);
 
 			if (withFormFill == null)

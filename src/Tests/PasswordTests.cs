@@ -20,7 +20,7 @@ namespace Tests
 		[DataRow("SocialPreview with password 123456 (AES-256).pdf", "123456")]
 		public void WithCorrectPassword(string inputFile, string? password = null)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
 			var output = GetPageCount(inputStream, password: password);
 			Assert.AreEqual(1, output, "Page count should be 1, if the password was correct.");
 		}
@@ -32,7 +32,7 @@ namespace Tests
 		[DataRow("SocialPreview with password 123456 (AES-256).pdf", "Ne domina")]
 		public void ThrowsIncorrectPassword(string inputFile, string? password = null)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
 			Assert.ThrowsException<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: password));
 		}
 	}
