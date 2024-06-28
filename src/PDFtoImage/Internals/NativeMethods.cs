@@ -686,7 +686,7 @@ namespace PDFtoImage.Internals
 #if NET6_0_OR_GREATER
             unsafe
 #endif
-            struct FPDF_FILEACCESS
+            class FPDF_FILEACCESS
         {
             public uint m_FileLen;
 #if NET6_0_OR_GREATER
