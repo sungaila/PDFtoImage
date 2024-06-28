@@ -38,9 +38,3 @@ namespace PDFtoImage
         public RenderOptions() : this(300, null, null, false, false, false, PdfRotation.Rotate0, PdfAntiAliasing.All, null, null, false, false) { }
     }
 }
-#if NETSTANDARD || MONOANDROID || NETFRAMEWORK
-namespace System.Runtime.CompilerServices
-{
-    internal static class IsExternalInit { }
-}
-#endif

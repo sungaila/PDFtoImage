@@ -9,10 +9,6 @@ using System.Threading;
 
 namespace PDFtoImage.Internals
 {
-#if NET8_0_OR_GREATER
-#pragma warning disable CA1510 // Use ArgumentNullException throw helper
-#pragma warning disable CA1513 // Use ObjectDisposedException throw helper
-#endif
     /// <summary>
     /// Provides functionality to render a PDF document.
     /// </summary>
@@ -29,10 +25,9 @@ namespace PDFtoImage.Internals
         /// <param name="disposeStream">Decides if <paramref name="stream"/> will closed on dispose as well.</param>
         public static PdfDocument Load(Stream stream, string? password, bool disposeStream)
         {
-            if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
-
-            return new PdfDocument(stream, password, disposeStream);
+            return stream != null
+                ? new PdfDocument(stream, password, disposeStream)
+                : throw new ArgumentNullException(nameof(stream));
         }
 
         /// <summary>
