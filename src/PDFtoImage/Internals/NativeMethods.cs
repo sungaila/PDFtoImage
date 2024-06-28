@@ -474,7 +474,7 @@ namespace PDFtoImage.Internals
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct FPDF_FORMFILLINFO
+        public class FPDF_FORMFILLINFO
         {
             public int version;
 
