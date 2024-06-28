@@ -815,8 +815,12 @@
             <summary>
             Base class for all PDF related exceptions.
             </summary>
+            <inheritdoc/>
         </member>
         <member name="M:PDFtoImage.Exceptions.PdfException.#ctor(System.String)">
+            <summary>
+            Base class for all PDF related exceptions.
+            </summary>
             <inheritdoc/>
         </member>
         <member name="T:PDFtoImage.Exceptions.PdfInvalidFormatException">
@@ -1017,25 +1021,6 @@
             Size of each page in the PDF document.
             </summary>
         </member>
-        <member name="M:PDFtoImage.Internals.PdfDocument.Render(System.Int32,System.Single,System.Single,System.Single,System.Single,PDFtoImage.PdfRotation,PDFtoImage.Internals.NativeMethods.FPDF,System.Boolean,System.Boolean,SkiaSharp.SKColor,System.Nullable{System.Drawing.RectangleF},System.Boolean,System.Threading.CancellationToken)">
-            <summary>
-            Renders a page of the PDF document to an image.
-            </summary>
-            <param name="page">Number of the page to render.</param>
-            <param name="width">Width of the rendered image.</param>
-            <param name="height">Height of the rendered image.</param>
-            <param name="dpiX">Horizontal DPI.</param>
-            <param name="dpiY">Vertical DPI.</param>
-            <param name="rotate">Rotation.</param>
-            <param name="flags">Flags used to influence the rendering.</param>
-            <param name="renderFormFill">Render form fills.</param>
-            <param name="correctFromDpi">Change <paramref name="width"/> and <paramref name="height"/> depending on the given <paramref name="dpiX"/> and <paramref name="dpiY"/>.</param>
-            <param name="backgroundColor">The background color used for the output.</param>
-            <param name="bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
-            <param name="useTiling"></param>
-            <param name="cancellationToken"></param>
-            <returns>The rendered image.</returns>
-        </member>
         <member name="M:PDFtoImage.Internals.PdfDocument.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -1099,12 +1084,17 @@
         </member>
         <member name="P:PDFtoImage.IRenderOptions.Bounds">
             <summary>
-            Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).
+            Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page). The bound units are relative to the PDF size (at 72 DPI).
             </summary>
         </member>
         <member name="P:PDFtoImage.IRenderOptions.UseTiling">
             <summary>
             Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.
+            </summary>
+        </member>
+        <member name="P:PDFtoImage.IRenderOptions.DpiRelativeToBounds">
+            <summary>
+            Specifies that <see cref="P:PDFtoImage.IRenderOptions.Dpi"/> and <see cref="P:PDFtoImage.IRenderOptions.WithAspectRatio"/> will be calculated relative to <see cref="P:PDFtoImage.IRenderOptions.Bounds"/> instead of the original PDF.
             </summary>
         </member>
         <member name="T:PDFtoImage.PdfAntiAliasing">
@@ -1175,10 +1165,11 @@
             <param name="Rotation">Specifies the rotation at 90 degree intervals.</param>
             <param name="AntiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
             <param name="BackgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page). The bound units are relative to the PDF size (at 72 DPI).</param>
             <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
+            <param name="DpiRelativeToBounds">Specifies that <see cref="P:PDFtoImage.RenderOptions.Dpi"/> and <see cref="P:PDFtoImage.RenderOptions.WithAspectRatio"/> will be calculated relative to <see cref="P:PDFtoImage.RenderOptions.Bounds"/> instead of the original PDF.</param>
         </member>
-        <member name="M:PDFtoImage.RenderOptions.#ctor(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor},System.Nullable{System.Drawing.RectangleF},System.Boolean)">
+        <member name="M:PDFtoImage.RenderOptions.#ctor(System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Boolean,System.Boolean,System.Boolean,PDFtoImage.PdfRotation,PDFtoImage.PdfAntiAliasing,System.Nullable{SkiaSharp.SKColor},System.Nullable{System.Drawing.RectangleF},System.Boolean,System.Boolean)">
             <summary>
             Contains all relevant information to render a PDF page into an image.
             </summary>
@@ -1191,8 +1182,9 @@
             <param name="Rotation">Specifies the rotation at 90 degree intervals.</param>
             <param name="AntiAliasing">Specifies which parts of the PDF should be anti-aliasing for rendering.</param>
             <param name="BackgroundColor">Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</param>
-            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</param>
+            <param name="Bounds">Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page). The bound units are relative to the PDF size (at 72 DPI).</param>
             <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
+            <param name="DpiRelativeToBounds">Specifies that <see cref="P:PDFtoImage.RenderOptions.Dpi"/> and <see cref="P:PDFtoImage.RenderOptions.WithAspectRatio"/> will be calculated relative to <see cref="P:PDFtoImage.RenderOptions.Bounds"/> instead of the original PDF.</param>
         </member>
         <member name="P:PDFtoImage.RenderOptions.Dpi">
             <summary>The DPI scaling to use for rasterization of the PDF.</summary>
@@ -1222,10 +1214,13 @@
             <summary>Specifies the background color. Defaults to <see cref="F:SkiaSharp.SKColors.White"/>.</summary>
         </member>
         <member name="P:PDFtoImage.RenderOptions.Bounds">
-            <summary>Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page).</summary>
+            <summary>Specifies the bounds for the page relative to <see cref="M:PDFtoImage.Conversion.GetPageSizes(System.String,System.String)"/>. This can be used for clipping (bounds inside of page) or additional margins (bounds outside of page). The bound units are relative to the PDF size (at 72 DPI).</summary>
         </member>
         <member name="P:PDFtoImage.RenderOptions.UseTiling">
             <summary>Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</summary>
+        </member>
+        <member name="P:PDFtoImage.RenderOptions.DpiRelativeToBounds">
+            <summary>Specifies that <see cref="P:PDFtoImage.RenderOptions.Dpi"/> and <see cref="P:PDFtoImage.RenderOptions.WithAspectRatio"/> will be calculated relative to <see cref="P:PDFtoImage.RenderOptions.Bounds"/> instead of the original PDF.</summary>
         </member>
         <member name="M:PDFtoImage.RenderOptions.#ctor">
             <summary>
