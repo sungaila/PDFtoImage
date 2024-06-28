@@ -123,7 +123,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImageStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream);
@@ -133,7 +133,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImageStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream, false);
@@ -143,7 +143,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImageStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			ToImage(inputStream, true);
@@ -153,7 +153,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenDefault()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream);
@@ -166,7 +166,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenFalse()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream, false);
@@ -179,7 +179,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void ToImagesStreamLeaveOpenTrue()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
 			var result = ToImages(inputStream, true);
@@ -193,7 +193,7 @@ namespace Tests.Compatibility
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenDefault()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream);
@@ -206,7 +206,7 @@ namespace Tests.Compatibility
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenFalse()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream, false);
@@ -219,7 +219,7 @@ namespace Tests.Compatibility
         [TestMethod]
         public async Task ToImagesAsyncStreamLeaveOpenTrue()
         {
-            using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
             var result = ToImagesAsync(inputStream, true);
@@ -233,7 +233,7 @@ namespace Tests.Compatibility
 		[TestMethod]
 		public void StreamMultipleCallsLeaveOpen()
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", "SocialPreview.pdf"));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 			Assert.IsTrue(inputStream.CanRead);
 
             PDFtoImage.Conversion.GetPageCount(inputStream, true);

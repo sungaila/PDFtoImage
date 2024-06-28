@@ -44,9 +44,9 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 1200, true)]
         public void WithDpi(string fileName, int dpi, bool? useTiling = null)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, dpi, false, default, default));
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, dpi, false, default, default));
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (useTiling != null)
@@ -89,9 +89,9 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", 6000, 6000, true)]
         public void WithWidthAndHeight(string fileName, int? width = null, int? height = null, bool? useTiling = null)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", width, height, null, false, default, default));
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", width, height, null, false, default, default));
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (useTiling != null)
@@ -154,9 +154,9 @@ namespace Tests
         [DataRow("Wikimedia_Commons_web.pdf", PdfRotation.Rotate270, true)]
         public void WithRotation(string fileName, PdfRotation? rotation = null, bool? useTiling = null)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, 600, false, rotation ?? default, default));
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, 600, false, rotation ?? default, default));
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation != null)
@@ -240,9 +240,9 @@ namespace Tests
         public void WithBounds(string fileName, float x, float y, float width, float height, PdfRotation? rotation = null, bool? useTiling = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, 600, false, rotation ?? default, bounds));
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Tiling", useTiling == true ? "tiled" : "normal", GetExpectedFilename(fileName, "png", null, null, 600, false, rotation ?? default, bounds));
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", fileName));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation != null)

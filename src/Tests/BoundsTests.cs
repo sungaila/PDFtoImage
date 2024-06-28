@@ -17,9 +17,9 @@ namespace Tests
         [DataRow(default)]
         public void NullOrDefault(RectangleF? bounds = null)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             SavePng(outputStream, inputStream, options: new(Dpi: 300, Bounds: bounds));
@@ -42,9 +42,9 @@ namespace Tests
         public void Normal(float x, float y, float width, float height)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             SavePng(outputStream, inputStream, options: new(Dpi: 300, Bounds: bounds));
@@ -87,9 +87,9 @@ namespace Tests
         public void WithRotation(float x, float y, float width, float height, PdfRotation? rotation)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (rotation != null)
@@ -119,9 +119,9 @@ namespace Tests
         public void WithAnnotations(float x, float y, float width, float height, bool? withAnnotations = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, withAnnotations, default, default)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, withAnnotations, default, default)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withAnnotations != null)
@@ -151,9 +151,9 @@ namespace Tests
         public void WithFormFill(float x, float y, float width, float height, bool? withFormFill = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"hundesteuer-anmeldung_{GetFileName(bounds, default, default, withFormFill, default)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"hundesteuer-anmeldung_{GetFileName(bounds, default, default, withFormFill, default)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (withFormFill != null)
@@ -178,9 +178,9 @@ namespace Tests
         public void WithWidthAndHeight(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             SavePng(outputStream, inputStream, options: new(Width: outputWidth, Height: outputHeight, Bounds: bounds));
@@ -246,9 +246,9 @@ namespace Tests
         public void WithWidthAndHeightAndRotation(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null, PdfRotation? rotation = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, default)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             SavePng(outputStream, inputStream, options: new(Width: outputWidth, Height: outputHeight, Bounds: bounds, Rotation: rotation ?? default));
@@ -424,9 +424,9 @@ namespace Tests
         public void WithWidthAndHeightAndRotationAndDpiRelative(float x, float y, float width, float height, int? outputWidth = null, int? outputHeight = null, PdfRotation? rotation = null, bool? dpiRelativeToBounds = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, dpiRelativeToBounds)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, rotation, default, default, dpiRelativeToBounds)}_{outputWidth?.ToString() ?? "null"}x{outputHeight?.ToString() ?? "null"}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (dpiRelativeToBounds != null)
@@ -460,9 +460,9 @@ namespace Tests
         public void WithDpiRelative(float x, float y, float width, float height, bool? dpiRelativeToBounds = null)
         {
             var bounds = new RectangleF(x, y, width, height);
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, dpiRelativeToBounds)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, dpiRelativeToBounds)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "Wikimedia_Commons_web.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (dpiRelativeToBounds != null)

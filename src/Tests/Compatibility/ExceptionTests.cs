@@ -18,7 +18,7 @@ namespace Tests.Compatibility
 		[DataRow("Wikimedia_Commons_web.pdf")]
 		public void ThrowsPageNotFound(string inputFile)
 		{
-			using var inputStream = GetInputStream(Path.Combine("Assets", inputFile));
+			using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
 			Assert.ThrowsException<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
 		}
 	}

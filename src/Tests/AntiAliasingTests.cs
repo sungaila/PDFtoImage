@@ -33,9 +33,9 @@ namespace Tests
         [DataRow(PdfAntiAliasing.All, DisplayName = "All")]
         public void SaveJpegWithAntiAliasing(PdfAntiAliasing? antiAliasing)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.jpg");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.jpg");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
@@ -59,9 +59,9 @@ namespace Tests
         [DataRow(PdfAntiAliasing.All, DisplayName = "All")]
         public void SavePngWithAntiAliasing(PdfAntiAliasing? antiAliasing)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.png");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.png");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
@@ -85,9 +85,9 @@ namespace Tests
         [DataRow(PdfAntiAliasing.All, DisplayName = "All")]
         public void SaveWebpWithAntiAliasing(PdfAntiAliasing? antiAliasing)
         {
-            var expectedPath = Path.Combine("Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.webp");
+            var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "AntiAliasing", $"hundesteuer-anmeldung_{GetFileName(antiAliasing ?? PdfAntiAliasing.All)}.webp");
 
-            using var inputStream = GetInputStream(Path.Combine("Assets", "hundesteuer-anmeldung.pdf"));
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var outputStream = CreateOutputStream(expectedPath);
 
             if (antiAliasing == null)
