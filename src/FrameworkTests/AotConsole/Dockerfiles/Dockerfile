@@ -2,4 +2,4 @@
 USER app
 WORKDIR /app
 COPY ["AotConsole", "."]
-ENTRYPOINT ["dotnet", "net8.0/PDFtoImage.FrameworkTests.AotConsole.dll"]
+ENTRYPOINT ["dotnet", "run"]

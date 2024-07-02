@@ -256,15 +256,27 @@ jobs:
           sparse-checkout: |
             src/FrameworkTests/AotConsole/Dockerfiles
             src/Tests/Dockerfiles
+      - name: Download test project AotConsole
+        uses: actions/download-artifact@main
+        with:
+          name: AotConsole
+          path: AotConsole
+      - name: docker build
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/Dockerfile .
+      - name: docker run
+        run: docker run --rm -t aotconsole net8.0/PDFtoImage.FrameworkTests.AotConsole.dll
       - name: Download test assemblies
         if: success() || failure()
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
       - name: docker build
+        id: build-test
+        if: success() || failure()
         run: docker build -t test-client -f src/Tests/Dockerfiles/Dockerfile .
       - name: docker run
-        run: docker run --rm --mount type=bind,source=${{ github.workspace }}/TestResults,target=/app/TestResults -t test-client
+        if: steps.build-test.outcome == 'success'
+        run: docker run --rm --mount type=bind,source=${{ github.workspace }}/TestResults,target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -273,16 +285,6 @@ jobs:
           path: ./**/*.trx
           if-no-files-found: error
           retention-days: 1
-      - name: Download test project AotConsole
-        if: success() || failure()
-        uses: actions/download-artifact@main
-        with:
-          name: AotConsole
-          path: AotConsole
-      - name: docker build
-        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/Dockerfile .
-      - name: docker run
-        run: docker run --rm -t aotconsole
   publish-test-results:
     name: Publish tests results
     needs: test
