@@ -261,10 +261,10 @@ jobs:
         with:
           name: AotConsole
           path: AotConsole
-      - name: docker build
+      - name: docker build aotconsole
         shell: pwsh
         run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/Dockerfile .
-      - name: docker run
+      - name: docker run aotconsole
         shell: pwsh
         run: docker run -t aotconsole net8.0/PDFtoImage.FrameworkTests.AotConsole.dll
       - name: Download test assemblies
@@ -272,12 +272,12 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
-      - name: docker build
+      - name: docker build test-client
         id: build-test
         shell: pwsh
         if: success() || failure()
         run: docker build -t test-client -f src/Tests/Dockerfiles/Dockerfile .
-      - name: docker run
+      - name: docker run test-client
         shell: pwsh
         if: steps.build-test.conclusion == 'success'
         run: docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
