@@ -24,6 +24,11 @@ on:
         description: Run tests
         required: true
         default: true
+      run_docker:
+        type: boolean
+        description: Run docker tests
+        required: true
+        default: true
       generate_assets:
         type: boolean
         description: Generate assets from test runs
@@ -224,6 +229,33 @@ jobs:
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
+          if-no-files-found: error
+          retention-days: 1
+  docker:
+    name: Docker (${{ matrix.os }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    steps:
+      - name: Download test assemblies
+        if: success() || failure()
+        uses: actions/download-artifact@main
+        with:
+          name: Test assemblies
+      - name: docker build
+        run: docker build -t test-client -f src/Tests/Dockerfiles/Dockerfile .
+      - name: docker run
+        run: docker run --rm --mount type=bind,source=${GITHUB_WORKSPACE}/TestResults,target=/app/TestResults -t test-client
+      - name: Upload test results
+        if: success() || failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: Docker test results (${{ matrix.os }})
+          path: ./**/*.trx
           if-no-files-found: error
           retention-days: 1
   publish-test-results:
