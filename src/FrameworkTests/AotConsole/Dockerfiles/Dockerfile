@@ -2,4 +2,4 @@
 USER app
 WORKDIR /app
 COPY ["AotConsole", "."]
-ENTRYPOINT ["dotnet", "run"]
+ENTRYPOINT ["dotnet"]
