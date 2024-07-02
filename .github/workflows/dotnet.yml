@@ -280,7 +280,7 @@ jobs:
       - name: docker run
         shell: pwsh
         if: steps.build-test.conclusion == 'success'
-        run: docker run --rm --mount type=bind,source=${{ github.workspace }}/TestResults,target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
+        run: docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
