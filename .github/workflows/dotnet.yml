@@ -232,15 +232,21 @@ jobs:
           if-no-files-found: error
           retention-days: 1
   docker:
-    name: Docker (${{ matrix.os }})
+    name: Test (docker ${{ matrix.os }})
     needs: build
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            src/Tests/Dockerfiles
       - name: Download test assemblies
         if: success() || failure()
         uses: actions/download-artifact@main
@@ -249,12 +255,12 @@ jobs:
       - name: docker build
         run: docker build -t test-client -f src/Tests/Dockerfiles/Dockerfile .
       - name: docker run
-        run: docker run --rm --mount type=bind,source=${GITHUB_WORKSPACE}/TestResults,target=/app/TestResults -t test-client
+        run: docker run --rm --mount type=bind,source=.,target=/app/TestResults -t test-client
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
         with:
-          name: Docker test results (${{ matrix.os }})
+          name: Test results (docker ${{ matrix.os }})
           path: ./**/*.trx
           if-no-files-found: error
           retention-days: 1
