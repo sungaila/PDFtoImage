@@ -258,16 +258,16 @@ jobs:
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot-chiseled.dockerfile . && docker run --rm  -t console
       - name: console (servercore)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" windows-servercore.dockerfile && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
       - name: console (servercore-aot)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" windows-servercore-aot.dockerfile && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
       - name: console (nanoserver)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile" windows-nanoserver.dockerfile && docker build -t console -f windows-nanoserver.dockerfile . && docker run --rm -t console
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t console -f windows-nanoserver.dockerfile . && docker run --rm -t console
       - name: console (nanoserver-aot)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile" windows-nanoserver-aot.dockerfile && docker build -t console -f windows-nanoserver-aot.dockerfile . && docker run --rm -t console
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile" . && docker build -t console -f windows-nanoserver-aot.dockerfile . && docker run --rm -t console
       - name: docker system prune
         if: success() || failure()
         run: docker system prune -a -f
@@ -276,10 +276,10 @@ jobs:
         run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (servercore)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\Tests\Dockerfiles\windows-servercore.dockerfile" windows-servercore.dockerfile && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-servercore.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+        run: xcopy /y "src\Tests\Dockerfiles\windows-servercore.dockerfile" . && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-servercore.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (nanoserver)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\Tests\Dockerfiles\windows-nanoserver.dockerfile" windows-nanoserver.dockerfile && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-nanoserver.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+        run: xcopy /y "src\Tests\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-nanoserver.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
