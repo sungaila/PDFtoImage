@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-nanoserver-ltsc2022 AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime-deps:8.0-windowsservercore-ltsc2022 AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022 AS build
