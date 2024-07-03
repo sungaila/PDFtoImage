@@ -278,7 +278,7 @@ jobs:
           retention-days: 1
   publish-test-results:
     name: Publish tests results
-    needs: test
+    needs: [test, docker]
     runs-on: ubuntu-latest
     permissions:
       checks: write
