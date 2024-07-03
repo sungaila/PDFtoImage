@@ -7,14 +7,14 @@ ARG TARGET_FRAMEWORK=net8.0
 WORKDIR /src
 COPY ["src/Tests/Tests.csproj", "src/Tests/Tests.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
-RUN dotnet restore "./src/Tests/Tests.csproj" /p:TargetFramework=$TARGET_FRAMEWORK
+RUN dotnet restore "./src/Tests/Tests.csproj" /p:TargetFramework=%TARGET_FRAMEWORK%
 COPY . .
 WORKDIR "/src/src"
-RUN dotnet build "./Tests/Tests.csproj" -c $BUILD_CONFIGURATION -o /app/build/$TARGET_FRAMEWORK --no-restore -f $TARGET_FRAMEWORK
+RUN dotnet build "./Tests/Tests.csproj" -c %BUILD_CONFIGURATION% -o /app/build/%TARGET_FRAMEWORK% --no-restore -f %TARGET_FRAMEWORK%
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Tests/Tests.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore -f $TARGET_FRAMEWORK
+RUN dotnet publish "./Tests/Tests.csproj" -c %BUILD_CONFIGURATION% -o /app/publish --no-restore -f %TARGET_FRAMEWORK%
 
 FROM base AS final
 WORKDIR /app

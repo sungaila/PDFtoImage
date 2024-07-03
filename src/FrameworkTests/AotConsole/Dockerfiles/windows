@@ -9,7 +9,7 @@ COPY ["src/PDFtoImage", "src/PDFtoImage"]
 RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" /p:TargetFramework=net8.0
 COPY . .
 WORKDIR "/src/src"
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore
+RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -o /app/build --no-restore
 
 FROM base AS final
 WORKDIR /app

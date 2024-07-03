@@ -258,10 +258,10 @@ jobs:
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot-chiseled . && docker run --rm  -t console
       - name: console (windows)
         if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/windows . && docker run --rm -t console
+        run: copy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows" windows && docker build -t console -f windows . && docker run --rm -t console
       - name: console (windows-aot)
         if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/windows-aot . && docker run --rm -t console
+        run: copy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-aot" windows-aot && docker build -t console -f windows . && docker run --rm -t console
       - name: docker system prune
         if: success() || failure()
         run: docker system prune -a -f
@@ -270,7 +270,7 @@ jobs:
         run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (windows)
         if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+        run: copy /y "src\Tests\Dockerfiles\windows" windows && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
