@@ -17,7 +17,6 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Tests/Tests.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore -f $TARGET_FRAMEWORK
 
 FROM base AS final
-ARG TARGET_FRAMEWORK=net8.0
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "test", "publish/PDFtoImage.Tests.dll", "/logger:console;verbosity=detailed", "/logger:trx;verbosity=detailed"]
