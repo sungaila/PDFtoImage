@@ -233,7 +233,6 @@ jobs:
           retention-days: 1
   docker:
     name: Docker (${{ matrix.os }})
-    needs: build
     strategy:
       fail-fast: false
       matrix:
@@ -245,10 +244,6 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-          sparse-checkout: |
-            src/PDFtoImage
-            src/FrameworkTests/AotConsole
-            src/Tests/Dockerfiles
       - name: aotconsole linux
         if: runner.os == 'Linux' && (success() || failure())
         run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/linux . && docker run --rm -t aotconsole
@@ -267,17 +262,12 @@ jobs:
       - name: aotconsole windows-aot
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/windows-aot . && docker run --rm -t aotconsole
-      - name: Download test assemblies
-        if: success() || failure()
-        uses: actions/download-artifact@main
-        with:
-          name: Test assemblies
       - name: test-client linux
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t test-client -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
+        run: docker build -t test-client --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
       - name: test-client windows
         if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t test-client -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
+        run: docker build -t test-client --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
