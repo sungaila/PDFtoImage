@@ -256,21 +256,30 @@ jobs:
       - name: console (linux-aot-chiseled)
         if: runner.os == 'Linux' && (success() || failure())
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot-chiseled . && docker run --rm  -t console
-      - name: console (windows)
+      - name: console (servercore)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows" windows && docker build -t console -f windows . && docker run --rm -t console
-      - name: console (windows-aot)
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore" windows-servercore && docker build -t console -f windows-servercore . && docker run --rm -t console
+      - name: console (servercore-aot)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-aot" windows-aot && docker build -t console -f windows . && docker run --rm -t console
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot" windows-servercore-aot && docker build -t console -f windows-servercore-aot . && docker run --rm -t console
+      - name: console (nanoserver)
+        if: runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver" windows-nanoserver && docker build -t console -f windows-nanoserver . && docker run --rm -t console
+      - name: console (nanoserver-aot)
+        if: runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot" windows-nanoserver-aot && docker build -t console -f windows-nanoserver-aot . && docker run --rm -t console
       - name: docker system prune
         if: success() || failure()
         run: docker system prune -a -f
       - name: unittests (linux)
         if: runner.os == 'Linux' && (success() || failure())
         run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
-      - name: unittests (windows)
+      - name: unittests (servercore)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\Tests\Dockerfiles\windows" windows && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+        run: xcopy /y "src\Tests\Dockerfiles\windows-servercore" windows-servercore && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-servercore . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+      - name: unittests (nanoserver)
+        if: runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\Tests\Dockerfiles\windows-nanoserver" windows-nanoserver && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-nanoserver . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
