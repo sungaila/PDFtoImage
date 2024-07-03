@@ -153,14 +153,6 @@ jobs:
           path: src/FrameworkTests/MonoConsole/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           if-no-files-found: error
           retention-days: 1
-      - name: Publish test project AotConsole
-        uses: actions/upload-artifact@main
-        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
-        with:
-          name: AotConsole
-          path: src/FrameworkTests/AotConsole/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
-          if-no-files-found: error
-          retention-days: 1
   test:
     name: Test (${{ matrix.os }})
     needs: build
@@ -240,12 +232,12 @@ jobs:
           if-no-files-found: error
           retention-days: 1
   docker:
-    name: Test (${{ matrix.os }}; docker)
+    name: Docker (${{ matrix.os }})
     needs: build
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
@@ -254,33 +246,38 @@ jobs:
         with:
           fetch-depth: 0
           sparse-checkout: |
-            src/FrameworkTests/AotConsole/Dockerfiles
+            src/PDFtoImage
+            src/FrameworkTests/AotConsole
             src/Tests/Dockerfiles
-      - name: Download test project AotConsole
-        uses: actions/download-artifact@main
-        with:
-          name: AotConsole
-          path: AotConsole
-      - name: docker build aotconsole
-        shell: pwsh
-        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/Dockerfile .
-      - name: docker run aotconsole
-        shell: pwsh
-        run: docker run -t aotconsole net8.0/PDFtoImage.FrameworkTests.AotConsole.dll
+      - name: aotconsole linux
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/linux . && docker run --rm -t aotconsole
+      - name: aotconsole linux-chiseled
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/linux-chiseled . && docker run --rm  -t aotconsole
+      - name: aotconsole linux-aot
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot . && docker run --rm  -t aotconsole
+      - name: aotconsole linux-aot-chiseled
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot-chiseled . && docker run --rm  -t aotconsole
+      - name: aotconsole windows
+        if: runner.os == 'Windows' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/windows . && docker run --rm -t aotconsole
+      - name: aotconsole windows-aot
+        if: runner.os == 'Windows' && (success() || failure())
+        run: docker build -t aotconsole -f src/FrameworkTests/AotConsole/Dockerfiles/windows-aot . && docker run --rm -t aotconsole
       - name: Download test assemblies
         if: success() || failure()
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
-      - name: docker build test-client
-        id: build-test
-        shell: pwsh
-        if: success() || failure()
-        run: docker build -t test-client -f src/Tests/Dockerfiles/Dockerfile .
-      - name: docker run test-client
-        shell: pwsh
-        if: steps.build-test.conclusion == 'success'
-        run: docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
+      - name: test-client linux
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t test-client -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
+      - name: test-client windows
+        if: runner.os == 'Windows' && (success() || failure())
+        run: docker build -t test-client -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }},target=/app/TestResults -t test-client net8.0/PDFtoImage.Tests.dll
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
