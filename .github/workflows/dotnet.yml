@@ -263,6 +263,7 @@ jobs:
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/windows-aot . && docker run --rm -t console
       - name: docker system prune
+        if: success() || failure()
         run: docker system prune -a -f
       - name: unittests (linux)
         if: runner.os == 'Linux' && (success() || failure())
@@ -274,7 +275,7 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@main
         with:
-          name: Test results (docker ${{ matrix.os }})
+          name: Test results (${{ matrix.os }}; docker)
           path: ./**/*.trx
           if-no-files-found: error
           retention-days: 1

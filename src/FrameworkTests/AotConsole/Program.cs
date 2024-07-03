@@ -7,7 +7,6 @@
 
         public static void Main()
         {
-            throw new NotImplementedException();
             Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory)!);
             using var input = new FileStream("SocialPreview.pdf", FileMode.Open, FileAccess.Read);
             using var bitmap = PDFtoImage.Conversion.ToImage(input);
