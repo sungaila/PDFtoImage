@@ -246,16 +246,16 @@ jobs:
           fetch-depth: 0
       - name: console (linux)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux.dockerfile . && docker run --rm -t console
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
       - name: console (linux-chiseled)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-chiseled.dockerfile . && docker run --rm  -t console
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
       - name: console (linux-aot)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot.dockerfile . && docker run --rm  -t console
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
       - name: console (linux-aot-chiseled)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/linux-aot-chiseled.dockerfile . && docker run --rm  -t console
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
       - name: console (servercore)
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
@@ -273,7 +273,7 @@ jobs:
         run: docker system prune -a -f
       - name: unittests (linux)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
+        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/ubuntu.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (servercore)
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\Tests\Dockerfiles\windows-servercore.dockerfile" . && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-servercore.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
