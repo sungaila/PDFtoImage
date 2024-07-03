@@ -266,10 +266,10 @@ jobs:
         run: docker system prune -a -f
       - name: unittests (linux)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests net8.0/PDFtoImage.Tests.dll
+        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/linux . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (windows)
         if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests net8.0/PDFtoImage.Tests.dll
+        run: docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f src/Tests/Dockerfiles/windows . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
