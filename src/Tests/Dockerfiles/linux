@@ -14,9 +14,6 @@ RUN dotnet build "./Tests/Tests.csproj" -c $BUILD_CONFIGURATION -o /app/build/$T
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN apt update && apt install -y \
-  clang \
-  zlib1g-dev
 RUN dotnet publish "./Tests/Tests.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore -f $TARGET_FRAMEWORK
 
 FROM base AS final
