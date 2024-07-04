@@ -244,6 +244,9 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
+          sparse-checkout: |
+            src/PDFtoImage
+            src/FrameworkTests/AotConsole
       - name: console (ubuntu)
         if: runner.os == 'Linux' && (success() || failure())
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
