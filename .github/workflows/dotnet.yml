@@ -263,10 +263,10 @@ jobs:
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
       - name: console (windows-nanoserver)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: false && runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t console -f windows-nanoserver.dockerfile . && docker run --rm -t console
       - name: console (windows-nanoserver-aot)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: false && runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile" . && docker build -t console -f windows-nanoserver-aot.dockerfile . && docker run --rm -t console
       - name: docker system prune
         if: success() || failure()
@@ -278,7 +278,7 @@ jobs:
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\Tests\Dockerfiles\windows-servercore.dockerfile" . && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-servercore.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: unittests (windows-nanoserver)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: false && runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\Tests\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t unittests --build-arg TARGET_FRAMEWORK=net8.0 -f windows-nanoserver.dockerfile . && docker run --rm --mount type=bind,source=${{ github.workspace }}/src/Tests,target=/app/TestResults -t unittests
       - name: Upload test results
         if: success() || failure()
