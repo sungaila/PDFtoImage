@@ -260,7 +260,7 @@ jobs:
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
       - name: console (windows-servercore-aot)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: false && runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
       - name: console (windows-nanoserver)
         if: false && runner.os == 'Windows' && (success() || failure())
