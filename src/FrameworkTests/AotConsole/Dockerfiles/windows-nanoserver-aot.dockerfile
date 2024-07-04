@@ -2,18 +2,13 @@
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022 AS sdk
-# Restore the default Windows shell for correct batch processing.
 SHELL ["cmd", "/S", "/C"]
 
 RUN powershell -c "Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe"
-RUN (start /w vs_buildtools.exe --quiet --wait --norestart --nocache \
+RUN (start /w vs_buildtools.exe --wait --norestart --nocache \
         --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" \
         --add Microsoft.VisualStudio.Workload.VCTools \
         --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10240 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10586 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.14393 \
-        --remove Microsoft.VisualStudio.Component.Windows81SDK \
         || IF "%ERRORLEVEL%"=="3010" EXIT 0) \
     && del /q vs_buildtools.exe
 
