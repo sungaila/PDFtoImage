@@ -12,6 +12,8 @@ COPY . .
 WORKDIR "/src/src"
 
 FROM restore AS build
+ARG BUILD_CONFIGURATION=Release
+ARG TARGET_FRAMEWORK=net8.0
 RUN dotnet build "./Tests/Tests.csproj" -c %BUILD_CONFIGURATION% -o /app/build/%TARGET_FRAMEWORK% --no-restore -f %TARGET_FRAMEWORK%
 
 FROM build AS publish

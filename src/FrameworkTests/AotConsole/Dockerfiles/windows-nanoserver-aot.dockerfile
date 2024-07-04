@@ -27,6 +27,7 @@ COPY . .
 WORKDIR "/src/src"
 
 FROM restore AS build
+ARG BUILD_CONFIGURATION=Release
 RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -o /app/build --no-restore
 
 FROM build AS publish
