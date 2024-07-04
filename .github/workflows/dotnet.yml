@@ -24,6 +24,11 @@ on:
         description: Run tests
         required: true
         default: true
+      run_docker:
+        type: boolean
+        description: Run docker tests
+        required: true
+        default: true
       generate_assets:
         type: boolean
         description: Generate assets from test runs
@@ -226,9 +231,50 @@ jobs:
           path: ./**/Assets/Generated
           if-no-files-found: error
           retention-days: 1
+  docker:
+    name: Docker (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            src/PDFtoImage
+            src/FrameworkTests/AotConsole
+            src/Tests/Assets/SocialPreview.pdf
+      - name: console (ubuntu)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
+      - name: console (ubuntu-chiseled)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
+      - name: console (ubuntu-aot)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
+      - name: console (ubuntu-chiseled-aot)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
+      - name: console (windows-servercore)
+        if: runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
+      - name: console (windows-servercore-aot)
+        if: false && runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
+      - name: console (windows-nanoserver)
+        if: false && runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t console -f windows-nanoserver.dockerfile . && docker run --rm -t console
+      - name: console (windows-nanoserver-aot)
+        if: false && runner.os == 'Windows' && (success() || failure())
+        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile" . && docker build -t console -f windows-nanoserver-aot.dockerfile . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
-    needs: test
+    needs: [test, docker]
     runs-on: ubuntu-latest
     permissions:
       checks: write
