@@ -14,7 +14,23 @@ FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -o /app/build --no-restore
 
+FROM build AS vsbuildtools
+SHELL ["cmd", "/S", "/C"]
+
+RUN powershell -c "Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe"
+RUN (start /w vs_buildtools.exe --wait --norestart --nocache \
+        --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" \
+        --add Microsoft.VisualStudio.Workload.VCTools \
+        --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
+        --add Microsoft.VisualStudio.Component.Windows11SDK.22621\
+        || IF "%ERRORLEVEL%"=="3010" EXIT 0) \
+    && del /q vs_buildtools.exe
+
+FROM vsbuildtools AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -o /app/publish --no-restore
+
 FROM base AS final
 WORKDIR /app
-COPY --from=build /app/build .
-ENTRYPOINT ["dotnet", "PDFtoImage.FrameworkTests.AotConsole.dll"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["PDFtoImage.FrameworkTests.AotConsole.exe"]
