@@ -74,7 +74,7 @@ jobs:
             9.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
-        run: dotnet workload restore src/PDFtoImage/PDFtoImage.csproj
+        run: dotnet workload restore src/PDFtoImage.sln
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
@@ -289,7 +289,7 @@ jobs:
             9.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
-        run: dotnet workload restore src/PDFtoImage/PDFtoImage.csproj
+        run: dotnet workload restore src/PDFtoImage.sln
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
