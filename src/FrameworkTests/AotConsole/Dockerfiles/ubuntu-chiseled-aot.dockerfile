@@ -1,7 +1,7 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime-deps:9.0-noble-chiseled AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime-deps:9.0-preview-noble-chiseled AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS restore
+FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
