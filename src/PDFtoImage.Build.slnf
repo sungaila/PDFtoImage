@@ -6,7 +6,6 @@
       "FrameworkTests\\AotConsole\\AotConsole.csproj",
       "FrameworkTests\\AspNetCore\\AspNetCore.csproj",
       "FrameworkTests\\MauiApp\\MauiApp.csproj",
-      "FrameworkTests\\MonoAndroid\\MonoAndroid.csproj",
       "FrameworkTests\\MonoConsole\\MonoConsole.csproj",
       "PDFtoImage\\PDFtoImage.csproj",
       "Tests\\Tests.csproj",

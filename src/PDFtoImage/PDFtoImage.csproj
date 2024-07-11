@@ -1,7 +1,7 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net462;net471;net481;net6.0;net7.0;net7.0-android;net8.0;net8.0-android;monoandroid10.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net462;net471;net481;netstandard2.0;net6.0;net8.0;net8.0-android;net9.0;net9.0-android</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -73,7 +73,7 @@
   </ItemGroup>
 
   <!-- Shared packages -->
-  <ItemGroup Condition="'$(TargetFramework)'!='net7.0-android' and '$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='monoandroid10.0'">
+  <ItemGroup Condition="'$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='monoandroid10.0'">
     <PackageReference Include="bblanchon.PDFium.Linux" Version="128.0.6555" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" Version="128.0.6555" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.Win32" Version="128.0.6555" PrivateAssets="analyzers" />
@@ -89,18 +89,18 @@
   </ItemGroup>
 
   <!-- .NET packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net6.0' or '$(TargetFramework)'=='net8.0'">
     <!-- NOP -->
   </ItemGroup>
 
   <!-- Android packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-android' or '$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='monoandroid10.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='net9.0-android'">
     <PackageReference Include="bblanchon.PDFium.Android" Version="128.0.6555" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.8" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Blazor WebAssembly stuff -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.8" PrivateAssets="analyzers" />
     <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="128.0.6555" PrivateAssets="analyzers" />
   </ItemGroup>
