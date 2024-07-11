@@ -73,8 +73,16 @@ jobs:
             8.x
             9.x
           dotnet-quality: 'preview'
-      - name: Setup .NET workloads
-        run: dotnet workload restore src/PDFtoImage.sln
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
+      - name: Setup .NET workload maui-ios
+        run: dotnet workload install maui-ios
+      - name: Setup .NET workload maui-maccatalyst
+        run: dotnet workload install maui-maccatalyst
+      - name: Setup .NET workload maui-windows
+        run: dotnet workload install maui-windows
+      - name: Setup .NET workload wasm-tools
+        run: dotnet workload install wasm-tools
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
@@ -288,8 +296,6 @@ jobs:
             8.x
             9.x
           dotnet-quality: 'preview'
-      - name: Setup .NET workloads
-        run: dotnet workload restore src/PDFtoImage.sln
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17

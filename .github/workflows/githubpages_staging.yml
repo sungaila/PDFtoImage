@@ -21,9 +21,8 @@ jobs:
       - name: Setup .NET 8
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 8.x
-      - name: Setup .NET workload android
-        run: dotnet workload install android
+          dotnet-version: 9.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths
@@ -79,6 +78,10 @@ jobs:
     needs: publish
     runs-on: ubuntu-latest
 
+    concurrency:
+      group: "pages-stating"
+      cancel-in-progress: true
+
     # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write      # to deploy to Pages
@@ -87,10 +90,6 @@ jobs:
     environment:
       name: github-pages-staging
       url: ${{ steps.deployment.outputs.page_url }}
-
-    concurrency:
-      group: "pages"
-      cancel-in-progress: true
     
     steps:
       - name: Deploy to GitHub Pages
