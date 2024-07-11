@@ -1,7 +1,7 @@
 ﻿FROM mcr.microsoft.com/windows/servercore:ltsc2022
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-windowsservercore-ltsc2022 AS restore
+FROM mcr.microsoft.com/dotnet/sdk:9.0-preview-windowsservercore-ltsc2022 AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
