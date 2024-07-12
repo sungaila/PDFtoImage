@@ -22,6 +22,8 @@ jobs:
         with:
           dotnet-version: 9.x
           dotnet-quality: 'preview'
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths

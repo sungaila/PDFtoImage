@@ -75,10 +75,6 @@ jobs:
           dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
       - name: Setup .NET workload maui-windows
         run: dotnet workload install maui-windows
       - name: Setup .NET workload wasm-tools
@@ -140,18 +136,14 @@ jobs:
       - name: Setup Mono
         if: runner.os == 'Windows'
         run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
-      - name: Setup .NET 6
+      - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 6.x
-      - name: Setup .NET 7
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 7.x
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 8.x
+          dotnet-version: | 
+            6.x
+            8.x
+            9.x
+          dotnet-quality: 'preview'
       - name: Download test project MonoConsole
         uses: actions/download-artifact@main
         with:
@@ -186,6 +178,9 @@ jobs:
       - name: .NET 8
         if: success() || failure()
         run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 9
+        if: success() || failure()
+        run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -296,6 +291,8 @@ jobs:
             8.x
             9.x
           dotnet-quality: 'preview'
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
@@ -330,7 +327,6 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet restore src/PDFtoImage.SonarCloud.slnf
-          dotnet build src/PDFtoImage.SonarCloud.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} --no-restore
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
