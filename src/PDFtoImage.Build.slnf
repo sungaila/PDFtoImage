@@ -8,7 +8,7 @@
       "FrameworkTests\\AspNetCore\\AspNetCore.csproj",
       "FrameworkTests\\MauiApp\\MauiApp.csproj",
       "FrameworkTests\\MonoConsole\\MonoConsole.csproj",
-      "FrameworkTests\\MonoConsole\\Uwp.csproj",
+      "FrameworkTests\\Uwp\\Uwp.csproj",
       "PDFtoImage\\PDFtoImage.csproj",
       "Tests\\Tests.csproj",
       "WebConverter\\WebConverter.csproj"
