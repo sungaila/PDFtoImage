@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Setup .NET 8
+      - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 9.x
@@ -26,6 +26,8 @@ jobs:
         run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
+      - name: Setup .NET workload wasm-tools-net8
+        run: dotnet workload install wasm-tools-net8
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         run: |
