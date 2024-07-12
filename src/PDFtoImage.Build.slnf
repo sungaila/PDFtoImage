@@ -4,7 +4,7 @@
     "projects": [
       "Console\\Console.csproj",
       "FrameworkTests\\AotConsole\\AotConsole.csproj",
-      "FrameworkTests\\AspNetCore\\AspNet.csproj",
+      "FrameworkTests\\AspNet\\AspNet.csproj",
       "FrameworkTests\\AspNetCore\\AspNetCore.csproj",
       "FrameworkTests\\MauiApp\\MauiApp.csproj",
       "FrameworkTests\\MonoConsole\\MonoConsole.csproj",
