@@ -26,8 +26,6 @@ jobs:
         run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
-      - name: Setup .NET workload wasm-tools-net8
-        run: dotnet workload install wasm-tools-net8
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         run: |
