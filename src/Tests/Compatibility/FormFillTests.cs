@@ -1,4 +1,3 @@
-#pragma warning disable CS0618
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -16,7 +15,6 @@ namespace Tests.Compatibility
 #if NET6_0_OR_GREATER
             if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
                 Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#pragma warning disable CS0618
 #endif
         }
 

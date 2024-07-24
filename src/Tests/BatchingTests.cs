@@ -1,4 +1,3 @@
-#if NET6_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Tests;
 using SkiaSharp;
@@ -50,6 +49,26 @@ namespace Tests
             CompareStreams(expectedPath, outputStream);
         }
 
+        [TestMethod]
+        public void ToImagesWithSelectionOdd()
+        {
+            int[] selection = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+            int i = 0;
+
+            foreach (var bitmap in ToImages(inputStream, selection, options: new(Dpi: 40)))
+            {
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
+                using var outputStream = CreateOutputStream(expectedPath);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
+
+                CompareStreams(expectedPath, outputStream);
+                i++;
+            }
+        }
+#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(0)]
         [DataRow(1)]
@@ -119,9 +138,69 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task ToImagesWithRangeAll()
+        public void ToImagesWithRangeAll()
         {
-            var range = 0..;
+            var range = ..;
+
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+            int i = range.Start.Value;
+
+            foreach (var bitmap in ToImages(inputStream, range, options: new(Dpi: 40)))
+            {
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
+                using var outputStream = CreateOutputStream(expectedPath);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
+
+                CompareStreams(expectedPath, outputStream);
+                i++;
+            }
+        }
+
+        [TestMethod]
+        public void ToImagesWithRangeSecondHalf()
+        {
+            var range = 10..;
+
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+            int i = range.Start.Value;
+
+            foreach (var bitmap in ToImages(inputStream, range, options: new(Dpi: 40)))
+            {
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
+                using var outputStream = CreateOutputStream(expectedPath);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
+
+                CompareStreams(expectedPath, outputStream);
+                i++;
+            }
+        }
+
+        [TestMethod]
+        public void ToImagesWithSelectionEven()
+        {
+            int[] selection = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18];
+
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+            int i = 0;
+
+            foreach (var bitmap in ToImages(inputStream, selection, options: new(Dpi: 40)))
+            {
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
+                using var outputStream = CreateOutputStream(expectedPath);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
+
+                CompareStreams(expectedPath, outputStream);
+                i++;
+            }
+        }
+
+        [TestMethod]
+        public async Task ToImagesWithRangeAllAsync()
+        {
+            var range = ..;
 
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
 
@@ -139,7 +218,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task ToImagesWithRangeSecondHalf()
+        public async Task ToImagesWithRangeSecondHalfAsync()
         {
             var range = 10..;
 
@@ -159,7 +238,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task ToImagesWithSelectionEven()
+        public async Task ToImagesWithSelectionEvenAsync()
         {
             int[] selection = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18];
 
@@ -179,7 +258,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async Task ToImagesWithSelectionOdd()
+        public async Task ToImagesWithSelectionOddAsync()
         {
             int[] selection = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
 
@@ -197,6 +276,6 @@ namespace Tests
                 i++;
             }
         }
+#endif
     }
 }
-#endif

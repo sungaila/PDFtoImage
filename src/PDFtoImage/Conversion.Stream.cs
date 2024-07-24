@@ -74,6 +74,34 @@ namespace PDFtoImage
             return ToImagesImpl(pdfStream, leaveOpen, password, options, null);
         }
 
+        /// <summary>
+        /// Renders a selection of pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, IEnumerable<int> pages, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        {
+            if (pdfStream == null)
+                throw new ArgumentNullException(nameof(pdfStream));
+
+            // Stream -> Internals.PdfDocument
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
+
+            var pageCount = pdfDocument.PageSizes.Count;
+
+            if (pages.Any(p => p >= pageCount))
+                throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
+
+            foreach (var bitmap in ToImagesImpl(pdfStream, leaveOpen, password, options, pages))
+            {
+                yield return bitmap;
+            }
+        }
+
 #if NET6_0_OR_GREATER
         /// <summary>
         /// Renders a single page of a given PDF and saves it as a JPEG.
@@ -215,9 +243,40 @@ namespace PDFtoImage
         /// <param name="pdfStream">The PDF as a stream.</param>
         /// <param name="pages">The specific pages to be converted.</param>
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(Stream pdfStream, Range pages, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        {
+            if (pdfStream == null)
+                throw new ArgumentNullException(nameof(pdfStream));
+
+            // Stream -> Internals.PdfDocument
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
+
+            var pageCount = pdfDocument.PageSizes.Count;
+            var (offset, length) = pages.GetOffsetAndLength(pageCount);
+
+            if (offset + length > pageCount)
+                throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
+
+            var pageNumbers = Enumerable.Range(offset, length);
+
+            foreach (var bitmap in ToImagesImpl(pdfStream, leaveOpen, password, options, pageNumbers))
+            {
+                yield return bitmap;
+            }
+        }
+
+        /// <summary>
+        /// Renders a range of pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfStream">The PDF as a stream.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <returns>The rendered PDF pages as images.</returns>
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, Range pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -247,9 +306,9 @@ namespace PDFtoImage
         /// <param name="pdfStream">The PDF as a stream.</param>
         /// <param name="pages">The specific pages to be converted.</param>
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <returns>The rendered PDF pages as images.</returns>
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, IEnumerable<int> pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
@@ -275,9 +334,9 @@ namespace PDFtoImage
         /// </summary>
         /// <param name="pdfStream">The PDF as a stream.</param>
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the conversion. Please note that an ongoing rendering cannot be cancelled (the next page will not be rendered though).</param>
         /// <returns>The rendered PDF pages as images.</returns>
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen = false, string? password = null, RenderOptions options = default, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {

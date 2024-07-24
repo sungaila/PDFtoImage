@@ -1,10 +1,8 @@
-﻿using PDFtoImage.Internals;
-using SkiaSharp;
+﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 
 #if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
@@ -78,6 +76,28 @@ namespace PDFtoImage
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
             foreach (var image in ToImages(pdfStream, false, password, options))
+            {
+                yield return image;
+            }
+        }
+
+        /// <summary>
+        /// Renders all pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfAsByteArray">The PDF as a byte array.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(byte[] pdfAsByteArray, IEnumerable<int> pages, string? password = null, RenderOptions options = default)
+        {
+            if (pdfAsByteArray == null)
+                throw new ArgumentNullException(nameof(pdfAsByteArray));
+
+            // Base64 string -> byte[] -> MemoryStream
+            using var pdfStream = new MemoryStream(pdfAsByteArray, false);
+
+            foreach (var image in ToImages(pdfStream, pages, false, password, options))
             {
                 yield return image;
             }
@@ -197,6 +217,28 @@ namespace PDFtoImage
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
             return ToImage(pdfStream, page, false, password, options);
+        }
+
+        /// <summary>
+        /// Renders a range of pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfAsByteArray">The PDF as a byte array.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(byte[] pdfAsByteArray, Range pages, string? password = null, RenderOptions options = default)
+        {
+            if (pdfAsByteArray == null)
+                throw new ArgumentNullException(nameof(pdfAsByteArray));
+
+            // Base64 string -> byte[] -> MemoryStream
+            using var pdfStream = new MemoryStream(pdfAsByteArray, false);
+
+            foreach (var image in ToImages(pdfStream, pages, false, password, options))
+            {
+                yield return image;
+            }
         }
 
         /// <summary>

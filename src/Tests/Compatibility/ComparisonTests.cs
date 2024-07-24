@@ -1,4 +1,3 @@
-#pragma warning disable CS0618
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Tests;
 using SkiaSharp;

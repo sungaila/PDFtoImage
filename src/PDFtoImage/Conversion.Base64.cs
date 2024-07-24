@@ -1,10 +1,8 @@
-﻿using PDFtoImage.Internals;
-using SkiaSharp;
+﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 
 #if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
@@ -69,6 +67,25 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
             foreach (var image in ToImages(Convert.FromBase64String(pdfAsBase64String), password, options))
+            {
+                yield return image;
+            }
+        }
+
+        /// <summary>
+        /// Renders all pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(string pdfAsBase64String, IEnumerable<int> pages, string? password = null, RenderOptions options = default)
+        {
+            if (pdfAsBase64String == null)
+                throw new ArgumentNullException(nameof(pdfAsBase64String));
+
+            foreach (var image in ToImages(Convert.FromBase64String(pdfAsBase64String), pages, password, options))
             {
                 yield return image;
             }
@@ -182,6 +199,25 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
             return ToImage(Convert.FromBase64String(pdfAsBase64String), page, password, options);
+        }
+
+        /// <summary>
+        /// Renders a range of pages of a given PDF into images.
+        /// </summary>
+        /// <param name="pdfAsBase64String">The PDF encoded as Base64.</param>
+        /// <param name="pages">The specific pages to be converted.</param>
+        /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
+        /// <param name="options">Additional options for PDF rendering.</param>
+        /// <returns>The rendered PDF pages as images.</returns>
+        public static IEnumerable<SKBitmap> ToImages(string pdfAsBase64String, Range pages, string? password = null, RenderOptions options = default)
+        {
+            if (pdfAsBase64String == null)
+                throw new ArgumentNullException(nameof(pdfAsBase64String));
+
+            foreach (var image in ToImages(Convert.FromBase64String(pdfAsBase64String), pages, password, options))
+            {
+                yield return image;
+            }
         }
 
         /// <summary>
