@@ -24,8 +24,8 @@
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>- Added System.Index for single page conversion.
-      - Added System.Range for multiple page conversion.
-      - Added IEnumerable&lt;int&gt; for multiple page conversion.</PackageReleaseNotes>
+- Added System.Range for multiple page conversion.
+- Added IEnumerable&lt;int&gt; for multiple page conversion.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
