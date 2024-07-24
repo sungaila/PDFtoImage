@@ -8,24 +8,24 @@ using static PDFtoImage.Tests.TestUtils;
 
 namespace Tests
 {
-	[TestClass]
-	public class ExceptionTests : TestBase
-	{
-		[TestMethod]
-		public void ThrowsInvalidFormat()
-		{
-			using var inputStream = GetInputStream(Path.Combine("..", "Assets", "DummyImage.png"));
-			Assert.ThrowsException<PdfInvalidFormatException>(() => GetPageCount(inputStream));
-		}
+    [TestClass]
+    public class ExceptionTests : TestBase
+    {
+        [TestMethod]
+        public void ThrowsInvalidFormat()
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "DummyImage.png"));
+            Assert.ThrowsException<PdfInvalidFormatException>(() => GetPageCount(inputStream));
+        }
 
-		[TestMethod]
-		[DataRow("hundesteuer-anmeldung.pdf")]
-		[DataRow("SocialPreview.pdf")]
-		[DataRow("Wikimedia_Commons_web.pdf")]
-		public void ThrowsPageNotFound(string inputFile)
-		{
-			using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
-			Assert.ThrowsException<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
-		}
-	}
+        [TestMethod]
+        [DataRow("hundesteuer-anmeldung.pdf")]
+        [DataRow("SocialPreview.pdf")]
+        [DataRow("Wikimedia_Commons_web.pdf")]
+        public void ThrowsPageNotFound(string inputFile)
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
+        }
+    }
 }

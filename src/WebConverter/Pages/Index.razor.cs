@@ -64,7 +64,7 @@ namespace PDFtoImage.WebConverter.Pages
             );
         }
 
-        private void SetFile(IBrowserFile file, Stream stream)
+        private void SetFile(DummyFile file, Stream stream)
         {
             if (file == null)
                 return;
@@ -157,16 +157,16 @@ namespace PDFtoImage.WebConverter.Pages
                 {
                     if (!Model.UseBounds)
                     {
-                        var pageSize = PDFtoImage.Conversion.GetPageSize(Model.Input, true, Model.Page, !string.IsNullOrEmpty(Model.Password) ? Model.Password : null);
+                        var pageSize = PDFtoImage.Conversion.GetPageSize(Model.Input, Model.Page, true, !string.IsNullOrEmpty(Model.Password) ? Model.Password : null);
                         Model.BoundsWidth = pageSize.Width;
                         Model.BoundsHeight = pageSize.Height;
                     }
 
                     bitmap = PDFtoImage.Conversion.ToImage(
                         Model.Input,
+                        Model.Page,
                         leaveOpen: true,
                         password: !string.IsNullOrEmpty(Model.Password) ? Model.Password : null,
-                        page: Model.Page,
                         new RenderOptions(
                             Dpi: Model.Dpi,
                             Width: Model.Width,

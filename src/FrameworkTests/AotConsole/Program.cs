@@ -9,7 +9,7 @@
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory)!);
             using var input = new FileStream("SocialPreview.pdf", FileMode.Open, FileAccess.Read);
-            using var bitmap = PDFtoImage.Conversion.ToImage(input);
+            using var bitmap = PDFtoImage.Conversion.ToImage(input, 0);
 
             Console.WriteLine($"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}");
 

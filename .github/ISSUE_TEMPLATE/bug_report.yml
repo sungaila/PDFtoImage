@@ -12,7 +12,7 @@ body:
     attributes:
       label: PDFtoImage version
       description: Which version of PDFtoImage is affected?
-      value: 4.0.2
+      value: 4.1.0
     validations:
       required: true
   - type: dropdown
