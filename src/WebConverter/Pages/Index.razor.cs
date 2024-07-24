@@ -64,7 +64,7 @@ namespace PDFtoImage.WebConverter.Pages
             );
         }
 
-        private void SetFile(IBrowserFile file, Stream stream)
+        private void SetFile(DummyFile file, Stream stream)
         {
             if (file == null)
                 return;
