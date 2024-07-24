@@ -142,7 +142,6 @@ jobs:
             6.x
             7.x
             8.x
-          dotnet-quality: 'preview'
       - name: Download test project MonoConsole
         uses: actions/download-artifact@main
         with:
@@ -289,7 +288,6 @@ jobs:
             6.x
             7.x
             8.x
-          dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup dotnet-coverage
