@@ -65,56 +65,25 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@main
-        with:
-          msbuild-architecture: x64
-      - name: Setup .NET 6
+      - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 6.x
-      - name: Setup .NET 7
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 7.x
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 8.x
-      - name: Setup .NET workload android
-        run: dotnet workload install android
+          dotnet-version: | 
+            6.x
+            7.x
+            8.x
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
-      - name: Setup .NET workload ios
-        run: dotnet workload install ios
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maccatalyst
-        run: dotnet workload install maccatalyst
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
       - name: Setup .NET workload maui-windows
         run: dotnet workload install maui-windows
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
-      - name: Setup JDK 17
-        uses: actions/setup-java@main
-        with:
-          java-version: 17
-          java-package: jdk
-          distribution: 'zulu'
-      - name: Setup Android SDK 29
-        run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
-      - name: Setup Windows 11 SDK (10.0.26100.0)
-        uses: GuillaumeFalourd/setup-windows10-sdk-action@main
-        with:
-            sdk-version: 26100
       - name: Restore
-        run: msbuild src/PDFtoImage.Build.slnf /t:restore
+        run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
-        run: msbuild src/PDFtoImage.Build.slnf /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: dotnet build src/PDFtoImage.Build.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Pack
-        run: msbuild src/PDFtoImage/PDFtoImage.csproj /t:pack /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} /p:VersionSuffix=ci /p:RestorePackages=false
+        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@main
         with:
@@ -166,18 +135,14 @@ jobs:
       - name: Setup Mono
         if: runner.os == 'Windows'
         run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
-      - name: Setup .NET 6
+      - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
-          dotnet-version: 6.x
-      - name: Setup .NET 7
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 7.x
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 8.x
+          dotnet-version: | 
+            6.x
+            7.x
+            8.x
+          dotnet-quality: 'preview'
       - name: Download test project MonoConsole
         uses: actions/download-artifact@main
         with:
@@ -211,7 +176,7 @@ jobs:
         run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 7
         if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net7.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
         run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
@@ -317,34 +282,24 @@ jobs:
         uses: actions/checkout@main
         with:
           fetch-depth: 0
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@main
-        with:
-          msbuild-architecture: x64
-      - name: Setup .NET 6
+      - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
-           dotnet-version: 6.x
-      - name: Setup .NET 7
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 7.x
-      - name: Setup .NET 8
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: 8.x
+          dotnet-version: | 
+            6.x
+            7.x
+            8.x
+          dotnet-quality: 'preview'
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
-      - name: Setup .NET workload android
-        run: dotnet workload install android
       - name: Setup JDK 17
         uses: actions/setup-java@main
         with:
           java-version: 17
           java-package: jdk
           distribution: 'zulu'
-      - name: Setup Android SDK 29
-        run: C:\Android\android-sdk\cmdline-tools\latest\bin\sdkmanager "platforms;android-29"
       - name: Cache SonarCloud packages
         uses: actions/cache@main
         with:
@@ -371,7 +326,6 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet restore src/PDFtoImage.SonarCloud.slnf
-          msbuild src/PDFtoImage.SonarCloud.slnf /p:Configuration=${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} 
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
           dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

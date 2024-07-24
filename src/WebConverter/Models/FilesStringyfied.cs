@@ -2,17 +2,17 @@
 
 namespace PDFtoImage.WebConverter.Models
 {
-	public record FilesStringyfied(
-		[property: JsonPropertyName("title")]
-		string? Title,
+    public record FilesStringyfied(
+        [property: JsonPropertyName("title")]
+        string? Title,
 
-		[property: JsonPropertyName("text")]
-		string? Text,
+        [property: JsonPropertyName("text")]
+        string? Text,
 
-		[property: JsonPropertyName("url")]
-		string? Url,
+        [property: JsonPropertyName("url")]
+        string? Url,
 
-		[property: JsonPropertyName("files")]
-		FileStringyfied[]? Files
-	);
+        [property: JsonPropertyName("files")]
+        FileStringyfied[]? Files
+    );
 }

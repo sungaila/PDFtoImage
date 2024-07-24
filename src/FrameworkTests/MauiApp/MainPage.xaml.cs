@@ -15,7 +15,7 @@
                 using var ms = new MemoryStream();
                 input.CopyTo(ms);
 
-                using var bitmap = PDFtoImage.Conversion.ToImage(ms);
+                using var bitmap = PDFtoImage.Conversion.ToImage(ms, 0);
 
                 OutputLabel.Text = $"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}";
             }

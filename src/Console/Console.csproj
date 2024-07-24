@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.Console</AssemblyName>
     <RootNamespace>PDFtoImage.Console</RootNamespace>
     <StartupObject>PDFtoImage.Console.Program</StartupObject>
-    <Version>4.0.2</Version>
+    <Version>4.1.0</Version>
     <Configurations>Debug;Release;ReleaseSigned</Configurations>
   </PropertyGroup>
 
@@ -17,7 +17,7 @@
     <Nullable>enable</Nullable>
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <NoWarn>CA1416</NoWarn>
+    <NoWarn>CS0618,CA1416</NoWarn>
   </PropertyGroup>
 
   <!-- References -->
