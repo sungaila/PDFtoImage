@@ -32,11 +32,19 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            if (options == default)
-                options = new();
-
             // Stream -> Internals.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
+
+            foreach (var bitmap in ToImagesImpl(pdfDocument, options, pages))
+            {
+                yield return bitmap;
+            }
+        }
+
+        internal static IEnumerable<SKBitmap> ToImagesImpl(PdfDocument pdfDocument, RenderOptions options, IEnumerable<int>? pages)
+        {
+            if (options == default)
+                options = new();
 
             pages ??= Enumerable.Range(0, pdfDocument.PageSizes.Count);
 
