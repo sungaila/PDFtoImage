@@ -74,6 +74,7 @@ StyleCopReport.xml
 *_h.h
 *.ilk
 *.meta
+!src/FrameworkTests/Unity2D/**/*.meta
 *.obj
 *.iobj
 *.pch
