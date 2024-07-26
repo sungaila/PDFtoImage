@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -295,7 +294,6 @@ GameObject:
   - component: {fileID: 931746725}
   - component: {fileID: 931746727}
   - component: {fileID: 931746726}
-  - component: {fileID: 931746728}
   m_Layer: 5
   m_Name: RawImage
   m_TagString: Untagged
@@ -357,20 +355,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931746724}
   m_CullTransparentMesh: 1
---- !u!114 &931746728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931746724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3359bd14e774b1f49981999c11e98a37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _title: {fileID: 0}
-  _rawImage: {fileID: 931746726}
 --- !u!1 &1637040910
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +367,7 @@ GameObject:
   - component: {fileID: 1637040914}
   - component: {fileID: 1637040913}
   - component: {fileID: 1637040912}
+  - component: {fileID: 1637040915}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -474,6 +459,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1637040915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637040910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e115951528ebb3439372ba2cda69fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _title: {fileID: 2023396804}
+  _rawImage: {fileID: 931746726}
 --- !u!1 &2023396802
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,10 +562,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2023396802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3359bd14e774b1f49981999c11e98a37, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e115951528ebb3439372ba2cda69fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _title: {fileID: 2023396804}
+  _title: {fileID: 0}
   _rawImage: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
