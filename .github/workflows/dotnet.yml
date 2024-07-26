@@ -70,8 +70,9 @@ jobs:
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
+            9.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup .NET workload maui-windows
@@ -140,8 +141,9 @@ jobs:
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
+            9.x
+          dotnet-quality: 'preview'
       - name: Download test project MonoConsole
         uses: actions/download-artifact@main
         with:
@@ -173,12 +175,12 @@ jobs:
       - name: .NET 6
         if: success() || failure()
         run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
-      - name: .NET 7
-        if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
         run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 9
+        if: success() || failure()
+        run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -286,8 +288,9 @@ jobs:
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
+            9.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup dotnet-coverage
