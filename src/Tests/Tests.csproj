@@ -19,8 +19,8 @@
   <ItemGroup>
     <None Include="Assets\**" />
     <ContentWithTargetPath Include="Assets\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>\..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
 
