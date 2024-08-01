@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
 {
-    internal static partial class NativeMethods
+    public static partial class NativeMethods
     {
         // Interned strings are cached over AppDomains. This means that when we
         // lock on this string, we actually lock over AppDomain's. The Pdfium
