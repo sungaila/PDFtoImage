@@ -12,7 +12,7 @@ namespace PDFtoImage.Internals
     /// <summary>
     /// Provides functionality to render a PDF document.
     /// </summary>
-    internal struct PdfDocument : IDisposable
+    public struct PdfDocument : IDisposable
     {
         private bool _disposed;
         private PdfFile _file;
