@@ -24,6 +24,16 @@
     </ContentWithTargetPath>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="SaveOutputInGeneratedFolder.runsettings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SaveOutputInGeneratedFolder.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
