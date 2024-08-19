@@ -104,7 +104,7 @@
   <!-- Blazor WebAssembly stuff -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.0.0-preview.4.1" PrivateAssets="analyzers" />
-    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="129.0.6656" PrivateAssets="analyzers" />
+    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="129.0.6666" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

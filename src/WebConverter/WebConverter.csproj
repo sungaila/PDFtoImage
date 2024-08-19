@@ -12,8 +12,7 @@
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
     <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
+    <TrimMode>full</TrimMode>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -35,7 +34,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'!='Debug'">
-    <EmccCompileOptimizationFlag>-O3 -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 -s DEMANGLE_SUPPORT=0</EmccCompileOptimizationFlag>
+    <EmccCompileOptimizationFlag>-Oz -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0 -s DEMANGLE_SUPPORT=0</EmccCompileOptimizationFlag>
   </PropertyGroup>
 
   <ItemGroup>
