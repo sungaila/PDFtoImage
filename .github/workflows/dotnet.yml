@@ -143,6 +143,7 @@ jobs:
             7.x
             8.x
       - name: Download test project MonoConsole
+        if: success() || failure()
         uses: actions/download-artifact@main
         with:
           name: MonoConsole

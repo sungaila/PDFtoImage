@@ -14,7 +14,7 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionPrefix>4.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -23,9 +23,7 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Added System.Index for single page conversion.
-- Added System.Range for multiple page conversion.
-- Added IEnumerable&lt;int&gt; for multiple page conversion.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Fixed DllNotFoundException for WebAssembly.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -76,9 +74,9 @@
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net8.0-android'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="128.0.6569" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="128.0.6569" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="128.0.6569" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="130.0.6721" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="130.0.6721" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="130.0.6721" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="2.88.8" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.8" PrivateAssets="analyzers" />
@@ -97,14 +95,14 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-android'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="128.0.6569" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="130.0.6721" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="2.88.8" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Blazor WebAssembly stuff -->
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0' or '$(TargetFramework)'=='net8.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.8" PrivateAssets="analyzers" />
-    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="128.0.6569" PrivateAssets="analyzers" />
+    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="131.0.6728" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
