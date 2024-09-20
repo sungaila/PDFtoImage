@@ -128,21 +128,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-13, macos-14]
+        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, macos-12, macos-13, macos-14]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
-      - name: Setup Mono (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          sudo chown -R $(whoami) $(brew --prefix)/*
-          brew install mono
-      - name: Setup Mono (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mono-devel
-      - name: Setup Mono (Windows)
+      - name: Setup Mono
         if: runner.os == 'Windows'
         run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
       - name: Setup .NET
