@@ -134,7 +134,9 @@ jobs:
     steps:
       - name: Setup Mono (macOS)
         if: runner.os == 'macOS'
-        run: brew install mono
+        run: |
+          sudo chown -R $(whoami) $(brew --prefix)/*
+          brew install mono
       - name: Setup Mono (Ubuntu)
         if: runner.os == 'Linux'
         run: |
