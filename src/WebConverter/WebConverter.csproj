@@ -12,7 +12,7 @@
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
     <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>full</TrimMode>
+    <TrimMode>partial</TrimMode>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -40,8 +40,8 @@
   <ItemGroup>
     <PackageReference Include="ByteSize" Version="2.1.2" />
     <PackageReference Include="Markdig.Signed" Version="0.37.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-preview.7.24406.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-preview.7.24406.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-rc.1.24452.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0-rc.1.24452.1" PrivateAssets="all" />
     <PackageReference Include="Thinktecture.Blazor.FileHandling" Version="2.0.0" />
     <PackageReference Include="Thinktecture.Blazor.WebShare" Version="2.0.0" />
   </ItemGroup>
