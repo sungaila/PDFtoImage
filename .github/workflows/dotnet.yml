@@ -132,7 +132,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
-      - name: Setup Mono
+      - name: Setup Mono (macOS)
+        if: runner.os == 'macOS'
+        run: brew install mono
+      - name: Setup Mono (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          apt update
+          apt install -y mono-devel
+      - name: Setup Mono (Windows)
         if: runner.os == 'Windows'
         run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
       - name: Setup .NET
