@@ -41,8 +41,8 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0-release-24373-02" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.5.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.5.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
   </ItemGroup>
 </Project>

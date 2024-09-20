@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
-    <VersionPrefix>4.1.0</VersionPrefix>
+    <VersionPrefix>4.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
@@ -54,6 +54,5 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
-    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\simd\libSkiaSharp.a" />
   </ItemGroup>
 </Project>

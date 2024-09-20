@@ -166,11 +166,11 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static void FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color)
+        public static bool FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color)
         {
             lock (LockString)
             {
-                Imports.FPDFBitmap_FillRect(bitmapHandle, left, top, width, height, color);
+                return Imports.FPDFBitmap_FillRect(bitmapHandle, left, top, width, height, color) != 0;
             }
         }
 
@@ -179,14 +179,6 @@ namespace PDFtoImage.Internals
             lock (LockString)
             {
                 Imports.FPDFBitmap_Destroy(bitmapHandle);
-            }
-        }
-
-        public static uint FPDFDest_GetDestPageIndex(IntPtr document, IntPtr dest)
-        {
-            lock (LockString)
-            {
-                return Imports.FPDFDest_GetDestPageIndex(document, dest);
             }
         }
 
@@ -354,15 +346,11 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
+            public static partial int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFBitmap_Destroy(IntPtr bitmapHandle);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial uint FPDFDest_GetDestPageIndex(IntPtr document, IntPtr dest);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -442,13 +430,10 @@ namespace PDFtoImage.Internals
             public static extern IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
+            public static extern int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFBitmap_Destroy(IntPtr bitmapHandle);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern uint FPDFDest_GetDestPageIndex(IntPtr document, IntPtr dest);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern uint FPDF_GetLastError();
