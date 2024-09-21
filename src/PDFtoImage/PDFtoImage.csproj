@@ -39,6 +39,7 @@
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <!-- Debug builds -->
@@ -108,10 +109,12 @@
   <!-- allow Tests project to access internals -->
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>PDFtoImage.Tests</_Parameter1>
+      <_Parameter1>PDFtoImage.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091ebe9be3d942cb6a7303e2d48d89ed88a202c86294bf3eee9ef98fe0824df513bdcf8786a6c45d3c02058d8947903143d4be345d335a430e94200ba60fdddf8bf9d575ad94537dd0117eacd029b4c07226b0f70325cc1153ce6f612d8c587b43f8912b0ef5730f8f6e227baffd8d7cfe97bc4bcf10ab38430891d785dc27bd7</_Parameter1>
     </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>PDFtoImage.WebConverter</_Parameter1>
+      <_Parameter1>
+        PDFtoImage.WebConverter, PublicKey=00240000048000009400000006020000002400005253413100040000010001001988330b9699ef1c86c16a1838750d31d6ea7d9a93a61bf6f4f48cb547fbc27d4b3b8ba37ddcce5e4d0838c89958911ce35f1e8cb49ee452666a409c6c71f82c62c3df24d9e601fac620366c118f36adb6e95d0600c7ee4894a0e5d8418d94af00f8a682ba85dc115b824c4de206c6a9b59891bf8be1e5e5516f1756847c62b9
+      </_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 

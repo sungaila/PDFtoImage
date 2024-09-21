@@ -5,6 +5,7 @@
     <AssemblyName>PDFtoImage.Tests</AssemblyName>
     <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
+    <AssemblyOriginatorKeyFile>Tests.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -14,6 +15,7 @@
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CS0618,CA1416</NoWarn>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

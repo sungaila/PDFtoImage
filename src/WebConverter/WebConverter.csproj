@@ -13,6 +13,7 @@
     <WasmNativeStrip>true</WasmNativeStrip>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
+    <AssemblyOriginatorKeyFile>WebConverter.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <!-- C# compiler -->
@@ -22,6 +23,7 @@
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CA1416</NoWarn>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <!-- Debug builds -->
