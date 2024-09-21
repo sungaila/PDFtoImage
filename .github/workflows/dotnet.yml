@@ -215,6 +215,12 @@ jobs:
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
+      - name: console (alpine)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm -t console
+      - name: console (alpine-aot)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm -t console
       - name: console (ubuntu)
         if: runner.os == 'Linux' && (success() || failure())
         run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
