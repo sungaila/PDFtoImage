@@ -456,7 +456,7 @@ namespace PDFtoImage
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, bool leaveOpen = false, string? password = null, int page = 0, RenderOptions options = default)
         {
             using var bitmap = ToImage(pdfStream, leaveOpen, password, page, options);
-            bitmap.Encode(stream, format, 100);
+            bitmap.EncodeExt(stream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -480,7 +480,7 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(imageStream));
 
             using var bitmap = ToImage(pdfAsByteArray, password, page, options);
-            bitmap.Encode(imageStream, format, 100);
+            bitmap.EncodeExt(imageStream, format, 100);
         }
 
 #if NET6_0_OR_GREATER
@@ -504,7 +504,7 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(imageStream));
 
             using var bitmap = ToImage(pdfAsBase64String, password, page, options);
-            bitmap.Encode(imageStream, format, 100);
+            bitmap.EncodeExt(imageStream, format, 100);
         }
     }
 }

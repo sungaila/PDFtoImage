@@ -17,7 +17,7 @@ const readAsDataURLAsync = (file) => {
     });
 };
 
-var webShareFormData = null;
+let webShareFormData = null;
 
 self.importScripts('./service-worker-assets.js');
 self.addEventListener('install', event => event.waitUntil(onInstall(event)));
@@ -76,14 +76,14 @@ async function onMessage(event) {
         return;
     }
 
-    var payload = null;
+    let payload = null;
 
     if (webShareFormData !== undefined && webShareFormData !== null) {
-        var filesStringified = [];
+        const filesStringified = [];
 
         for (const file of webShareFormData.getAll('pdfs')) {
 
-            var fileStringified = {
+            const fileStringified = {
                 name: file.name,
                 lastModified: file.lastModified,
                 size: file.size,

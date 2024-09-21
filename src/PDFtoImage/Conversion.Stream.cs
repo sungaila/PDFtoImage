@@ -355,7 +355,7 @@ namespace PDFtoImage
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             using var bitmap = ToImage(pdfStream, page, leaveOpen, password, options);
-            bitmap.Encode(stream, format, 100);
+            bitmap.EncodeExt(stream, format, 100);
         }
 #endif
     }

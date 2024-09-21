@@ -31,23 +31,6 @@ Call a static method from `PDFtoImage.Conversion`:
 https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ```
 
-## Breaking changes in v4.0.0
-Starting with v4.0.0 the struct `RenderOptions` is used for most methods. This is a breaking change when updating from v3.1.0 and older.
-### Option 1: Migrate to new API
-```csharp
-// this will not compile anymore
-PDFtoImage.Conversion.SaveJpeg("image.jpg", pdfStream, dpi: 300, rotation: PdfRotation.Rotate90);
-
-// use this instead
-PDFtoImage.Conversion.SaveJpeg("image.jpg", pdfStream, options: new(Dpi: 300, Rotation: PdfRotation.Rotate90));
-```
-### Option 2: Change namespace
-Note: This namespace is used for backward compatibility and will be removed in a future version.
-```csharp
-using PDFtoImage;
-using Conversion = PDFtoImage.Compatibility.Conversion;
-```
-
 ## Supported runtimes
 * [.NET (Core)](https://learn.microsoft.com/en-us/dotnet/core/introduction)
 * [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/get-started/overview)
