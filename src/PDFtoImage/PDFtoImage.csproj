@@ -105,6 +105,16 @@
     <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="131.0.6728" PrivateAssets="analyzers" />
   </ItemGroup>
 
+  <!-- allow Tests project to access internals -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PDFtoImage.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PDFtoImage.WebConverter</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
   <Import Project="PDFtoImage.CodeSigning.targets" />
   <Import Project="PDFtoImage.PackageSigning.targets" />
