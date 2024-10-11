@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/windows/servercore:ltsc2022
+﻿FROM mcr.microsoft.com/windows/servercore:ltsc2022 AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0-windowsservercore-ltsc2022 AS restore
@@ -20,13 +20,21 @@ SHELL ["cmd", "/S", "/C"]
 RUN powershell -c "Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe"
 RUN (start /w vs_buildtools.exe --wait --norestart --nocache \
         --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" \
-        --add Microsoft.VisualStudio.Workload.VCTools \
+        --add Microsoft.VisualStudio.Component.Roslyn.Compiler \
+        --add Microsoft.Component.MSBuild \
+        --add Microsoft.VisualStudio.Component.CoreBuildTools \
+        --add Microsoft.VisualStudio.Workload.MSBuildTools \
+        --add Microsoft.VisualStudio.Component.Windows10SDK \
+        --add Microsoft.VisualStudio.Component.VC.CoreBuildTools \
         --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
+        --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest \
         --add Microsoft.VisualStudio.Component.Windows11SDK.22621 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10240 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.10586 \
-        --remove Microsoft.VisualStudio.Component.Windows10SDK.14393 \
-        --remove Microsoft.VisualStudio.Component.Windows81SDK \
+        --add Microsoft.VisualStudio.Component.TextTemplating \
+        --add Microsoft.VisualStudio.Component.VC.CoreIde \
+        --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core \
+        --add Microsoft.VisualStudio.Workload.VCTools \
+        --add Microsoft.Component.MSBuild \
+        --add Microsoft.VisualStudio.Workload.VCTools \
         || IF "%ERRORLEVEL%"=="3010" EXIT 0) \
     && del /q vs_buildtools.exe
 
