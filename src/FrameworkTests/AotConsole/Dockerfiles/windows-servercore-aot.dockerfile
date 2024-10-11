@@ -15,28 +15,27 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -o /app/build --no-restore
 
 FROM build AS vsbuildtools
-SHELL ["cmd", "/S", "/C"]
+SHELL ["powershell", "-NoLogo", "-NonInteractive", "-Command"]
 
-RUN powershell -c "Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe"
-RUN (start /w vs_buildtools.exe --wait --norestart --nocache \
-        --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" \
-        --add Microsoft.VisualStudio.Component.Roslyn.Compiler \
-        --add Microsoft.Component.MSBuild \
-        --add Microsoft.VisualStudio.Component.CoreBuildTools \
-        --add Microsoft.VisualStudio.Workload.MSBuildTools \
-        --add Microsoft.VisualStudio.Component.Windows10SDK \
-        --add Microsoft.VisualStudio.Component.VC.CoreBuildTools \
-        --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
-        --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest \
-        --add Microsoft.VisualStudio.Component.Windows11SDK.22621 \
-        --add Microsoft.VisualStudio.Component.TextTemplating \
-        --add Microsoft.VisualStudio.Component.VC.CoreIde \
-        --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core \
-        --add Microsoft.VisualStudio.Workload.VCTools \
-        --add Microsoft.Component.MSBuild \
-        --add Microsoft.VisualStudio.Workload.VCTools \
-        || IF "%ERRORLEVEL%"=="3010" EXIT 0) \
-    && del /q vs_buildtools.exe
+RUN Invoke-WebRequest -Uri https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile vs_buildtools.exe
+RUN .\vs_buildtools.exe --quiet --wait --norestart --nocache \
+    --installPath \"%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools\" \
+    --add Microsoft.VisualStudio.Component.Roslyn.Compiler \
+    --add Microsoft.Component.MSBuild \
+    --add Microsoft.VisualStudio.Component.CoreBuildTools \
+    --add Microsoft.VisualStudio.Workload.MSBuildTools \
+    --add Microsoft.VisualStudio.Component.Windows10SDK \
+    --add Microsoft.VisualStudio.Component.VC.CoreBuildTools \
+    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 \
+    --add Microsoft.VisualStudio.Component.VC.Redist.14.Latest \
+    --add Microsoft.VisualStudio.Component.Windows11SDK.22621 \
+    --add Microsoft.VisualStudio.Component.TextTemplating \
+    --add Microsoft.VisualStudio.Component.VC.CoreIde \
+    --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Core \
+    --add Microsoft.VisualStudio.Workload.VCTools \
+    --add Microsoft.Component.MSBuild \
+    --add Microsoft.VisualStudio.Workload.VCTools
+RUN Remove-Item vs_buildtools.exe
 
 FROM vsbuildtools AS publish
 ARG BUILD_CONFIGURATION=Release
