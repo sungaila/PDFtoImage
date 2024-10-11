@@ -129,7 +129,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, macos-12, macos-13, macos-14]
+        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
@@ -145,22 +145,22 @@ jobs:
             9.x
           dotnet-quality: 'preview'
       - name: Download test project MonoConsole
-        if: success() || failure()
+        if: (matrix.os == 'windows-2019' || matrix.os == 'windows-2022' || matrix.os == 'ubuntu-20.04 '|| matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-12' || matrix.os == 'macos-13' || matrix.os == 'macos-14') && (success() || failure())
         uses: actions/download-artifact@main
         with:
           name: MonoConsole
           path: MonoConsole
       - name: Mono (.NET Framework 4.6.2)
-        if: success() || failure()
+        if: (matrix.os == 'windows-2019' || matrix.os == 'windows-2022' || matrix.os == 'ubuntu-20.04 '|| matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-12' || matrix.os == 'macos-13' || matrix.os == 'macos-14') && (success() || failure())
         run: mono MonoConsole/net462/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Mono (.NET Framework 4.7.1)
-        if: success() || failure()
+        if: (matrix.os == 'windows-2019' || matrix.os == 'windows-2022' || matrix.os == 'ubuntu-20.04 '|| matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-12' || matrix.os == 'macos-13' || matrix.os == 'macos-14') && (success() || failure())
         run: mono MonoConsole/net471/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Mono (.NET Framework 4.8.1)
-        if: success() || failure()
+        if: (matrix.os == 'windows-2019' || matrix.os == 'windows-2022' || matrix.os == 'ubuntu-20.04 '|| matrix.os == 'ubuntu-22.04' || matrix.os == 'macos-12' || matrix.os == 'macos-13' || matrix.os == 'macos-14') && (success() || failure())
         run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
       - name: Download test assemblies
-        if: success() || failure()
+        if: (success() || failure())
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
@@ -237,7 +237,7 @@ jobs:
         if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
       - name: console (windows-servercore-aot)
-        if: false && runner.os == 'Windows' && (success() || failure())
+        if: runner.os == 'Windows' && (success() || failure())
         run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
       - name: console (windows-nanoserver)
         if: false && runner.os == 'Windows' && (success() || failure())
