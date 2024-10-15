@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: 9.x
-          dotnet-quality: 'preview'
+          dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
