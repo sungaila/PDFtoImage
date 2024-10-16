@@ -23,6 +23,8 @@ jobs:
         with:
           dotnet-version: 9.x
           dotnet-quality: 'ga'
+      - name: Setup .NET workload maui-android
+        run: dotnet workload install maui-android
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths
@@ -34,7 +36,7 @@ jobs:
             sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
             sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' manifest.webmanifest
       - name: Restore
-        run: dotnet restore src/WebConverter/WebConverter.csproj --runtime browser-wasm
+        run: dotnet restore src/WebConverter/WebConverter.csproj
       - name: Publish
         run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
       - name: Create .nojekyll file
