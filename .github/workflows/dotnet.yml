@@ -87,7 +87,7 @@ jobs:
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Generate artifact attestation
-        if: github.event_name != 'workflow_dispatch' && true
+        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master'
         uses: actions/attest-build-provenance@main
         with:
           subject-path: src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
