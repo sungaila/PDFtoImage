@@ -10,6 +10,7 @@
 
             <Image HeightRequest="200"
                    HorizontalOptions="Center"
+                   x:Name="imgTest"
                    SemanticProperties.Description="Cute dot net bot waving hi to you!"
                    Source="dotnet_bot.png" />
 
@@ -23,7 +24,7 @@
                    HorizontalOptions="Center"
                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                    SemanticProperties.HeadingLevel="Level2"
-                   Text="Tab the button below to test PDFtoImage." />
+                   Text="Tap the button below to test PDFtoImage." />
 
             <Button x:Name="CounterBtn"
                     Clicked="OnCounterClicked"
