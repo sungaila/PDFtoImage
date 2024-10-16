@@ -12,7 +12,7 @@ on:
 jobs:
   publish:
     name: Publish
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -24,6 +24,8 @@ jobs:
           dotnet-version: 8.x
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
+      - name: Setup .NET workload maui-ios
+        run: dotnet workload install maui-ios
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths

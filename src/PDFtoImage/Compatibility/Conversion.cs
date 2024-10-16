@@ -16,6 +16,7 @@ namespace PDFtoImage.Compatibility
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
+    [SupportedOSPlatform("iOS")]
     [SupportedOSPlatform("Android31.0")]
 #endif
     [Obsolete("This class is for backward compatibility. Use PDFtoImage.Conversion instead.", false)]
