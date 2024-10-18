@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using PDFtoImage.Internals;
 using PDFtoImage.WebConverter.Models;
 using SkiaSharp;
 using System;
@@ -182,7 +183,7 @@ namespace PDFtoImage.WebConverter.Pages
                             DpiRelativeToBounds: Model.DpiRelativeToBounds
                         )
                     );
-                    encodeSuccess = bitmap!.Encode(Model.Output, Model.Format, Model.Quality);
+                    encodeSuccess = bitmap!.EncodeExt(Model.Output, Model.Format, Model.Quality);
                 }, TaskCreationOptions.LongRunning);
 
                 if (!encodeSuccess)

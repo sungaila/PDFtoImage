@@ -70,8 +70,9 @@ jobs:
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
+            9.x
+          dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup .NET workload maui-ios
@@ -117,51 +118,26 @@ jobs:
           if-no-files-found: error
           retention-days: 1
           compression-level: 9
-      - name: Publish test project MonoConsole
-        uses: actions/upload-artifact@main
-        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
-        with:
-          name: MonoConsole
-          path: src/FrameworkTests/MonoConsole/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
-          if-no-files-found: error
-          retention-days: 1
   test:
     name: Test (${{ matrix.os }})
     needs: build
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, macos-12, macos-13, macos-14]
+        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
-      - name: Setup Mono
-        if: runner.os == 'Windows'
-        run: choco install mono -y && Add-Content $env:GITHUB_PATH "C:\Program Files\Mono\bin"
       - name: Setup .NET
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
-      - name: Download test project MonoConsole
-        if: success() || failure()
-        uses: actions/download-artifact@main
-        with:
-          name: MonoConsole
-          path: MonoConsole
-      - name: Mono (.NET Framework 4.6.2)
-        if: success() || failure()
-        run: mono MonoConsole/net462/PDFtoImage.FrameworkTests.MonoConsole.exe
-      - name: Mono (.NET Framework 4.7.1)
-        if: success() || failure()
-        run: mono MonoConsole/net471/PDFtoImage.FrameworkTests.MonoConsole.exe
-      - name: Mono (.NET Framework 4.8.1)
-        if: success() || failure()
-        run: mono MonoConsole/net481/PDFtoImage.FrameworkTests.MonoConsole.exe
+            9.x
+          dotnet-quality: 'ga'
       - name: Download test assemblies
-        if: success() || failure()
+        if: (success() || failure())
         uses: actions/download-artifact@main
         with:
           name: Test assemblies
@@ -177,12 +153,12 @@ jobs:
       - name: .NET 6
         if: success() || failure()
         run: dotnet test net6.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net6.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
-      - name: .NET 7
-        if: success() || failure()
-        run: dotnet test net7.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
         run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 9
+        if: success() || failure()
+        run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -216,30 +192,27 @@ jobs:
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
+      - name: console (alpine)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm -t console
+      - name: console (alpine-aot)
+        if: runner.os == 'Linux' && (success() || failure())
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm -t console
       - name: console (ubuntu)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
       - name: console (ubuntu-chiseled)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
       - name: console (ubuntu-aot)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
       - name: console (ubuntu-chiseled-aot)
         if: runner.os == 'Linux' && (success() || failure())
-        run: docker build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
       - name: console (windows-servercore)
         if: runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile" . && docker build -t console -f windows-servercore.dockerfile . && docker run --rm -t console
-      - name: console (windows-servercore-aot)
-        if: false && runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile" . && docker build -t console -f windows-servercore-aot.dockerfile . && docker run --rm -t console
-      - name: console (windows-nanoserver)
-        if: false && runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile" . && docker build -t console -f windows-nanoserver.dockerfile . && docker run --rm -t console
-      - name: console (windows-nanoserver-aot)
-        if: false && runner.os == 'Windows' && (success() || failure())
-        run: xcopy /y "src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile" . && docker build -t console -f windows-nanoserver-aot.dockerfile . && docker run --rm -t console
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
     needs: [test, docker]
@@ -290,10 +263,13 @@ jobs:
         with:
           dotnet-version: | 
             6.x
-            7.x
             8.x
+            9.x
+          dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
+      - name: Setup .NET workload maui-ios
+        run: dotnet workload install maui-ios
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
