@@ -8,9 +8,9 @@
                              Spacing="25"
                              VerticalOptions="Center">
 
-            <Image HeightRequest="200"
+            <Image x:Name="imgTest"
+                   HeightRequest="200"
                    HorizontalOptions="Center"
-                   x:Name="imgTest"
                    SemanticProperties.Description="Cute dot net bot waving hi to you!"
                    Source="dotnet_bot.png" />
 
