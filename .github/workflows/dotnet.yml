@@ -75,6 +75,8 @@ jobs:
           dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
+      - name: Setup .NET workload maui-ios
+        run: dotnet workload install maui-ios
       - name: Setup .NET workload maui-windows
         run: dotnet workload install maui-windows
       - name: Setup .NET workload wasm-tools
@@ -86,6 +88,7 @@ jobs:
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Generate artifact attestation
+        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master'
         uses: actions/attest-build-provenance@main
         with:
           subject-path: src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg

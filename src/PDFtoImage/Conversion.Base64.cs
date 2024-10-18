@@ -23,6 +23,7 @@ namespace PDFtoImage
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
+    [SupportedOSPlatform("iOS13.6")]
     [SupportedOSPlatform("Android31.0")]
 #endif
     public static partial class Conversion
