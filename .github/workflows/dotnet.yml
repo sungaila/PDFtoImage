@@ -268,6 +268,8 @@ jobs:
           dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
+      - name: Setup .NET workload maui-ios
+        run: dotnet workload install maui-ios
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
