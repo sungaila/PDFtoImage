@@ -1,4 +1,6 @@
-﻿namespace PDFtoImage.FrameworkTests.MauiApp
+﻿using SkiaSharp;
+
+namespace PDFtoImage.FrameworkTests.MauiApp
 {
     public partial class MainPage : ContentPage
     {
@@ -16,8 +18,14 @@
                 input.CopyTo(ms);
 
                 using var bitmap = PDFtoImage.Conversion.ToImage(ms, 0);
+                using var encodedImage = new MemoryStream();
 
                 OutputLabel.Text = $"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}";
+                bitmap.Encode(encodedImage, SKEncodedImageFormat.Png, 100);
+
+                var byteArray = encodedImage.ToArray();
+
+                imgTest.Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
             }
             catch (Exception ex)
             {
