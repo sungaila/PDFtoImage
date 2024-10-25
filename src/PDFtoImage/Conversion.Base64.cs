@@ -1,10 +1,8 @@
-﻿using PDFtoImage.Internals;
-using SkiaSharp;
+﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-
 #if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
@@ -296,7 +294,7 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(imageStream));
 
             using var bitmap = ToImage(pdfAsBase64String, page, password, options);
-            bitmap.EncodeExt(imageStream, format, 100);
+            bitmap.Encode(imageStream, format, 100);
         }
 #endif
     }

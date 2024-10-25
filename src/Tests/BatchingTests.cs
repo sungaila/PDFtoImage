@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage.Internals;
 using PDFtoImage.Tests;
 using SkiaSharp;
 using System;
@@ -63,7 +62,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -151,7 +150,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -171,7 +170,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -191,7 +190,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -211,7 +210,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -231,7 +230,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -251,7 +250,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
@@ -271,7 +270,7 @@ namespace Tests
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
-                bitmap.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
                 i++;
