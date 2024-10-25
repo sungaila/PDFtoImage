@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage.Internals;
 using PDFtoImage.Tests;
 using SkiaSharp;
 using System;
@@ -83,7 +82,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Webp, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
@@ -106,7 +105,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Webp, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
@@ -182,7 +181,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
@@ -205,7 +204,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Png, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Png, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
@@ -281,7 +280,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Jpeg, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
@@ -304,7 +303,7 @@ namespace Tests
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
                 using var outputStream = CreateOutputStream(expectedPath);
-                image.EncodeExt(outputStream, SKEncodedImageFormat.Jpeg, 100);
+                image.Encode(outputStream, SKEncodedImageFormat.Jpeg, 100);
 
                 CompareStreams(expectedPath, outputStream);
 
