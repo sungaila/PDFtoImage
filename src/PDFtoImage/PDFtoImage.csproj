@@ -114,7 +114,7 @@
   <!-- Blazor WebAssembly stuff -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.0.0-preview.5.4" PrivateAssets="analyzers" />
-    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="131.0.6728" PrivateAssets="analyzers" />
+    <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="132.0.6816" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- allow Tests project to access internals -->
