@@ -16,7 +16,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>5.0.0</VersionPrefix>
-    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix>preview.2</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -130,10 +130,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="build\net8.0" />
-    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="buildTransitive\net8.0" />
-    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="build\net9.0" />
-    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="buildTransitive\net9.0" />
+    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="build\net8.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="buildTransitive\net8.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="build\net9.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="buildTransitive\net9.0\PDFtoImage.props" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
