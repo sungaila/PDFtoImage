@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <!-- add the matching libSkiaSharp for pdfium (if it exists) -->
+    <!-- newer versions than 3.1.12 compile with Wasm exceptions and won't work (as Chromium and pdfium are compiled without exception support) -->
+    <!-- see https://pdfium.googlesource.com/pdfium/+/refs/heads/chromium/6826/BUILD.gn#123 -->
+    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st,simd\libSkiaSharp.a" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
+  </PropertyGroup>
+
+</Project>
