@@ -130,10 +130,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="build\net8.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.net8.0.props" Pack="true" PackagePath="buildTransitive\net8.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="build\net9.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.net9.0.props" Pack="true" PackagePath="buildTransitive\net9.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net8.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net8.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net9.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0\PDFtoImage.props" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
