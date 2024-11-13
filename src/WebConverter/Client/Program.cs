@@ -2,12 +2,12 @@ using KristofferStrube.Blazor.FileSystem;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using PatrickJahr.Blazor.FileHandling;
+using PatrickJahr.Blazor.WebShare;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Thinktecture.Blazor.FileHandling;
-using Thinktecture.Blazor.WebShare;
 
 namespace PDFtoImage.WebConverter
 {
