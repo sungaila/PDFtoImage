@@ -1,29 +1,35 @@
 ﻿<Page x:Class="PDFtoImage.FrameworkTests.Uwp.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:local="using:PDFtoImage.FrameworkTests.Uwp"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:PDFtoImage.FrameworkTests.Uwp"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d">
     <Grid>
         <StackPanel Padding="30,0"
-		            Spacing="25"
-		            Orientation="Vertical"
-		            VerticalAlignment="Center"
-		            HorizontalAlignment="Center">
-            <TextBlock FontSize="32"
-			           HorizontalAlignment="Center"
-			           Text="Hello, World!"/>
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Spacing="25">
+            <Image x:Name="imgTest"
+                   MaxHeight="200"
+                   MaxWidth="200"
+                   HorizontalAlignment="Center"
+                   Source="dotnet_bot.png"
+                   Stretch="Fill" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="32"
+                       Text="Hello, World!" />
             <TextBlock x:Name="OutputLabel"
-			           FontSize="18"
-			           HorizontalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="18"
                        IsTextSelectionEnabled="True"
-			           Text="Tab the button below to test PDFtoImage."/>
+                       Text="Tab the button below to test PDFtoImage." />
             <Button x:Name="CounterBtn"
-			        Click="CounterBtn_Click"
-			        HorizontalAlignment="Center"
-			        Content="Click me"/>
+                    HorizontalAlignment="Center"
+                    Click="CounterBtn_Click"
+                    Content="Click me" />
         </StackPanel>
     </Grid>
 </Page>
