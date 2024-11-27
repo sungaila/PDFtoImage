@@ -22,7 +22,7 @@
     <Nullable>enable</Nullable>
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <NoWarn>CA1416</NoWarn>
+    <NoWarn>CA1416;CS8002</NoWarn>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
@@ -40,12 +40,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.1.2" />
-    <PackageReference Include="Markdig.Signed" Version="0.38.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-    <PackageReference Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
-    <PackageReference Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
+    <PackageReference Include="ByteSize" />
+    <PackageReference Include="Markdig.Signed" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="PatrickJahr.Blazor.FileHandling" />
+    <PackageReference Include="PatrickJahr.Blazor.WebShare" />
   </ItemGroup>
 
   <ItemGroup>
