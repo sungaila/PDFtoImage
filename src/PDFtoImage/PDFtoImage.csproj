@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net462;net471;net481;netstandard2.0;net6.0;net8.0;net8.0-android;net8.0-ios;net9.0;net9.0-android;net9.0-ios</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0;net8.0-android;net8.0-ios;net9.0;net9.0-android;net9.0-ios</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -22,13 +22,15 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>
-      - Add .NET 9 as TargetFramework.
-      - Remove .NET 7 as TargetFramework.
-      - Remove MonoAndroid/Xamarin as TargetFramework.
-      - Remove PDFtoImage.Compatibility API.
-      - Add iOS as TargetFramework.
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>- Add .NET 9 as TargetFramework.
+- Add .NET Standard 2.0 as TargetFramework.
+- Add iOS as TargetFramework.
+- Remove .NET Framework 4.6.2 as TargetFramework.
+- Remove .NET Framework 4.7.1 as TargetFramework.
+- Remove .NET Framework 4.8.1 as TargetFramework.
+- Remove .NET 7 as TargetFramework.
+- Remove MonoAndroid/Xamarin as TargetFramework.
+- Remove PDFtoImage.Compatibility API.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

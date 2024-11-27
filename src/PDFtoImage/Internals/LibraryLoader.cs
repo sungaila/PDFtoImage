@@ -1,4 +1,4 @@
-﻿#if NETFRAMEWORK
+﻿#if NETSTANDARD
 using SkiaSharp.Internals;
 using System;
 using System.IO;
@@ -24,6 +24,10 @@ namespace PDFtoImage.Internals
 
         public static IntPtr LoadLocalLibrary<T>(string libraryName)
         {
+            // this helper class should run on .NET Framework runtimes only
+            if (!RuntimeInformation.FrameworkDescription.StartsWith(".NET Framework"))
+                return IntPtr.Zero;
+
             var libraryPath = GetLibraryPath(libraryName);
 
             var handle = LoadLibrary(libraryPath!);

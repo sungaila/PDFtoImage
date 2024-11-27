@@ -12,7 +12,7 @@ namespace PDFtoImage.Internals
         {
             lock (_syncRoot)
             {
-#if NETFRAMEWORK
+#if NETSTANDARD
                 if (_library == null)
                     LibraryLoader.LoadLocalLibrary<PdfDocument>("pdfium");
 #else
