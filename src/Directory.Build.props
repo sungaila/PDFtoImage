@@ -1,0 +1,7 @@
+<Project>
+  <!-- Version -->
+  <PropertyGroup>
+    <VersionPrefix>5.0.0</VersionPrefix>
+    <VersionSuffix>preview.2</VersionSuffix>
+  </PropertyGroup>
+</Project>
