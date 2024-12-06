@@ -19,6 +19,9 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CS0618,CA1416</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="3.116.1" />
+  </ItemGroup>
 
   <!-- References -->
   <ItemGroup>

@@ -16,7 +16,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>5.0.0</VersionPrefix>
-    <VersionSuffix>preview.2</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -74,18 +74,18 @@
 
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp" Version="3.116.1" PrivateAssets="analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='net8.0-ios' and '$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="130.0.6721" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="130.0.6721" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="130.0.6721" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="133.0.6872" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="133.0.6872" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="133.0.6872" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.116.1" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.116.1" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- .NET Framework packages -->
@@ -101,19 +101,19 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='net9.0-android'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="130.0.6721" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="133.0.6872" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- iOS packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-ios' or '$(TargetFramework)'=='net9.0-ios'">
-    <PackageReference Include="bblanchon.PDFium.iOS" Version="130.0.6721" PrivateAssets="analyzers" />
-    <PackageReference Include="SkiaSharp.NativeAssets.iOS" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.iOS" Version="133.0.6872" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.iOS" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Blazor WebAssembly stuff -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'">
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.118.0-preview.1.2" PrivateAssets="analyzers" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.116.1" PrivateAssets="analyzers" />
     <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="132.0.6826" PrivateAssets="analyzers" />
   </ItemGroup>
 
