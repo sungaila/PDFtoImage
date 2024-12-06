@@ -252,7 +252,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
-    if: (github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master') || (github.event_name == 'workflow_dispatch' && inputs.run_sonarcloud) == true
+    if: (github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master') && ((github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true)
     steps:
       - name: Checkout
         uses: actions/checkout@main
