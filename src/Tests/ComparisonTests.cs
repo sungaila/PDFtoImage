@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage.Tests;
 using SkiaSharp;
 using System;
 using System.IO;
@@ -10,7 +9,7 @@ using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 [assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 
-namespace Tests
+namespace PDFtoImage.Tests
 {
     [TestClass]
     public class ComparisonTests : TestBase

@@ -1,9 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage.Tests;
 using System.IO;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace PDFtoImage.Tests
 {
     [TestClass]
     public class QueryTests : TestBase
@@ -16,7 +15,7 @@ namespace Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
 
-            Assert.AreEqual(expectedPageCount, PDFtoImage.Conversion.GetPageCount(inputStream), "Expected and actual PDF page count differs.");
+            Assert.AreEqual(expectedPageCount, Conversion.GetPageCount(inputStream), "Expected and actual PDF page count differs.");
         }
 
         [TestMethod]
@@ -48,7 +47,7 @@ namespace Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
 
-            var result = PDFtoImage.Conversion.GetPageSize(inputStream, page: page);
+            var result = Conversion.GetPageSize(inputStream, page: page);
 
             Assert.AreEqual(expectedPageWidth, result.Width, 0.0001f, "Expected and actual PDF page width differs.");
             Assert.AreEqual(expectedPageHeight, result.Height, 0.0001f, "Expected and actual PDF page height differs.");
@@ -62,7 +61,7 @@ namespace Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
 
-            var result = PDFtoImage.Conversion.GetPageSizes(inputStream);
+            var result = Conversion.GetPageSizes(inputStream);
 
             foreach (var size in result)
             {

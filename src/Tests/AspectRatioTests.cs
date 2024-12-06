@@ -1,10 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage.Tests;
 using System.IO;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace PDFtoImage.Tests
 {
     [TestClass]
     public class AspectRatioTests : TestBase

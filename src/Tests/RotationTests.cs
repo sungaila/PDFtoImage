@@ -1,12 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PDFtoImage;
-using PDFtoImage.Tests;
 using System;
 using System.IO;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace PDFtoImage.Tests
 {
     [TestClass]
     public class RotationTests : TestBase

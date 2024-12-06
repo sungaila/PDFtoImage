@@ -4,10 +4,10 @@ using System.IO;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
 
-namespace Tests
+namespace PDFtoImage.Tests
 {
     [TestClass]
-    public class FormFillTests
+    public class FormFillTests : TestBase
     {
         [TestInitialize]
         public void Initialize()
