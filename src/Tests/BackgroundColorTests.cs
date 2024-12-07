@@ -1,6 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
-using System;
 using System.IO;
 using static PDFtoImage.Conversion;
 using static PDFtoImage.Tests.TestUtils;
@@ -10,15 +9,6 @@ namespace PDFtoImage.Tests
     [TestClass]
     public class BackgroundColorTests : TestBase
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-#if NET6_0_OR_GREATER
-            if (!OperatingSystem.IsWindows() && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
-                Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
-#endif
-        }
-
         [TestMethod]
         [DataRow(null, DisplayName = "Default (White)")]
         [DataRow(0xFFFFFFFF, DisplayName = "White")]
