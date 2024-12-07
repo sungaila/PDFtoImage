@@ -25,8 +25,8 @@ Call a static method from `PDFtoImage.Conversion`:
 
 ### Unity project installation
 1. Open your project and navigate to `Window` → `Package Manager`.
-1. Click on the `+` button (top-left corner) and select `Add package from git URL...`.
-1. Enter the following URL and confirm with the `Add` button:
+1. Click on the `+` button (top-left corner) and select `Install package from git URL...`.
+1. Enter the following URL and confirm with the `Install` button:
 ```
 https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ```
