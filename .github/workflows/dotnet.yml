@@ -124,7 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14, macos-15]
+        os: [windows-2019, windows-2022, windows-2025, ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
