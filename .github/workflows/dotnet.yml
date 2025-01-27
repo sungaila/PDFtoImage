@@ -77,6 +77,8 @@ jobs:
         run: dotnet workload install maui-android
       - name: Setup .NET workload maui-ios
         run: dotnet workload install maui-ios
+      - name: Setup .NET workload maui-maccatalyst
+        run: dotnet workload install maui-maccatalyst
       - name: Setup .NET workload maui-windows
         run: dotnet workload install maui-windows
       - name: Setup .NET workload wasm-tools
@@ -252,7 +254,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
-    if: (github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master') && ((github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true)
+    if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
         uses: actions/checkout@main
@@ -270,6 +272,8 @@ jobs:
         run: dotnet workload install maui-android
       - name: Setup .NET workload maui-ios
         run: dotnet workload install maui-ios
+      - name: Setup .NET workload maui-maccatalyst
+        run: dotnet workload install maui-maccatalyst
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
@@ -298,6 +302,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Analyze
+        if: ${{ env.SONAR_TOKEN != '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
