@@ -22,7 +22,7 @@
     <Nullable>enable</Nullable>
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <NoWarn>CA1416</NoWarn>
+    <NoWarn>CA1416;CS8002</NoWarn>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
