@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-#if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Threading;
-#endif
 
 namespace PDFtoImage
 {
@@ -19,14 +17,12 @@ namespace PDFtoImage
 #if NET8_0_OR_GREATER
 #pragma warning disable CA1510 // Use ArgumentNullException throw helper
 #endif
-#if NET6_0_OR_GREATER
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
     [SupportedOSPlatform("iOS13.6")]
     [SupportedOSPlatform("MacCatalyst13.5")]
     [SupportedOSPlatform("Android31.0")]
-#endif
     public static partial class Conversion
     {
         /// <summary>
@@ -104,7 +100,6 @@ namespace PDFtoImage
             }
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// Renders a single page of a given PDF and saves it as a JPEG.
         /// </summary>
@@ -114,7 +109,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveJpeg(string imageFilename, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SaveJpeg(string imageFilename, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfStream, page, leaveOpen, password, options);
         }
@@ -128,7 +123,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveJpeg(Stream imageStream, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SaveJpeg(Stream imageStream, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfStream, page, leaveOpen, password, options);
         }
@@ -142,7 +137,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SavePng(string imageFilename, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SavePng(string imageFilename, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfStream, page, leaveOpen, password, options);
         }
@@ -156,7 +151,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SavePng(Stream imageStream, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SavePng(Stream imageStream, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfStream, page, leaveOpen, password, options);
         }
@@ -170,7 +165,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveWebp(string imageFilename, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SaveWebp(string imageFilename, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfStream, page, leaveOpen, password, options);
         }
@@ -184,7 +179,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveWebp(Stream imageStream, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static void SaveWebp(Stream imageStream, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfStream, page, leaveOpen, password, options);
         }
@@ -197,7 +192,7 @@ namespace PDFtoImage
         /// <param name="leaveOpen"><see langword="true"/> to leave the <paramref name="pdfStream"/> open after the PDF document is loaded; otherwise, <see langword="false"/>.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <returns>The page size containing width and height.</returns>
-        public static SizeF GetPageSize(Stream pdfStream, Index page, bool leaveOpen = false, string? password = null)
+        public static SizeF GetPageSize(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -222,7 +217,7 @@ namespace PDFtoImage
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
         /// <returns>The rendered PDF page as an image.</returns>
-        public static SKBitmap ToImage(Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        public static SKBitmap ToImage(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
@@ -270,6 +265,7 @@ namespace PDFtoImage
             }
         }
 
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Renders a range of pages of a given PDF into images.
         /// </summary>
@@ -347,18 +343,18 @@ namespace PDFtoImage
                 yield return bitmap;
             }
         }
+#endif
 
-        internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             using var fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write);
             SaveImpl(fileStream, format, pdfStream, page, leaveOpen, password, options);
         }
 
-        internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, Index page, bool leaveOpen = false, string? password = null, RenderOptions options = default)
+        internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
             using var bitmap = ToImage(pdfStream, page, leaveOpen, password, options);
             bitmap.Encode(stream, format, 100);
         }
-#endif
     }
 }

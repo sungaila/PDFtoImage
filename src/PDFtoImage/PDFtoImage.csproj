@@ -16,7 +16,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>5.1.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>preview</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -24,7 +24,8 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Add Mac Catalyst as TargetFramework.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Add workaround for SkiaSharp DllNotFoundException issue.
+- Deprecate old conversion APIs in favor of System.Index.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MacCatalyst Catalyst MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -41,6 +42,8 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SignAssembly>True</SignAssembly>
+    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
+    <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
   </PropertyGroup>
 
   <!-- Debug builds -->
@@ -76,9 +79,9 @@
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='net8.0-ios' and '$(TargetFramework)'!='net8.0-maccatalyst' and '$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="134.0.6982" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="134.0.6982" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="134.0.6982" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="136.0.7073" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="136.0.7073" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="136.0.7073" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.116.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.116.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.116.1" PrivateAssets="analyzers" />
@@ -86,8 +89,13 @@
 
   <!-- .NET Framework packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net462'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" PrivateAssets="all" />
+    <PackageReference Include="System.ValueTuple" Version="4.6.0" PrivateAssets="all" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- polyfill for .NET Framework -->
+  <ItemGroup Condition="'$(TargetFramework)'=='net462' or '$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net481' or '$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- .NET packages -->
@@ -97,19 +105,19 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='net9.0-android'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="134.0.6982" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="136.0.7073" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- iOS packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-ios' or '$(TargetFramework)'=='net9.0-ios'">
-    <PackageReference Include="bblanchon.PDFium.iOS" Version="134.0.6982" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.iOS" Version="136.0.7073" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.iOS" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Mac Catalyst packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net8.0-maccatalyst' or '$(TargetFramework)'=='net9.0-maccatalyst'">
-    <PackageReference Include="bblanchon.PDFium.iOS" Version="134.0.6982" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.iOS" Version="136.0.7073" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.MacCatalyst" Version="3.116.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
@@ -141,4 +149,16 @@
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
   <Import Project="PDFtoImage.CodeSigning.targets" />
   <Import Project="PDFtoImage.PackageSigning.targets" />
+
+  <!-- workaround for SkiaSharp DllNotFoundException issue for projects still using packages.config -->
+  <!-- this will be removed once a new SkiaSharp is released -->
+  <!-- https://github.com/mono/SkiaSharp/pull/3112 -->
+  <ItemGroup>
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="build\net462\PDFtoImage.targets" />
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="build\net471\PDFtoImage.targets" />
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="build\net481\PDFtoImage.targets" />
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="buildTransitive\net462\PDFtoImage.targets" />
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="buildTransitive\net471\PDFtoImage.targets" />
+    <None Include="SkiaSharp.NativeAssets.targets" Pack="true" PackagePath="buildTransitive\net481\PDFtoImage.targets" />
+  </ItemGroup>
 </Project>

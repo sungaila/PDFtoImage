@@ -67,7 +67,6 @@ namespace PDFtoImage.Tests
                 i++;
             }
         }
-#if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(0)]
         [DataRow(1)]
@@ -196,6 +195,7 @@ namespace PDFtoImage.Tests
             }
         }
 
+        #if NET6_0_OR_GREATER
         [TestMethod]
         public async Task ToImagesWithRangeAllAsync()
         {

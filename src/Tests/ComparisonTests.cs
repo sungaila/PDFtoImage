@@ -89,7 +89,7 @@ namespace PDFtoImage.Tests
             }
         }
 
-#if NET6_0_OR_GREATER
+        #if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]
         [DataRow(true, DisplayName = "With annotations")]
@@ -188,7 +188,7 @@ namespace PDFtoImage.Tests
             }
         }
 
-#if NET6_0_OR_GREATER
+        #if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]
         [DataRow(true, DisplayName = "With annotations")]
@@ -363,7 +363,7 @@ namespace PDFtoImage.Tests
             Assert.IsTrue(Math.Abs(image.Height - image2.Height * (dpi / 300.0)) < 3);
         }
 
-#if NET6_0_OR_GREATER
+        #if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(10, DisplayName = "10 DPI")]
         [DataRow(30, DisplayName = "30 DPI")]
@@ -398,7 +398,7 @@ namespace PDFtoImage.Tests
             Assert.AreEqual(expectedPageCount, GetPageCount(pdfStream), $"The expected and actual page count for the file {pdfFileName} are not equal.");
         }
 
-#if NET6_0_OR_GREATER
+        #if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow("SocialPreview.pdf")]
         [DataRow("hundesteuer-anmeldung.pdf")]
@@ -408,7 +408,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
             var token = new CancellationTokenSource();
 
-            await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
+            await Assert.ThrowsExactlyAsync<TaskCanceledException>(async () =>
             {
                 token.Cancel();
 
@@ -441,7 +441,7 @@ namespace PDFtoImage.Tests
                 return;
             }
 
-            await Assert.ThrowsExceptionAsync<OperationCanceledException>(async () =>
+            await Assert.ThrowsExactlyAsync<OperationCanceledException>(async () =>
             {
                 await foreach (var image in ToImagesAsync(inputStream2, options: new(Dpi: 1200), cancellationToken: token.Token))
                 {

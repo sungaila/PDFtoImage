@@ -32,7 +32,7 @@ namespace PDFtoImage.Tests
         public void ThrowsIncorrectPassword(string inputFile, string? password = null)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
-            Assert.ThrowsException<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: password));
+            Assert.ThrowsExactly<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: password));
         }
     }
 }

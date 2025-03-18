@@ -3,12 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-
-#if NET6_0_OR_GREATER
 using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Threading;
-#endif
 
 namespace PDFtoImage
 {
@@ -18,14 +15,12 @@ namespace PDFtoImage
 #if NET8_0_OR_GREATER
 #pragma warning disable CA1510 // Use ArgumentNullException throw helper
 #endif
-#if NET6_0_OR_GREATER
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
     [SupportedOSPlatform("iOS13.6")]
     [SupportedOSPlatform("MacCatalyst13.5")]
     [SupportedOSPlatform("Android31.0")]
-#endif
     public static partial class Conversion
     {
         /// <summary>
@@ -105,7 +100,6 @@ namespace PDFtoImage
             }
         }
 
-#if NET6_0_OR_GREATER
         /// <summary>
         /// Returns the PDF page size for a given page number.
         /// </summary>
@@ -113,7 +107,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to query the size for.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <returns>The page size containing width and height.</returns>
-        public static SizeF GetPageSize(byte[] pdfAsByteArray, Index page, string? password = null)
+        public static SizeF GetPageSize(byte[] pdfAsByteArray, Index page = default, string? password = null)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -132,7 +126,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SaveJpeg(string imageFilename, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Jpeg, pdfAsByteArray, page, password, options);
         }
@@ -145,7 +139,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SaveJpeg(Stream imageStream, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Jpeg, pdfAsByteArray, page, password, options);
         }
@@ -158,7 +152,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SavePng(string imageFilename, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Png, pdfAsByteArray, page, password, options);
         }
@@ -171,7 +165,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SavePng(Stream imageStream, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Png, pdfAsByteArray, page, password, options);
         }
@@ -184,7 +178,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveWebp(string imageFilename, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SaveWebp(string imageFilename, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageFilename, SKEncodedImageFormat.Webp, pdfAsByteArray, page, password, options);
         }
@@ -197,7 +191,7 @@ namespace PDFtoImage
         /// <param name="page">The specific page to be converted.</param>
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
-        public static void SaveWebp(Stream imageStream, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static void SaveWebp(Stream imageStream, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             SaveImpl(imageStream, SKEncodedImageFormat.Webp, pdfAsByteArray, page, password, options);
         }
@@ -210,7 +204,7 @@ namespace PDFtoImage
         /// <param name="password">The password for opening the PDF. Use <see langword="null"/> if no password is needed.</param>
         /// <param name="options">Additional options for PDF rendering.</param>
         /// <returns>The converted PDF page as an image.</returns>
-        public static SKBitmap ToImage(byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        public static SKBitmap ToImage(byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             if (pdfAsByteArray == null)
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
@@ -243,6 +237,7 @@ namespace PDFtoImage
             }
         }
 
+#if NET6_0_OR_GREATER
         /// <summary>
         /// Renders a range of pages of a given PDF into images.
         /// </summary>
@@ -310,8 +305,9 @@ namespace PDFtoImage
                 yield return image;
             }
         }
+#endif
 
-        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        internal static void SaveImpl(string imageFilename, SKEncodedImageFormat format, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             if (imageFilename == null)
                 throw new ArgumentNullException(nameof(imageFilename));
@@ -320,7 +316,7 @@ namespace PDFtoImage
             SaveImpl(fileStream, format, pdfAsByteArray, page, password, options);
         }
 
-        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, Index page, string? password = null, RenderOptions options = default)
+        internal static void SaveImpl(Stream imageStream, SKEncodedImageFormat format, byte[] pdfAsByteArray, Index page = default, string? password = null, RenderOptions options = default)
         {
             if (imageStream == null)
                 throw new ArgumentNullException(nameof(imageStream));
@@ -328,6 +324,5 @@ namespace PDFtoImage
             using var bitmap = ToImage(pdfAsByteArray, page, password, options);
             bitmap.Encode(imageStream, format, 100);
         }
-#endif
     }
 }
