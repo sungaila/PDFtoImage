@@ -505,3 +505,4 @@ crashlytics-build.properties
 !Uwp_TemporaryKey.pfx
 !etc/UnityPackage/**/*.meta
 !*src/FrameworkTests/Unity2D/[Pp]ackages/*
+!*src/ThirdParty/*
