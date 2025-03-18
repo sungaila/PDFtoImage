@@ -161,13 +161,13 @@
     <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="buildTransitive\net471\PDFtoImage.props" />
     <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="buildTransitive\net481\PDFtoImage.props" />
 
-    <None Include="..\ThirdParty\libSkiaSharp.dylib" Pack="true" PackagePath="build\net462" />
-    <None Include="..\ThirdParty\arm\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm" />
-    <None Include="..\ThirdParty\arm64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm64" />
-    <None Include="..\ThirdParty\arm64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\arm64" />
-    <None Include="..\ThirdParty\musl-x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\musl-x64" />
-    <None Include="..\ThirdParty\x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\x64" />
-    <None Include="..\ThirdParty\x64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x64" />
-    <None Include="..\ThirdParty\x86\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x86" />
+    <None Include="..\ThirdParty\libSkiaSharp.dylib" Pack="true" PackagePath="build\net462" Visible="false" />
+    <None Include="..\ThirdParty\arm\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm" Visible="false" />
+    <None Include="..\ThirdParty\arm64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm64" Visible="false" />
+    <None Include="..\ThirdParty\arm64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\arm64" Visible="false" />
+    <None Include="..\ThirdParty\musl-x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\musl-x64" Visible="false" />
+    <None Include="..\ThirdParty\x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\x64" Visible="false" />
+    <None Include="..\ThirdParty\x64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x64" Visible="false" />
+    <None Include="..\ThirdParty\x86\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x86" Visible="false" />
   </ItemGroup>
 </Project>
