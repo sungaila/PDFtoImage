@@ -14,7 +14,7 @@ namespace PDFtoImage.Tests
         public void ThrowsInvalidFormat()
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "DummyImage.png"));
-            Assert.ThrowsException<PdfInvalidFormatException>(() => GetPageCount(inputStream));
+            Assert.ThrowsExactly<PdfInvalidFormatException>(() => GetPageCount(inputStream));
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace PDFtoImage.Tests
         public void ThrowsPageNotFound(string inputFile)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => ToImage(inputStream, page: 80085));
         }
     }
 }

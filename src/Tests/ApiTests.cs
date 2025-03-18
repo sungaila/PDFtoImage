@@ -14,134 +14,136 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public void SaveWebpStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((string)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SaveWebp((string)null!, (string)null!));
         }
 
         [TestMethod]
         public void SaveWebpStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveWebp((Stream)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SaveWebp((Stream)null!, (string)null!));
         }
 
         [TestMethod]
         public void SavePngStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SavePng((string)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SavePng((string)null!, (string)null!));
         }
 
         [TestMethod]
         public void SavePngStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SavePng((Stream)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SavePng((Stream)null!, (string)null!));
         }
 
         [TestMethod]
         public void SaveJpegStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveJpeg((string)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SaveJpeg((string)null!, (string)null!));
         }
 
         [TestMethod]
         public void SaveJpegStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => SaveJpeg((Stream)null!, (string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => SaveJpeg((Stream)null!, (string)null!));
         }
 
         [TestMethod]
         public void ToImagePdfStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImage((string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImage((string)null!));
         }
 
         [TestMethod]
         public void ToImagePdfArrayNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImage((byte[])null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImage((byte[])null!));
         }
 
         [TestMethod]
         public void ToImagePdfStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImage((Stream)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImage((Stream)null!));
         }
 
         [TestMethod]
         public void GetPageCountPdfStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageCount((string)null!));
         }
 
         [TestMethod]
         public void GetPageCountPdfArrayNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((byte[])null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageCount((byte[])null!));
         }
 
         [TestMethod]
         public void GetPageCountPdfStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageCount((Stream)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageCount((Stream)null!));
         }
 
         [TestMethod]
         public void GetPageSizePdfStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((string)null!, 0));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSize((string)null!, 0));
         }
 
         [TestMethod]
         public void GetPageSizePdfArrayNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((byte[])null!, 0));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSize((byte[])null!, 0));
         }
 
         [TestMethod]
         public void GetPageSizePdfStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSize((Stream)null!, page: 0));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSize((Stream)null!, page: 0));
         }
 
         [TestMethod]
         public void GetPageSizesPdfStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((string)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSizes((string)null!));
         }
 
         [TestMethod]
         public void GetPageSizesPdfArrayNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((byte[])null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSizes((byte[])null!));
         }
 
         [TestMethod]
         public void GetPageSizesPdfStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => GetPageSizes((Stream)null!));
+            Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSizes((Stream)null!));
         }
 
+#pragma warning disable CA1806
         [TestMethod]
         public void ToImagesPdfStringNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImages((string)null!).ToList());
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImages((string)null!).ToList());
         }
 
         [TestMethod]
         public void ToImagesPdfArrayNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImages((byte[])null!).ToList());
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImages((byte[])null!).ToList());
         }
 
         [TestMethod]
         public void ToImagesPdfStreamNullException()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
+            Assert.ThrowsExactly<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
         }
+#pragma warning restore CA1806
 
 #if NET6_0_OR_GREATER
         [TestMethod]
         public async Task ToImagesAsyncPdfStringNullException()
         {
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () =>
+            await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
                 await foreach (var page in ToImagesAsync((string)null!))
                 {
@@ -152,7 +154,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task ToImagesAsyncPdfArrayNullException()
         {
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () =>
+            await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
                 await foreach (var page in ToImagesAsync((byte[])null!))
                 {
@@ -163,7 +165,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task ToImagesAsyncPdfStreamNullException()
         {
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () =>
+            await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
                 await foreach (var page in ToImagesAsync((Stream)null!))
                 {
@@ -188,7 +190,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            ToImage(inputStream, false);
+            ToImage(inputStream, leaveOpen: false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
         }
 
@@ -198,7 +200,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            ToImage(inputStream, true);
+            ToImage(inputStream, leaveOpen: true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
         }
 
@@ -328,7 +330,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            GetPageSize(inputStream, false, 0);
+            GetPageSize(inputStream, leaveOpen: false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
         }
 
@@ -338,7 +340,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            GetPageSize(inputStream, true, 0);
+            GetPageSize(inputStream, leaveOpen: true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
         }
 
@@ -384,10 +386,10 @@ namespace PDFtoImage.Tests
             GetPageSizes(inputStream, true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
-            var image1 = ToImage(inputStream, true);
+            var image1 = ToImage(inputStream, leaveOpen: true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
-            var image2 = ToImage(inputStream, true);
+            var image2 = ToImage(inputStream, leaveOpen: true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
             Assert.IsTrue(image1.ByteCount > 0, "The rendered image should have content.");
@@ -396,7 +398,7 @@ namespace PDFtoImage.Tests
             GetPageSizes(inputStream, false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
 
-            Assert.ThrowsException<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
+            Assert.ThrowsExactly<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
         }
     }
 }
