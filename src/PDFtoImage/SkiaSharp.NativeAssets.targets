@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- workaround for SkiaSharp DllNotFoundException issue for projects still using packages.config -->
   <!-- this will be removed once a new SkiaSharp is released -->
