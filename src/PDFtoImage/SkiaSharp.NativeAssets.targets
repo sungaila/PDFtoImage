@@ -8,44 +8,44 @@
   <!-- copy the native files to the output directory -->
   <ItemGroup>
     <!-- Win32 -->
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-x86\native\libSkiaSharp*.dll">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-x86\native\libSkiaSharp*.dll">
       <Dir>x86\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-x64\native\libSkiaSharp*.dll">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-x64\native\libSkiaSharp*.dll">
       <Dir>x64\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-arm64\native\libSkiaSharp*.dll">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\skiasharp.nativeassets.win32\3.116.1\runtimes\win-arm64\native\libSkiaSharp*.dll">
       <Dir>arm64\</Dir>
     </_NativeSkiaSharpFile>
 
     <!-- macOS -->
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\skiasharp.nativeassets.macos\3.116.1\runtimes\osx\native\libSkiaSharp*.dylib" />
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\skiasharp.nativeassets.macos\3.116.1\runtimes\osx\native\libSkiaSharp*.dylib" />
 
     <!-- glibc -->
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-x86\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-x86\native\libSkiaSharp*.so">
       <Dir>x86\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-x64\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-x64\native\libSkiaSharp*.so">
       <Dir>x64\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-arm\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-arm\native\libSkiaSharp*.so">
       <Dir>arm\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-arm64\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-arm64\native\libSkiaSharp*.so">
       <Dir>arm64\</Dir>
     </_NativeSkiaSharpFile>
 
     <!-- Musl -->
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-x86\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-x86\native\libSkiaSharp*.so">
       <Dir>musl-x86\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-x64\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-x64\native\libSkiaSharp*.so">
       <Dir>musl-x64\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-arm\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-arm\native\libSkiaSharp*.so">
       <Dir>musl-arm\</Dir>
     </_NativeSkiaSharpFile>
-    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-arm64\native\libSkiaSharp*.so">
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\..\..\linux.nodependencies\3.116.1\runtimes\linux-musl-arm64\native\libSkiaSharp*.so">
       <Dir>musl-arm64\</Dir>
     </_NativeSkiaSharpFile>
 
