@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- workaround for SkiaSharp DllNotFoundException issue for projects still using packages.config -->
+  <!-- this will be removed once a new SkiaSharp is released -->
+  <!-- https://github.com/mono/SkiaSharp/pull/3112 -->
+  
+  <!-- copy the native files to the output directory -->
+  <ItemGroup>
+    <!-- Win32 -->
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\x86\libSkiaSharp*.dll">
+      <Dir>x86\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\x64\libSkiaSharp*.dll">
+      <Dir>x64\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\arm64\libSkiaSharp*.dll">
+      <Dir>arm64\</Dir>
+    </_NativeSkiaSharpFile>
+
+    <!-- macOS -->
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\libSkiaSharp*.dylib" />
+
+    <!-- glibc -->
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\x86\libSkiaSharp*.so">
+      <Dir>x86\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\x64\libSkiaSharp*.so">
+      <Dir>x64\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\arm\libSkiaSharp*.so">
+      <Dir>arm\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\arm64\libSkiaSharp*.so">
+      <Dir>arm64\</Dir>
+    </_NativeSkiaSharpFile>
+
+    <!-- Musl -->
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\musl-x86\libSkiaSharp*.so">
+      <Dir>musl-x86\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\musl-x64\libSkiaSharp*.so">
+      <Dir>musl-x64\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\musl-arm\libSkiaSharp*.so">
+      <Dir>musl-arm\</Dir>
+    </_NativeSkiaSharpFile>
+    <_NativeSkiaSharpFile Include="$(MSBuildThisFileDirectory)..\..\build\net462\musl-arm64\libSkiaSharp*.so">
+      <Dir>musl-arm64\</Dir>
+    </_NativeSkiaSharpFile>
+
+    <!-- include everything -->
+    <None Include="@(_NativeSkiaSharpFile)">
+      <Link>%(Dir)%(Filename)%(Extension)</Link>
+      <Visible>False</Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+  </ItemGroup>
+
+</Project>
