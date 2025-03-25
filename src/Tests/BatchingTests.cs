@@ -195,7 +195,7 @@ namespace PDFtoImage.Tests
             }
         }
 
-        #if NET6_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [TestMethod]
         public async Task ToImagesWithRangeAllAsync()
         {

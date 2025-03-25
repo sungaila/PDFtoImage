@@ -17,12 +17,14 @@ namespace PDFtoImage
 #if NET8_0_OR_GREATER
 #pragma warning disable CA1510 // Use ArgumentNullException throw helper
 #endif
+#if NET6_0_OR_GREATER
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
     [SupportedOSPlatform("iOS13.6")]
     [SupportedOSPlatform("MacCatalyst13.5")]
     [SupportedOSPlatform("Android31.0")]
+#endif
     public static partial class Conversion
     {
         internal static IEnumerable<SKBitmap> ToImagesImpl(Stream pdfStream, bool leaveOpen, string? password, RenderOptions options, IEnumerable<int>? pages)
