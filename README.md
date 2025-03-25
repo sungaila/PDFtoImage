@@ -44,3 +44,11 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 * [Unity](https://docs.unity3d.com/Manual/Mono.html)
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
+
+## Index and Range for .NET Framework
+[PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable the use of `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed, which **should not be** used directly by your project:
+- `System.Index`
+- `System.Range`
+- `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute`
+- `System.Diagnostics.CodeAnalysis.NotNullWhenAttribute`
+- `System.Runtime.CompilerServices.IsExternalInit`
