@@ -50,9 +50,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.50" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.50" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.60" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.60" />
   </ItemGroup>
 
   <ItemGroup>
