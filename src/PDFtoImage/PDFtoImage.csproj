@@ -155,25 +155,4 @@
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
   <Import Project="PDFtoImage.CodeSigning.targets" />
   <Import Project="PDFtoImage.PackageSigning.targets" />
-
-  <!-- workaround for SkiaSharp DllNotFoundException issue for projects still using packages.config -->
-  <!-- this will be removed once a new SkiaSharp is released -->
-  <!-- https://github.com/mono/SkiaSharp/pull/3112 -->
-  <ItemGroup>
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="build\net462\PDFtoImage.props" />
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="build\net471\PDFtoImage.props" />
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="build\net481\PDFtoImage.props" />
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="buildTransitive\net462\PDFtoImage.props" />
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="buildTransitive\net471\PDFtoImage.props" />
-    <None Include="SkiaSharp.NativeAssets.props" Pack="true" PackagePath="buildTransitive\net481\PDFtoImage.props" />
-
-    <None Include="..\ThirdParty\libSkiaSharp.dylib" Pack="true" PackagePath="build\net462" Visible="false" />
-    <None Include="..\ThirdParty\arm\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm" Visible="false" />
-    <None Include="..\ThirdParty\arm64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\arm64" Visible="false" />
-    <None Include="..\ThirdParty\arm64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\arm64" Visible="false" />
-    <None Include="..\ThirdParty\musl-x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\musl-x64" Visible="false" />
-    <None Include="..\ThirdParty\x64\libSkiaSharp.so" Pack="true" PackagePath="build\net462\x64" Visible="false" />
-    <None Include="..\ThirdParty\x64\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x64" Visible="false" />
-    <None Include="..\ThirdParty\x86\libSkiaSharp.dll" Pack="true" PackagePath="build\net462\x86" Visible="false" />
-  </ItemGroup>
 </Project>
