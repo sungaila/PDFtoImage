@@ -46,7 +46,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.4" PrivateAssets="all" />
     <PackageReference Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
     <PackageReference Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
-    <PackageReference Include="SkiaSharp" Version="3.119.0" />
   </ItemGroup>
 
   <ItemGroup>
