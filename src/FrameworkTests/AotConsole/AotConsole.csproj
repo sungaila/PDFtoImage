@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="3.119.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
 </Project>
