@@ -62,6 +62,14 @@ namespace PDFtoImage.Internals
             }
         }
 
+        public static void FPDFDOC_ExitFormFillEnvironment(IntPtr handle)
+        {
+            lock (LockString)
+            {
+                Imports.FPDFDOC_ExitFormFillEnvironment(handle);
+            }
+        }
+
         public static void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color)
         {
             lock (LockString)
@@ -371,6 +379,10 @@ namespace PDFtoImage.Internals
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
 #else
 #if NET7_0_OR_GREATER
 #pragma warning disable SYSLIB1054
@@ -452,6 +464,9 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
 #if NET7_0_OR_GREATER
 #pragma warning restore SYSLIB1054
 #endif

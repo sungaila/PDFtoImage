@@ -126,6 +126,7 @@ namespace PDFtoImage.Internals
 
             if (_form != IntPtr.Zero)
             {
+                NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
                 _form = IntPtr.Zero;
             }
 
@@ -136,7 +137,9 @@ namespace PDFtoImage.Internals
             }
 
             if (_formCallbacksHandle!.IsAllocated)
+            {
                 _formCallbacksHandle!.Free();
+            }
 
             if (_stream != null && _disposeStream)
             {
