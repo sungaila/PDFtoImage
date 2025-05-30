@@ -9,6 +9,7 @@ namespace PDFtoImage.Tests
     [TestClass]
     public class AntiAliasingTests : TestBase
     {
+#pragma warning disable MSTEST0042
         [TestMethod]
         [DataRow(null, DisplayName = "Default (None)")]
         [DataRow(PdfAntiAliasing.None, DisplayName = "None")]

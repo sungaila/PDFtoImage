@@ -4,7 +4,11 @@ namespace PDFtoImage.Internals
 {
     internal sealed class PdfLibrary : IDisposable
     {
+#if NET9_0_OR_GREATER
+        private static readonly System.Threading.Lock _syncRoot = new();
+#else
         private static readonly object _syncRoot = new();
+#endif
         private static PdfLibrary? _library;
         private bool disposedValue;
 

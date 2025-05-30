@@ -9,7 +9,11 @@ namespace PDFtoImage.Internals
 #endif
     internal static class StreamManager
     {
+#if NET9_0_OR_GREATER
+        private static readonly System.Threading.Lock _syncRoot = new();
+#else
         private static readonly object _syncRoot = new();
+#endif
         private static int _nextId = 1;
         private static readonly Dictionary<int, Stream> _files = [];
 

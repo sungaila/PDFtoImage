@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -55,7 +56,7 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo)
+        public static IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo)
         {
             lock (LockString)
             {
@@ -212,16 +213,22 @@ namespace PDFtoImage.Internals
             var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
 #endif
 
-            var access = new FPDF_FILEACCESS
-            {
-                m_FileLen = (uint)input.Length,
-                m_GetBlock = getBlock,
-                m_Param = (IntPtr)id
-            };
+            var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
 
-            lock (LockString)
+            var size = Marshal.SizeOf<FPDF_FILEACCESS>();
+            var ptr = Marshal.AllocHGlobal(size);
+            Marshal.StructureToPtr(access, ptr, false);
+
+            try
             {
-                return Imports.FPDF_LoadCustomDocument(access, password);
+                lock (LockString)
+                {
+                    return Imports.FPDF_LoadCustomDocument(ptr, password);
+                }
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(ptr);
             }
         }
 
@@ -387,12 +394,13 @@ namespace PDFtoImage.Internals
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshalling for P/Invoke string arguments")]
-            public static extern IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
+            [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDF_LoadCustomDocument(IntPtr access, string? password);
 
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -468,13 +476,10 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-#if NET6_0_OR_GREATER
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshalling for P/Invoke string arguments")]
-#endif
-            public static extern IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
+            public static extern IntPtr FPDF_LoadCustomDocument(IntPtr access, string? password);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+            public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
@@ -482,9 +487,9 @@ namespace PDFtoImage.Internals
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public class FPDF_FORMFILLINFO
+        public readonly struct FPDF_FORMFILLINFO(int version)
         {
-            public int version;
+            private readonly int version = version;
 
             private readonly IntPtr Release;
 
@@ -696,19 +701,19 @@ namespace PDFtoImage.Internals
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        public
 #if NET6_0_OR_GREATER
-            unsafe
-#endif
-            class FPDF_FILEACCESS
-        {
-            public uint m_FileLen;
-#if NET6_0_OR_GREATER
-            public delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> m_GetBlock;
+        public unsafe readonly struct FPDF_FILEACCESS(uint m_FileLen, delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> m_GetBlock, IntPtr m_Param)
 #else
-            public IntPtr m_GetBlock;
+        public readonly struct FPDF_FILEACCESS(uint m_FileLen, IntPtr m_GetBlock, IntPtr m_Param)
 #endif
-            public IntPtr m_Param;
+        {
+            private readonly uint m_FileLen = m_FileLen;
+#if NET6_0_OR_GREATER
+            private readonly delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> m_GetBlock = m_GetBlock;
+#else
+            private readonly IntPtr m_GetBlock = m_GetBlock;
+#endif
+            private readonly IntPtr m_Param = m_Param;
         }
     }
 }

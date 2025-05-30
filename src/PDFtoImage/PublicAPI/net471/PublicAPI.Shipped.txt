@@ -77,6 +77,13 @@ PDFtoImage.RenderOptions.WithAspectRatio.get -> bool
 PDFtoImage.RenderOptions.WithAspectRatio.init -> void
 PDFtoImage.RenderOptions.WithFormFill.get -> bool
 PDFtoImage.RenderOptions.WithFormFill.init -> void
+override PDFtoImage.RenderOptions.GetHashCode() -> int
+PDFtoImage.RenderOptions.Deconstruct(out int Dpi, out int? Width, out int? Height, out bool WithAnnotations, out bool WithFormFill, out bool WithAspectRatio, out PDFtoImage.PdfRotation Rotation, out PDFtoImage.PdfAntiAliasing AntiAliasing, out SkiaSharp.SKColor? BackgroundColor, out System.Drawing.RectangleF? Bounds, out bool UseTiling, out bool DpiRelativeToBounds) -> void
+PDFtoImage.RenderOptions.Equals(PDFtoImage.RenderOptions other) -> bool
+static PDFtoImage.RenderOptions.operator !=(PDFtoImage.RenderOptions left, PDFtoImage.RenderOptions right) -> bool
+static PDFtoImage.RenderOptions.operator ==(PDFtoImage.RenderOptions left, PDFtoImage.RenderOptions right) -> bool
+~override PDFtoImage.RenderOptions.Equals(object obj) -> bool
+~override PDFtoImage.RenderOptions.ToString() -> string
 static PDFtoImage.Conversion.GetPageCount(byte[]! pdfAsByteArray, string? password = null) -> int
 static PDFtoImage.Conversion.GetPageCount(string! pdfAsBase64String, string? password = null) -> int
 static PDFtoImage.Conversion.GetPageCount(System.IO.Stream! pdfStream, bool leaveOpen = false, string? password = null) -> int
