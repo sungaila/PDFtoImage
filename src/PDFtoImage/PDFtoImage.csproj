@@ -80,7 +80,7 @@
   <!-- SourceLink build steps and NuGet packages -->
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="3.119.0" PrivateAssets="analyzers" />
-    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="4.14.0" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- Shared packages -->

@@ -278,8 +278,7 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-            // LibraryImport is not supported by Blazor WebAssembly
-#if NET7_0_OR_GREATER && FALSE
+#if NET7_0_OR_GREATER
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
@@ -372,21 +371,17 @@ namespace PDFtoImage.Internals
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
-            [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101:Specify marshalling for P/Invoke string arguments")]
+            public static extern IntPtr FPDF_LoadCustomDocument(FPDF_FILEACCESS access, string? password);
 
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, FPDF_FORMFILLINFO formInfo);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
 #else
-#if NET7_0_OR_GREATER
-#pragma warning disable SYSLIB1054
-#endif
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_InitLibrary();
 
@@ -467,9 +462,6 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
-#if NET7_0_OR_GREATER
-#pragma warning restore SYSLIB1054
-#endif
 #endif
         }
 
@@ -510,6 +502,8 @@ namespace PDFtoImage.Internals
 
             private readonly IntPtr m_pJsPlatform;
 
+            private readonly int xfa_disabled;
+
             private readonly IntPtr FFI_DisplayCaret;
 
             private readonly IntPtr FFI_GetCurrentPageIndex;
@@ -539,6 +533,10 @@ namespace PDFtoImage.Internals
             private readonly IntPtr FFI_PostRequestURL;
 
             private readonly IntPtr FFI_PutRequestURL;
+
+            private readonly IntPtr FFI_OnFocusChange;
+
+            private readonly IntPtr FFI_DoURIActionWithKeyboardModifier;
         }
 
         /// <summary>
