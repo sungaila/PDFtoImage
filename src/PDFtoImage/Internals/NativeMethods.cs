@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -263,17 +264,32 @@ namespace PDFtoImage.Internals
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
             var stream = StreamManager.Get(checked((int)param));
+
             if (stream == null)
                 return 0;
-            byte[] managedBuffer = new byte[size];
 
             stream.Position = position;
-            int read = stream.Read(managedBuffer, 0, (int)size);
-            if (read != size)
-                return 0;
 
-            Marshal.Copy(managedBuffer, 0, buffer, (int)size);
-            return 1;
+            byte[] rentedBuffer = ArrayPool<byte>.Shared.Rent((int)size);
+
+            try
+            {
+                int read = stream.Read(rentedBuffer, 0, (int)size);
+
+                if (read != size)
+                    return 0;
+
+                Marshal.Copy(rentedBuffer, 0, buffer, (int)size);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(rentedBuffer, clearArray: false);
+            }
         }
 
         private static partial class Imports
