@@ -12,7 +12,7 @@ namespace PDFtoImage.Internals
         private IntPtr _document;
         private IntPtr _form;
         private bool _disposed;
-        private readonly GCHandle _formCallbacksHandle;
+        private IntPtr _formFillInfoPtr;
         private readonly int _id;
         private Stream? _stream;
         private readonly bool _disposeStream;
@@ -49,20 +49,15 @@ namespace PDFtoImage.Internals
 
             NativeMethods.FPDF_GetDocPermissions(_document);
 
-            var formCallbacks = new NativeMethods.FPDF_FORMFILLINFO();
-            _formCallbacksHandle = GCHandle.Alloc(formCallbacks, GCHandleType.Pinned);
+            var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
 
-            // Depending on whether XFA support is built into the PDFium library, the version
-            // needs to be 1 or 2. We don't really care, so we just try one or the other.
+            _formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
+            Marshal.StructureToPtr(ffi, _formFillInfoPtr, false);
 
-            for (int i = 1; i <= 2; i++)
-            {
-                formCallbacks.version = i;
+            _form = NativeMethods.FPDFDOC_InitFormFillEnvironment(_document, _formFillInfoPtr);
 
-                _form = NativeMethods.FPDFDOC_InitFormFillEnvironment(_document, formCallbacks);
-                if (_form != IntPtr.Zero)
-                    break;
-            }
+            if (_form == IntPtr.Zero)
+                throw PdfException.CreateException(NativeMethods.FPDF_GetLastError())!;
 
             NativeMethods.FPDF_SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
             NativeMethods.FPDF_SetFormFieldHighlightAlpha(_form, 100);
@@ -126,6 +121,7 @@ namespace PDFtoImage.Internals
 
             if (_form != IntPtr.Zero)
             {
+                NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
                 _form = IntPtr.Zero;
             }
 
@@ -135,8 +131,11 @@ namespace PDFtoImage.Internals
                 _document = IntPtr.Zero;
             }
 
-            if (_formCallbacksHandle!.IsAllocated)
-                _formCallbacksHandle!.Free();
+            if (_formFillInfoPtr != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_formFillInfoPtr);
+                _formFillInfoPtr = IntPtr.Zero;
+            }
 
             if (_stream != null && _disposeStream)
             {
