@@ -1,11 +1,11 @@
 {
     "name": "de.sungaila.pdftoimage",
-    "version": "5.1.0",
+    "version": "5.1.1",
     "displayName": "PDFtoImage",
     "description": "A .NET library to render PDF files into images.",
     "unity": "6000.0",
     "documentationUrl": "https://github.com/sungaila/PDFtoImage",
-    "changelogUrl": "https://github.com/sungaila/PDFtoImage/releases/tag/v5.1.0",
+    "changelogUrl": "https://github.com/sungaila/PDFtoImage/releases/tag/v5.1.1",
     "license": "MIT",
     "licensesUrl": "https://github.com/sungaila/PDFtoImage/blob/master/LICENSE",
     "keywords": [
