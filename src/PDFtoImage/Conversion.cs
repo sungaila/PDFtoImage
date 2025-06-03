@@ -14,9 +14,9 @@ namespace PDFtoImage
     /// <summary>
     /// Provides methods to render PDFs into images.
     /// </summary>
-#if NET8_0_OR_GREATER
-#pragma warning disable CA1510 // Use ArgumentNullException throw helper
-#endif
+#pragma warning disable IDE0079
+#pragma warning disable CA1510
+#pragma warning restore IDE0079
 #if NET6_0_OR_GREATER
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]

@@ -12,7 +12,9 @@ namespace PDFtoImage
     /// Provides methods to render PDFs into images.
     /// </summary>
 #if NET8_0_OR_GREATER
+#pragma warning disable IDE0079
 #pragma warning disable CA1510 // Use ArgumentNullException throw helper
+#pragma warning restore IDE0079
 #endif
     public static partial class Conversion
     {

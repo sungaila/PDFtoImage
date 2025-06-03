@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace PDFtoImage.FrameworkTests.MauiApp
+namespace PDFtoImage.FrameworkTests.MauiApp.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

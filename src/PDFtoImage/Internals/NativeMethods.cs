@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Buffers;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -407,7 +406,10 @@ namespace PDFtoImage.Internals
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
 #else
+#pragma warning disable IDE0079
+#pragma warning disable SYSLIB1054
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+
             public static extern void FPDF_InitLibrary();
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -477,6 +479,7 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101")]
             public static extern IntPtr FPDF_LoadCustomDocument(IntPtr access, string? password);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -484,6 +487,8 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
+#pragma warning restore SYSLIB1054
+#pragma warning restore IDE0079
 #endif
         }
 

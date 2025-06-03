@@ -119,7 +119,6 @@ namespace PDFtoImage.Tests
             Assert.ThrowsExactly<ArgumentNullException>(() => GetPageSizes((Stream)null!));
         }
 
-#pragma warning disable CA1806
         [TestMethod]
         public void ToImagesPdfStringNullException()
         {
@@ -137,7 +136,6 @@ namespace PDFtoImage.Tests
         {
             Assert.ThrowsExactly<ArgumentNullException>(() => ToImages((Stream)null!).ToList());
         }
-#pragma warning restore CA1806
 
 #if NET6_0_OR_GREATER
         [TestMethod]

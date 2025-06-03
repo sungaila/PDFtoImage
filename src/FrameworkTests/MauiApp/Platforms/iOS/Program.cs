@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace PDFtoImage.FrameworkTests.MauiApp
+namespace PDFtoImage.FrameworkTests.MauiApp.Platforms.iOS
 {
     public class Program
     {
