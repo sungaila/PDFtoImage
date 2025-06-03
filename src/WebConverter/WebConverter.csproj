@@ -6,7 +6,7 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
-    <StartupObject>PDFtoImage.WebConverter.Program</StartupObject>
+    <StartupObject>PDFtoImage.WebConverter.Client.Program</StartupObject>
     <VersionPrefix>5.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
