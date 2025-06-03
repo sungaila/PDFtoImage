@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PDFtoImage.Tests
 {
@@ -67,7 +68,11 @@ namespace PDFtoImage.Tests
             return new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
         }
 
+#if NET9_0_OR_GREATER
+        private static readonly Lock _lockObject = new();
+#else
         private static readonly object _lockObject = new();
+#endif
 
         public static Stream CreateOutputStream(string expectedPath)
         {

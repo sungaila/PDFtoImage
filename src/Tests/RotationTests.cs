@@ -6,6 +6,9 @@ using static PDFtoImage.Tests.TestUtils;
 
 namespace PDFtoImage.Tests
 {
+#pragma warning disable IDE0079
+#pragma warning disable CA2263
+#pragma warning restore IDE0079
     [TestClass]
     public class RotationTests : TestBase
     {

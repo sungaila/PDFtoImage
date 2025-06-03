@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace PDFtoImage.WebConverter
+namespace PDFtoImage.WebConverter.Client
 {
     public class Program
     {

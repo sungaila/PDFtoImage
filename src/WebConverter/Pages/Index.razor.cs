@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using PatrickJahr.Blazor.WebShare.Models;
+using PDFtoImage.WebConverter.Client;
 using PDFtoImage.WebConverter.Models;
 using SkiaSharp;
 using System;
