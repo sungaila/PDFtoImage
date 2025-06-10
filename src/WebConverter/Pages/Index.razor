@@ -166,6 +166,13 @@ This option can help with rendering problems (e.g. missing text) at very high re
 
                         <div class="form-group row mb-1">
                             <div>
+                                <InputCheckbox @bind-Value="Model.Grayscale" id="grayscale" class="form-check-input" />
+                                <label for="grayscale">Grayscale</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-1">
+                            <div>
                                 <InputCheckbox @bind-Value="Model.AntiAliasingText" id="antiAliasingText" class="form-check-input" />
                                 <label for="antiAliasingText">Anti-aliasing for text</label>
                             </div>

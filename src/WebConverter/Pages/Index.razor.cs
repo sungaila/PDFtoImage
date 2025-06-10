@@ -174,6 +174,7 @@ namespace PDFtoImage.WebConverter.Pages
                             Height: Model.Height,
                             WithAnnotations: Model.WithAnnotations,
                             WithFormFill: Model.WithFormFill,
+                            Grayscale: Model.Grayscale,
                             WithAspectRatio: Model.WithAspectRatio,
                             Rotation: Model.Rotation,
                             AntiAliasing: antiAliasing,
