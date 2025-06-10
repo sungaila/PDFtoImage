@@ -13,6 +13,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         [DataRow(null)]
         [DataRow(default)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0079"), System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "MSTEST0042")]
         public void NullOrDefault(RectangleF? bounds = null)
         {
             var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), "Bounds", $"Wikimedia_Commons_web_{GetFileName(bounds, default, default, default, default)}.png");

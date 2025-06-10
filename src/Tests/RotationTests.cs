@@ -100,7 +100,7 @@ namespace PDFtoImage.Tests
         [DataRow(PdfRotation.Rotate0, null, 200, false)]
         [DataRow(PdfRotation.Rotate90, null, 200, false)]
         [DataRow(PdfRotation.Rotate180, null, 200, false)]
-        [DataRow(PdfRotation.Rotate270, 200, null, false)]
+        [DataRow(PdfRotation.Rotate270, null, 200, false)]
         [DataRow(null, null, 200, true)]
         [DataRow(PdfRotation.Rotate0, null, 200, true)]
         [DataRow(PdfRotation.Rotate90, null, 200, true)]
