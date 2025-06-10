@@ -67,5 +67,10 @@ namespace PDFtoImage
         /// Specifies that <see cref="Dpi"/> and <see cref="WithAspectRatio"/> will be calculated relative to <see cref="Bounds"/> instead of the original PDF.
         /// </summary>
         bool DpiRelativeToBounds { get; init; }
+        
+        /// <summary>
+        /// Specifies that the PDF should be rendered in Grayscale mode.
+        /// </summary>
+        bool Grayscale { get; init; }
     }
 }

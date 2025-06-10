@@ -89,6 +89,30 @@ namespace PDFtoImage.Tests
             }
         }
 
+        [TestMethod]
+        [DataRow(null, DisplayName = "Default (without grayscale)")]
+        [DataRow(false, DisplayName = "Without grayscale")]
+        [DataRow(true, DisplayName = "With grayscale")]
+        public void SavePagesGrayscale(bool? grayscale)
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+            
+            int page = 0;
+
+            foreach (var image in ToImages(inputStream, options: grayscale != null ? new(Dpi: 40, Grayscale: grayscale.Value) : new(Dpi: 40)))
+            {
+                var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(grayscale == true ? "_GRAYSCALE" : string.Empty)}.webp");
+
+                using var outputStream = CreateOutputStream(expectedPath);
+                image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
+
+                CompareStreams(expectedPath, outputStream);
+
+                page++;
+            }
+
+        }
+
 #if NET6_0_OR_GREATER
         [TestMethod]
         [DataRow(false, DisplayName = "Without annotations")]

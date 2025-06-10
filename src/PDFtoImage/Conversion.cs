@@ -86,6 +86,9 @@ namespace PDFtoImage
             if (options.WithAnnotations)
                 renderFlags |= NativeMethods.FPDF.ANNOT;
 
+            if (options.Grayscale)
+                renderFlags |= NativeMethods.FPDF.GRAYSCALE;
+
             if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Text))
                 renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHTEXT;
             if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Images))
