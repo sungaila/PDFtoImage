@@ -84,6 +84,9 @@ jobs:
     needs: publish
     runs-on: ubuntu-latest
 
+    # skip for pull requests from outside this repository (e.g. forks)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
     concurrency:
       group: "pages-stating"
       cancel-in-progress: true
