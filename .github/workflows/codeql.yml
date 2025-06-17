@@ -87,7 +87,11 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-        dotnet workload restore "src/PDFtoImage/PDFtoImage.csproj"
+        dotnet workload install maui-android
+        dotnet workload install maui-ios
+        dotnet workload install maui-maccatalyst
+        dotnet workload install maui-windows
+        dotnet workload install wasm-tools
         dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
         dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
 
