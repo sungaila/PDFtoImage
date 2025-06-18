@@ -120,6 +120,8 @@ jobs:
           retention-days: 1
           compression-level: 9
   test:
+    permissions:
+      contents: read
     name: Test (${{ matrix.os }})
     needs: build
     strategy:
@@ -170,6 +172,8 @@ jobs:
           if-no-files-found: error
           retention-days: 1
   docker:
+    permissions:
+      contents: read
     name: Docker (${{ matrix.os }})
     strategy:
       fail-fast: false
