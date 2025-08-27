@@ -71,7 +71,8 @@ jobs:
           dotnet-version: |
             8.x
             9.x
-          dotnet-quality: 'ga'
+            10.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
       - name: Setup .NET workload maui-ios
@@ -155,6 +156,9 @@ jobs:
       - name: .NET 9
         if: success() || failure()
         run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 10
+        if: success() || failure()
+        run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main

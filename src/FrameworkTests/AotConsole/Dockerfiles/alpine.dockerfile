@@ -1,12 +1,12 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:9.0-alpine AS base
+﻿FROM mcr.microsoft.com/dotnet/runtime:10.0-alpine AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine AS restore
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
-RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" /p:TargetFramework=net9.0
+RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" /p:TargetFramework=net10.0
 COPY . .
 WORKDIR "/src/src"
 

@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net8.0-android;net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -15,7 +15,7 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>5.1.1</VersionPrefix>
+    <VersionPrefix>5.2.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -24,10 +24,9 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Fix a memory leak that can cause forms to be partially or incorrectly rendered.
-- Remove .NET 6.0 as TargetFramework (end of support).
-- Remove .NET 8.0 (iOS) as TargetFramework (end of support).
-- Remove .NET 8.0 (Mac Catalyst) as TargetFramework (end of support).</PackageReleaseNotes>
+    <PackageReleaseNotes>- Add option to render in grayscale.
+- Add .NET 10 as TargetFramework.
+- Remove .NET 8.0 (Android) as TargetFramework (end of support).</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MacCatalyst Catalyst MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -85,7 +84,7 @@
   </ItemGroup>
 
   <!-- Shared packages -->
-  <ItemGroup Condition="'$(TargetFramework)'!='net8.0-android' and '$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst'">
+  <ItemGroup Condition="'$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst' and '$(TargetFramework)'!='net10.0-android' and '$(TargetFramework)'!='net10.0-ios' and '$(TargetFramework)'!='net10.0-maccatalyst'">
     <PackageReference Include="bblanchon.PDFium.Linux" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.Win32" Version="139.0.7215" PrivateAssets="analyzers" />
@@ -100,30 +99,30 @@
   </ItemGroup>
 
   <!-- .NET packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0' or '$(TargetFramework)'=='net10.0'">
     <!-- NOP -->
   </ItemGroup>
 
   <!-- Android packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net8.0-android' or '$(TargetFramework)'=='net9.0-android'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-android' or '$(TargetFramework)'=='net10.0-android'">
     <PackageReference Include="bblanchon.PDFium.Android" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="3.119.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- iOS packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-ios'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-ios' or '$(TargetFramework)'=='net10.0-ios'">
     <PackageReference Include="bblanchon.PDFium.iOS" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.iOS" Version="3.119.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Mac Catalyst packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-maccatalyst'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-maccatalyst' or '$(TargetFramework)'=='net10.0-maccatalyst'">
     <PackageReference Include="bblanchon.PDFium.iOS" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.MacCatalyst" Version="3.119.0" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Blazor WebAssembly stuff -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0' or '$(TargetFramework)'=='net10.0'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.0" PrivateAssets="analyzers" />
     <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" Version="134.0.6982" PrivateAssets="analyzers" />
   </ItemGroup>
@@ -145,6 +144,8 @@
     <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net8.0\PDFtoImage.props" />
     <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net9.0\PDFtoImage.props" />
     <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net10.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0\PDFtoImage.props" />
   </ItemGroup>
 
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

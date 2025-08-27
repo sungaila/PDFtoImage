@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <AssemblyName>PDFtoImage.Tests</AssemblyName>
     <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -43,8 +43,8 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.9.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.9.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.10.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.10.3" />
   </ItemGroup>
 </Project>
