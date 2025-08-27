@@ -138,7 +138,8 @@ jobs:
           dotnet-version: |
             8.x
             9.x
-          dotnet-quality: 'ga'
+            10.x
+          dotnet-quality: 'preview'
       - name: Download test assemblies
         if: (success() || failure())
         uses: actions/download-artifact@main
