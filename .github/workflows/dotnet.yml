@@ -71,6 +71,11 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET (preview)
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
             10.x
           dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
@@ -138,6 +143,11 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET (preview)
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
             10.x
           dotnet-quality: 'preview'
       - name: Download test assemblies
@@ -267,6 +277,11 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET (preview)
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
             10.x
           dotnet-quality: 'preview'
       - name: Setup .NET workload maui-android
