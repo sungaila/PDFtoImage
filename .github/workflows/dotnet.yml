@@ -226,7 +226,7 @@ jobs:
       - name: console (windows-servercore)
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
-      - name: Set up MSVC Developer Command Prompt
+      - name: Setup MSVC Developer Command Prompt
         if: runner.os == 'Windows' && (success() || failure())
         uses: ilammy/msvc-dev-cmd@master
         with:
