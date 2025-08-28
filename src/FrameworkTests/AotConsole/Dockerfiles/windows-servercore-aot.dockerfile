@@ -17,7 +17,7 @@ RUN dotnet build ".\src\FrameworkTests\AotConsole\AotConsole.csproj" -c %BUILD_C
 
 FROM build AS vsbuildtools
 SHELL ["cmd", "/S", "/C"]
-RUN curl. -L -o C:\temp\vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe `
+RUN curl -L -o C:\temp\vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe `
  && (start /w C:\temp\vs_buildtools.exe --quiet --wait --norestart --nocache `
        --installPath "C:\BuildTools" `
        --add Microsoft.VisualStudio.Workload.VCTools `
