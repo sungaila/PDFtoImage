@@ -226,6 +226,9 @@ jobs:
       - name: console (windows-servercore)
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
+      - name: console (windows-servercore-aot)
+        if: runner.os == 'Windows' && (success() || failure())
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
     needs: [test, docker]
