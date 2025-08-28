@@ -226,6 +226,22 @@ jobs:
       - name: console (windows-servercore)
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
+      - name: Set up MSVC Developer Command Prompt
+        if: runner.os == 'Windows' && (success() || failure())
+        uses: ilammy/msvc-dev-cmd@master
+        with:
+          arch: x64
+      - name: Publish AOT (win-x64, self-contained)
+        if: runner.os == 'Windows'
+        run: |
+          dotnet restore src\FrameworkTests\AotConsole\AotConsole.csproj
+          dotnet publish src\FrameworkTests\AotConsole\AotConsole.csproj
+            -c Release
+            -r win-x64
+            -p:PublishAot=true
+            -p:SelfContained=true
+            -p:StripSymbols=true
+            -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot"
       - name: console (windows-servercore-aot)
         if: runner.os == 'Windows' && (success() || failure())
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile . && docker run --rm -t console

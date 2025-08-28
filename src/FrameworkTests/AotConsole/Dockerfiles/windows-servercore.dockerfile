@@ -1,4 +1,5 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:9.0-windowsservercore-ltsc2025 AS base
+﻿# escape=`
+FROM mcr.microsoft.com/dotnet/runtime:9.0-windowsservercore-ltsc2025 AS base
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0-windowsservercore-ltsc2025 AS restore
