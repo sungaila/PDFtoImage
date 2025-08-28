@@ -243,7 +243,7 @@ jobs:
             -p:StripSymbols=true
             -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot"
       - name: console (windows-servercore-aot)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: runner.os == 'Windows'
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
