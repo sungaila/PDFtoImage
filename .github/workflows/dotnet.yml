@@ -228,7 +228,7 @@ jobs:
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
       - name: Setup MSVC Developer Command Prompt
         if: runner.os == 'Windows' && (success() || failure())
-        uses: ilammy/msvc-dev-cmd@master
+        uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
       - name: Publish AOT (win-x64, self-contained)
