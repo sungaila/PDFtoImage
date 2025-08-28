@@ -16,15 +16,15 @@ RUN dotnet build ".\src\FrameworkTests\AotConsole\AotConsole.csproj" -c %BUILD_C
 
 FROM build AS vsbuildtools
 SHELL ["cmd", "/S", "/C"]
-RUN curl -SL --output C:\vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe ^
- && (start /w C:\vs_buildtools.exe --quiet --wait --norestart --nocache ^
+RUN curl -L -o C:\temp\vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe ^
+ && (start /w C:\temp\vs_buildtools.exe --quiet --wait --norestart --nocache ^
        --installPath "C:\BuildTools" ^
        --add Microsoft.VisualStudio.Workload.VCTools ^
        --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 ^
        --add Microsoft.VisualStudio.Component.Windows11SDK.26100 ^
        --add Microsoft.Component.MSBuild ^
        || IF "%ERRORLEVEL%"=="3010" EXIT 0) ^
- && del /q C:\vs_buildtools.exe
+ && del /q C:\temp\vs_buildtools.exe
 
 FROM vsbuildtools AS publish
 ARG BUILD_CONFIGURATION=Release
