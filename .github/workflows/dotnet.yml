@@ -247,10 +247,12 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: |
-            10.x
-          dotnet-quality: 'preview'
+            9.x
+          dotnet-quality: 'ga'
       - name: Publish AOT (win-x64, self-contained)
-        run: dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot
+        run: |
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" /p:TargetFramework=net9.0
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
       - name: console (windows-servercore-aot)
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile . && docker run --rm -t console
   publish-test-results:
