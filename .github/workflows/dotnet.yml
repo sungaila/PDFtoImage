@@ -231,6 +231,21 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
+      - name: Setup .NET
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET (preview)
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
+            10.x
+          dotnet-quality: 'preview'
       - name: Publish AOT (win-x64, self-contained)
         if: runner.os == 'Windows'
         run: |
