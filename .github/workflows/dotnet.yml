@@ -193,7 +193,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2025, ubuntu-24.04]
+        os: [windows-2025, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
