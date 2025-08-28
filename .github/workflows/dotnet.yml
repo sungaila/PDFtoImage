@@ -186,15 +186,11 @@ jobs:
           path: ./**/Assets/Generated
           if-no-files-found: error
           retention-days: 1
-  docker:
+  docker_linux:
     permissions:
       contents: read
-    name: Docker (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-2025, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    name: Docker (Linux)
+    runs-on: ubuntu-latest
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
@@ -206,28 +202,43 @@ jobs:
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
       - name: console (alpine)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm -t console
       - name: console (alpine-aot)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm -t console
       - name: console (ubuntu)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
       - name: console (ubuntu-chiseled)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
       - name: console (ubuntu-aot)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
       - name: console (ubuntu-chiseled-aot)
-        if: runner.os == 'Linux' && (success() || failure())
+        if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
+  docker_windows:
+    permissions:
+      contents: read
+    name: Docker (Windows)
+    runs-on: windows-2025
+    if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            src/PDFtoImage
+            src/FrameworkTests/AotConsole
+            src/Tests/Assets/SocialPreview.pdf
       - name: console (windows-servercore)
-        if: runner.os == 'Windows' && (success() || failure())
+        if: success() || failure()
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
       - name: Setup MSVC Developer Command Prompt
-        if: runner.os == 'Windows' && (success() || failure())
+        if: success() || failure()
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
@@ -236,27 +247,15 @@ jobs:
         uses: actions/setup-dotnet@main
         with:
           dotnet-version: |
-            8.x
-            9.x
-          dotnet-quality: 'ga'
-      - name: Setup .NET (preview)
-        if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@main
-        with:
-          dotnet-version: |
             10.x
           dotnet-quality: 'preview'
       - name: Publish AOT (win-x64, self-contained)
-        if: runner.os == 'Windows'
-        run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj"
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot
+        run: dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot
       - name: console (windows-servercore-aot)
-        if: runner.os == 'Windows'
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
-    needs: [test, docker]
+    needs: [test, docker_linux, docker_windows]
     runs-on: ubuntu-latest
     permissions:
       checks: write
