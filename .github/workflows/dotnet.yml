@@ -254,7 +254,7 @@ jobs:
           dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" /p:TargetFramework=net9.0
           dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
       - name: console (windows-servercore-aot)
-        run: docker buildx build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm -t console
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
     needs: [test, docker-linux, docker-windows]
