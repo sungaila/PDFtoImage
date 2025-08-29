@@ -203,22 +203,22 @@ jobs:
             src/Tests/Assets/SocialPreview.pdf
       - name: console (alpine)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm console
       - name: console (alpine-aot)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm console
       - name: console (ubuntu)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm console
       - name: console (ubuntu-chiseled)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm console
       - name: console (ubuntu-aot)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm console
       - name: console (ubuntu-chiseled-aot)
         if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm console
   docker-windows:
     permissions:
       contents: read
@@ -236,7 +236,7 @@ jobs:
             src/Tests/Assets/SocialPreview.pdf
       - name: console (windows-servercore)
         if: success() || failure()
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm console
       - name: Setup MSVC Developer Command Prompt
         if: success() || failure()
         uses: ilammy/msvc-dev-cmd@v1
@@ -254,7 +254,7 @@ jobs:
           dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" /p:TargetFramework=net9.0
           dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
       - name: console (windows-servercore-aot)
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm -t console
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
   publish-test-results:
     name: Publish tests results
     needs: [test, docker-linux, docker-windows]
