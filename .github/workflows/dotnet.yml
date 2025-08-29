@@ -186,7 +186,7 @@ jobs:
           path: ./**/Assets/Generated
           if-no-files-found: error
           retention-days: 1
-  docker_linux:
+  docker-linux:
     permissions:
       contents: read
     name: Docker (Linux)
@@ -219,7 +219,7 @@ jobs:
       - name: console (ubuntu-chiseled-aot)
         if: success() || failure()
         run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
-  docker_windows:
+  docker-windows:
     permissions:
       contents: read
     name: Docker (Windows)
@@ -254,10 +254,10 @@ jobs:
           dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" /p:TargetFramework=net9.0
           dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
       - name: console (windows-servercore-aot)
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts\win-x64-aot" . && docker run --rm -t console
+        run: docker buildx build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm -t console
   publish-test-results:
     name: Publish tests results
-    needs: [test, docker_linux, docker_windows]
+    needs: [test, docker-linux, docker-windows]
     runs-on: ubuntu-latest
     permissions:
       checks: write
