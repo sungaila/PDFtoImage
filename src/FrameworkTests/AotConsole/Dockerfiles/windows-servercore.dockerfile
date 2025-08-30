@@ -18,4 +18,5 @@ RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFI
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/build .
+USER ContainerUser
 ENTRYPOINT ["dotnet", "PDFtoImage.FrameworkTests.AotConsole.dll"]

@@ -5,4 +5,5 @@ WORKDIR /app
 ARG PUBLISH_DIR=artifacts/win-x64-aot
 COPY ${PUBLISH_DIR} C:/app/
 
+USER ContainerUser
 ENTRYPOINT ["PDFtoImage.FrameworkTests.AotConsole.exe"]
