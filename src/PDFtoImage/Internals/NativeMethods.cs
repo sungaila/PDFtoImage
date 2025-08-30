@@ -302,107 +302,81 @@ namespace PDFtoImage.Internals
         {
 #if NET7_0_OR_GREATER
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_DestroyLibrary();
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_CloseDocument(IntPtr document);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDF_GetPageCount(IntPtr document);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial uint FPDF_GetDocPermissions(IntPtr document);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFText_LoadPage(IntPtr page);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial double FPDF_GetPageWidth(IntPtr page);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial double FPDF_GetPageHeight(IntPtr page);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnBeforeClosePage(IntPtr page, IntPtr _form);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFText_ClosePage(IntPtr text_page);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_ClosePage(IntPtr page);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvCdecl) })]
             public static partial int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFBitmap_Destroy(IntPtr bitmapHandle);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial uint FPDF_GetLastError();
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDF_LoadCustomDocument(IntPtr access, string? password);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
 
             [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
 #else
 #pragma warning disable IDE0079
