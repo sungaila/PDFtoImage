@@ -155,7 +155,7 @@ namespace PDFtoImage.Internals
         {
             lock (LockString)
             {
-                Imports.FPDF_RenderPageBitmap(bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
+                Imports.FPDF_RenderPageBitmap(bitmap, page, start_x, start_y, size_x, size_y, rotate, (int)flags);
             }
         }
 
@@ -243,7 +243,7 @@ namespace PDFtoImage.Internals
         {
             lock (LockString)
             {
-                Imports.FPDF_FFLDraw(form, bitmap, page, start_x, start_y, size_x, size_y, rotate, flags);
+                Imports.FPDF_FFLDraw(form, bitmap, page, start_x, start_y, size_x, size_y, rotate, (int)flags);
             }
         }
 
@@ -300,8 +300,7 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-            // LibraryImport is not supported by Blazor WebAssembly
-#if NET7_0_OR_GREATER && FALSE
+#if NET7_0_OR_GREATER
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
@@ -364,7 +363,7 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+            public static partial void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvCdecl) })]
@@ -388,7 +387,7 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+            public static partial void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -455,7 +454,7 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_ClosePage(IntPtr page);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+            public static extern void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
@@ -473,7 +472,7 @@ namespace PDFtoImage.Internals
             public static extern uint FPDF_GetLastError();
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, FPDF flags);
+            public static extern void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
@@ -593,7 +592,7 @@ namespace PDFtoImage.Internals
         }
 
         [Flags]
-        public enum FPDF
+        public enum FPDF : int
         {
             /// <summary>
             /// Set if annotations are to be rendered.
