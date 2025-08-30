@@ -239,7 +239,7 @@ jobs:
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm console
       - name: Setup MSVC Developer Command Prompt
         if: success() || failure()
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
       - name: Setup .NET
@@ -274,7 +274,7 @@ jobs:
           merge-multiple: true
           path: artifacts
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@master
+        uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
         with:
           files: artifacts/**/*.trx
           check_name: Test results
@@ -283,7 +283,7 @@ jobs:
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
         if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master' && success()
-        uses: exuanbo/actions-deploy-gist@main
+        uses: exuanbo/actions-deploy-gist@47697fceaeea2006a90594ee24eb9cd0a1121ef8
         with:
           token: ${{ secrets.GIST_TOKEN }}
           gist_id: 003e8ab2211221897e4b3c0e564ed7b6
@@ -294,6 +294,9 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
+    permissions:
+      contents: read
+      pull-requests: read
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
@@ -339,11 +342,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="$SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
           dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
 
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
