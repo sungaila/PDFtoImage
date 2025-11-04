@@ -17,7 +17,7 @@ namespace PDFtoImage.Tests
                 Assert.Inconclusive("This test must run on Windows, Linux or macOS.");
 #endif
 
-            SaveOutputInGeneratedFolder = bool.Parse(TestContext?.Properties["SaveOutputInGeneratedFolder"]?.ToString() ?? false.ToString());
+            SaveOutputInGeneratedFolder = TestContext!.Properties.TryGetValue("SaveOutputInGeneratedFolder", out var value) && value != null && bool.TryParse(value.ToString(), out var parsed) && parsed;
         }
     }
 }

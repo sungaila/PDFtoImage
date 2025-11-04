@@ -143,7 +143,7 @@ namespace PDFtoImage.Tests
         {
             await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
-                await foreach (var page in ToImagesAsync((string)null!))
+                await foreach (var page in ToImagesAsync((string)null!, cancellationToken: TestContext!.CancellationToken))
                 {
                 }
             });
@@ -154,7 +154,7 @@ namespace PDFtoImage.Tests
         {
             await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
-                await foreach (var page in ToImagesAsync((byte[])null!))
+                await foreach (var page in ToImagesAsync((byte[])null!, cancellationToken: TestContext!.CancellationToken))
                 {
                 }
             });
@@ -165,7 +165,7 @@ namespace PDFtoImage.Tests
         {
             await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () =>
             {
-                await foreach (var page in ToImagesAsync((Stream)null!))
+                await foreach (var page in ToImagesAsync((Stream)null!, cancellationToken: TestContext!.CancellationToken))
                 {
                 }
             });
@@ -248,7 +248,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            var result = ToImagesAsync(inputStream);
+            var result = ToImagesAsync(inputStream, cancellationToken: TestContext!.CancellationToken);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
 
             await foreach (var _ in result) ;
@@ -261,7 +261,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            var result = ToImagesAsync(inputStream, false);
+            var result = ToImagesAsync(inputStream, false, cancellationToken: TestContext!.CancellationToken);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
 
             await foreach (var _ in result) ;
@@ -274,7 +274,7 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
             Assert.IsTrue(inputStream.CanRead);
 
-            var result = ToImagesAsync(inputStream, true);
+            var result = ToImagesAsync(inputStream, true, cancellationToken: TestContext!.CancellationToken);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open as long as the iterator is not used yet.");
 
             await foreach (var _ in result) ;
@@ -390,7 +390,7 @@ namespace PDFtoImage.Tests
             var image2 = ToImage(inputStream, leaveOpen: true);
             Assert.IsTrue(inputStream.CanRead, "The stream should be open when calling leaveOpen with true.");
 
-            Assert.IsTrue(image1.ByteCount > 0, "The rendered image should have content.");
+            Assert.IsGreaterThan(0, image1.ByteCount, "The rendered image should have content.");
             Assert.AreEqual(image1.ByteCount, image2.ByteCount, "Both images should be equal (in byte size).");
 
             GetPageSizes(inputStream, false);

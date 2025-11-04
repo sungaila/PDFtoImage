@@ -63,7 +63,7 @@ namespace PDFtoImage.Tests
         public static FileStream GetExpectedStream(string filePath)
         {
             if (!File.Exists(filePath))
-                Assert.Inconclusive("The expected asset '{0}' could not be found.", filePath);
+                Assert.Inconclusive($"The expected asset '{filePath}' could not be found.");
 
             return new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
         }

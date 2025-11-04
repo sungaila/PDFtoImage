@@ -96,7 +96,7 @@ namespace PDFtoImage.Tests
         public void SavePagesGrayscale(bool? grayscale)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
-            
+
             int page = 0;
 
             foreach (var image in ToImages(inputStream, options: grayscale != null ? new(Dpi: 40, Grayscale: grayscale.Value) : new(Dpi: 40)))
@@ -123,7 +123,7 @@ namespace PDFtoImage.Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.webp");
 
@@ -222,7 +222,7 @@ namespace PDFtoImage.Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.png");
 
@@ -321,7 +321,7 @@ namespace PDFtoImage.Tests
 
             int page = 0;
 
-            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations)))
+            await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 40, WithAnnotations: withAnnotations), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(withAnnotations ? "_ANNOT" : string.Empty)}.jpg");
 
@@ -357,8 +357,8 @@ namespace PDFtoImage.Tests
             using var image2 = ToImage(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations));
 
             Assert.IsNotNull(image);
-            Assert.IsTrue(Math.Abs(image.Width - image2.Width * (dpi / 300.0)) < 3);
-            Assert.IsTrue(Math.Abs(image.Height - image2.Height * (dpi / 300.0)) < 3);
+            Assert.IsLessThan(3, Math.Abs(image.Width - image2.Width * (dpi / 300.0)));
+            Assert.IsLessThan(3, Math.Abs(image.Height - image2.Height * (dpi / 300.0)));
         }
 
         [TestMethod]
@@ -383,8 +383,8 @@ namespace PDFtoImage.Tests
             using var image2 = ToImages(pdfStream2, options: new(Dpi: 300, WithAnnotations: withAnnotations)).Single();
 
             Assert.IsNotNull(image);
-            Assert.IsTrue(Math.Abs(image.Width - image2.Width * (dpi / 300.0)) < 3);
-            Assert.IsTrue(Math.Abs(image.Height - image2.Height * (dpi / 300.0)) < 3);
+            Assert.IsLessThan(3, Math.Abs(image.Width - image2.Width * (dpi / 300.0)));
+            Assert.IsLessThan(3, Math.Abs(image.Height - image2.Height * (dpi / 300.0)));
         }
 
 #if NET6_0_OR_GREATER
@@ -405,7 +405,7 @@ namespace PDFtoImage.Tests
         {
             using var pdfStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 
-            await foreach (var image in ToImagesAsync(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations)))
+            await foreach (var image in ToImagesAsync(pdfStream, options: new(Dpi: dpi, WithAnnotations: withAnnotations), cancellationToken: TestContext!.CancellationToken))
             {
                 Assert.IsNotNull(image);
             }
@@ -432,10 +432,10 @@ namespace PDFtoImage.Tests
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", pdfFileName));
             var token = new CancellationTokenSource();
 
+            token.Cancel();
+
             await Assert.ThrowsExactlyAsync<TaskCanceledException>(async () =>
             {
-                token.Cancel();
-
                 await foreach (var image in ToImagesAsync(inputStream, options: new(Dpi: 1200), cancellationToken: token.Token))
                 {
                 }

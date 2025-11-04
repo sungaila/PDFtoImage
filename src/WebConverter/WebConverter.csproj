@@ -41,9 +41,9 @@
 
   <ItemGroup>
     <PackageReference Include="ByteSize" Version="2.1.2" />
-    <PackageReference Include="Markdig.Signed" Version="0.41.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0-preview.7.25380.108" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0-preview.7.25380.108" PrivateAssets="all" />
+    <PackageReference Include="Markdig.Signed" Version="0.43.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0-rc.2.25502.107" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0-rc.2.25502.107" PrivateAssets="all" />
     <PackageReference Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
     <PackageReference Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
   </ItemGroup>

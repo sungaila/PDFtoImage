@@ -55,6 +55,9 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
     permissions:
       id-token: write
@@ -135,6 +138,9 @@ jobs:
       matrix:
         os: [windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.os }}
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET
@@ -297,6 +303,9 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
