@@ -85,9 +85,9 @@
 
   <!-- Shared packages -->
   <ItemGroup Condition="'$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst' and '$(TargetFramework)'!='net10.0-android' and '$(TargetFramework)'!='net10.0-ios' and '$(TargetFramework)'!='net10.0-maccatalyst'">
-    <PackageReference Include="bblanchon.PDFium.Linux" Version="139.0.7228" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.macOS" Version="139.0.7228" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="139.0.7228" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Linux" Version="144.0.7506" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.macOS" Version="144.0.7506" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="144.0.7506" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.119.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.119.1" PrivateAssets="analyzers" />
@@ -105,19 +105,19 @@
 
   <!-- Android packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net9.0-android' or '$(TargetFramework)'=='net10.0-android'">
-    <PackageReference Include="bblanchon.PDFium.Android" Version="139.0.7228" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Android" Version="144.0.7506" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" Version="3.119.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- iOS packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net9.0-ios' or '$(TargetFramework)'=='net10.0-ios'">
-    <PackageReference Include="bblanchon.PDFium.iOS" Version="139.0.7228" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.iOS" Version="144.0.7506" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.iOS" Version="3.119.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
   <!-- Mac Catalyst packages -->
   <ItemGroup Condition="'$(TargetFramework)'=='net9.0-maccatalyst' or '$(TargetFramework)'=='net10.0-maccatalyst'">
-    <PackageReference Include="bblanchon.PDFium.iOS" Version="139.0.7228" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.iOS" Version="144.0.7506" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.MacCatalyst" Version="3.119.1" PrivateAssets="analyzers" />
   </ItemGroup>
 
