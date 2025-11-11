@@ -21,7 +21,7 @@
   <ItemGroup>
     <None Include="Assets\**" />
     <ContentWithTargetPath Include="Assets\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
@@ -43,8 +43,8 @@
 
   <!-- NuGet Icon -->
   <ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" />
-		<PackageReference Include="MSTest.TestAdapter" Version="4.0.1" />
-		<PackageReference Include="MSTest.TestFramework" Version="4.0.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+		<PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
   </ItemGroup>
 </Project>

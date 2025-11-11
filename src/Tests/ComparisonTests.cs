@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -99,18 +100,24 @@ namespace PDFtoImage.Tests
 
             int page = 0;
 
+            var compare = new Dictionary<string, Stream>();
+
             foreach (var image in ToImages(inputStream, options: grayscale != null ? new(Dpi: 40, Grayscale: grayscale.Value) : new(Dpi: 40)))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{page}{(grayscale == true ? "_GRAYSCALE" : string.Empty)}.webp");
 
-                using var outputStream = CreateOutputStream(expectedPath);
+                var outputStream = CreateOutputStream(expectedPath);
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
-                CompareStreams(expectedPath, outputStream);
-
+                compare.Add(expectedPath, outputStream);
+                
                 page++;
             }
 
+            foreach (var item in compare)
+            {
+                CompareStreams(item.Key, item.Value);
+            }
         }
 
 #if NET6_0_OR_GREATER

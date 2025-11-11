@@ -84,13 +84,8 @@ jobs:
         dotnet-version: |
           8.x
           9.x
-        dotnet-quality: 'ga'
-    - name: Setup .NET (preview)
-      uses: actions/setup-dotnet@main
-      with:
-        dotnet-version: |
           10.x
-        dotnet-quality: 'preview'
+        dotnet-quality: 'ga'
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
