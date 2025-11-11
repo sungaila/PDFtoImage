@@ -1,6 +1,6 @@
 {
     "name": "de.sungaila.pdftoimage",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "displayName": "PDFtoImage",
     "description": "A .NET library to render PDF files into images.",
     "unity": "6000.0",
