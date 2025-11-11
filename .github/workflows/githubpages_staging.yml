@@ -25,12 +25,6 @@ jobs:
         with:
           dotnet-version: 10.x
           dotnet-quality: 'ga'
-      - name: Setup .NET workload maui-android
-        run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
       - name: Setup .NET workload wasm-tools
         run: dotnet workload install wasm-tools
       - name: Update relative paths
@@ -42,9 +36,9 @@ jobs:
             sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
             sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' manifest.webmanifest
       - name: Restore
-        run: dotnet restore src/WebConverter/WebConverter.csproj
+        run: dotnet restore src/WebConverter/WebConverter.csproj -r browser-wasm
       - name: Publish
-        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
+        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci -r browser-wasm --no-restore
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net10.0/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes

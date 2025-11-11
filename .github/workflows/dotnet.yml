@@ -310,12 +310,6 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
-      - name: Setup .NET workload maui-android
-        run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
@@ -339,7 +333,7 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug -r win-x64
           dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
 
           .\.sonar\scanner\dotnet-sonarscanner end
