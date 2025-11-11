@@ -12,7 +12,7 @@ WORKDIR "/src/src"
 
 FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build --no-restore
+RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM base AS final
 WORKDIR /app
