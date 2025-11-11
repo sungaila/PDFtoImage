@@ -6,13 +6,13 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
-RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" /p:TargetFramework=net10.0
+RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" -r linux-x64 -p:TargetFramework=net10.0
 COPY . .
 WORKDIR "/src/src"
 
 FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build -r linux-x64 --no-restore
 
 FROM base AS final
 WORKDIR /app
