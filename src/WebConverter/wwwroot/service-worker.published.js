@@ -71,7 +71,7 @@ async function onFetch(event) {
     } else if (event.request.method === 'POST') {
         if (event.request.url.endsWith('/receive-webshare')) {
             webShareFormData = await event.request.formData();
-            return Response.redirect('/PDFtoImage/', 303);
+            return Response.redirect('/', 303);
         }
     }
 

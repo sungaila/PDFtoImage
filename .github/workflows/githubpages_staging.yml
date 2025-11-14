@@ -35,12 +35,20 @@ jobs:
         run: dotnet workload install wasm-tools
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
+        shell: pwsh
         run: |
-            sed -i 's/<base href="\/" \/>/<base href="\/${{github.event.repository.name}}\/" \/>/g' index.html
-            sed -i 's/"scope": "\/"/"scope": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
-            sed -i 's/"start_url": "\/"/"start_url": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
-            sed -i 's/"action": "\/"/"action": "\/${{github.event.repository.name}}\/"/g' manifest.webmanifest
-            sed -i 's/"action": "\/receive-webshare"/"action": "\/${{github.event.repository.name}}\/receive-webshare"/g' manifest.webmanifest
+          # index.html
+          sed -i 's|<base href="/" />|<base href="/PDFtoImage/" />|g' index.html
+
+          # manifest.webmanifest
+          sed -i 's|"scope": "/"|"scope": "/PDFtoImage/"|g' manifest.webmanifest
+          sed -i 's|"start_url": "/"|"start_url": "/PDFtoImage/"|g' manifest.webmanifest
+          sed -i 's|"action": "/"|"action": "/PDFtoImage/"|g' manifest.webmanifest
+          sed -i 's|"action": "/receive-webshare"|"action": "/PDFtoImage/receive-webshare"|g' manifest.webmanifest
+
+          # service-worker.published.js
+          sed -i 's|const base = "/"|const base = "/PDFtoImage/"|g' service-worker.published.js
+          sed -i "s|Response.redirect('/', 303);|Response.redirect('/PDFtoImage/', 303);|g" service-worker.published.js
       - name: Restore
         run: dotnet restore src/WebConverter/WebConverter.csproj
       - name: Publish
