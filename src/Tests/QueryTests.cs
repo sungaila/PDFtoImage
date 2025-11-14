@@ -68,7 +68,7 @@ namespace PDFtoImage.Tests
                 Assert.IsFalse(size.IsEmpty, "PDF page size cannot be empty.");
             }
 
-            Assert.AreEqual(expectedSizeCount, result.Count, "Expected and actual PDF size count differs.");
+            Assert.HasCount(expectedSizeCount, result, "Expected and actual PDF size count differs.");
         }
     }
 }

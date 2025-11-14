@@ -205,7 +205,7 @@ namespace PDFtoImage.Tests
 
             int i = range.Start.Value;
 
-            await foreach (var bitmap in ToImagesAsync(inputStream, range, options: new(Dpi: 40)))
+            await foreach (var bitmap in ToImagesAsync(inputStream, range, options: new(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
@@ -225,7 +225,7 @@ namespace PDFtoImage.Tests
 
             int i = range.Start.Value;
 
-            await foreach (var bitmap in ToImagesAsync(inputStream, range, options: new(Dpi: 40)))
+            await foreach (var bitmap in ToImagesAsync(inputStream, range, options: new(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{i}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
@@ -245,7 +245,7 @@ namespace PDFtoImage.Tests
 
             int i = 0;
 
-            await foreach (var bitmap in ToImagesAsync(inputStream, selection, options: new(Dpi: 40)))
+            await foreach (var bitmap in ToImagesAsync(inputStream, selection, options: new(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);
@@ -265,7 +265,7 @@ namespace PDFtoImage.Tests
 
             int i = 0;
 
-            await foreach (var bitmap in ToImagesAsync(inputStream, selection, options: new(Dpi: 40)))
+            await foreach (var bitmap in ToImagesAsync(inputStream, selection, options: new(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 var expectedPath = Path.Combine("..", "Assets", "Expected", GetPlatformAsString(), $"Wikimedia_Commons_web_{selection[i]}.png");
                 using var outputStream = CreateOutputStream(expectedPath);

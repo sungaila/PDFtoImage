@@ -55,6 +55,9 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
     permissions:
       id-token: write
@@ -71,6 +74,7 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+            10.x
           dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
@@ -127,8 +131,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14, macos-15]
+        os: [windows-11-arm, windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-15, macos-15-intel, macos-26]
     runs-on: ${{ matrix.os }}
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET
@@ -137,6 +144,7 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+            10.x
           dotnet-quality: 'ga'
       - name: Download test assemblies
         if: (success() || failure())
@@ -155,6 +163,9 @@ jobs:
       - name: .NET 9
         if: success() || failure()
         run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 10
+        if: success() || failure()
+        run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@main
@@ -171,15 +182,11 @@ jobs:
           path: ./**/Assets/Generated
           if-no-files-found: error
           retention-days: 1
-  docker:
+  docker-linux:
     permissions:
       contents: read
-    name: Docker (${{ matrix.os }})
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+    name: Docker (Linux)
+    runs-on: ubuntu-latest
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
@@ -191,29 +198,62 @@ jobs:
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
       - name: console (alpine)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm console
       - name: console (alpine-aot)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm console
       - name: console (ubuntu)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm console
       - name: console (ubuntu-chiseled)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm  -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm console
       - name: console (ubuntu-aot)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm  -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm console
       - name: console (ubuntu-chiseled-aot)
-        if: runner.os == 'Linux' && (success() || failure())
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm  -t console
+        if: success() || failure()
+        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm console
+  docker-windows:
+    permissions:
+      contents: read
+    name: Docker (Windows)
+    runs-on: windows-2025
+    if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+          sparse-checkout: |
+            src/PDFtoImage
+            src/FrameworkTests/AotConsole
+            src/Tests/Assets/SocialPreview.pdf
       - name: console (windows-servercore)
-        if: runner.os == 'Windows' && (success() || failure())
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm -t console
+        if: success() || failure()
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm console
+      - name: Setup MSVC Developer Command Prompt
+        if: success() || failure()
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
+        with:
+          arch: x64
+      - name: Setup .NET
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@main
+        with:
+          dotnet-version: |
+            10.x
+          dotnet-quality: 'ga'
+      - name: Publish AOT (win-x64, self-contained)
+        run: |
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
+      - name: console (windows-servercore-aot)
+        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
   publish-test-results:
     name: Publish tests results
-    needs: [test, docker]
+    needs: [test, docker-linux, docker-windows]
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -230,7 +270,7 @@ jobs:
           merge-multiple: true
           path: artifacts
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@master
+        uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
         with:
           files: artifacts/**/*.trx
           check_name: Test results
@@ -239,7 +279,7 @@ jobs:
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
         if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master' && success()
-        uses: exuanbo/actions-deploy-gist@main
+        uses: exuanbo/actions-deploy-gist@47697fceaeea2006a90594ee24eb9cd0a1121ef8
         with:
           token: ${{ secrets.GIST_TOKEN }}
           gist_id: 003e8ab2211221897e4b3c0e564ed7b6
@@ -250,6 +290,12 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: windows-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
@@ -262,6 +308,7 @@ jobs:
           dotnet-version: |
             8.x
             9.x
+            10.x
           dotnet-quality: 'ga'
       - name: Setup .NET workload maui-android
         run: dotnet workload install maui-android
@@ -277,21 +324,7 @@ jobs:
           java-version: 17
           java-package: jdk
           distribution: 'zulu'
-      - name: Cache SonarCloud packages
-        uses: actions/cache@main
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarCloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@main
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
       - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
@@ -303,7 +336,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet build src/PDFtoImage.SonarCloud.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
           dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+          .\.sonar\scanner\dotnet-sonarscanner end
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
