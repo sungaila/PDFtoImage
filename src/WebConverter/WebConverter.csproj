@@ -11,6 +11,9 @@
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
+		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<InvariantTimezone>true</InvariantTimezone>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <AssemblyOriginatorKeyFile>WebConverter.snk</AssemblyOriginatorKeyFile>
