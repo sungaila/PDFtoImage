@@ -87,7 +87,7 @@
   <ItemGroup Condition="'$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst' and '$(TargetFramework)'!='net10.0-android' and '$(TargetFramework)'!='net10.0-ios' and '$(TargetFramework)'!='net10.0-maccatalyst'">
     <PackageReference Include="bblanchon.PDFium.Linux" Version="139.0.7215" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" Version="139.0.7215" PrivateAssets="analyzers" />
-    <PackageReference Include="bblanchon.PDFium.Win32" Version="139.0.7215" PrivateAssets="analyzers" />
+    <PackageReference Include="bblanchon.PDFium.Win32" Version="144.0.7557" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="3.119.1" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="3.119.1" PrivateAssets="analyzers" />
