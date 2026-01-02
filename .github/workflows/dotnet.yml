@@ -39,9 +39,9 @@ on:
         description: Publish test results
         required: true
         default: true
-      generate_sbom:
+      generate_attestation:
         type: boolean
-        description: Generate SBOM (CycloneDX)
+        description: Generate attestations
         required: true
         default: true
       run_lint:
@@ -141,10 +141,10 @@ jobs:
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Format
         run: dotnet format src/PDFtoImage.Build.slnf --verify-no-changes
-  sbom:
-    name: SBOM (CycloneDX)
+  generate_attestation:
+    name: Attestation
     runs-on: windows-latest
-    if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_sbom) == true) && github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_attestation) == true) && github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: read
       id-token: write
@@ -177,14 +177,14 @@ jobs:
         run: |
           dotnet tool install --tool-path ./.tools CycloneDX
           echo "${{ github.workspace }}/.tools" >> $GITHUB_PATH
-      - name: Restore
-        run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Pack
-        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci --no-restore
+        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-path: src/PDFtoImage/bin/Release/*.nupkg
+          subject-path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
       - name: Publish NuGet packages
         uses: actions/upload-artifact@v6
         with:
@@ -197,7 +197,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p artifacts/sbom
-          dotnet-CycloneDX src/PDFtoImage.Build.slnf -o artifacts/sbom -F Json -fn bom.json
+          dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts/sbom -F Json -fn bom.json
       - name: Attest SBOM for NuGet packages
         uses: actions/attest-sbom@v3
         with:
@@ -205,6 +205,12 @@ jobs:
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
           sbom-path: artifacts/sbom/bom.json
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: SBOM (CycloneDX)
+          path: artifacts/sbom/bom.json
+          if-no-files-found: error
   build:
     name: Build
     runs-on: windows-latest
