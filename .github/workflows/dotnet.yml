@@ -464,7 +464,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Analyze
-        if: secrets.SONAR_TOKEN != ''
+        if: env.SONAR_TOKEN != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
