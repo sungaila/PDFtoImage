@@ -71,7 +71,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Dependency review
+      - name: Review
         uses: actions/dependency-review-action@v4
   dependency-submission:
     name: Dependency submission
@@ -170,13 +170,8 @@ jobs:
           maui-android
           maui-ios
           maui-maccatalyst
-          maui-windows
-          wasm-tools
       - name: Install CycloneDX tool
-        shell: bash
-        run: |
-          dotnet tool install --tool-path ./.tools CycloneDX
-          echo "${{ github.workspace }}/.tools" >> $GITHUB_PATH
+        run: dotnet tool install --global CycloneDX
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
       - name: Generate artifact attestation
@@ -194,22 +189,19 @@ jobs:
             src/PDFtoImage/bin/Release/*.snupkg
           if-no-files-found: error
       - name: Generate SBOM (CycloneDX JSON)
-        shell: bash
-        run: |
-          mkdir -p artifacts/sbom
-          dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts/sbom -F Json -fn bom.json
+        run: dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts -F Json -fn sbom.json
       - name: Attest SBOM for NuGet packages
         uses: actions/attest-sbom@v3
         with:
           subject-path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
-          sbom-path: artifacts/sbom/bom.json
+          sbom-path: artifacts/sbom.json
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v6
         with:
           name: SBOM (CycloneDX)
-          path: artifacts/sbom/bom.json
+          path: artifacts/sbom.json
           if-no-files-found: error
   build:
     name: Build
