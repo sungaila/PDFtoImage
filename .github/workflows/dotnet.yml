@@ -62,17 +62,6 @@ on:
       - '**'
 
 jobs:
-  dependency-review:
-    name: Dependency review
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Review
-        uses: actions/dependency-review-action@v4
   dependency-submission:
     name: Dependency submission
     runs-on: windows-latest
@@ -108,6 +97,17 @@ jobs:
         uses: advanced-security/component-detection-dependency-submission-action@d433c2f467e149a8009c8fbce92cc708ed15ef7b
         with:
           detectorsCategories: "NuGet"
+  dependency-review:
+    name: Dependency review
+    needs: dependency-submission
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Review
+        uses: actions/dependency-review-action@v4
   lint:
     name: Lint
     runs-on: windows-latest
