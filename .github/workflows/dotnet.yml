@@ -39,6 +39,16 @@ on:
         description: Publish test results
         required: true
         default: true
+      generate_attestation:
+        type: boolean
+        description: Generate attestations
+        required: true
+        default: true
+      run_lint:
+        type: boolean
+        description: Run linting
+        required: true
+        default: true
       run_sonarcloud:
         type: boolean
         description: Run SonarCloud
@@ -52,53 +62,184 @@ on:
       - '**'
 
 jobs:
-  build:
-    name: Build
-    runs-on: windows-latest
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
-      TERM: xterm-256color
-    if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     permissions:
-      id-token: write
       contents: read
-      attestations: write
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6
+      - name: Review
+        uses: actions/dependency-review-action@v4
+  dependency-submission:
+    name: Dependency submission
+    runs-on: windows-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    permissions:
+      contents: write
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@main
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.x
             9.x
             10.x
           dotnet-quality: 'ga'
-      - name: Setup .NET workload maui-android
-        run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
-      - name: Setup .NET workload maui-windows
-        run: dotnet workload install maui-windows
-      - name: Setup .NET workload wasm-tools
-        run: dotnet workload install wasm-tools
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
+          maui-windows
+          wasm-tools
+      - name: Restore
+        run: dotnet restore src/PDFtoImage.Build.slnf
+      - name: Component detection
+        uses: advanced-security/component-detection-dependency-submission-action@d433c2f467e149a8009c8fbce92cc708ed15ef7b
+        with:
+          detectorsCategories: "NuGet"
+  lint:
+    name: Lint
+    runs-on: windows-latest
+    if: (github.event_name != 'workflow_dispatch' && true || inputs.run_lint) == true
+    permissions:
+      contents: read
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
+          maui-windows
+          wasm-tools
+      - name: Restore
+        run: dotnet restore src/PDFtoImage.Build.slnf
+      - name: Format
+        run: dotnet format src/PDFtoImage.Build.slnf --verify-no-changes
+  generate_attestation:
+    name: Attestation
+    runs-on: windows-latest
+    if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_attestation) == true) && github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
+      - name: Install CycloneDX tool
+        run: dotnet tool install --global CycloneDX
+      - name: Pack
+        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
+      - name: Publish NuGet packages
+        uses: actions/upload-artifact@v6
+        with:
+          name: NuGet packages
+          path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
+          if-no-files-found: error
+      - name: Generate SBOM (CycloneDX JSON)
+        run: dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts -F Json -fn sbom.json
+      - name: Attest SBOM for NuGet packages
+        uses: actions/attest-sbom@v3
+        with:
+          subject-path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
+          sbom-path: artifacts/sbom.json
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: SBOM (CycloneDX)
+          path: artifacts/sbom.json
+          if-no-files-found: error
+  build:
+    name: Build
+    runs-on: windows-latest
+    env:
+      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+    if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+          dotnet-quality: 'ga'
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
+          maui-windows
+          wasm-tools
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
         run: dotnet build src/PDFtoImage.Build.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
-      - name: Generate artifact attestation
-        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master'
-        uses: actions/attest-build-provenance@main
-        with:
-          subject-path: src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
       - name: Publish libraries
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v6
         with:
           name: Library assemblies
           path: |
@@ -107,15 +248,15 @@ jobs:
             !**/*.snupkg
           if-no-files-found: error
       - name: Publish NuGet packages
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v6
         with:
-          name: NuGet packages
+          name: NuGet packages (for testing)
           path: |
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
       - name: Publish tests
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v6
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
@@ -135,11 +276,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
-      TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET
-        uses: actions/setup-dotnet@main
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.x
@@ -148,7 +288,7 @@ jobs:
           dotnet-quality: 'ga'
       - name: Download test assemblies
         if: (success() || failure())
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v7
         with:
           name: Test assemblies
       - name: .NET Framework 4.7.1
@@ -168,7 +308,7 @@ jobs:
         run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v6
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
@@ -176,7 +316,7 @@ jobs:
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v6
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
@@ -190,7 +330,7 @@ jobs:
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           sparse-checkout: |
@@ -223,7 +363,7 @@ jobs:
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           sparse-checkout: |
@@ -240,7 +380,7 @@ jobs:
           arch: x64
       - name: Setup .NET
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@main
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             10.x
@@ -253,7 +393,7 @@ jobs:
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
   publish-test-results:
     name: Publish tests results
-    needs: [test, docker-linux, docker-windows]
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -264,13 +404,13 @@ jobs:
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v7
         with:
           pattern: Test results (*)
           merge-multiple: true
           path: artifacts
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@3a74b2957438d0b6e2e61d67b05318aa25c9e6c6
+        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         with:
           files: artifacts/**/*.trx
           check_name: Test results
@@ -295,31 +435,30 @@ jobs:
       pull-requests: read
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
-      TERM: xterm-256color
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@main
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             8.x
             9.x
             10.x
           dotnet-quality: 'ga'
-      - name: Setup .NET workload maui-android
-        run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
-        uses: actions/setup-java@main
+        uses: actions/setup-java@v5
         with:
           java-version: 17
           java-package: jdk
@@ -330,7 +469,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Analyze
-        if: ${{ env.SONAR_TOKEN != '' }}
+        if: env.SONAR_TOKEN != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -57,7 +57,7 @@ jobs:
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
@@ -67,7 +67,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
@@ -79,32 +79,23 @@ jobs:
         # queries: security-extended,security-and-quality
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@main
+      if: matrix.language == 'csharp'
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.x
           9.x
           10.x
         dotnet-quality: 'ga'
-
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
+    
+    - if: matrix.language == 'csharp'
       shell: bash
       run: |
-        dotnet workload install maui-android
-        dotnet workload install maui-ios
-        dotnet workload install maui-maccatalyst
-        dotnet workload install maui-windows
-        dotnet workload install wasm-tools
+        dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
         dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
         dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"

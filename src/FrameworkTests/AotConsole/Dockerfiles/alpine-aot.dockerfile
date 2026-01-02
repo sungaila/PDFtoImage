@@ -3,8 +3,11 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS restore
 ARG BUILD_CONFIGURATION=Release
-RUN apk update \
-    && apk add clang build-base zlib-dev lld
+RUN apk update && apk add \
+  clang \
+  build-base \
+  zlib-dev \
+  lld
 WORKDIR /src
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
@@ -14,11 +17,11 @@ WORKDIR "/src/src"
 
 FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build -r linux-musl-x64 --no-restore
+RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c "$BUILD_CONFIGURATION" -o /app/build -r linux-musl-x64 --no-restore
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r linux-musl-x64 --no-restore
+RUN dotnet publish "./FrameworkTests/AotConsole/AotConsole.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish -r linux-musl-x64 --no-restore
 
 FROM base AS final
 WORKDIR /app
