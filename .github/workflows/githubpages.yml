@@ -11,27 +11,25 @@ jobs:
     runs-on: windows-latest
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
-      TERM: xterm-256color
     permissions:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@main
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.x
           dotnet-quality: 'ga'
-      - name: Setup .NET workload maui-android
-        run: dotnet workload install maui-android
-      - name: Setup .NET workload maui-ios
-        run: dotnet workload install maui-ios
-      - name: Setup .NET workload maui-maccatalyst
-        run: dotnet workload install maui-maccatalyst
-      - name: Setup .NET workload wasm-tools
-        run: dotnet workload install wasm-tools
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install
+          maui-android
+          maui-ios
+          maui-maccatalyst
+          wasm-tools
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         shell: pwsh
@@ -85,7 +83,7 @@ jobs:
           done
           echo -n "$jsFile" > service-worker-assets.js
       - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@main
+        uses: actions/upload-pages-artifact@v4
         with:
           path: src/WebConverter/bin/Release/net10.0/publish/wwwroot
   deploy:
@@ -109,4 +107,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@main
+        uses: actions/deploy-pages@v4

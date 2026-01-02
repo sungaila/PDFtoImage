@@ -110,7 +110,7 @@ namespace PDFtoImage.Tests
                 image.Encode(outputStream, SKEncodedImageFormat.Webp, 100);
 
                 compare.Add(expectedPath, outputStream);
-                
+
                 page++;
             }
 

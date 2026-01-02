@@ -57,7 +57,7 @@ jobs:
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
@@ -79,7 +79,7 @@ jobs:
         # queries: security-extended,security-and-quality
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@main
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
           8.x
@@ -96,15 +96,11 @@ jobs:
     - if: matrix.build-mode == 'manual'
       shell: bash
       run: |
-        dotnet workload install maui-android
-        dotnet workload install maui-ios
-        dotnet workload install maui-maccatalyst
-        dotnet workload install maui-windows
-        dotnet workload install wasm-tools
+        dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
         dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
         dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
