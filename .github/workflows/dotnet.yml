@@ -68,8 +68,6 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -108,7 +106,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Component detection
-        uses: advanced-security/component-detection-dependency-submission-action@main
+        uses: advanced-security/component-detection-dependency-submission-action@d433c2f467e149a8009c8fbce92cc708ed15ef7b
         with:
           detectorsCategories: "NuGet"
   lint:
@@ -140,8 +138,10 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
+      - name: Restore
+        run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Format
-        run: dotnet format src/PDFtoImage.sln --verify-no-changes
+        run: dotnet format src/PDFtoImage.Build.slnf --verify-no-changes
   sbom:
     name: SBOM (CycloneDX)
     runs-on: windows-latest
@@ -388,7 +388,7 @@ jobs:
         run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
   publish-test-results:
     name: Publish tests results
-    needs: [test, docker-linux, docker-windows]
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       checks: write

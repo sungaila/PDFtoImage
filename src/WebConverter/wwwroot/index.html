@@ -25,7 +25,7 @@
         // https://github.com/rafgraph/spa-github-pages
         // This script checks to see if a redirect is present in the query string,
         // converts it back into the correct url and adds it to the
-        // browser's history using window.history.replaceState(...),
+        // browser's history using globalThis.history.replaceState(...),
         // which won't cause the browser to attempt to load the new url.
         // When the single page app is loaded further down in this file,
         // the correct url will be waiting in the browser's history for
@@ -35,11 +35,11 @@
                 var decoded = l.search.slice(1).split('&').map(function (s) {
                     return s.replace(/~and~/g, '&')
                 }).join('?');
-                window.history.replaceState(null, null,
+                globalThis.history.replaceState(null, null,
                     l.pathname.slice(0, -1) + decoded + l.hash
                 );
             }
-        }(window.location))
+        }(globalThis.location))
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
 </head>
@@ -73,29 +73,29 @@
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js" crossorigin="anonymous"></script>
     <script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>
     <script>
-        window.matchMedia('(prefers-color-scheme: dark)').onchange = event => {
+        globalThis.matchMedia('(prefers-color-scheme: dark)').onchange = event => {
             if (event.matches) {
-                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                document.documentElement.dataset.bsTheme = 'dark';
             } else {
-                document.documentElement.setAttribute('data-bs-theme', 'light');
+                document.documentElement.dataset.bsTheme = 'light';
             }
         };
 
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        if (globalThis.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.dataset.bsTheme = 'dark';
         } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
+            document.documentElement.dataset.bsTheme = 'light';
         }
 
         document.body.classList.remove('body-dummy');
     </script>
     <script>
-        window.setDotNetHelper = dotNetHelper => {
-            window.dotNetHelper = dotNetHelper;
+        globalThis.setDotNetHelper = dotNetHelper => {
+            globalThis.dotNetHelper = dotNetHelper;
 
             navigator.serviceWorker.onmessage = async event => {
                 if (event.data?.type === 'receive-webshare') {
-                    await window.dotNetHelper?.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
+                    await globalThis.dotNetHelper?.invokeMethodAsync('ReceiveWebShareTargetAsync', JSON.stringify(event.data.payload));
                 }
             };
 
@@ -107,13 +107,13 @@
                 });
         }
 
-        window.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
+        globalThis.createFileFromStream = async (fileName, mimeType, contentStreamReference) => {
             const arrayBuffer = await contentStreamReference.arrayBuffer();
             const blob = new Blob([arrayBuffer], { type: mimeType });
             return new File([blob], fileName, { type: blob.type });
         }
 
-        window.downloadFileFromStream = async (fileName, imageMime, contentStreamReference) => {
+        globalThis.downloadFileFromStream = async (fileName, imageMime, contentStreamReference) => {
             const arrayBuffer = await contentStreamReference.arrayBuffer();
             const blob = new Blob([arrayBuffer], { type: imageMime });
             const url = URL.createObjectURL(blob);
@@ -125,7 +125,7 @@
             URL.revokeObjectURL(url);
         }
 
-        window.setImage = async (imageElementId, imageMime, imageStream) => {
+        globalThis.setImage = async (imageElementId, imageMime, imageStream) => {
             const arrayBuffer = await imageStream.arrayBuffer();
             const blob = new Blob([arrayBuffer], { type: imageMime });
             const url = URL.createObjectURL(blob);
@@ -136,24 +136,24 @@
             image.src = url;
         }
 
-        window.resetImage = async (imageElementId) => {
+        globalThis.resetImage = async (imageElementId) => {
             const image = document.getElementById(imageElementId);
             image.src = 'favicon.png';
         }
     </script>
     <script>
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        if (globalThis.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.dataset.bsTheme = 'dark';
         } else {
-            document.documentElement.setAttribute('data-bs-theme', 'light');
+            document.documentElement.dataset.bsTheme = 'light';
         }
 
-        window.toggleTheme = () => {
-            if (document.documentElement.getAttribute('data-bs-theme') == 'dark') {
-                document.documentElement.setAttribute('data-bs-theme', 'light')
+        globalThis.toggleTheme = () => {
+            if (document.documentElement.dataset.bsTheme == 'dark') {
+                document.documentElement.dataset.bsTheme = 'light';
             }
             else {
-                document.documentElement.setAttribute('data-bs-theme', 'dark')
+                document.documentElement.dataset.bsTheme = 'dark';
             }
         }
     </script>

@@ -12,14 +12,14 @@ WORKDIR "/src/src"
 
 FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/build -r linux-x64 --no-restore
+RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c "$BUILD_CONFIGURATION" -o /app/build -r linux-x64 --no-restore
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN apt update && apt install -y \
   clang \
   zlib1g-dev
-RUN dotnet publish "./FrameworkTests/AotConsole/AotConsole.csproj" -c $BUILD_CONFIGURATION -o /app/publish -r linux-x64 --no-restore
+RUN dotnet publish "./FrameworkTests/AotConsole/AotConsole.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish -r linux-x64 --no-restore
 
 FROM base AS final
 WORKDIR /app
