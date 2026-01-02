@@ -4,6 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS restore
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["src/Directory.Packages.props", "src/Directory.Packages.props"]
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
 RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" -r linux-musl-x64 -p:TargetFramework=net10.0

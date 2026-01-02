@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyOriginatorKeyFile>Tests.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
+	
   <!-- C# compiler -->
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
@@ -17,7 +17,7 @@
     <NoWarn>CS0618,CA1416</NoWarn>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-
+	
   <ItemGroup>
     <None Include="Assets\**" />
     <ContentWithTargetPath Include="Assets\**">
@@ -25,26 +25,26 @@
       <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-
+	
   <ItemGroup>
     <None Remove="SaveOutputInGeneratedFolder.runsettings" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <Content Include="SaveOutputInGeneratedFolder.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
+	
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
-
+	
   <!-- NuGet Icon -->
   <ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-		<PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
-		<PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
   </ItemGroup>
 </Project>

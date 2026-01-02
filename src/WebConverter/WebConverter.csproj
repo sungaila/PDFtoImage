@@ -11,15 +11,15 @@
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
-		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<InvariantTimezone>true</InvariantTimezone>
+    <WasmStripILAfterAOT>true</WasmStripILAfterAOT>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantTimezone>true</InvariantTimezone>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <AssemblyOriginatorKeyFile>WebConverter.snk</AssemblyOriginatorKeyFile>
-		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
   </PropertyGroup>
-
+	
   <!-- C# compiler -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
@@ -29,33 +29,33 @@
     <NoWarn>CA1416;CS8002</NoWarn>
     <SignAssembly>True</SignAssembly>
   </PropertyGroup>
-
+	
   <!-- Debug builds -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <VersionSuffix>debug</VersionSuffix>
   </PropertyGroup>
-
+	
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <EmccCompileOptimizationFlag>-O0 -g3 -s ASSERTIONS=2 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=1</EmccCompileOptimizationFlag>
   </PropertyGroup>
-
+	
   <PropertyGroup Condition="'$(Configuration)'!='Debug'">
     <EmccCompileOptimizationFlag>-Oz -g0 -s ASSERTIONS=0 -s SAFE_HEAP=0 -s STACK_OVERFLOW_CHECK=0</EmccCompileOptimizationFlag>
   </PropertyGroup>
-
+	
   <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.1.2" />
-    <PackageReference Include="Markdig.Signed" Version="0.44.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" PrivateAssets="all" />
-    <PackageReference Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
-    <PackageReference Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
+    <PackageReference Include="ByteSize" />
+    <PackageReference Include="Markdig.Signed" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="PatrickJahr.Blazor.FileHandling" />
+    <PackageReference Include="PatrickJahr.Blazor.WebShare" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />

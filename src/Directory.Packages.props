@@ -1,0 +1,37 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+	
+  <ItemGroup>
+		<PackageVersion Include="bblanchon.PDFium.Android" Version="144.0.7557" />
+		<PackageVersion Include="bblanchon.PDFium.iOS" Version="144.0.7557" />
+    <PackageVersion Include="bblanchon.PDFium.Linux" Version="144.0.7557" />
+    <PackageVersion Include="bblanchon.PDFium.MacCatalyst" Version="144.0.7557" />
+		<PackageVersion Include="bblanchon.PDFium.macOS" Version="144.0.7557" />
+    <PackageVersion Include="bblanchon.PDFium.Win32" Version="144.0.7557" />
+    <PackageVersion Include="ByteSize" Version="2.1.2" />
+    <PackageVersion Include="Markdig.Signed" Version="0.44.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="4.14.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="4.0.2" />
+    <PackageVersion Include="MSTest.TestFramework" Version="4.0.2" />
+    <PackageVersion Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
+    <PackageVersion Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
+		<PackageVersion Include="PolySharp" Version="1.15.0" />
+    <PackageVersion Include="SkiaSharp" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.Android" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.iOS" Version="3.119.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.MacCatalyst" Version="3.119.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.macOS" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Win32" Version="3.119.1" />
+		<PackageVersion Include="Sungaila.PDFium.BlazorWebAssembly" Version="134.0.6982" />
+  </ItemGroup>
+</Project>
