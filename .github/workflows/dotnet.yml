@@ -63,6 +63,7 @@ on:
 
 jobs:
   dependency-review:
+    name: Dependency review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     permissions:
@@ -144,7 +145,6 @@ jobs:
   sbom:
     name: SBOM (CycloneDX)
     runs-on: windows-latest
-    needs: build
     if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_sbom) == true) && github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: read
