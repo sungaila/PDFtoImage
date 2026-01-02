@@ -79,7 +79,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: write
-      id-token: write
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     steps:
@@ -173,24 +172,39 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
-      - name: Restore
-        run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Install CycloneDX tool
         shell: bash
         run: |
           dotnet tool install --tool-path ./.tools CycloneDX
           echo "${{ github.workspace }}/.tools" >> $GITHUB_PATH
+      - name: Restore
+        run: dotnet restore src/PDFtoImage.Build.slnf
+      - name: Pack
+        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci --no-restore
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: src/PDFtoImage/bin/Release/*.nupkg
+      - name: Publish NuGet packages
+        uses: actions/upload-artifact@v6
+        with:
+          name: NuGet packages
+          path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
+          if-no-files-found: error
       - name: Generate SBOM (CycloneDX JSON)
         shell: bash
         run: |
           mkdir -p artifacts/sbom
           dotnet-CycloneDX src/PDFtoImage.Build.slnf -o artifacts/sbom -F Json -fn bom.json
-      - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v6
+      - name: Attest SBOM for NuGet packages
+        uses: actions/attest-sbom@v3
         with:
-          name: sbom-cyclonedx
-          path: artifacts/sbom/bom.json
-          if-no-files-found: error
+          subject-path: |
+            src/PDFtoImage/bin/Release/*.nupkg
+            src/PDFtoImage/bin/Release/*.snupkg
+          sbom-path: artifacts/sbom/bom.json
   build:
     name: Build
     runs-on: windows-latest
@@ -198,9 +212,7 @@ jobs:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
     permissions:
-      id-token: write
       contents: read
-      attestations: write
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -228,11 +240,6 @@ jobs:
         run: dotnet build src/PDFtoImage.Build.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
-      - name: Generate artifact attestation
-        if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master'
-        uses: actions/attest-build-provenance@v3
-        with:
-          subject-path: src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
       - name: Publish libraries
         uses: actions/upload-artifact@v6
         with:
@@ -245,7 +252,7 @@ jobs:
       - name: Publish NuGet packages
         uses: actions/upload-artifact@v6
         with:
-          name: NuGet packages
+          name: NuGet packages (for testing)
           path: |
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg

@@ -79,6 +79,7 @@ jobs:
         # queries: security-extended,security-and-quality
 
     - name: Setup .NET
+      if: matrix.language == 'csharp'
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: |
@@ -86,14 +87,8 @@ jobs:
           9.x
           10.x
         dotnet-quality: 'ga'
-
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - if: matrix.build-mode == 'manual'
+    
+    - if: matrix.language == 'csharp'
       shell: bash
       run: |
         dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
