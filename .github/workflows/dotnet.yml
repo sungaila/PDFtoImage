@@ -145,7 +145,7 @@ jobs:
   generate_attestation:
     name: Attestation
     runs-on: windows-latest
-    if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_attestation) == true) && github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
+    if: ((github.event_name != 'workflow_dispatch' && true || inputs.generate_attestation) == true) || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: read
       id-token: write
