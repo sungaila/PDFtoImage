@@ -450,6 +450,8 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Disable .NET problem matcher (no annotations)
+        run: echo "::remove-matcher owner=csc::"
       - name: Setup .NET workloads
         run: >
           dotnet workload install
