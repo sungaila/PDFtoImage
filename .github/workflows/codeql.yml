@@ -88,7 +88,8 @@ jobs:
           10.x
         dotnet-quality: 'ga'
     
-    - if: matrix.language == 'csharp'
+    - name: Setup .NET workloads
+      if: matrix.language == 'csharp'
       shell: bash
       run: |
         dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
