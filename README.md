@@ -45,6 +45,15 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 
+## No parallelization support
+The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks.
+
+This means that you can only process one PDF at a time.
+
+If you need true parallel processing, you’ll have to spawn multiple processes and distribute the workload across them, then collect the results using inter-process communication (IPC) and appropriate serialization.
+
+Ghostscript may be easier for this use case, since (under certain conditions) it can support multiple instances within the same process.
+
 ## Index and Range for .NET Framework
 [PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable the use of `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed, which **should not be** used directly by your project:
 - `System.Index`
