@@ -9,8 +9,6 @@ jobs:
   publish:
     name: Publish
     runs-on: windows-latest
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     permissions:
       contents: read
     steps:
