@@ -6,10 +6,10 @@
 	<ItemGroup>
 		<PackageVersion Include="bblanchon.PDFium.Android" Version="144.0.7557" />
 		<PackageVersion Include="bblanchon.PDFium.iOS" Version="144.0.7557" />
-		<PackageVersion Include="bblanchon.PDFium.Linux" Version="144.0.7557" />
+		<PackageVersion Include="bblanchon.PDFium.Linux" Version="145.0.7616" />
 		<PackageVersion Include="bblanchon.PDFium.MacCatalyst" Version="144.0.7557" />
-		<PackageVersion Include="bblanchon.PDFium.macOS" Version="144.0.7557" />
-		<PackageVersion Include="bblanchon.PDFium.Win32" Version="144.0.7557" />
+		<PackageVersion Include="bblanchon.PDFium.macOS" Version="145.0.7616" />
+		<PackageVersion Include="bblanchon.PDFium.Win32" Version="145.0.7616" />
 		<PackageVersion Include="ByteSize" Version="2.1.2" />
 		<PackageVersion Include="Markdig.Signed" Version="0.44.0" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
