@@ -68,8 +68,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: write
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -115,8 +113,6 @@ jobs:
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_lint) == true
     permissions:
       contents: read
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -150,8 +146,6 @@ jobs:
       contents: read
       id-token: write
       attestations: write
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -207,8 +201,6 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     if: (github.event_name != 'workflow_dispatch' && true || inputs.run_build) == true
     permissions:
       contents: read
@@ -277,6 +269,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
+      TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET
@@ -434,8 +427,6 @@ jobs:
     permissions:
       contents: read
       pull-requests: read
-    env:
-      DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
