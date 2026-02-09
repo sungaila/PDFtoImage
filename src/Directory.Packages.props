@@ -24,14 +24,14 @@
 		<PackageVersion Include="PatrickJahr.Blazor.FileHandling" Version="1.0.0" />
 		<PackageVersion Include="PatrickJahr.Blazor.WebShare" Version="1.0.0" />
 		<PackageVersion Include="PolySharp" Version="1.15.0" />
-		<PackageVersion Include="SkiaSharp" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp" Version="3.119.2" />
 		<PackageVersion Include="SkiaSharp.NativeAssets.Android" Version="3.119.1" />
 		<PackageVersion Include="SkiaSharp.NativeAssets.iOS" Version="3.119.1" />
-		<PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.2" />
 		<PackageVersion Include="SkiaSharp.NativeAssets.MacCatalyst" Version="3.119.1" />
-		<PackageVersion Include="SkiaSharp.NativeAssets.macOS" Version="3.119.1" />
-		<PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.1" />
-		<PackageVersion Include="SkiaSharp.NativeAssets.Win32" Version="3.119.1" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.macOS" Version="3.119.2" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="3.119.2" />
+		<PackageVersion Include="SkiaSharp.NativeAssets.Win32" Version="3.119.2" />
 		<PackageVersion Include="Sungaila.PDFium.BlazorWebAssembly" Version="134.0.6982" />
 	</ItemGroup>
 </Project>
