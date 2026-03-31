@@ -140,14 +140,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
-        {
-            lock (LockString)
-            {
-                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
-            }
-        }
-
         public static IntPtr Bitmap_CreateEx(int width, int height, FPDFBitmap format, IntPtr first_scan, int stride)
         {
             lock (LockString)

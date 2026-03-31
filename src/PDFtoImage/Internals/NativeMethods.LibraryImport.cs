@@ -4,7 +4,6 @@ using System.Buffers;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PDFtoImage.Internals
 {
@@ -26,6 +25,19 @@ namespace PDFtoImage.Internals
             }
         }
 
+        private static readonly bool _isBrowserFallbackUsed = OperatingSystem.IsBrowser();
+
+        public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
+        {
+            lock (LockString)
+            {
+                if (_isBrowserFallbackUsed)
+                    return Imports.FPDF_GetPageSizeByIndex_Fallback(document, page_index, out width, out height);
+
+                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
+            }
+        }
+
         /// <summary>
         /// Opens a document using a .NET Stream. Allows opening huge
         /// PDFs without loading them into memory first.
@@ -38,7 +50,7 @@ namespace PDFtoImage.Internals
         {
             delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
             var access = new FPDF_FILEACCESS(new CULong((uint)input.Length), getBlock, id);
-            
+
             lock (LockString)
             {
                 return Imports.FPDF_LoadCustomDocument(in access, password);
@@ -151,11 +163,15 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDF_RenderPageBitmap(IntPtr bitmapHandle, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
+            public static partial void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
+
+            [DllImport("pdfium", EntryPoint = "FPDF_GetPageSizeByIndex", CallingConvention = CallingConvention.Cdecl)]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "SYSLIB1054")]
+            public static extern int FPDF_GetPageSizeByIndex_Fallback(IntPtr document, int page_index, out double width, out double height);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

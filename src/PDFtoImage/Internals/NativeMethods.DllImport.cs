@@ -25,6 +25,14 @@ namespace PDFtoImage.Internals
             }
         }
 
+        public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
+        {
+            lock (LockString)
+            {
+                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
+            }
+        }
+
         /// <summary>
         /// Opens a document using a .NET Stream. Allows opening huge
         /// PDFs without loading them into memory first.
@@ -70,7 +78,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        [Mono.Util.MonoPInvokeCallback]
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
             long positionConverted;
