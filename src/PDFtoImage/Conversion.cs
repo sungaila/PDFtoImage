@@ -79,27 +79,27 @@ namespace PDFtoImage
         }
 #endif
 
-        private static NativeMethods.FPDF GetRenderFlags(RenderOptions options)
+        private static NativeMethods.FPDFRenderFlags GetRenderFlags(RenderOptions options)
         {
-            NativeMethods.FPDF renderFlags = default;
+            NativeMethods.FPDFRenderFlags renderFlags = default;
 
             if (options.WithAnnotations)
-                renderFlags |= NativeMethods.FPDF.ANNOT;
+                renderFlags |= NativeMethods.FPDFRenderFlags.ANNOT;
 
             if (options.Grayscale)
-                renderFlags |= NativeMethods.FPDF.GRAYSCALE;
+                renderFlags |= NativeMethods.FPDFRenderFlags.GRAYSCALE;
 
             if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Text))
-                renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHTEXT;
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHTEXT;
             if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Images))
-                renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHIMAGE;
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHIMAGE;
             if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Paths))
-                renderFlags |= NativeMethods.FPDF.RENDER_NO_SMOOTHPATH;
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHPATH;
 
             return renderFlags;
         }
 
-        private static SKBitmap RenderImpl(PdfDocument pdfDocument, int page, NativeMethods.FPDF renderFlags, RenderOptions options)
+        private static SKBitmap RenderImpl(PdfDocument pdfDocument, int page, NativeMethods.FPDFRenderFlags renderFlags, RenderOptions options)
         {
             return pdfDocument.Render(
                     page,

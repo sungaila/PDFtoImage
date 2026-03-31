@@ -39,43 +39,39 @@ namespace PDFtoImage.Internals
             _id = StreamManager.Register(stream);
             _disposeStream = disposeStream;
 
-            var document = NativeMethods.FPDF_LoadCustomDocument(stream, password, _id);
+            var document = NativeMethods.LoadCustomDocument(stream, password, _id);
             if (document == IntPtr.Zero)
-                throw PdfException.CreateException(NativeMethods.FPDF_GetLastError())!;
-
-            _disposeStream = disposeStream;
+                throw PdfException.CreateException(NativeMethods.GetLastError())!;
 
             _document = document;
-
-            NativeMethods.FPDF_GetDocPermissions(_document);
 
             var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
 
             _formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
             Marshal.StructureToPtr(ffi, _formFillInfoPtr, false);
 
-            _form = NativeMethods.FPDFDOC_InitFormFillEnvironment(_document, _formFillInfoPtr);
+            _form = NativeMethods.Doc_InitFormFillEnvironment(_document, _formFillInfoPtr);
 
             if (_form == IntPtr.Zero)
-                throw PdfException.CreateException(NativeMethods.FPDF_GetLastError())!;
+                throw PdfException.CreateException(NativeMethods.GetLastError())!;
 
-            NativeMethods.FPDF_SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
-            NativeMethods.FPDF_SetFormFieldHighlightAlpha(_form, 100);
+            NativeMethods.SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
+            NativeMethods.SetFormFieldHighlightAlpha(_form, 100);
         }
 
-        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDF flags, bool renderFormFill)
+        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
             using var pageData = new PageData(_document, _form, pageNumber);
 
-            NativeMethods.FPDF_RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+            NativeMethods.RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
 
             if (renderFormFill)
             {
-                NativeMethods.FPDF_RemoveFormFieldHighlight(_form);
-                NativeMethods.FPDF_FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
+                NativeMethods.RemoveFormFieldHighlight(_form);
+                NativeMethods.FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
             }
 
             return true;
@@ -86,7 +82,7 @@ namespace PDFtoImage.Internals
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
-            int pageCount = NativeMethods.FPDF_GetPageCount(_document);
+            int pageCount = NativeMethods.GetPageCount(_document);
             var result = new List<SizeF>(pageCount);
 
             for (int i = 0; i < pageCount; i++)
@@ -99,7 +95,7 @@ namespace PDFtoImage.Internals
 
         public readonly SizeF GetPDFDocInfo(int pageNumber)
         {
-            NativeMethods.FPDF_GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
+            NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
 
             return new SizeF((float)width, (float)height);
         }
@@ -121,13 +117,13 @@ namespace PDFtoImage.Internals
 
             if (_form != IntPtr.Zero)
             {
-                NativeMethods.FPDFDOC_ExitFormFillEnvironment(_form);
+                NativeMethods.Doc_ExitFormFillEnvironment(_form);
                 _form = IntPtr.Zero;
             }
 
             if (_document != IntPtr.Zero)
             {
-                NativeMethods.FPDF_CloseDocument(_document);
+                NativeMethods.CloseDocument(_document);
                 _document = IntPtr.Zero;
             }
 
@@ -163,21 +159,21 @@ namespace PDFtoImage.Internals
             {
                 _form = form;
 
-                Page = NativeMethods.FPDF_LoadPage(document, pageNumber);
-                TextPage = NativeMethods.FPDFText_LoadPage(Page);
-                NativeMethods.FORM_OnAfterLoadPage(Page, form);
+                Page = NativeMethods.LoadPage(document, pageNumber);
+                TextPage = NativeMethods.Text_LoadPage(Page);
+                NativeMethods.OnAfterLoadPage(Page, form);
 
-                Width = NativeMethods.FPDF_GetPageWidth(Page);
-                Height = NativeMethods.FPDF_GetPageHeight(Page);
+                Width = NativeMethods.GetPageWidth(Page);
+                Height = NativeMethods.GetPageHeight(Page);
             }
 
             public void Dispose()
             {
                 if (!_disposed)
                 {
-                    NativeMethods.FORM_OnBeforeClosePage(Page, _form);
-                    NativeMethods.FPDFText_ClosePage(TextPage);
-                    NativeMethods.FPDF_ClosePage(Page);
+                    NativeMethods.Form_OnBeforeClosePage(Page, _form);
+                    NativeMethods.Text_ClosePage(TextPage);
+                    NativeMethods.ClosePage(Page);
 
                     _disposed = true;
                 }

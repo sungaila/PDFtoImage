@@ -28,7 +28,7 @@ namespace PDFtoImage.Internals
 
         private PdfLibrary()
         {
-            NativeMethods.FPDF_InitLibrary();
+            NativeMethods.InitLibrary();
         }
 
         ~PdfLibrary()
@@ -41,7 +41,7 @@ namespace PDFtoImage.Internals
         {
             if (!disposedValue)
             {
-                NativeMethods.FPDF_DestroyLibrary();
+                NativeMethods.DestroyLibrary();
                 disposedValue = true;
             }
         }

@@ -45,7 +45,7 @@ namespace PDFtoImage.Internals
         private const int MaxTileWidth = 4000;
         private const int MaxTileHeight = 4000;
 
-        public readonly SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
+        public readonly SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -245,7 +245,7 @@ namespace PDFtoImage.Internals
             }
         }
 
-        private static SKBitmap RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDF flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, CancellationToken cancellationToken = default)
+        private static SKBitmap RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
@@ -254,10 +254,10 @@ namespace PDFtoImage.Internals
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                handle = NativeMethods.FPDFBitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
+                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
 
                 cancellationToken.ThrowIfCancellationRequested();
-                NativeMethods.FPDFBitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor);
+                NativeMethods.Bitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor);
 
                 cancellationToken.ThrowIfCancellationRequested();
                 bool success = file.RenderPDFPageToBitmap(
@@ -283,7 +283,7 @@ namespace PDFtoImage.Internals
             finally
             {
                 if (handle != IntPtr.Zero)
-                    NativeMethods.FPDFBitmap_Destroy(handle);
+                    NativeMethods.Bitmap_Destroy(handle);
             }
 
             return bitmap;
