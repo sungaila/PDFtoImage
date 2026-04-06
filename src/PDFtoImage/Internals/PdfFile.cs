@@ -141,8 +141,12 @@ namespace PDFtoImage.Internals
 
         private void ThrowIfDisposed()
         {
+#if NET6_0_OR_GREATER
+            ObjectDisposedException.ThrowIf(_disposed, this);
+#else
             if (_disposed)
                 throw new ObjectDisposedException(nameof(PdfFile));
+#endif
         }
 
         private sealed class PageData : IDisposable

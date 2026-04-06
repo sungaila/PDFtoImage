@@ -15,7 +15,7 @@ namespace PDFtoImage.Internals
     internal struct PdfDocument : IDisposable
     {
         private bool _disposed;
-        private PdfFile _file;
+        private readonly PdfFile _file;
 
         /// <summary>
         /// Initializes a new instance of the PdfDocument class with the provided stream.
