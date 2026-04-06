@@ -86,6 +86,8 @@ namespace PDFtoImage.Internals
 
 #if BROWSER
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+#else
+        [Mono.Util.MonoPInvokeCallback]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {

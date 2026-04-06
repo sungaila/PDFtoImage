@@ -463,16 +463,6 @@
         <member name="M:PDFtoImage.Exceptions.PdfUnsupportedSecuritySchemeException.#ctor">
             <inheritdoc/>
         </member>
-        <member name="M:PDFtoImage.Internals.NativeMethods.FPDF_LoadCustomDocument(System.IO.Stream,System.String,System.Int32)">
-            <summary>
-            Opens a document using a .NET Stream. Allows opening huge
-            PDFs without loading them into memory first.
-            </summary>
-            <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
-            <param name="password">Password, if the PDF is protected. Can be null.</param>
-            <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
-            <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-        </member>
         <member name="T:PDFtoImage.Internals.NativeMethods.FPDFBitmap">
             <summary>
             A number indicating for bitmap format.
@@ -498,72 +488,72 @@
             4 bytes per pixel, byte order: blue, green, red, alpha.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.ANNOT">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.ANNOT">
             <summary>
             Set if annotations are to be rendered.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.LCD_TEXT">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.LCD_TEXT">
             <summary>
             Set if using text rendering optimized for LCD display. This flag will only take effect if anti-aliasing is enabled for text.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.NO_NATIVETEXT">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.NO_NATIVETEXT">
             <summary>
             Don't use the native text output available on some platforms.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.GRAYSCALE">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.GRAYSCALE">
             <summary>
             Grayscale output.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.DEBUG_INFO">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.DEBUG_INFO">
             <summary>
             Obsolete, has no effect, retained for compatibility.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.NO_CATCH">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.NO_CATCH">
             <summary>
             Obsolete, has no effect, retained for compatibility.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.RENDER_LIMITEDIMAGECACHE">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.RENDER_LIMITEDIMAGECACHE">
             <summary>
             Limit image cache size.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.RENDER_FORCEHALFTONE">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.RENDER_FORCEHALFTONE">
             <summary>
             Always use halftone for image stretching.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.PRINTING">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.PRINTING">
             <summary>
             Render for printing.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.RENDER_NO_SMOOTHTEXT">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHTEXT">
             <summary>
             Set to disable anti-aliasing on text. This flag will also disable LCD optimization for text rendering.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.RENDER_NO_SMOOTHIMAGE">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHIMAGE">
             <summary>
             Set to disable anti-aliasing on images.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.RENDER_NO_SMOOTHPATH">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHPATH">
             <summary>
             Set to disable anti-aliasing on paths.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.REVERSE_BYTE_ORDER">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.REVERSE_BYTE_ORDER">
             <summary>
             Set whether to render in a reverse Byte order, this flag is only used when rendering to a bitmap.
             </summary>
         </member>
-        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF.CONVERT_FILL_TO_STROKE">
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDFRenderFlags.CONVERT_FILL_TO_STROKE">
             <summary>
             Set whether fill paths need to be stroked. This flag is only used when FPDF_COLORSCHEME is passed in, since with a single fill color for paths the boundaries of adjacent fill paths are less visible.
             </summary>
@@ -602,6 +592,16 @@
             <summary>
             Page not found or content error.
             </summary>
+        </member>
+        <member name="M:PDFtoImage.Internals.NativeMethods.LoadCustomDocument(System.IO.Stream,System.String,System.Int32)">
+            <summary>
+            Opens a document using a .NET Stream. Allows opening huge
+            PDFs without loading them into memory first.
+            </summary>
+            <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
+            <param name="password">Password, if the PDF is protected. Can be null.</param>
+            <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
+            <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
         </member>
         <member name="T:PDFtoImage.Internals.PdfDocument">
             <summary>
