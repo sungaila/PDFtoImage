@@ -1,4 +1,4 @@
-﻿#if NET6_0_OR_GREATER
+﻿#if NET6_0_OR_GREATER && !BROWSER
 using System;
 using System.Buffers;
 using System.IO;
@@ -25,15 +25,10 @@ namespace PDFtoImage.Internals
             }
         }
 
-        private static readonly bool _isBrowserFallbackUsed = OperatingSystem.IsBrowser();
-
         public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
         {
             lock (LockString)
             {
-                if (_isBrowserFallbackUsed)
-                    return Imports.FPDF_GetPageSizeByIndex_Fallback(document, page_index, out width, out height);
-
                 return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
             }
         }
@@ -168,10 +163,6 @@ namespace PDFtoImage.Internals
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
-
-            [DllImport("pdfium", EntryPoint = "FPDF_GetPageSizeByIndex", CallingConvention = CallingConvention.Cdecl)]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "SYSLIB1054")]
-            public static extern int FPDF_GetPageSizeByIndex_Fallback(IntPtr document, int page_index, out double width, out double height);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

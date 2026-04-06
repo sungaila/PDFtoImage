@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net8.0-browser;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -15,7 +15,7 @@
 	
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>5.2.0</VersionPrefix>
+    <VersionPrefix>5.2.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -24,9 +24,9 @@
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Add option to render in grayscale.
-- Add .NET 10 as TargetFramework.
-- Remove .NET 8.0 (Android) as TargetFramework (end of support).</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added target framework monikers for WASM (e.g. net10.0-browser).
+- Fixed a crash in linux-x64 builds.
+- Fixed a crash when .NET Framework builds attempt to open a PDF file with a password containing non-ASCII characters.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MacCatalyst Catalyst MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -76,15 +76,32 @@
     <None Include="..\..\etc\Icon_128.png" Pack="true" PackagePath="" />
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
+
+	<!-- Target platform properties -->
+	<PropertyGroup>
+		<_TargetPlatform>$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))</_TargetPlatform>
+
+		<IsBrowser Condition="'$(_TargetPlatform)' == 'browser'">true</IsBrowser>
+		<IsAndroid Condition="'$(_TargetPlatform)' == 'android'">true</IsAndroid>
+		<IsIos Condition="'$(_TargetPlatform)' == 'ios'">true</IsIos>
+		<IsMacCatalyst Condition="'$(_TargetPlatform)' == 'maccatalyst'">true</IsMacCatalyst>
+
+		<IsMobileApple Condition="'$(IsIos)' == 'true' or '$(IsMacCatalyst)' == 'true'">true</IsMobileApple>
+		<IsMobile Condition="'$(IsAndroid)' == 'true' or '$(IsMobileApple)' == 'true'">true</IsMobile>
+
+		<IsDesktopNative Condition="'$(IsMobile)' != 'true' and '$(IsBrowser)' != 'true'">true</IsDesktopNative>
+
+		<NeedsPolySharp Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481' or '$(TargetFramework)' == 'netstandard2.1'">true</NeedsPolySharp>
+	</PropertyGroup>
+
+	<!-- Shared packages -->
+	<ItemGroup>
+		<PackageReference Include="SkiaSharp" PrivateAssets="analyzers" />
+		<PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
+	</ItemGroup>
 	
-  <!-- SourceLink build steps and NuGet packages -->
-  <ItemGroup>
-    <PackageReference Include="SkiaSharp" PrivateAssets="analyzers" />
-    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
-  </ItemGroup>
-	
-  <!-- Shared packages -->
-  <ItemGroup Condition="'$(TargetFramework)'!='net9.0-android' and '$(TargetFramework)'!='net9.0-ios' and '$(TargetFramework)'!='net9.0-maccatalyst' and '$(TargetFramework)'!='net10.0-android' and '$(TargetFramework)'!='net10.0-ios' and '$(TargetFramework)'!='net10.0-maccatalyst'">
+  <!-- Desktop packages -->
+  <ItemGroup Condition="'$(IsDesktopNative)' == 'true'">
     <PackageReference Include="bblanchon.PDFium.Linux" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.macOS" PrivateAssets="analyzers" />
     <PackageReference Include="bblanchon.PDFium.Win32" PrivateAssets="analyzers" />
@@ -94,30 +111,30 @@
   </ItemGroup>
 	
   <!-- polyfill for .NET Framework -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net471' or '$(TargetFramework)'=='net481' or '$(TargetFramework)'=='netstandard2.1'">
+	<ItemGroup Condition="'$(NeedsPolySharp)' == 'true'">
     <PackageReference Include="PolySharp" PrivateAssets="all" />
   </ItemGroup>
 	
   <!-- Android packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-android' or '$(TargetFramework)'=='net10.0-android'">
+	<ItemGroup Condition="'$(IsAndroid)' == 'true'">
     <PackageReference Include="bblanchon.PDFium.Android" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.Android" PrivateAssets="analyzers" />
   </ItemGroup>
 	
   <!-- iOS packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-ios' or '$(TargetFramework)'=='net10.0-ios'">
+	<ItemGroup Condition="'$(IsIos)' == 'true'">
     <PackageReference Include="bblanchon.PDFium.iOS" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.iOS" PrivateAssets="analyzers" />
   </ItemGroup>
 	
   <!-- Mac Catalyst packages -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net9.0-maccatalyst' or '$(TargetFramework)'=='net10.0-maccatalyst'">
+	<ItemGroup Condition="'$(IsMacCatalyst)' == 'true'">
     <PackageReference Include="bblanchon.PDFium.iOS" PrivateAssets="analyzers" />
     <PackageReference Include="SkiaSharp.NativeAssets.MacCatalyst" PrivateAssets="analyzers" />
   </ItemGroup>
 	
   <!-- Blazor WebAssembly stuff -->
-  <ItemGroup Condition="'$(TargetFramework)'=='net8.0' or '$(TargetFramework)'=='net9.0' or '$(TargetFramework)'=='net10.0'">
+	<ItemGroup Condition="'$(IsBrowser)' == 'true'">
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" PrivateAssets="analyzers" />
     <PackageReference Include="Sungaila.PDFium.BlazorWebAssembly" PrivateAssets="analyzers" />
   </ItemGroup>
@@ -135,12 +152,12 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net8.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net8.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net9.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net10.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net8.0-browser\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net8.0-browser\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net9.0-browser\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0-browser\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net10.0-browser\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0-browser\PDFtoImage.props" />
   </ItemGroup>
 	
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

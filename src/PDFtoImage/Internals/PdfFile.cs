@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
 {
-    internal struct PdfFile : IDisposable
+    internal sealed class PdfFile : IDisposable
     {
         private IntPtr _document;
         private IntPtr _form;
@@ -59,10 +59,9 @@ namespace PDFtoImage.Internals
             NativeMethods.SetFormFieldHighlightAlpha(_form, 100);
         }
 
-        public readonly bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
+        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
         {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
+            ThrowIfDisposed();
 
             using var pageData = new PageData(_document, _form, pageNumber);
 
@@ -77,10 +76,9 @@ namespace PDFtoImage.Internals
             return true;
         }
 
-        public readonly List<SizeF> GetPDFDocInfo()
+        public List<SizeF> GetPDFDocInfo()
         {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
+            ThrowIfDisposed();
 
             int pageCount = NativeMethods.GetPageCount(_document);
             var result = new List<SizeF>(pageCount);
@@ -93,8 +91,10 @@ namespace PDFtoImage.Internals
             return result;
         }
 
-        public readonly SizeF GetPDFDocInfo(int pageNumber)
+        public SizeF GetPDFDocInfo(int pageNumber)
         {
+            ThrowIfDisposed();
+
             NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
 
             return new SizeF((float)width, (float)height);
@@ -102,17 +102,16 @@ namespace PDFtoImage.Internals
 
         public void Dispose()
         {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
-        private void Dispose(bool disposing)
-        {
             if (_disposed)
                 return;
 
+            Cleanup(disposing: true);
+            _disposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+        private void Cleanup(bool disposing)
+        {
             StreamManager.Unregister(_id);
 
             if (_form != IntPtr.Zero)
@@ -133,13 +132,17 @@ namespace PDFtoImage.Internals
                 _formFillInfoPtr = IntPtr.Zero;
             }
 
-            if (_stream != null && _disposeStream)
+            if (disposing && _disposeStream && _stream is not null)
             {
                 _stream.Dispose();
                 _stream = null;
             }
+        }
 
-            _disposed = true;
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(PdfFile));
         }
 
         private sealed class PageData : IDisposable

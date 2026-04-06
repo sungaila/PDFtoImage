@@ -1,7 +1,8 @@
-﻿#if !NET6_0_OR_GREATER
+﻿#if !NET6_0_OR_GREATER || BROWSER
 using System;
 using System.Buffers;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -43,8 +44,13 @@ namespace PDFtoImage.Internals
         /// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
         public unsafe static IntPtr LoadCustomDocument(Stream input, string? password, int id)
         {
+#if BROWSER
+            delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
+            var access = new FPDF_FILEACCESS((uint)input.Length, (IntPtr)getBlock, id);
+#else
             var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
             var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
+#endif
 
             var size = Marshal.SizeOf<FPDF_FILEACCESS>();
             var ptr = Marshal.AllocHGlobal(size);
@@ -78,6 +84,9 @@ namespace PDFtoImage.Internals
             }
         }
 
+#if BROWSER
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+#endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
             long positionConverted;
@@ -201,7 +210,9 @@ namespace PDFtoImage.Internals
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int FPDF_GetBlockDelegate(IntPtr param, uint position, IntPtr buffer, uint size);
 
+#if !BROWSER
         private static readonly FPDF_GetBlockDelegate _getBlockDelegate = FPDF_GetBlock;
+#endif
 
         [StructLayout(LayoutKind.Sequential)]
         public readonly struct FPDF_FILEACCESS(uint m_FileLen, IntPtr m_GetBlock, IntPtr m_Param)
