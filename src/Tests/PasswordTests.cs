@@ -17,6 +17,7 @@ namespace PDFtoImage.Tests
         [DataRow("SocialPreview with password 123456 (RC4-128).pdf", "123456")]
         [DataRow("SocialPreview with password 123456 (AES-128).pdf", "123456")]
         [DataRow("SocialPreview with password 123456 (AES-256).pdf", "123456")]
+        [DataRow("SocialPreview with password 🥺👉👈 (AES-256).pdf", "🥺👉👈")]
         public void WithCorrectPassword(string inputFile, string? password = null)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
@@ -29,6 +30,7 @@ namespace PDFtoImage.Tests
         [DataRow("SocialPreview with password 123456 (RC4-128).pdf", "In noreni cora")]
         [DataRow("SocialPreview with password 123456 (AES-128).pdf", "Tira mine per ito")]
         [DataRow("SocialPreview with password 123456 (AES-256).pdf", "Ne domina")]
+        [DataRow("SocialPreview with password 🥺👉👈 (AES-256).pdf", "🤓☝️")]
         public void ThrowsIncorrectPassword(string inputFile, string? password = null)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));

@@ -1,3 +1,0 @@
-﻿#nullable enable
-PDFtoImage.Resource
-PDFtoImage.Resource.Resource() -> void

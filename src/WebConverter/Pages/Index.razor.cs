@@ -70,8 +70,6 @@ namespace PDFtoImage.WebConverter.Pages
             if (file == null)
                 return;
 
-            Logger.LogInformation("Handle file {FileName}.", file.Name);
-
             Model.File = file;
             Model.Input = stream;
 
@@ -119,7 +117,6 @@ namespace PDFtoImage.WebConverter.Pages
 
         private async Task Submit()
         {
-            Logger.LogInformation("Converting {Model}.", Model);
             SKBitmap? bitmap = null;
 
             try
