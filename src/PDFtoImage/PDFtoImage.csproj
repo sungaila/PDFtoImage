@@ -152,8 +152,8 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net10.0-browser1.0\PDFtoImage.props" />
+    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0-browser1.0\PDFtoImage.props" />
   </ItemGroup>
 	
   <Import Project="PDFtoImage.PropertiesSigning.targets" />
