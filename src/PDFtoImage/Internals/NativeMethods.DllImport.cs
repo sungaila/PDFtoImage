@@ -87,7 +87,8 @@ namespace PDFtoImage.Internals
 #if BROWSER
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
-        [Mono.Util.MonoPInvokeCallback]
+        // needed for Unity IL2CPP compilation
+        [AOT.MonoPInvokeCallback(typeof(FPDF_GetBlockDelegate))]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
