@@ -5,7 +5,6 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using AOT;
 
 namespace PDFtoImage.Internals
 {
@@ -88,6 +87,7 @@ namespace PDFtoImage.Internals
 #if BROWSER
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
+        // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FPDF_GetBlockDelegate))]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)

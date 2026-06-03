@@ -1,11 +1,11 @@
 ﻿#if !NET6_0_OR_GREATER
+#pragma warning disable IDE0130
+#pragma warning disable CS9113
 using System;
 
-#pragma warning disable IDE0130
-namespace Mono.Util
-#pragma warning restore IDE0130
+namespace AOT
 {
-    [AttributeUsage(AttributeTargets.Method)]
-    internal sealed class MonoPInvokeCallbackAttribute : Attribute { }
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    internal sealed class MonoPInvokeCallbackAttribute(Type type) : Attribute { }
 }
 #endif
