@@ -220,11 +220,14 @@ namespace PDFtoImage.Internals
 
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        canvas.DrawBitmap(subsetBitmap, new SKRect(
-                            (float)Math.Floor(x * currentTileWidth),
-                            (float)Math.Floor(y * currentTileHeight),
-                            (float)Math.Floor(x * currentTileWidth + currentTileWidth),
-                            (float)Math.Floor(y * currentTileHeight + currentTileHeight)));
+                        canvas.DrawBitmap(
+                            subsetBitmap,
+                            new SKRect(
+                                (float)Math.Floor(x * currentTileWidth),
+                                (float)Math.Floor(y * currentTileHeight),
+                                (float)Math.Floor(x * currentTileWidth + currentTileWidth),
+                                (float)Math.Floor(y * currentTileHeight + currentTileHeight)),
+                            SKSamplingOptions.Default);
                         canvas.Flush();
                     }
                 }
