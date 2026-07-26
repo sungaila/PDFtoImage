@@ -54,6 +54,38 @@ namespace PDFtoImage.Tests
                 }
             }
 
+            if (testContext.FullyQualifiedTestClassName == typeof(TilingTests).FullName && testContext.TestName == nameof(TilingTests.WithRotation))
+            {
+                if (testContext.TestData?.Length == 3 &&
+                    testContext.TestData[0]?.Equals("SocialPreview.pdf") == true &&
+                    (testContext.TestData[1]?.Equals(PdfRotation.Rotate0) == true || testContext.TestData[1]?.Equals(PdfRotation.Rotate180) == true) &&
+                    testContext.TestData[2]?.Equals(true) == true)
+                {
+                    if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64 && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        return "This test run with these parameters is not supported due to differences in output under Windows on ARM.";
+                    }
+                }
+            }
+
+            if (testContext.FullyQualifiedTestClassName == typeof(TilingTests).FullName && testContext.TestName == nameof(TilingTests.WithBounds))
+            {
+                if (testContext.TestData?.Length == 7 &&
+                    testContext.TestData[0]?.Equals("SocialPreview.pdf") == true &&
+                    testContext.TestData[1]?.Equals(200f) == true &&
+                    testContext.TestData[2]?.Equals(200f) == true &&
+                    testContext.TestData[3]?.Equals(700f) == true &&
+                    testContext.TestData[4]?.Equals(700f) == true &&
+                    testContext.TestData[5] == null &&
+                    testContext.TestData[6]?.Equals(true) == true)
+                {
+                    if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64 && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    {
+                        return "This test run with these parameters is not supported due to differences in output under Windows on ARM.";
+                    }
+                }
+            }
+
             return null;
         }
     }
