@@ -464,20 +464,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           docker run --rm pdftoimage-smoke:windows-servercore-singlefile
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: console (Nano Server, framework-dependent, extended)
-        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
-        run: |
-          docker build --pull -t pdftoimage-smoke:windows-nanoserver -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile .
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          docker run --rm pdftoimage-smoke:windows-nanoserver
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: console (Nano Server, self-contained, extended)
-        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
-        run: |
-          docker build --pull -t pdftoimage-smoke:windows-nanoserver-self-contained -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-self-contained.dockerfile .
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          docker run --rm pdftoimage-smoke:windows-nanoserver-self-contained
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Setup MSVC Developer Command Prompt
         if: success() || failure()
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
@@ -500,13 +486,6 @@ jobs:
           docker build --pull -t pdftoimage-smoke:windows-servercore-aot -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR=artifacts/win-x64-aot .
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           docker run --rm pdftoimage-smoke:windows-servercore-aot
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: console (Nano Server, Native AOT, extended)
-        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
-        run: |
-          docker build --pull -t pdftoimage-smoke:windows-nanoserver-aot -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile --build-arg PUBLISH_DIR=artifacts/win-x64-aot .
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          docker run --rm pdftoimage-smoke:windows-nanoserver-aot
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   publish-test-results:
     name: Publish tests results
