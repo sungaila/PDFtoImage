@@ -837,6 +837,11 @@
             Constructs <see cref="T:PDFtoImage.RenderOptions"/> with default values.
             </summary>
         </member>
+        <member name="T:Microsoft.CodeAnalysis.EmbeddedAttribute">
+            <summary>
+            A special attribute recognized by Roslyn, that marks a type as "embedded", meaning it won't ever be visible from other assemblies.
+            </summary>
+        </member>
         <member name="T:System.Runtime.CompilerServices.IsExternalInit">
             <summary>
             Reserved to be used by the compiler for tracking metadata.

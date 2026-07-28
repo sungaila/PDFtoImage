@@ -15,7 +15,16 @@ This .NET library is built on top of
 * [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
 
 ## Getting started
-Call a static method from `PDFtoImage.Conversion`:
+Call a static method from `PDFtoImage.Conversion`. Here is an example of how to render the first page of a PDF file as a PNG image:
+
+```csharp
+using var pdf = File.OpenRead("document.pdf");
+
+PDFtoImage.Conversion.SavePng(
+    imageFilename: "page1.png",
+    pdfStream: pdf,
+    page: 0);
+```
 
 `SaveJpeg`, `SavePng`, `SaveWebp` and `ToImage` for a **single page**.
 
