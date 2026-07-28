@@ -7,36 +7,31 @@ ARG BUILD_CONFIGURATION=Release
 ARG TARGETARCH
 WORKDIR /src
 
-COPY src/Directory.Packages.props src/Directory.Packages.props
-COPY src/FrameworkTests/AotConsole/AotConsole.csproj src/FrameworkTests/AotConsole/AotConsole.csproj
-COPY src/PDFtoImage src/PDFtoImage
-
-RUN --mount=type=cache,id=nuget-ubuntu-chiseled-fdd,target=/root/.nuget/packages,sharing=locked \
-    case "$TARGETARCH" in \
-      amd64) rid=linux-x64 ;; \
-      arm64) rid=linux-arm64 ;; \
-      *) echo "Unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
-    esac && \
-    dotnet restore src/FrameworkTests/AotConsole/AotConsole.csproj \
-      -r "$rid" \
-      -p:TargetFramework=net10.0 \
-      -p:PublishAot=false \
-      -p:SelfContained=false
-
 COPY . .
 WORKDIR /src/src
 
+# Keep restore and publish in the same cache-mount lifetime. GitHub Actions
+# exports normal BuildKit layers, but not the contents of exec cache mounts.
+# Restrict the multi-targeted wrapper to net10.0 so mobile workloads aren't
+# evaluated in these Linux smoke-test images.
 RUN --mount=type=cache,id=nuget-ubuntu-chiseled-fdd,target=/root/.nuget/packages,sharing=locked \
     case "$TARGETARCH" in \
       amd64) rid=linux-x64 ;; \
       arm64) rid=linux-arm64 ;; \
       *) echo "Unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
     esac && \
+    dotnet restore FrameworkTests/AotConsole/AotConsole.csproj \
+      -r "$rid" \
+      -p:TargetFrameworks=net10.0 \
+      -p:PublishAot=false \
+      -p:SelfContained=false && \
     dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
       -c "$BUILD_CONFIGURATION" \
+      -f net10.0 \
       -r "$rid" \
       -o /app/publish \
-      -p:TargetFramework=net10.0 \
+      --no-restore \
+      -p:TargetFrameworks=net10.0 \
       -p:PublishAot=false \
       -p:SelfContained=false \
       -p:UseAppHost=false
