@@ -26,7 +26,7 @@ namespace PDFtoImage.Internals
             try
             {
                 // test if the given stream is seekable by getting its length
-                var _ = _stream.Length;
+                _ = _stream.Length;
             }
             catch (NotSupportedException ex)
             {
@@ -36,30 +36,44 @@ namespace PDFtoImage.Internals
                 throw;
             }
 
-            _id = StreamManager.Register(stream);
-            _disposeStream = disposeStream;
+            if (stream.Length > uint.MaxValue)
+            {
+                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported.");
+            }
 
-            var document = NativeMethods.LoadCustomDocument(stream, password, _id);
-            if (document == IntPtr.Zero)
-                throw PdfException.CreateException(NativeMethods.GetLastError())!;
+            try
+            {
+                _id = StreamManager.Register(stream);
+                _disposeStream = disposeStream;
 
-            _document = document;
+                var document = NativeMethods.LoadCustomDocument(stream, password, _id);
 
-            var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
+                if (document == IntPtr.Zero)
+                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
 
-            _formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
-            Marshal.StructureToPtr(ffi, _formFillInfoPtr, false);
+                _document = document;
 
-            _form = NativeMethods.Doc_InitFormFillEnvironment(_document, _formFillInfoPtr);
+                var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
 
-            if (_form == IntPtr.Zero)
-                throw PdfException.CreateException(NativeMethods.GetLastError())!;
+                _formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
+                Marshal.StructureToPtr(ffi, _formFillInfoPtr, false);
 
-            NativeMethods.SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
-            NativeMethods.SetFormFieldHighlightAlpha(_form, 100);
+                _form = NativeMethods.Doc_InitFormFillEnvironment(_document, _formFillInfoPtr);
+
+                if (_form == IntPtr.Zero)
+                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
+
+                NativeMethods.SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
+                NativeMethods.SetFormFieldHighlightAlpha(_form, 100);
+            }
+            catch
+            {
+                Cleanup(disposing: true);
+                throw;
+            }
         }
 
-        public bool RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
+        public void RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
         {
             ThrowIfDisposed();
 
@@ -72,8 +86,6 @@ namespace PDFtoImage.Internals
                 NativeMethods.RemoveFormFieldHighlight(_form);
                 NativeMethods.FFLDraw(_form, bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
             }
-
-            return true;
         }
 
         public List<SizeF> GetPDFDocInfo()
@@ -95,7 +107,8 @@ namespace PDFtoImage.Internals
         {
             ThrowIfDisposed();
 
-            NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height);
+            if (!NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height))
+                throw new PdfPageNotFoundException();
 
             return new SizeF((float)width, (float)height);
         }
@@ -112,30 +125,40 @@ namespace PDFtoImage.Internals
 
         private void Cleanup(bool disposing)
         {
-            StreamManager.Unregister(_id);
-
-            if (_form != IntPtr.Zero)
+            try
             {
-                NativeMethods.Doc_ExitFormFillEnvironment(_form);
-                _form = IntPtr.Zero;
+                if (_form != IntPtr.Zero)
+                {
+                    NativeMethods.Doc_ExitFormFillEnvironment(_form);
+                    _form = IntPtr.Zero;
+                }
             }
-
-            if (_document != IntPtr.Zero)
+            finally
             {
-                NativeMethods.CloseDocument(_document);
-                _document = IntPtr.Zero;
-            }
+                try
+                {
+                    if (_document != IntPtr.Zero)
+                    {
+                        NativeMethods.CloseDocument(_document);
+                        _document = IntPtr.Zero;
+                    }
+                }
+                finally
+                {
+                    StreamManager.Unregister(_id);
 
-            if (_formFillInfoPtr != IntPtr.Zero)
-            {
-                Marshal.FreeHGlobal(_formFillInfoPtr);
-                _formFillInfoPtr = IntPtr.Zero;
-            }
+                    if (_formFillInfoPtr != IntPtr.Zero)
+                    {
+                        Marshal.FreeHGlobal(_formFillInfoPtr);
+                        _formFillInfoPtr = IntPtr.Zero;
+                    }
 
-            if (disposing && _disposeStream && _stream is not null)
-            {
-                _stream.Dispose();
-                _stream = null;
+                    if (disposing && _disposeStream)
+                    {
+                        _stream?.Dispose();
+                        _stream = null;
+                    }
+                }
             }
         }
 
@@ -156,8 +179,6 @@ namespace PDFtoImage.Internals
 
             public IntPtr Page { get; private set; }
 
-            public IntPtr TextPage { get; private set; }
-
             public double Width { get; private set; }
 
             public double Height { get; private set; }
@@ -166,23 +187,46 @@ namespace PDFtoImage.Internals
             {
                 _form = form;
 
-                Page = NativeMethods.LoadPage(document, pageNumber);
-                TextPage = NativeMethods.Text_LoadPage(Page);
-                NativeMethods.OnAfterLoadPage(Page, form);
+                var page = NativeMethods.LoadPage(document, pageNumber);
 
-                Width = NativeMethods.GetPageWidth(Page);
-                Height = NativeMethods.GetPageHeight(Page);
+                if (page == IntPtr.Zero)
+                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
+
+                try
+                {
+                    Page = page;
+                    NativeMethods.OnAfterLoadPage(Page, form);
+
+                    Width = NativeMethods.GetPageWidth(Page);
+                    Height = NativeMethods.GetPageHeight(Page);
+                }
+                catch
+                {
+                    Dispose();
+                    throw;
+                }
             }
 
             public void Dispose()
             {
-                if (!_disposed)
-                {
-                    NativeMethods.Form_OnBeforeClosePage(Page, _form);
-                    NativeMethods.Text_ClosePage(TextPage);
-                    NativeMethods.ClosePage(Page);
+                if (_disposed)
+                    return;
 
-                    _disposed = true;
+                var page = Page;
+
+                Page = IntPtr.Zero;
+                _disposed = true;
+
+                if (page == IntPtr.Zero)
+                    return;
+
+                try
+                {
+                    NativeMethods.Form_OnBeforeClosePage(page, _form);
+                }
+                finally
+                {
+                    NativeMethods.ClosePage(page);
                 }
             }
         }

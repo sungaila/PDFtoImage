@@ -24,6 +24,7 @@ namespace PDFtoImage
     [SupportedOSPlatform("iOS13.6")]
     [SupportedOSPlatform("MacCatalyst13.5")]
     [SupportedOSPlatform("Android31.0")]
+    [SupportedOSPlatform("browser")]
 #endif
     public static partial class Conversion
     {
@@ -48,10 +49,10 @@ namespace PDFtoImage
 
             pages ??= Enumerable.Range(0, pdfDocument.PageSizes.Count);
 
-            foreach (var page in pages.OrderBy(i => i).Distinct())
+            foreach (var page in pages)
             {
                 // Internals.PdfDocument -> Image
-                yield return RenderImpl(pdfDocument, page, GetRenderFlags(options), options);
+                yield return RenderImpl(pdfDocument, page, GetRenderFlags(options), options, CancellationToken.None);
             }
         }
 
@@ -69,12 +70,12 @@ namespace PDFtoImage
 
             pages ??= Enumerable.Range(0, pdfDocument.PageSizes.Count);
 
-            foreach (var page in pages.OrderBy(i => i).Distinct())
+            foreach (var page in pages)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => RenderImpl(pdfDocument, page, GetRenderFlags(options), options), cancellationToken);
+                yield return await Task.Run(() => RenderImpl(pdfDocument, page, GetRenderFlags(options), options, cancellationToken), cancellationToken);
             }
         }
 #endif
@@ -99,7 +100,7 @@ namespace PDFtoImage
             return renderFlags;
         }
 
-        private static SKBitmap RenderImpl(PdfDocument pdfDocument, int page, NativeMethods.FPDFRenderFlags renderFlags, RenderOptions options)
+        private static SKBitmap RenderImpl(PdfDocument pdfDocument, int page, NativeMethods.FPDFRenderFlags renderFlags, RenderOptions options, CancellationToken cancellationToken)
         {
             return pdfDocument.Render(
                     page,
@@ -114,7 +115,8 @@ namespace PDFtoImage
                     options.Bounds,
                     options.UseTiling,
                     options.WithAspectRatio,
-                    options.DpiRelativeToBounds);
+                    options.DpiRelativeToBounds,
+                    cancellationToken);
         }
     }
 }

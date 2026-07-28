@@ -7,7 +7,7 @@
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Client.Program</StartupObject>
-    <VersionPrefix>5.2.1</VersionPrefix>
+    <VersionPrefix>$(ProductVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
@@ -15,9 +15,13 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <InvariantTimezone>true</InvariantTimezone>
     <PublishTrimmed>true</PublishTrimmed>
+		<BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
     <TrimMode>partial</TrimMode>
     <AssemblyOriginatorKeyFile>WebConverter.snk</AssemblyOriginatorKeyFile>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<WasmEnableThreads>false</WasmEnableThreads>
+		<WasmEnableSIMD>true</WasmEnableSIMD>
+		<PDFiumUseSystemLibjpeg>true</PDFiumUseSystemLibjpeg>
   </PropertyGroup>
 	
   <!-- C# compiler -->
@@ -60,6 +64,5 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
     <Content Update="wwwroot\404.html" CopyToOutputDirectory="Always" />
     <EmbeddedResource Include="..\..\README.md" Link="README.md" />
-    <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\3.1.12\st,simd\libSkiaSharp.a" />
   </ItemGroup>
 </Project>

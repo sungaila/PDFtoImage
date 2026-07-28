@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net8.0-browser;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -15,18 +15,18 @@
 	
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>5.2.1</VersionPrefix>
+    <VersionPrefix>$(ProductVersion)</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon_128.png</PackageIcon>
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Added target framework monikers for WASM (e.g. net10.0-browser).
-- Fixed a crash in linux-x64 builds.
-- Fixed a crash when .NET Framework builds attempt to open a PDF file with a password containing non-ASCII characters.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Update SkiaSharp dependency to 4.150.1.
+- Update PDFium dependency to 152.0.7961.
+- Fix WebAssembly build and enable WasmEnableExceptionHandling.
+- Remove target framework net8.0-browser.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MacCatalyst Catalyst MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -152,12 +152,7 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="build\net8.0-browser1.0\PDFtoImage.props" />
-    <None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net8.0-browser1.0\PDFtoImage.props" />
-		<None Include="PDFtoImage.props" Pack="true" PackagePath="build\net9.0-browser1.0\PDFtoImage.props" />
 		<None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0-browser1.0\PDFtoImage.props" />
-		<None Include="PDFtoImage.props" Pack="true" PackagePath="build\net10.0-browser1.0\PDFtoImage.props" />
-		<None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0-browser1.0\PDFtoImage.props" />
   </ItemGroup>
 	
   <Import Project="PDFtoImage.PropertiesSigning.targets" />

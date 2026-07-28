@@ -81,15 +81,20 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
+            if (pages == null)
+                throw new ArgumentNullException(nameof(pages));
+
+            var validatedPages = pages.ToArray();
+
             // Stream -> Internals.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             var pageCount = pdfDocument.PageSizes.Count;
 
-            if (pages.Any(p => p >= pageCount))
+            if (validatedPages.Any(p => p >= pageCount))
                 throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
 
-            foreach (var bitmap in ToImagesImpl(pdfStream, leaveOpen, password, options, pages))
+            foreach (var bitmap in ToImagesImpl(pdfStream, leaveOpen, password, options, validatedPages))
             {
                 yield return bitmap;
             }
@@ -308,15 +313,20 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
+            if (pages == null)
+                throw new ArgumentNullException(nameof(pages));
+
+            var validatedPages = pages.ToArray();
+
             // Stream -> Internals.PdfDocument
             using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
             var pageCount = pdfDocument.PageSizes.Count;
 
-            if (pages.Any(p => p >= pageCount))
+            if (validatedPages.Any(p => p >= pageCount))
                 throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
 
-            await foreach (var bitmap in ToImagesImplAsync(pdfStream, leaveOpen, password, options, pages, cancellationToken))
+            await foreach (var bitmap in ToImagesImplAsync(pdfStream, leaveOpen, password, options, validatedPages, cancellationToken))
             {
                 yield return bitmap;
             }

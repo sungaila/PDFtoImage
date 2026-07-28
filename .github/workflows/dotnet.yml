@@ -70,11 +70,11 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -92,7 +92,7 @@ jobs:
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Component detection
-        uses: advanced-security/component-detection-dependency-submission-action@d433c2f467e149a8009c8fbce92cc708ed15ef7b
+        uses: advanced-security/component-detection-dependency-submission-action@v0.1.4
         with:
           detectorsCategories: "NuGet"
   dependency-review:
@@ -104,9 +104,9 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Review
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5.0.0
   lint:
     name: Lint
     runs-on: windows-latest
@@ -115,11 +115,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -148,11 +148,11 @@ jobs:
       attestations: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -170,13 +170,13 @@ jobs:
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
       - name: Publish NuGet packages
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: NuGet packages
           path: |
@@ -186,14 +186,14 @@ jobs:
       - name: Generate SBOM (CycloneDX JSON)
         run: dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts -F Json -fn sbom.json
       - name: Attest SBOM for NuGet packages
-        uses: actions/attest-sbom@v3
+        uses: actions/attest-sbom@v4
         with:
           subject-path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
           sbom-path: artifacts/sbom.json
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: SBOM (CycloneDX)
           path: artifacts/sbom.json
@@ -206,11 +206,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -232,7 +232,7 @@ jobs:
       - name: Pack
         run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Publish libraries
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Library assemblies
           path: |
@@ -241,7 +241,7 @@ jobs:
             !**/*.snupkg
           if-no-files-found: error
       - name: Publish NuGet packages
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: NuGet packages (for testing)
           path: |
@@ -249,7 +249,7 @@ jobs:
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
       - name: Publish tests
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
         with:
           name: Test assemblies
@@ -265,7 +265,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-11-arm, windows-2022, windows-2025, ubuntu-22.04, ubuntu-24.04, ubuntu-24.04-arm, macos-14, macos-15, macos-15-intel, macos-26, macos-26-intel]
+        os: [windows-11-arm, windows-2022, windows-2025, ubuntu-22.04, ubuntu-22.04-arm, ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04, ubuntu-26.04-arm, macos-14, macos-15, macos-15-intel, macos-26, macos-26-intel]
     runs-on: ${{ matrix.os }}
     env:
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
@@ -273,7 +273,7 @@ jobs:
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -282,7 +282,7 @@ jobs:
           dotnet-quality: 'ga'
       - name: Download test assemblies
         if: (success() || failure())
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: Test assemblies
       - name: .NET Framework 4.7.1
@@ -302,7 +302,7 @@ jobs:
         run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Test results (${{ matrix.os }})
           path: ./**/*.trx
@@ -310,7 +310,7 @@ jobs:
           retention-days: 1
       - name: Upload generated assets
         if: (success() || failure()) && (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Generated assets (${{ matrix.os }})
           path: ./**/Assets/Generated
@@ -319,72 +319,174 @@ jobs:
   docker-linux:
     permissions:
       contents: read
-    name: Docker (Linux)
-    runs-on: ubuntu-latest
+    name: Docker (${{ matrix.name }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubuntu-fdd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile
+          - name: ubuntu-fdd-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile
+          - name: alpine-fdd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile
+          - name: alpine-fdd-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile
+          - name: ubuntu-chiseled-fdd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile
+          - name: ubuntu-scd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-self-contained.dockerfile
+          - name: ubuntu-scd-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-self-contained.dockerfile
+          - name: alpine-scd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-self-contained.dockerfile
+          - name: alpine-scd-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-self-contained.dockerfile
+          - name: ubuntu-chiseled-scd-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-self-contained.dockerfile
+          - name: ubuntu-chiseled-scd-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-self-contained.dockerfile
+          - name: ubuntu-singlefile-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-singlefile.dockerfile
+          - name: ubuntu-aot-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile
+          - name: ubuntu-aot-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile
+          - name: alpine-aot-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile
+          - name: alpine-aot-arm64
+            runner: ubuntu-26.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile
+          - name: ubuntu-chiseled-aot-amd64
+            runner: ubuntu-26.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile
+    env:
+      DOCKER_BUILD_CHECKS_ANNOTATIONS: "true"
+      DOCKER_BUILD_SUMMARY: "true"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           sparse-checkout: |
+            src/Directory.Packages.props
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
-      - name: console (alpine)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm console
-      - name: console (alpine-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm console
-      - name: console (ubuntu)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm console
-      - name: console (ubuntu-chiseled)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm console
-      - name: console (ubuntu-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm console
-      - name: console (ubuntu-chiseled-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm console
+          sparse-checkout-cone-mode: false
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Build smoke-test image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platform }}
+          load: true
+          pull: true
+          tags: pdftoimage-smoke:${{ matrix.name }}
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+      - name: Run smoke-test image
+        run: docker run --rm --platform "${{ matrix.platform }}" "pdftoimage-smoke:${{ matrix.name }}"
+
   docker-windows:
     permissions:
       contents: read
     name: Docker (Windows)
     runs-on: windows-2025
+    timeout-minutes: 90
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           sparse-checkout: |
+            src/Directory.Packages.props
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
-      - name: console (windows-servercore)
+          sparse-checkout-cone-mode: false
+      - name: console (Windows Server Core, framework-dependent)
         if: success() || failure()
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm console
+        run: |
+          docker build --pull -t pdftoimage-smoke:windows-servercore -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          docker run --rm pdftoimage-smoke:windows-servercore
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: console (Windows Server Core, self-contained)
+        if: success() || failure()
+        run: |
+          docker build --pull -t pdftoimage-smoke:windows-servercore-self-contained -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-self-contained.dockerfile .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          docker run --rm pdftoimage-smoke:windows-servercore-self-contained
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: console (Windows Server Core, single-file)
+        if: success() || failure()
+        run: |
+          docker build --pull -t pdftoimage-smoke:windows-servercore-singlefile -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-singlefile.dockerfile .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          docker run --rm pdftoimage-smoke:windows-servercore-singlefile
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Setup MSVC Developer Command Prompt
         if: success() || failure()
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
       - name: Setup .NET
-        if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@v5
+        if: success() || failure()
+        uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: |
-            10.x
-          dotnet-quality: 'ga'
-      - name: Publish AOT (win-x64, self-contained)
+          dotnet-version: 10.x
+          dotnet-quality: ga
+      - name: Publish Native AOT (win-x64)
+        if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
-      - name: console (windows-servercore-aot)
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+      - name: console (Windows Server Core, Native AOT)
+        if: success() || failure()
+        run: |
+          docker build --pull -t pdftoimage-smoke:windows-servercore-aot -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR=artifacts/win-x64-aot .
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          docker run --rm pdftoimage-smoke:windows-servercore-aot
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   publish-test-results:
     name: Publish tests results
     needs: test
@@ -398,13 +500,13 @@ jobs:
     if: (success() || failure()) && (github.event_name != 'workflow_dispatch' && true || inputs.publish_testresults) == true
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: Test results (*)
           merge-multiple: true
           path: artifacts
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action@c9bbcabcaf28c5ce2a9f8b6ee91c62873071b2ce
         with:
           files: artifacts/**/*.trx
           check_name: Test results
@@ -413,7 +515,7 @@ jobs:
           json_file: test-results.json
       - name: Upload test results to GitHub Gist
         if: github.repository == 'sungaila/PDFtoImage' && github.ref == 'refs/heads/master' && success()
-        uses: exuanbo/actions-deploy-gist@47697fceaeea2006a90594ee24eb9cd0a1121ef8
+        uses: exuanbo/actions-deploy-gist@9f0a373feca99e5a664bad6f76b019808c46b710
         with:
           token: ${{ secrets.GIST_TOKEN }}
           gist_id: 003e8ab2211221897e4b3c0e564ed7b6
@@ -430,11 +532,11 @@ jobs:
     if: (github.event_name != 'workflow_dispatch' || inputs.run_sonarcloud) == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             8.x
@@ -454,7 +556,7 @@ jobs:
       - name: Setup JDK 17
         uses: actions/setup-java@v5
         with:
-          java-version: 17
+          java-version: 21
           java-package: jdk
           distribution: 'zulu'
       - name: Install SonarCloud scanner

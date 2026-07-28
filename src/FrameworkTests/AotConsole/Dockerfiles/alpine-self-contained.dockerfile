@@ -14,7 +14,7 @@ WORKDIR /src/src
 # exports normal BuildKit layers, but not the contents of exec cache mounts.
 # Restrict the multi-targeted wrapper to net10.0 so mobile workloads aren't
 # evaluated in these Linux smoke-test images.
-RUN --mount=type=cache,id=nuget-alpine-fdd,target=/root/.nuget/packages,sharing=locked \
+RUN --mount=type=cache,id=nuget-alpine-scd,target=/root/.nuget/packages,sharing=locked \
     case "$TARGETARCH" in \
       amd64) rid=linux-musl-x64 ;; \
       arm64) rid=linux-musl-arm64 ;; \
@@ -24,7 +24,7 @@ RUN --mount=type=cache,id=nuget-alpine-fdd,target=/root/.nuget/packages,sharing=
       -r "$rid" \
       -p:TargetFrameworks=net10.0 \
       -p:PublishAot=false \
-      -p:SelfContained=false && \
+      -p:SelfContained=true && \
     dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
       -c "$BUILD_CONFIGURATION" \
       -f net10.0 \
@@ -33,11 +33,10 @@ RUN --mount=type=cache,id=nuget-alpine-fdd,target=/root/.nuget/packages,sharing=
       --no-restore \
       -p:TargetFrameworks=net10.0 \
       -p:PublishAot=false \
-      -p:SelfContained=false \
-      -p:UseAppHost=false
+      -p:SelfContained=true
 
-FROM mcr.microsoft.com/dotnet/runtime:${DOTNET_VERSION}-alpine AS final
+FROM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_VERSION}-alpine AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 USER $APP_UID
-ENTRYPOINT ["dotnet", "PDFtoImage.FrameworkTests.AotConsole.dll"]
+ENTRYPOINT ["./PDFtoImage.FrameworkTests.AotConsole"]

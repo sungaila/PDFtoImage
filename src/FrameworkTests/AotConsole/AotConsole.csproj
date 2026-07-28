@@ -1,22 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64;linux-x64;linux-arm64;linux-musl-x64;linux-musl-arm64;osx-x64;osx-arm64</RuntimeIdentifiers>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>PDFtoImage.FrameworkTests.AotConsole</AssemblyName>
     <RootNamespace>PDFtoImage.FrameworkTests.AotConsole</RootNamespace>
     <StartupObject>PDFtoImage.FrameworkTests.AotConsole.Program</StartupObject>
-    <PublishAot>true</PublishAot>
-		<SelfContained>true</SelfContained>
+
+    <!-- Keep the original local default. Dockerfiles override these properties explicitly. -->
+    <PublishAot Condition="'$(PublishAot)' == ''">true</PublishAot>
+    <SelfContained Condition="'$(SelfContained)' == ''">true</SelfContained>
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
-  <!-- C# compiler -->
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
+		<Nullable>enable</Nullable>
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CA1416</NoWarn>
