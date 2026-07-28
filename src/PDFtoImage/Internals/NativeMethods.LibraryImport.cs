@@ -25,11 +25,11 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
+        public static bool GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
         {
             lock (LockString)
             {
-                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
+                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height) != 0;
             }
         }
 
@@ -63,29 +63,52 @@ namespace PDFtoImage.Internals
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
         private static int FPDF_GetBlock(IntPtr param, CULong position, IntPtr buffer, CULong size)
         {
-            long positionConverted;
-            int sizeConverted;
-
-            positionConverted = checked((uint)position.Value.ToUInt64());
-            sizeConverted = (int)checked((uint)size.Value.ToUInt64());
-
-            var stream = StreamManager.Get(checked((int)param));
-
-            if (stream == null)
-                return 0;
-
-            stream.Position = positionConverted;
-
-            byte[] rentedBuffer = ArrayPool<byte>.Shared.Rent(sizeConverted);
+            byte[]? rentedBuffer = null;
 
             try
             {
-                int read = stream.Read(rentedBuffer, 0, sizeConverted);
+                var streamId = checked((int)param.ToInt64());
+                var nativePosition = position.Value.ToUInt64();
+                var nativeSize = size.Value.ToUInt64();
 
-                if (read != sizeConverted)
+                if (nativePosition > long.MaxValue)
                     return 0;
 
+                if (nativeSize > int.MaxValue)
+                    return 0;
+
+                var positionConverted = (long)nativePosition;
+                var sizeConverted = (int)nativeSize;
+
+                if (sizeConverted == 0)
+                    return 1;
+
+                if (buffer == IntPtr.Zero)
+                    return 0;
+
+                var stream = StreamManager.Get(streamId);
+
+                if (stream == null || !stream.CanRead || !stream.CanSeek)
+                    return 0;
+
+                stream.Position = positionConverted;
+
+                rentedBuffer = ArrayPool<byte>.Shared.Rent(sizeConverted);
+
+                var totalRead = 0;
+
+                while (totalRead < sizeConverted)
+                {
+                    var read = stream.Read(rentedBuffer, totalRead, sizeConverted - totalRead);
+
+                    if (read <= 0)
+                        return 0;
+
+                    totalRead += read;
+                }
+
                 Marshal.Copy(rentedBuffer, 0, buffer, sizeConverted);
+
                 return 1;
             }
             catch
@@ -94,7 +117,14 @@ namespace PDFtoImage.Internals
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(rentedBuffer, clearArray: false);
+                if (rentedBuffer != null)
+                {
+                    try
+                    {
+                        ArrayPool<byte>.Shared.Return(rentedBuffer, clearArray: false);
+                    }
+                    catch { }
+                }
             }
         }
 
@@ -130,10 +160,6 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDFText_LoadPage(IntPtr page);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
 
             [LibraryImport("pdfium")]
@@ -147,10 +173,6 @@ namespace PDFtoImage.Internals
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnBeforeClosePage(IntPtr page, IntPtr _form);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDFText_ClosePage(IntPtr text_page);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

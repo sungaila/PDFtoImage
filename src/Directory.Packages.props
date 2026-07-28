@@ -32,6 +32,6 @@
     <PackageVersion Include="SkiaSharp.NativeAssets.macOS" Version="4.150.1" />
     <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.150.1" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Win32" Version="4.150.1" />
-		<PackageVersion Include="Sungaila.PDFium.BlazorWebAssembly" Version="152.0.7961" />
+    <PackageVersion Include="Sungaila.PDFium.BlazorWebAssembly" Version="152.0.7961.1" />
   </ItemGroup>
 </Project>

@@ -26,11 +26,11 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static int GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
+        public static bool GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height)
         {
             lock (LockString)
             {
-                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height);
+                return Imports.FPDF_GetPageSizeByIndex(document, page_index, out width, out height) != 0;
             }
         }
 
@@ -85,36 +85,54 @@ namespace PDFtoImage.Internals
         }
 
 #if BROWSER
-        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
         // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FPDF_GetBlockDelegate))]
 #endif
         private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
         {
-            long positionConverted;
-            int sizeConverted;
-
-            positionConverted = position;
-            sizeConverted = (int)size;
-
-            var stream = StreamManager.Get((int)param);
-
-            if (stream == null)
-                return 0;
-
-            stream.Position = positionConverted;
-
-            byte[] rentedBuffer = ArrayPool<byte>.Shared.Rent(sizeConverted);
+            byte[]? rentedBuffer = null;
 
             try
             {
-                int read = stream.Read(rentedBuffer, 0, sizeConverted);
+                var streamId = checked((int)param.ToInt64());
+                var positionConverted = (long)position;
 
-                if (read != sizeConverted)
+                if (size > int.MaxValue)
                     return 0;
 
+                var sizeConverted = (int)size;
+
+                if (sizeConverted == 0)
+                    return 1;
+
+                if (buffer == IntPtr.Zero)
+                    return 0;
+
+                var stream = StreamManager.Get(streamId);
+
+                if (stream == null || !stream.CanRead || !stream.CanSeek)
+                    return 0;
+
+                stream.Position = positionConverted;
+
+                rentedBuffer = ArrayPool<byte>.Shared.Rent(sizeConverted);
+
+                var totalRead = 0;
+
+                while (totalRead < sizeConverted)
+                {
+                    var read = stream.Read(rentedBuffer, totalRead, sizeConverted - totalRead);
+
+                    if (read <= 0)
+                        return 0;
+
+                    totalRead += read;
+                }
+
                 Marshal.Copy(rentedBuffer, 0, buffer, sizeConverted);
+
                 return 1;
             }
             catch
@@ -123,7 +141,14 @@ namespace PDFtoImage.Internals
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(rentedBuffer, clearArray: false);
+                if (rentedBuffer != null)
+                {
+                    try
+                    {
+                        ArrayPool<byte>.Shared.Return(rentedBuffer, clearArray: false);
+                    }
+                    catch { }
+                }
             }
         }
 
@@ -153,9 +178,6 @@ namespace PDFtoImage.Internals
             public static extern IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern IntPtr FPDFText_LoadPage(IntPtr page);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -166,9 +188,6 @@ namespace PDFtoImage.Internals
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FORM_OnBeforeClosePage(IntPtr page, IntPtr _form);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDFText_ClosePage(IntPtr text_page);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_ClosePage(IntPtr page);

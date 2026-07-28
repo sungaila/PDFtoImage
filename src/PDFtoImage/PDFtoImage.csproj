@@ -22,7 +22,6 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Icon_128.png</PackageIcon>
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png</PackageIconUrl>
     <Description>A .NET library to render PDF files into images.</Description>
     <PackageReleaseNotes>- Update SkiaSharp dependency to 4.150.1.
 - Update PDFium dependency to 152.0.7961.

@@ -15,6 +15,7 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <InvariantTimezone>true</InvariantTimezone>
     <PublishTrimmed>true</PublishTrimmed>
+		<BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
     <TrimMode>partial</TrimMode>
     <AssemblyOriginatorKeyFile>WebConverter.snk</AssemblyOriginatorKeyFile>
     <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>

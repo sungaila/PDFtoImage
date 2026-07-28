@@ -76,14 +76,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static IntPtr Text_LoadPage(IntPtr page)
-        {
-            lock (LockString)
-            {
-                return Imports.FPDFText_LoadPage(page);
-            }
-        }
-
         public static void OnAfterLoadPage(IntPtr page, IntPtr _form)
         {
             lock (LockString)
@@ -113,14 +105,6 @@ namespace PDFtoImage.Internals
             lock (LockString)
             {
                 Imports.FORM_OnBeforeClosePage(page, _form);
-            }
-        }
-
-        public static void Text_ClosePage(IntPtr text_page)
-        {
-            lock (LockString)
-            {
-                Imports.FPDFText_ClosePage(text_page);
             }
         }
 

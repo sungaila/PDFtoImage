@@ -188,10 +188,8 @@ namespace PDFtoImage.Internals
 
         private static class Win32
         {
-            private const string SystemLibrary = "Kernel32.dll";
-
-            [DllImport(SystemLibrary, SetLastError = true, CharSet = CharSet.Ansi)]
-            public static extern IntPtr LoadLibrary(string lpFileName);
+            [DllImport("kernel32.dll", EntryPoint = "LoadLibraryW", CharSet = CharSet.Unicode, SetLastError = true)]
+            public static extern IntPtr LoadLibrary(string fileName);
         }
 #pragma warning restore IDE1006 // Naming Styles
     }

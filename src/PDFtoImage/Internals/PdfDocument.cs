@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using PDFtoImage.Exceptions;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ namespace PDFtoImage.Internals
     /// <summary>
     /// Provides functionality to render a PDF document.
     /// </summary>
-    internal struct PdfDocument : IDisposable
+    internal sealed class PdfDocument : IDisposable
     {
         private bool _disposed;
         private readonly PdfFile _file;
@@ -33,7 +34,7 @@ namespace PDFtoImage.Internals
         /// <summary>
         /// Size of each page in the PDF document.
         /// </summary>
-        public IList<SizeF> PageSizes { get; private set; }
+        public IReadOnlyList<SizeF> PageSizes { get; private set; }
 
         private PdfDocument(Stream stream, string? password, bool disposeStream)
         {
@@ -45,7 +46,7 @@ namespace PDFtoImage.Internals
         private const int MaxTileWidth = 4000;
         private const int MaxTileHeight = 4000;
 
-        public readonly SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
+        public SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -107,15 +108,29 @@ namespace PDFtoImage.Internals
                 if (requestedWidth == null)
                 {
                     var newWidth = boundsWidth ?? bounds.Value.Width;
-                    remainderX = 1 - (newWidth % 1);
-                    width = (float)Math.Ceiling(newWidth);
+
+#if NETFRAMEWORK
+                    var roundedWidth = (float)Math.Ceiling(newWidth);
+#else
+                    var roundedWidth = MathF.Ceiling(newWidth);
+#endif
+
+                    remainderX = roundedWidth - newWidth;
+                    width = roundedWidth;
                 }
 
                 if (requestedHeight == null)
                 {
                     var newHeight = boundsHeight ?? bounds.Value.Height;
-                    remainderY = 1 - (newHeight % 1);
-                    height = (float)Math.Ceiling(newHeight);
+
+#if NETFRAMEWORK
+                    var roundedHeight = (float)Math.Ceiling(newHeight);
+#else
+                    var roundedHeight = MathF.Ceiling(newHeight);
+#endif
+
+                    remainderY = roundedHeight - newHeight;
+                    height = roundedHeight;
                 }
 
                 bounds = new RectangleF(
@@ -228,9 +243,10 @@ namespace PDFtoImage.Internals
                                 (float)Math.Floor(x * currentTileWidth + currentTileWidth),
                                 (float)Math.Floor(y * currentTileHeight + currentTileHeight)),
                             SKSamplingOptions.Default);
-                        canvas.Flush();
                     }
                 }
+
+                canvas.Flush();
             }
 
             return bitmap;
@@ -257,13 +273,19 @@ namespace PDFtoImage.Internals
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), (int)width * 4);
+                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), bitmap.RowBytes);
+
+                if (handle == IntPtr.Zero)
+                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
 
                 cancellationToken.ThrowIfCancellationRequested();
-                NativeMethods.Bitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor);
+
+                if (!NativeMethods.Bitmap_FillRect(handle, 0, 0, (int)width, (int)height, (uint)backgroundColor))
+                    throw new InvalidOperationException("PDFium could not initialize the rendering bitmap.");
 
                 cancellationToken.ThrowIfCancellationRequested();
-                bool success = file.RenderPDFPageToBitmap(
+
+                file.RenderPDFPageToBitmap(
                     page,
                     handle,
                     bounds != null ? -(int)Math.Floor(bounds.Value.X * (originalWidth / bounds.Value.Width)) : 0,
@@ -274,9 +296,6 @@ namespace PDFtoImage.Internals
                     flags,
                     renderFormFill
                 );
-
-                if (!success)
-                    throw new Win32Exception();
             }
             catch
             {
