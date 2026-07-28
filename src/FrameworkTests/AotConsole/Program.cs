@@ -25,6 +25,7 @@ public static class Program
         using var bitmap = PDFtoImage.Conversion.ToImage(input, 0);
 
         Console.WriteLine($"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}");
+        Console.WriteLine();
 
         if (ExpectedWidth != bitmap.Width || ExpectedHeight != bitmap.Height)
         {
