@@ -36,3 +36,11 @@ the host; the AOT Dockerfiles therefore only package a previously published
 
 Nano Server variants are intentionally kept as extended compatibility tests.
 They can expose native Win32 imports that are unavailable on Nano Server.
+
+## NuGet cache note
+
+The publish steps intentionally allow restore instead of using `--no-restore`.
+BuildKit layer cache entries can be restored from the GitHub Actions cache while
+the contents of `RUN --mount=type=cache` mounts are absent on a fresh builder.
+Allowing `dotnet publish` to restore makes the Docker builds robust in that case;
+on a warm builder, the NuGet cache mount still avoids downloading packages again.

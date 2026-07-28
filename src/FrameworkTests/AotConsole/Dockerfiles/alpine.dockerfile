@@ -36,7 +36,6 @@ RUN --mount=type=cache,id=nuget-alpine-fdd,target=/root/.nuget/packages,sharing=
       -c "$BUILD_CONFIGURATION" \
       -r "$rid" \
       -o /app/publish \
-      --no-restore \
       -p:TargetFramework=net10.0 \
       -p:PublishAot=false \
       -p:SelfContained=false \

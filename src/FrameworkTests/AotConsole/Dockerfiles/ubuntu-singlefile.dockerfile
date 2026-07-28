@@ -36,7 +36,6 @@ RUN --mount=type=cache,id=nuget-ubuntu-singlefile,target=/root/.nuget/packages,s
       -c "$BUILD_CONFIGURATION" \
       -r "$rid" \
       -o /app/publish \
-      --no-restore \
       -p:TargetFramework=net10.0 \
       -p:PublishAot=false \
       -p:SelfContained=true \

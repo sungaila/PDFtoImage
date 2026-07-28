@@ -347,27 +347,27 @@ jobs:
             runner: ubuntu-26.04
             platform: linux/amd64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile
-          - name: ubuntu-self-contained-amd64
+          - name: ubuntu-scd-amd64
             runner: ubuntu-26.04
             platform: linux/amd64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-self-contained.dockerfile
-          - name: ubuntu-self-contained-arm64
+          - name: ubuntu-scd-arm64
             runner: ubuntu-26.04-arm
             platform: linux/arm64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-self-contained.dockerfile
-          - name: alpine-self-contained-amd64
+          - name: alpine-scd-amd64
             runner: ubuntu-26.04
             platform: linux/amd64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-self-contained.dockerfile
-          - name: alpine-self-contained-arm64
+          - name: alpine-scd-arm64
             runner: ubuntu-26.04-arm
             platform: linux/arm64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-self-contained.dockerfile
-          - name: ubuntu-chiseled-self-contained-amd64
+          - name: ubuntu-chiseled-scd-amd64
             runner: ubuntu-26.04
             platform: linux/amd64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-self-contained.dockerfile
-          - name: ubuntu-chiseled-self-contained-arm64
+          - name: ubuntu-chiseled-scd-arm64
             runner: ubuntu-26.04-arm
             platform: linux/arm64
             dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-self-contained.dockerfile

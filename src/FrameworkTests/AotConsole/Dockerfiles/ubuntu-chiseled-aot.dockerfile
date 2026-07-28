@@ -36,7 +36,6 @@ RUN --mount=type=cache,id=nuget-ubuntu-chiseled-aot,target=/root/.nuget/packages
       -c "$BUILD_CONFIGURATION" \
       -r "$rid" \
       -o /app/publish \
-      --no-restore \
       -p:TargetFramework=net10.0 \
       -p:PublishAot=true \
       -p:SelfContained=true \
