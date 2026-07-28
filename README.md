@@ -15,11 +15,6 @@ This .NET library is built on top of
 * [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
 
 ## Getting started
-Add the NuGet package to your project:
-```console
-dotnet add package PDFtoImage
-```
-
 Call a static method from `PDFtoImage.Conversion`. Here is an example of how to render the first page of a PDF file as a PNG image:
 
 ```csharp
