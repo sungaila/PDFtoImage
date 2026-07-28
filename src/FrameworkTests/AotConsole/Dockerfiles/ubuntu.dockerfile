@@ -1,21 +1,49 @@
-﻿FROM mcr.microsoft.com/dotnet/runtime:10.0 AS base
-WORKDIR /app
+# syntax=docker/dockerfile:1.7
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS restore
+ARG DOTNET_VERSION=10.0
+
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-noble AS publish
 ARG BUILD_CONFIGURATION=Release
+ARG TARGETARCH
 WORKDIR /src
-COPY ["src/Directory.Packages.props", "src/Directory.Packages.props"]
-COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
-COPY ["src/PDFtoImage", "src/PDFtoImage"]
-RUN dotnet restore "./src/FrameworkTests/AotConsole/AotConsole.csproj" -r linux-x64 -p:TargetFramework=net10.0
+
+COPY src/Directory.Packages.props src/Directory.Packages.props
+COPY src/FrameworkTests/AotConsole/AotConsole.csproj src/FrameworkTests/AotConsole/AotConsole.csproj
+COPY src/PDFtoImage src/PDFtoImage
+
+RUN --mount=type=cache,id=nuget-ubuntu-fdd,target=/root/.nuget/packages,sharing=locked \
+    case "$TARGETARCH" in \
+      amd64) rid=linux-x64 ;; \
+      arm64) rid=linux-arm64 ;; \
+      *) echo "Unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
+    esac && \
+    dotnet restore src/FrameworkTests/AotConsole/AotConsole.csproj \
+      -r "$rid" \
+      -p:TargetFramework=net10.0 \
+      -p:PublishAot=false \
+      -p:SelfContained=false
+
 COPY . .
-WORKDIR "/src/src"
+WORKDIR /src/src
 
-FROM restore AS build
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet build "./FrameworkTests/AotConsole/AotConsole.csproj" -c "$BUILD_CONFIGURATION" -o /app/build -r linux-x64 --no-restore
+RUN --mount=type=cache,id=nuget-ubuntu-fdd,target=/root/.nuget/packages,sharing=locked \
+    case "$TARGETARCH" in \
+      amd64) rid=linux-x64 ;; \
+      arm64) rid=linux-arm64 ;; \
+      *) echo "Unsupported TARGETARCH: $TARGETARCH" >&2; exit 1 ;; \
+    esac && \
+    dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
+      -c "$BUILD_CONFIGURATION" \
+      -r "$rid" \
+      -o /app/publish \
+      --no-restore \
+      -p:TargetFramework=net10.0 \
+      -p:PublishAot=false \
+      -p:SelfContained=false \
+      -p:UseAppHost=false
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/runtime:${DOTNET_VERSION}-noble AS final
 WORKDIR /app
-COPY --from=build /app/build .
+COPY --from=publish /app/publish .
+USER $APP_UID
 ENTRYPOINT ["dotnet", "PDFtoImage.FrameworkTests.AotConsole.dll"]

@@ -2,7 +2,7 @@
 # escape=`
 
 ARG WINDOWS_VERSION=ltsc2025
-FROM mcr.microsoft.com/windows/servercore:${WINDOWS_VERSION}
+FROM mcr.microsoft.com/windows/nanoserver:${WINDOWS_VERSION}
 WORKDIR C:/app
 
 ARG PUBLISH_DIR=artifacts/win-x64-aot

@@ -319,41 +319,106 @@ jobs:
   docker-linux:
     permissions:
       contents: read
-    name: Docker (Linux)
-    runs-on: ubuntu-latest
+    name: Docker (${{ matrix.name }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubuntu-fdd-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile
+          - name: ubuntu-fdd-arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile
+          - name: alpine-fdd-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile
+          - name: alpine-fdd-arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile
+          - name: ubuntu-chiseled-fdd-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile
+          - name: ubuntu-self-contained-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-self-contained.dockerfile
+          - name: alpine-self-contained-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-self-contained.dockerfile
+          - name: ubuntu-chiseled-self-contained-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-self-contained.dockerfile
+          - name: ubuntu-singlefile-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-singlefile.dockerfile
+          - name: ubuntu-aot-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile
+          - name: ubuntu-aot-arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile
+          - name: alpine-aot-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile
+          - name: alpine-aot-arm64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile
+          - name: ubuntu-chiseled-aot-amd64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            dockerfile: src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile
+    env:
+      DOCKER_BUILD_CHECKS_ANNOTATIONS: "true"
+      DOCKER_BUILD_SUMMARY: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
           sparse-checkout: |
+            src/Directory.Packages.props
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
-      - name: console (alpine)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine.dockerfile . && docker run --rm console
-      - name: console (alpine-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/alpine-aot.dockerfile . && docker run --rm console
-      - name: console (ubuntu)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu.dockerfile . && docker run --rm console
-      - name: console (ubuntu-chiseled)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled.dockerfile . && docker run --rm console
-      - name: console (ubuntu-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-aot.dockerfile . && docker run --rm console
-      - name: console (ubuntu-chiseled-aot)
-        if: success() || failure()
-        run: docker buildx build -t console -f src/FrameworkTests/AotConsole/Dockerfiles/ubuntu-chiseled-aot.dockerfile . && docker run --rm console
+          sparse-checkout-cone-mode: false
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Build smoke-test image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: ${{ matrix.platform }}
+          load: true
+          pull: true
+          tags: pdftoimage-smoke:${{ matrix.name }}
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+      - name: Run smoke-test image
+        run: docker run --rm --platform "${{ matrix.platform }}" "pdftoimage-smoke:${{ matrix.name }}"
+
   docker-windows:
     permissions:
       contents: read
     name: Docker (Windows)
     runs-on: windows-2025
+    timeout-minutes: 90
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
       - name: Checkout
@@ -361,30 +426,65 @@ jobs:
         with:
           fetch-depth: 0
           sparse-checkout: |
+            src/Directory.Packages.props
             src/PDFtoImage
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
-      - name: console (windows-servercore)
+          sparse-checkout-cone-mode: false
+      - name: Show Docker Buildx version
+        run: docker buildx version
+      - name: console (Windows Server Core, framework-dependent)
         if: success() || failure()
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile . && docker run --rm console
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-servercore -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore.dockerfile .
+          docker run --rm pdftoimage-smoke:windows-servercore
+      - name: console (Windows Server Core, self-contained)
+        if: success() || failure()
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-servercore-self-contained -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-self-contained.dockerfile .
+          docker run --rm pdftoimage-smoke:windows-servercore-self-contained
+      - name: console (Windows Server Core, single-file)
+        if: success() || failure()
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-servercore-singlefile -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-singlefile.dockerfile .
+          docker run --rm pdftoimage-smoke:windows-servercore-singlefile
+      - name: console (Nano Server, framework-dependent, extended)
+        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-nanoserver -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver.dockerfile .
+          docker run --rm pdftoimage-smoke:windows-nanoserver
+      - name: console (Nano Server, self-contained, extended)
+        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-nanoserver-self-contained -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-self-contained.dockerfile .
+          docker run --rm pdftoimage-smoke:windows-nanoserver-self-contained
       - name: Setup MSVC Developer Command Prompt
         if: success() || failure()
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
       - name: Setup .NET
-        if: runner.os == 'Windows'
+        if: success() || failure()
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: |
-            10.x
-          dotnet-quality: 'ga'
-      - name: Publish AOT (win-x64, self-contained)
+          dotnet-version: 10.x
+          dotnet-quality: ga
+      - name: Publish Native AOT (win-x64)
+        if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o $env:GITHUB_WORKSPACE\artifacts\win-x64-aot --no-restore
-      - name: console (windows-servercore-aot)
-        run: docker build -t console -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR="artifacts/win-x64-aot" . && docker run --rm console
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+      - name: console (Windows Server Core, Native AOT)
+        if: success() || failure()
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-servercore-aot -f src\FrameworkTests\AotConsole\Dockerfiles\windows-servercore-aot.dockerfile --build-arg PUBLISH_DIR=artifacts/win-x64-aot .
+          docker run --rm pdftoimage-smoke:windows-servercore-aot
+      - name: console (Nano Server, Native AOT, extended)
+        if: (success() || failure()) && github.event_name == 'workflow_dispatch'
+        run: |
+          docker buildx build --pull --load -t pdftoimage-smoke:windows-nanoserver-aot -f src\FrameworkTests\AotConsole\Dockerfiles\windows-nanoserver-aot.dockerfile --build-arg PUBLISH_DIR=artifacts/win-x64-aot .
+          docker run --rm pdftoimage-smoke:windows-nanoserver-aot
+
   publish-test-results:
     name: Publish tests results
     needs: test
