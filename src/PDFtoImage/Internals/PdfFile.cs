@@ -1,6 +1,5 @@
 ﻿using PDFtoImage.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -88,19 +87,11 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public List<SizeF> GetPDFDocInfo()
+        public int GetPageCount()
         {
             ThrowIfDisposed();
 
-            int pageCount = NativeMethods.GetPageCount(_document);
-            var result = new List<SizeF>(pageCount);
-
-            for (int i = 0; i < pageCount; i++)
-            {
-                result.Add(GetPDFDocInfo(i));
-            }
-
-            return result;
+            return NativeMethods.GetPageCount(_document);
         }
 
         public SizeF GetPDFDocInfo(int pageNumber)

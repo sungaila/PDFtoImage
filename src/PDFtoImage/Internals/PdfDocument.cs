@@ -2,8 +2,6 @@
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -32,7 +30,7 @@ namespace PDFtoImage.Internals
         }
 
         /// <summary>
-        /// Size of each page in the PDF document.
+        /// Size of each page in the PDF document. Each page is measured when it is first read.
         /// </summary>
         public IReadOnlyList<SizeF> PageSizes { get; private set; }
 
@@ -40,7 +38,7 @@ namespace PDFtoImage.Internals
         {
             _file = new PdfFile(stream, password, disposeStream);
 
-            PageSizes = new ReadOnlyCollection<SizeF>(_file.GetPDFDocInfo() ?? throw new Win32Exception());
+            PageSizes = new PdfPageSizes(_file, _file.GetPageCount());
         }
 
         private const int MaxTileWidth = 4000;
