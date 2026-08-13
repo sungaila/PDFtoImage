@@ -60,6 +60,88 @@ namespace PDFtoImage.Internals
             }
         }
 
+        /// <summary>
+        /// Creates an availability provider over a .NET Stream.
+        /// </summary>
+        /// <param name="input">The input Stream. Don't dispose prior to destroying the provider.</param>
+        /// <param name="id">The id the stream is registered under.</param>
+        /// <param name="state">Native memory owned by the provider. Pass to <see cref="Avail_Destroy"/>.</param>
+        /// <returns>An IntPtr to the FPDF_AVAIL object.</returns>
+        public unsafe static IntPtr Avail_Create(Stream input, int id, out IntPtr state)
+        {
+            delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
+            var access = new FPDF_FILEACCESS(new CULong((uint)input.Length), getBlock, id);
+
+            // PDFium keeps the pointer it is given, so this outlives the call.
+            state = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
+
+            try
+            {
+                Marshal.StructureToPtr(access, state, false);
+
+                lock (LockString)
+                {
+                    return Imports.FPDFAvail_Create(GetFileAvailPointer(), state);
+                }
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(state);
+                state = IntPtr.Zero;
+                throw;
+            }
+        }
+
+        public static IntPtr Avail_GetDocument(IntPtr avail, string? password)
+        {
+            lock (LockString)
+            {
+                return Imports.FPDFAvail_GetDocument(avail, password);
+            }
+        }
+
+        // Stateless, so one of each serves the process. Written under LockString.
+        private static IntPtr _fileAvailPtr;
+
+        private static IntPtr _downloadHintsPtr;
+
+        private unsafe static IntPtr GetFileAvailPointer()
+        {
+            if (_fileAvailPtr == IntPtr.Zero)
+            {
+                delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, int> isDataAvail = &FX_IsDataAvail;
+                var fileAvail = new FX_FILEAVAIL(1, isDataAvail);
+
+                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<FX_FILEAVAIL>());
+                Marshal.StructureToPtr(fileAvail, ptr, false);
+                _fileAvailPtr = ptr;
+            }
+
+            return _fileAvailPtr;
+        }
+
+        private unsafe static IntPtr GetDownloadHintsPointer()
+        {
+            if (_downloadHintsPtr == IntPtr.Zero)
+            {
+                delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, void> addSegment = &FX_AddSegment;
+                var hints = new FX_DOWNLOADHINTS(1, addSegment);
+
+                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<FX_DOWNLOADHINTS>());
+                Marshal.StructureToPtr(hints, ptr, false);
+                _downloadHintsPtr = ptr;
+            }
+
+            return _downloadHintsPtr;
+        }
+
+        // The stream is seekable and complete, so every byte is always readable.
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        private static int FX_IsDataAvail(IntPtr param, nuint offset, nuint size) => 1;
+
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        private static void FX_AddSegment(IntPtr param, nuint offset, nuint size) { }
+
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
         private static int FPDF_GetBlock(IntPtr param, CULong position, IntPtr buffer, CULong size)
         {
@@ -216,6 +298,30 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDFAvail_Create(IntPtr file_avail, IntPtr file);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial void FPDFAvail_Destroy(IntPtr avail);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsLinearized(IntPtr avail);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsDocAvail(IntPtr avail, IntPtr hints);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsPageAvail(IntPtr avail, int page_index, IntPtr hints);
+
+            [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDFAvail_GetDocument(IntPtr avail, string? password);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
 
             [LibraryImport("pdfium")]
@@ -229,6 +335,20 @@ namespace PDFtoImage.Internals
             private readonly CULong m_FileLen = m_FileLen;
             private readonly delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> m_GetBlock = m_GetBlock;
             private readonly IntPtr m_Param = m_Param;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public unsafe readonly struct FX_FILEAVAIL(int version, delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, int> m_IsDataAvail)
+        {
+            private readonly int version = version;
+            private readonly delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, int> m_IsDataAvail = m_IsDataAvail;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public unsafe readonly struct FX_DOWNLOADHINTS(int version, delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, void> m_AddSegment)
+        {
+            private readonly int version = version;
+            private readonly delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, void> m_AddSegment = m_AddSegment;
         }
     }
 }

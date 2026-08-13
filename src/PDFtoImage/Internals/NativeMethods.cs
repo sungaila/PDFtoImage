@@ -44,6 +44,52 @@ namespace PDFtoImage.Internals
             }
         }
 
+        // Both arguments tolerate IntPtr.Zero.
+        public static void Avail_Destroy(IntPtr avail, IntPtr state)
+        {
+            try
+            {
+                if (avail != IntPtr.Zero)
+                {
+                    lock (LockString)
+                    {
+                        Imports.FPDFAvail_Destroy(avail);
+                    }
+                }
+            }
+            finally
+            {
+                if (state != IntPtr.Zero)
+                    Marshal.FreeHGlobal(state);
+            }
+        }
+
+        public static FPDF_LINEARIZATION Avail_IsLinearized(IntPtr avail)
+        {
+            lock (LockString)
+            {
+                return (FPDF_LINEARIZATION)Imports.FPDFAvail_IsLinearized(avail);
+            }
+        }
+
+        // Returns PDF_DATA_ERROR, PDF_DATA_NOTAVAIL or PDF_DATA_AVAIL.
+        public static int Avail_IsDocAvail(IntPtr avail)
+        {
+            lock (LockString)
+            {
+                return Imports.FPDFAvail_IsDocAvail(avail, GetDownloadHintsPointer());
+            }
+        }
+
+        // Returns PDF_DATA_ERROR, PDF_DATA_NOTAVAIL or PDF_DATA_AVAIL.
+        public static int Avail_IsPageAvail(IntPtr avail, int page_index)
+        {
+            lock (LockString)
+            {
+                return Imports.FPDFAvail_IsPageAvail(avail, page_index, GetDownloadHintsPointer());
+            }
+        }
+
         public static IntPtr Doc_InitFormFillEnvironment(IntPtr document, IntPtr formInfo)
         {
             lock (LockString)
@@ -330,6 +376,24 @@ namespace PDFtoImage.Internals
             /// Set whether fill paths need to be stroked. This flag is only used when FPDF_COLORSCHEME is passed in, since with a single fill color for paths the boundaries of adjacent fill paths are less visible.
             /// </summary>
             CONVERT_FILL_TO_STROKE = 0x20
+        }
+
+        public enum FPDF_LINEARIZATION : int
+        {
+            /// <summary>
+            /// Not enough of the document has been read to tell.
+            /// </summary>
+            UNKNOWN = -1,
+
+            /// <summary>
+            /// Not linearized, so it has no hint tables.
+            /// </summary>
+            NOT_LINEARIZED = 0,
+
+            /// <summary>
+            /// Linearized.
+            /// </summary>
+            LINEARIZED = 1
         }
 
         public enum FPDF_ERR : uint

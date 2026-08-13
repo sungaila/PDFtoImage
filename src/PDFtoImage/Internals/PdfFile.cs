@@ -16,6 +16,14 @@ namespace PDFtoImage.Internals
         private Stream? _stream;
         private readonly bool _disposeStream;
 
+        private IntPtr _avail;
+        private IntPtr _availState;
+        private bool _availAttempted;
+        private bool _usesAvail;
+
+        // PDFium needs it again if the document is reopened through the availability API.
+        private readonly string? _password;
+
         public PdfFile(Stream stream, string? password, bool disposeStream)
         {
             PdfLibrary.EnsureLoaded();
@@ -44,6 +52,7 @@ namespace PDFtoImage.Internals
             {
                 _id = StreamManager.Register(stream);
                 _disposeStream = disposeStream;
+                _password = password;
 
                 var document = NativeMethods.LoadCustomDocument(stream, password, _id);
 
@@ -52,18 +61,7 @@ namespace PDFtoImage.Internals
 
                 _document = document;
 
-                var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
-
-                _formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
-                Marshal.StructureToPtr(ffi, _formFillInfoPtr, false);
-
-                _form = NativeMethods.Doc_InitFormFillEnvironment(_document, _formFillInfoPtr);
-
-                if (_form == IntPtr.Zero)
-                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
-
-                NativeMethods.SetFormFieldHighlightColor(_form, 0, 0xFFE4DD);
-                NativeMethods.SetFormFieldHighlightAlpha(_form, 100);
+                (_form, _formFillInfoPtr) = CreateFormEnvironment(_document);
             }
             catch
             {
@@ -72,11 +70,58 @@ namespace PDFtoImage.Internals
             }
         }
 
+        private static (IntPtr form, IntPtr formFillInfoPtr) CreateFormEnvironment(IntPtr document)
+        {
+            var ffi = new NativeMethods.FPDF_FORMFILLINFO(1);
+
+            var formFillInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<NativeMethods.FPDF_FORMFILLINFO>());
+
+            try
+            {
+                Marshal.StructureToPtr(ffi, formFillInfoPtr, false);
+
+                var form = NativeMethods.Doc_InitFormFillEnvironment(document, formFillInfoPtr);
+
+                if (form == IntPtr.Zero)
+                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
+
+                NativeMethods.SetFormFieldHighlightColor(form, 0, 0xFFE4DD);
+                NativeMethods.SetFormFieldHighlightAlpha(form, 100);
+
+                return (form, formFillInfoPtr);
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(formFillInfoPtr);
+                throw;
+            }
+        }
+
+        private static void DestroyFormEnvironment(ref IntPtr form, ref IntPtr formFillInfoPtr)
+        {
+            try
+            {
+                if (form != IntPtr.Zero)
+                {
+                    NativeMethods.Doc_ExitFormFillEnvironment(form);
+                    form = IntPtr.Zero;
+                }
+            }
+            finally
+            {
+                if (formFillInfoPtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(formFillInfoPtr);
+                    formFillInfoPtr = IntPtr.Zero;
+                }
+            }
+        }
+
         public void RenderPDFPageToBitmap(int pageNumber, IntPtr bitmapHandle, int boundsOriginX, int boundsOriginY, int boundsWidth, int boundsHeight, int rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill)
         {
             ThrowIfDisposed();
 
-            using var pageData = new PageData(_document, _form, pageNumber);
+            using var pageData = new PageData(this, pageNumber);
 
             NativeMethods.RenderPageBitmap(bitmapHandle, pageData.Page, boundsOriginX, boundsOriginY, boundsWidth, boundsHeight, rotate, flags);
 
@@ -98,10 +143,134 @@ namespace PDFtoImage.Internals
         {
             ThrowIfDisposed();
 
-            if (!NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height))
-                throw new PdfPageNotFoundException();
+            if (TryGetPageSize(pageNumber, out var size))
+                return size;
 
-            return new SizeF((float)width, (float)height);
+            if (TryReopenThroughAvailability() && TryGetPageSize(pageNumber, out size))
+                return size;
+
+            throw new PdfPageNotFoundException();
+        }
+
+        private bool TryGetPageSize(int pageNumber, out SizeF size)
+        {
+            ResolvePage(pageNumber);
+
+            if (NativeMethods.GetPageSizeByIndex(_document, pageNumber, out double width, out double height))
+            {
+                size = new SizeF((float)width, (float)height);
+                return true;
+            }
+
+            size = default;
+            return false;
+        }
+
+        private IntPtr LoadPageWithFallback(int pageNumber)
+        {
+            ResolvePage(pageNumber);
+
+            var page = NativeMethods.LoadPage(_document, pageNumber);
+
+            if (page != IntPtr.Zero)
+                return page;
+
+            // Captured before the retry, which resets it.
+            var error = NativeMethods.GetLastError();
+
+            if (TryReopenThroughAvailability())
+            {
+                ResolvePage(pageNumber);
+
+                page = NativeMethods.LoadPage(_document, pageNumber);
+
+                if (page != IntPtr.Zero)
+                    return page;
+            }
+
+            // PDFium can refuse a page without recording an error for it.
+            throw PdfException.CreateException(error) ?? new PdfPageNotFoundException();
+        }
+
+        // Resolves the page through the availability layer, which is what reaches pages the
+        // /Pages walk cannot. A readable stream is reported as not available indefinitely, so
+        // the answer is deliberately ignored: only the page call that follows is conclusive.
+        private void ResolvePage(int pageNumber)
+        {
+            if (_usesAvail && pageNumber >= 0)
+                _ = NativeMethods.Avail_IsPageAvail(_avail, pageNumber);
+        }
+
+        // Reopens through the availability API, which resolves pages of a linearized document
+        // through its hint tables instead of by walking /Pages. At most once per document.
+        private bool TryReopenThroughAvailability()
+        {
+            if (_usesAvail || _availAttempted || _stream == null)
+                return false;
+
+            _availAttempted = true;
+
+            var avail = IntPtr.Zero;
+            var availState = IntPtr.Zero;
+            var document = IntPtr.Zero;
+            var form = IntPtr.Zero;
+            var formFillInfoPtr = IntPtr.Zero;
+            var reopened = false;
+
+            try
+            {
+                avail = NativeMethods.Avail_Create(_stream, _id, out availState);
+
+                if (avail == IntPtr.Zero)
+                    return false;
+
+                // Only a linearized document has the hint tables this depends on. An
+                // undecided answer still tries; only a definite no rules the reopen out.
+                if (NativeMethods.Avail_IsLinearized(avail) == NativeMethods.FPDF_LINEARIZATION.NOT_LINEARIZED)
+                    return false;
+
+                // Advances the parser onto the cross reference data. Its error codes are
+                // vaguer than the load's, so only the load is acted on.
+                _ = NativeMethods.Avail_IsDocAvail(avail);
+
+                document = NativeMethods.Avail_GetDocument(avail, _password);
+
+                if (document == IntPtr.Zero)
+                    return false;
+
+                (form, formFillInfoPtr) = CreateFormEnvironment(document);
+
+                // Nothing below can fail, so the document is never left half swapped.
+                DestroyFormEnvironment(ref _form, ref _formFillInfoPtr);
+                NativeMethods.CloseDocument(_document);
+
+                _document = document;
+                _form = form;
+                _formFillInfoPtr = formFillInfoPtr;
+                _avail = avail;
+                _availState = availState;
+                _usesAvail = true;
+                reopened = true;
+
+                return true;
+            }
+            catch (PdfException)
+            {
+                // The open document still serves the pages it can reach.
+                return false;
+            }
+            finally
+            {
+                if (!reopened)
+                {
+                    DestroyFormEnvironment(ref form, ref formFillInfoPtr);
+
+                    if (document != IntPtr.Zero)
+                        NativeMethods.CloseDocument(document);
+
+                    NativeMethods.Avail_Destroy(avail, availState);
+                }
+            }
         }
 
         public void Dispose()
@@ -118,11 +287,7 @@ namespace PDFtoImage.Internals
         {
             try
             {
-                if (_form != IntPtr.Zero)
-                {
-                    NativeMethods.Doc_ExitFormFillEnvironment(_form);
-                    _form = IntPtr.Zero;
-                }
+                DestroyFormEnvironment(ref _form, ref _formFillInfoPtr);
             }
             finally
             {
@@ -136,18 +301,25 @@ namespace PDFtoImage.Internals
                 }
                 finally
                 {
-                    StreamManager.Unregister(_id);
-
-                    if (_formFillInfoPtr != IntPtr.Zero)
+                    try
                     {
-                        Marshal.FreeHGlobal(_formFillInfoPtr);
-                        _formFillInfoPtr = IntPtr.Zero;
+                        // After the document, which was created from it.
+                        if (_avail != IntPtr.Zero || _availState != IntPtr.Zero)
+                        {
+                            NativeMethods.Avail_Destroy(_avail, _availState);
+                            _avail = IntPtr.Zero;
+                            _availState = IntPtr.Zero;
+                        }
                     }
-
-                    if (disposing && _disposeStream)
+                    finally
                     {
-                        _stream?.Dispose();
-                        _stream = null;
+                        StreamManager.Unregister(_id);
+
+                        if (disposing && _disposeStream)
+                        {
+                            _stream?.Dispose();
+                            _stream = null;
+                        }
                     }
                 }
             }
@@ -174,19 +346,17 @@ namespace PDFtoImage.Internals
 
             public double Height { get; private set; }
 
-            public PageData(IntPtr document, IntPtr form, int pageNumber)
+            public PageData(PdfFile file, int pageNumber)
             {
-                _form = form;
+                var page = file.LoadPageWithFallback(pageNumber);
 
-                var page = NativeMethods.LoadPage(document, pageNumber);
-
-                if (page == IntPtr.Zero)
-                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
+                // Read after the load, which may have reopened the document onto a new one.
+                _form = file._form;
 
                 try
                 {
                     Page = page;
-                    NativeMethods.OnAfterLoadPage(Page, form);
+                    NativeMethods.OnAfterLoadPage(Page, _form);
 
                     Width = NativeMethods.GetPageWidth(Page);
                     Height = NativeMethods.GetPageHeight(Page);
