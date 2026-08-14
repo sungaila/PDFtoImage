@@ -18,6 +18,17 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void InvalidFormatHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "DummyImage.png"));
+
+            Assert.ThrowsExactly<PdfInvalidFormatException>(() => GetPageCount(inputStream, leaveOpen: leaveOpen));
+            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The input stream state should match leaveOpen after opening fails.");
+        }
+
+        [TestMethod]
         [DataRow("hundesteuer-anmeldung.pdf")]
         [DataRow("SocialPreview.pdf")]
         [DataRow("Wikimedia_Commons_web.pdf")]

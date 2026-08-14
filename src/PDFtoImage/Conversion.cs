@@ -62,11 +62,19 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            if (options == default)
-                options = new();
-
             // Stream -> Internals.PdfDocument
             using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
+
+            await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, pages, cancellationToken))
+            {
+                yield return bitmap;
+            }
+        }
+
+        internal static async IAsyncEnumerable<SKBitmap> ToImagesImplAsync(PdfDocument pdfDocument, RenderOptions options, IEnumerable<int>? pages, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            if (options == default)
+                options = new();
 
             pages ??= Enumerable.Range(0, pdfDocument.PageSizes.Count);
 

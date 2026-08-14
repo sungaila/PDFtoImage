@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Exceptions;
 using System.IO;
 using System.Linq;
@@ -13,9 +13,9 @@ namespace PDFtoImage.Tests
         // (qpdf --object-streams=disable --linearize), then /Kids [ 943 0 R 1 0 R 12 0 R ]
         // rewritten to [ 943 0 R 9 0 R 12 0 R ]: same length, so every xref offset stays
         // valid and object 9 is not a page.
-        private const string UnreachablePage = "hundesteuer-anmeldung (unreachable page 2).pdf";
+        private const string UnreachablePageFile = "hundesteuer-anmeldung (unreachable page 2).pdf";
 
-        private static Stream OpenAsset() => GetInputStream(Path.Combine("..", "Assets", UnreachablePage));
+        private static FileStream OpenAsset() => GetInputStream(Path.Combine("..", "Assets", UnreachablePageFile));
 
         [TestMethod]
         public void GetPageCount()
@@ -59,7 +59,7 @@ namespace PDFtoImage.Tests
 
             try
             {
-                Assert.AreEqual(2, bitmaps.Count, "Expected and actual rendered page count differs.");
+                Assert.HasCount(2, bitmaps, "Expected and actual rendered page count differs.");
             }
             finally
             {
@@ -92,6 +92,17 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void GetPageSizesFailureHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = OpenAsset();
+
+            Assert.ThrowsExactly<PdfPageNotFoundException>(() => Conversion.GetPageSizes(inputStream, leaveOpen: leaveOpen));
+            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The stream state should match leaveOpen when page-size enumeration fails.");
+        }
+
+        [TestMethod]
         public void ToImagesThrowsPageNotFound()
         {
             using var inputStream = OpenAsset();
@@ -102,6 +113,22 @@ namespace PDFtoImage.Tests
             pages.Current.Dispose();
 
             Assert.ThrowsExactly<PdfPageNotFoundException>(() => pages.MoveNext());
+        }
+
+        [TestMethod]
+        public void ToImagesPageFailureDisposesOwnedStream()
+        {
+            using var inputStream = OpenAsset();
+
+            using (var pages = Conversion.ToImages(inputStream, pages: [0, 1], leaveOpen: false).GetEnumerator())
+            {
+                Assert.IsTrue(pages.MoveNext(), "The page before the unreachable one should still be rendered.");
+                pages.Current.Dispose();
+
+                Assert.ThrowsExactly<PdfPageNotFoundException>(() => pages.MoveNext());
+            }
+
+            Assert.IsFalse(inputStream.CanRead, "The owned stream should be closed when deferred rendering fails.");
         }
     }
 }

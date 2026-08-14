@@ -14,6 +14,12 @@ namespace PDFtoImage.Internals
 
         private readonly SizeF?[] _measured;
 
+#if NET9_0_OR_GREATER
+        private readonly System.Threading.Lock _syncRoot = new();
+#else
+        private readonly object _syncRoot = new();
+#endif
+
         public PdfPageSizes(PdfFile file, int count)
         {
             _file = file ?? throw new ArgumentNullException(nameof(file));
@@ -33,8 +39,19 @@ namespace PDFtoImage.Internals
                 if (index < 0 || index >= _measured.Length)
                     throw new ArgumentOutOfRangeException(nameof(index));
 
-                // Racing callers measure the same page twice and agree, so no lock is needed.
-                return _measured[index] ??= _file.GetPDFDocInfo(index);
+                // SizeF? is a multi-field value type, so reads and writes to the cache are not
+                // guaranteed to be atomic. Serialize lazy initialization to keep concurrent reads
+                // deterministic; PDFium calls are serialized globally anyway.
+                lock (_syncRoot)
+                {
+                    var measured = _measured[index];
+                    if (measured.HasValue)
+                        return measured.Value;
+
+                    var size = _file.GetPDFDocInfo(index);
+                    _measured[index] = size;
+                    return size;
+                }
             }
         }
 

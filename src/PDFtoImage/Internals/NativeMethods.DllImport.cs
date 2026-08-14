@@ -10,14 +10,6 @@ namespace PDFtoImage.Internals
 {
     internal static partial class NativeMethods
     {
-        public static void SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color)
-        {
-            lock (LockString)
-            {
-                Imports.FPDF_SetFormFieldHighlightColor(hHandle, fieldType, color);
-            }
-        }
-
         public static bool Bitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color)
         {
             lock (LockString)
@@ -34,48 +26,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        /// <summary>
-        /// Opens a document using a .NET Stream. Allows opening huge
-        /// PDFs without loading them into memory first.
-        /// </summary>
-        /// <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
-        /// <param name="password">Password, if the PDF is protected. Can be null.</param>
-        /// <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
-        /// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-        public unsafe static IntPtr LoadCustomDocument(Stream input, string? password, int id)
-        {
-#if BROWSER
-            delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
-            var access = new FPDF_FILEACCESS((uint)input.Length, (IntPtr)getBlock, id);
-#else
-            var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
-            var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
-#endif
-
-            var size = Marshal.SizeOf<FPDF_FILEACCESS>();
-            var ptr = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(access, ptr, false);
-
-            byte[]? passwordBytes = password != null
-               ? Encoding.UTF8.GetBytes(password + '\0')
-               : null;
-
-            try
-            {
-                fixed (byte* passwordPointer = passwordBytes)
-                {
-                    lock (LockString)
-                    {
-                        return Imports.FPDF_LoadCustomDocument(ptr, (IntPtr)passwordPointer);
-                    }
-                }
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(ptr);
-            }
-        }
-
         public static FPDF_ERR GetLastError()
         {
             lock (LockString)
@@ -84,14 +34,7 @@ namespace PDFtoImage.Internals
             }
         }
 
-        /// <summary>
-        /// Creates an availability provider over a .NET Stream.
-        /// </summary>
-        /// <param name="input">The input Stream. Don't dispose prior to destroying the provider.</param>
-        /// <param name="id">The id the stream is registered under.</param>
-        /// <param name="state">Native memory owned by the provider. Pass to <see cref="Avail_Destroy"/>.</param>
-        /// <returns>An IntPtr to the FPDF_AVAIL object.</returns>
-        public unsafe static IntPtr Avail_Create(Stream input, int id, out IntPtr state)
+        private unsafe static IntPtr CreateAvailFileAccessState(Stream input, int id)
         {
 #if BROWSER
             delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
@@ -101,27 +44,21 @@ namespace PDFtoImage.Internals
             var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
 #endif
 
-            // PDFium keeps the pointer it is given, so this outlives the call.
-            state = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
+            var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
 
             try
             {
-                Marshal.StructureToPtr(access, state, false);
-
-                lock (LockString)
-                {
-                    return Imports.FPDFAvail_Create(GetFileAvailPointer(), state);
-                }
+                Marshal.StructureToPtr(access, fileAccessState, false);
+                return fileAccessState;
             }
             catch
             {
-                Marshal.FreeHGlobal(state);
-                state = IntPtr.Zero;
+                Marshal.FreeHGlobal(fileAccessState);
                 throw;
             }
         }
 
-        public unsafe static IntPtr Avail_GetDocument(IntPtr avail, string? password)
+        private unsafe static IntPtr Avail_GetDocumentCore(IntPtr avail, string? password)
         {
             byte[]? passwordBytes = password != null
                ? Encoding.UTF8.GetBytes(password + '\0')
@@ -129,57 +66,33 @@ namespace PDFtoImage.Internals
 
             fixed (byte* passwordPointer = passwordBytes)
             {
-                lock (LockString)
-                {
-                    return Imports.FPDFAvail_GetDocument(avail, (IntPtr)passwordPointer);
-                }
+                return Imports.FPDFAvail_GetDocument(avail, (IntPtr)passwordPointer);
             }
         }
 
-        // Stateless, so one of each serves the process. Written under LockString.
-        private static IntPtr _fileAvailPtr;
-
-        private static IntPtr _downloadHintsPtr;
-
-        private unsafe static IntPtr GetFileAvailPointer()
+        private unsafe static IntPtr GetIsDataAvailCallbackPointer()
         {
-            if (_fileAvailPtr == IntPtr.Zero)
-            {
 #if BROWSER
-                delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, int> isDataAvail = &FX_IsDataAvail;
-                var fileAvail = new FX_FILEAVAIL(1, (IntPtr)isDataAvail);
+            delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, int> callback = &FX_IsDataAvail;
+            return (IntPtr)callback;
 #else
-                var fileAvail = new FX_FILEAVAIL(1, Marshal.GetFunctionPointerForDelegate(_isDataAvailDelegate));
+            return Marshal.GetFunctionPointerForDelegate(_isDataAvailDelegate);
 #endif
-
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<FX_FILEAVAIL>());
-                Marshal.StructureToPtr(fileAvail, ptr, false);
-                _fileAvailPtr = ptr;
-            }
-
-            return _fileAvailPtr;
         }
 
-        private unsafe static IntPtr GetDownloadHintsPointer()
+        private unsafe static IntPtr GetAddSegmentCallbackPointer()
         {
-            if (_downloadHintsPtr == IntPtr.Zero)
-            {
 #if BROWSER
-                delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, void> addSegment = &FX_AddSegment;
-                var hints = new FX_DOWNLOADHINTS(1, (IntPtr)addSegment);
+            delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, void> callback = &FX_AddSegment;
+            return (IntPtr)callback;
 #else
-                var hints = new FX_DOWNLOADHINTS(1, Marshal.GetFunctionPointerForDelegate(_addSegmentDelegate));
+            return Marshal.GetFunctionPointerForDelegate(_addSegmentDelegate);
 #endif
-
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<FX_DOWNLOADHINTS>());
-                Marshal.StructureToPtr(hints, ptr, false);
-                _downloadHintsPtr = ptr;
-            }
-
-            return _downloadHintsPtr;
         }
 
-        // The stream is seekable and complete, so every byte is always readable.
+        // PDFtoImage gives PDFium a complete seekable stream, matching pdfium_test's local-file
+        // availability provider: all requested byte ranges are reported as present and download
+        // hints are intentionally ignored.
 #if BROWSER
 [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
@@ -281,12 +194,6 @@ namespace PDFtoImage.Internals
             public static extern int FPDF_GetPageCount(IntPtr document);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -329,23 +236,19 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101")]
-            public static extern IntPtr FPDF_LoadCustomDocument(IntPtr access, IntPtr password);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFAvail_Create(IntPtr file_avail, IntPtr file);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFAvail_Destroy(IntPtr avail);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern int FPDFAvail_IsLinearized(IntPtr avail);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDFAvail_IsDocAvail(IntPtr avail, IntPtr hints);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern int FPDFAvail_IsPageAvail(IntPtr avail, int page_index, IntPtr hints);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern int FPDFAvail_IsFormAvail(IntPtr avail, IntPtr hints);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101")]
@@ -385,19 +288,6 @@ namespace PDFtoImage.Internals
             private readonly IntPtr m_Param = m_Param;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public readonly struct FX_FILEAVAIL(int version, IntPtr m_IsDataAvail)
-        {
-            private readonly int version = version;
-            private readonly IntPtr m_IsDataAvail = m_IsDataAvail;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public readonly struct FX_DOWNLOADHINTS(int version, IntPtr m_AddSegment)
-        {
-            private readonly int version = version;
-            private readonly IntPtr m_AddSegment = m_AddSegment;
-        }
     }
 }
 #endif

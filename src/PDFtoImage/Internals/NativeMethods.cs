@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
@@ -25,6 +26,18 @@ namespace PDFtoImage.Internals
             lock (LockString)
             {
                 Imports.FPDF_DestroyLibrary();
+
+                if (_downloadHintsPtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_downloadHintsPtr);
+                    _downloadHintsPtr = IntPtr.Zero;
+                }
+
+                if (_fileAvailPtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_fileAvailPtr);
+                    _fileAvailPtr = IntPtr.Zero;
+                }
             }
         }
 
@@ -44,8 +57,99 @@ namespace PDFtoImage.Internals
             }
         }
 
+        // These callback structs carry no per-document state. Keep one unmanaged instance of
+        // each for the PDFium library lifetime so every FPDF_AVAIL receives a stable callback-
+        // structure address. Lazy initialization and cleanup both run while LockString is held.
+        private static IntPtr _fileAvailPtr;
+
+        private static IntPtr _downloadHintsPtr;
+
+        /// <summary>
+        /// Creates an availability provider over a .NET Stream.
+        /// </summary>
+        /// <param name="input">The input Stream. Don't dispose prior to destroying the provider.</param>
+        /// <param name="id">The id the stream is registered under.</param>
+        /// <param name="fileAccessState">Native FPDF_FILEACCESS storage retained for the provider lifetime. Pass to <see cref="Avail_Destroy"/> after closing the document.</param>
+        /// <returns>An IntPtr to the FPDF_AVAIL object.</returns>
+        public static IntPtr Avail_Create(Stream input, int id, out IntPtr fileAccessState)
+        {
+            fileAccessState = CreateAvailFileAccessState(input, id);
+
+            try
+            {
+                IntPtr avail;
+
+                lock (LockString)
+                {
+                    avail = Imports.FPDFAvail_Create(GetFileAvailPointer(), fileAccessState);
+                }
+
+                if (avail == IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(fileAccessState);
+                    fileAccessState = IntPtr.Zero;
+                }
+
+                return avail;
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(fileAccessState);
+                fileAccessState = IntPtr.Zero;
+                throw;
+            }
+        }
+
+        public static IntPtr Avail_GetDocument(IntPtr avail, string? password)
+        {
+            lock (LockString)
+            {
+                return Avail_GetDocumentCore(avail, password);
+            }
+        }
+
+        private static IntPtr GetFileAvailPointer()
+        {
+            if (_fileAvailPtr == IntPtr.Zero)
+            {
+                var fileAvail = new FX_FILEAVAIL(1, GetIsDataAvailCallbackPointer());
+                _fileAvailPtr = AllocateAvailabilityStruct(fileAvail);
+            }
+
+            return _fileAvailPtr;
+        }
+
+        private static IntPtr GetDownloadHintsPointer()
+        {
+            if (_downloadHintsPtr == IntPtr.Zero)
+            {
+                var hints = new FX_DOWNLOADHINTS(1, GetAddSegmentCallbackPointer());
+                _downloadHintsPtr = AllocateAvailabilityStruct(hints);
+            }
+
+            return _downloadHintsPtr;
+        }
+
+        private static IntPtr AllocateAvailabilityStruct<T>(T value) where T : struct
+        {
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<T>());
+
+            try
+            {
+                Marshal.StructureToPtr(value, ptr, false);
+                return ptr;
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(ptr);
+                throw;
+            }
+        }
+
+        // Call only after the FPDF_DOCUMENT created from this provider has been closed. Destroy
+        // the provider before releasing the FPDF_FILEACCESS storage passed to FPDFAvail_Create().
         // Both arguments tolerate IntPtr.Zero.
-        public static void Avail_Destroy(IntPtr avail, IntPtr state)
+        public static void Avail_Destroy(IntPtr avail, IntPtr fileAccessState)
         {
             try
             {
@@ -59,34 +163,32 @@ namespace PDFtoImage.Internals
             }
             finally
             {
-                if (state != IntPtr.Zero)
-                    Marshal.FreeHGlobal(state);
+                if (fileAccessState != IntPtr.Zero)
+                    Marshal.FreeHGlobal(fileAccessState);
             }
         }
 
-        public static FPDF_LINEARIZATION Avail_IsLinearized(IntPtr avail)
+        public static FPDF_AVAILABILITY Avail_IsDocAvail(IntPtr avail)
         {
             lock (LockString)
             {
-                return (FPDF_LINEARIZATION)Imports.FPDFAvail_IsLinearized(avail);
+                return (FPDF_AVAILABILITY)Imports.FPDFAvail_IsDocAvail(avail, GetDownloadHintsPointer());
             }
         }
 
-        // Returns PDF_DATA_ERROR, PDF_DATA_NOTAVAIL or PDF_DATA_AVAIL.
-        public static int Avail_IsDocAvail(IntPtr avail)
+        public static FPDF_AVAILABILITY Avail_IsPageAvail(IntPtr avail, int page_index)
         {
             lock (LockString)
             {
-                return Imports.FPDFAvail_IsDocAvail(avail, GetDownloadHintsPointer());
+                return (FPDF_AVAILABILITY)Imports.FPDFAvail_IsPageAvail(avail, page_index, GetDownloadHintsPointer());
             }
         }
 
-        // Returns PDF_DATA_ERROR, PDF_DATA_NOTAVAIL or PDF_DATA_AVAIL.
-        public static int Avail_IsPageAvail(IntPtr avail, int page_index)
+        public static FPDF_FORM_AVAILABILITY Avail_IsFormAvail(IntPtr avail)
         {
             lock (LockString)
             {
-                return Imports.FPDFAvail_IsPageAvail(avail, page_index, GetDownloadHintsPointer());
+                return (FPDF_FORM_AVAILABILITY)Imports.FPDFAvail_IsFormAvail(avail, GetDownloadHintsPointer());
             }
         }
 
@@ -103,14 +205,6 @@ namespace PDFtoImage.Internals
             lock (LockString)
             {
                 Imports.FPDFDOC_ExitFormFillEnvironment(handle);
-            }
-        }
-
-        public static void SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha)
-        {
-            lock (LockString)
-            {
-                Imports.FPDF_SetFormFieldHighlightAlpha(hHandle, alpha);
             }
         }
 
@@ -200,6 +294,20 @@ namespace PDFtoImage.Internals
             {
                 Imports.FPDF_RemoveFormFieldHighlight(form);
             }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private readonly struct FX_FILEAVAIL(int version, IntPtr m_IsDataAvail)
+        {
+            private readonly int version = version;
+            private readonly IntPtr m_IsDataAvail = m_IsDataAvail;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private readonly struct FX_DOWNLOADHINTS(int version, IntPtr m_AddSegment)
+        {
+            private readonly int version = version;
+            private readonly IntPtr m_AddSegment = m_AddSegment;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -378,24 +486,46 @@ namespace PDFtoImage.Internals
             CONVERT_FILL_TO_STROKE = 0x20
         }
 
-        public enum FPDF_LINEARIZATION : int
+        public enum FPDF_AVAILABILITY : int
         {
             /// <summary>
-            /// Not enough of the document has been read to tell.
+            /// A common error is returned. Data availability unknown.
             /// </summary>
-            UNKNOWN = -1,
+            PDF_DATA_ERROR = -1,
 
             /// <summary>
-            /// Not linearized, so it has no hint tables.
+            /// Data not yet available.
             /// </summary>
-            NOT_LINEARIZED = 0,
+            PDF_DATA_NOTAVAIL = 0,
 
             /// <summary>
-            /// Linearized.
+            /// Data available.
             /// </summary>
-            LINEARIZED = 1
+            PDF_DATA_AVAIL = 1
         }
 
+        public enum FPDF_FORM_AVAILABILITY : int
+        {
+            /// <summary>
+            /// A common eror, in general incorrect parameters.
+            /// </summary>
+            PDF_FORM_ERROR = -1,
+
+            /// <summary>
+            /// Data not available.
+            /// </summary>
+            PDF_FORM_NOTAVAIL = 0,
+
+            /// <summary>
+            /// Data available.
+            /// </summary>
+            PDF_FORM_AVAIL = 1,
+
+            /// <summary>
+            /// No form data.
+            /// </summary>
+            PDF_FORM_NOTEXIST = 2
+        }
         public enum FPDF_ERR : uint
         {
             /// <summary>

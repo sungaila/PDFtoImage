@@ -35,6 +35,16 @@ namespace PDFtoImage.Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", inputFile));
             Assert.ThrowsExactly<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: password));
+            Assert.IsFalse(inputStream.CanRead, "The owned stream should be closed after opening with a wrong password fails.");
+        }
+
+        [TestMethod]
+        public void IncorrectPasswordHonorsLeaveOpen()
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview with password 123456 (AES-256).pdf"));
+
+            Assert.ThrowsExactly<PdfPasswordProtectedException>(() => GetPageCount(inputStream, leaveOpen: true, password: "wrong"));
+            Assert.IsTrue(inputStream.CanRead, "The borrowed stream should remain open after opening with a wrong password fails.");
         }
     }
 }

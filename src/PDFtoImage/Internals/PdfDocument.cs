@@ -30,7 +30,7 @@ namespace PDFtoImage.Internals
         }
 
         /// <summary>
-        /// Size of each page in the PDF document. Each page is measured when it is first read.
+        /// Size of each page in the PDF document. Each page is measured on first access and then cached.
         /// </summary>
         public IReadOnlyList<SizeF> PageSizes { get; private set; }
 
