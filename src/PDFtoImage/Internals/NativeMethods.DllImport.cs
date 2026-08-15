@@ -10,14 +10,6 @@ namespace PDFtoImage.Internals
 {
     internal static partial class NativeMethods
     {
-        public static void SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color)
-        {
-            lock (LockString)
-            {
-                Imports.FPDF_SetFormFieldHighlightColor(hHandle, fieldType, color);
-            }
-        }
-
         public static bool Bitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color)
         {
             lock (LockString)
@@ -34,15 +26,15 @@ namespace PDFtoImage.Internals
             }
         }
 
-        /// <summary>
-        /// Opens a document using a .NET Stream. Allows opening huge
-        /// PDFs without loading them into memory first.
-        /// </summary>
-        /// <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
-        /// <param name="password">Password, if the PDF is protected. Can be null.</param>
-        /// <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
-        /// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-        public unsafe static IntPtr LoadCustomDocument(Stream input, string? password, int id)
+        public static FPDF_ERR GetLastError()
+        {
+            lock (LockString)
+            {
+                return (FPDF_ERR)Imports.FPDF_GetLastError();
+            }
+        }
+
+        private unsafe static IntPtr CreateAvailFileAccessState(Stream input, int id)
         {
 #if BROWSER
             delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
@@ -52,37 +44,70 @@ namespace PDFtoImage.Internals
             var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
 #endif
 
-            var size = Marshal.SizeOf<FPDF_FILEACCESS>();
-            var ptr = Marshal.AllocHGlobal(size);
-            Marshal.StructureToPtr(access, ptr, false);
+            var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
 
+            try
+            {
+                Marshal.StructureToPtr(access, fileAccessState, false);
+                return fileAccessState;
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(fileAccessState);
+                throw;
+            }
+        }
+
+        private unsafe static IntPtr Avail_GetDocumentCore(IntPtr avail, string? password)
+        {
             byte[]? passwordBytes = password != null
                ? Encoding.UTF8.GetBytes(password + '\0')
                : null;
 
-            try
+            fixed (byte* passwordPointer = passwordBytes)
             {
-                fixed (byte* passwordPointer = passwordBytes)
-                {
-                    lock (LockString)
-                    {
-                        return Imports.FPDF_LoadCustomDocument(ptr, (IntPtr)passwordPointer);
-                    }
-                }
-            }
-            finally
-            {
-                Marshal.FreeHGlobal(ptr);
+                return Imports.FPDFAvail_GetDocument(avail, (IntPtr)passwordPointer);
             }
         }
 
-        public static FPDF_ERR GetLastError()
+        private unsafe static IntPtr GetIsDataAvailCallbackPointer()
         {
-            lock (LockString)
-            {
-                return (FPDF_ERR)Imports.FPDF_GetLastError();
-            }
+#if BROWSER
+            delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, int> callback = &FX_IsDataAvail;
+            return (IntPtr)callback;
+#else
+            return Marshal.GetFunctionPointerForDelegate(_isDataAvailDelegate);
+#endif
         }
+
+        private unsafe static IntPtr GetAddSegmentCallbackPointer()
+        {
+#if BROWSER
+            delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, UIntPtr, void> callback = &FX_AddSegment;
+            return (IntPtr)callback;
+#else
+            return Marshal.GetFunctionPointerForDelegate(_addSegmentDelegate);
+#endif
+        }
+
+        // PDFtoImage gives PDFium a complete seekable stream, matching pdfium_test's local-file
+        // availability provider: all requested byte ranges are reported as present and download
+        // hints are intentionally ignored.
+#if BROWSER
+[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+#else
+        // needed for Unity IL2CPP compilation
+        [AOT.MonoPInvokeCallback(typeof(FX_IsDataAvailDelegate))]
+#endif
+        private static int FX_IsDataAvail(IntPtr param, UIntPtr offset, UIntPtr size) => 1;
+
+#if BROWSER
+[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+#else
+        // needed for Unity IL2CPP compilation
+        [AOT.MonoPInvokeCallback(typeof(FX_AddSegmentDelegate))]
+#endif
+        private static void FX_AddSegment(IntPtr param, UIntPtr offset, UIntPtr size) { }
 
 #if BROWSER
 [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
@@ -169,12 +194,6 @@ namespace PDFtoImage.Internals
             public static extern int FPDF_GetPageCount(IntPtr document);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
-
-            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
@@ -217,8 +236,23 @@ namespace PDFtoImage.Internals
             public static extern void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern IntPtr FPDFAvail_Create(IntPtr file_avail, IntPtr file);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern void FPDFAvail_Destroy(IntPtr avail);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern int FPDFAvail_IsDocAvail(IntPtr avail, IntPtr hints);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern int FPDFAvail_IsPageAvail(IntPtr avail, int page_index, IntPtr hints);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
+            public static extern int FPDFAvail_IsFormAvail(IntPtr avail, IntPtr hints);
+
+            [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA2101")]
-            public static extern IntPtr FPDF_LoadCustomDocument(IntPtr access, IntPtr password);
+            public static extern IntPtr FPDFAvail_GetDocument(IntPtr avail, IntPtr password);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
@@ -232,8 +266,18 @@ namespace PDFtoImage.Internals
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int FPDF_GetBlockDelegate(IntPtr param, uint position, IntPtr buffer, uint size);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate int FX_IsDataAvailDelegate(IntPtr param, UIntPtr offset, UIntPtr size);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FX_AddSegmentDelegate(IntPtr param, UIntPtr offset, UIntPtr size);
+
 #if !BROWSER
         private static readonly FPDF_GetBlockDelegate _getBlockDelegate = FPDF_GetBlock;
+
+        private static readonly FX_IsDataAvailDelegate _isDataAvailDelegate = FX_IsDataAvail;
+
+        private static readonly FX_AddSegmentDelegate _addSegmentDelegate = FX_AddSegment;
 #endif
 
         [StructLayout(LayoutKind.Sequential)]
@@ -243,6 +287,7 @@ namespace PDFtoImage.Internals
             private readonly IntPtr m_GetBlock = m_GetBlock;
             private readonly IntPtr m_Param = m_Param;
         }
+
     }
 }
 #endif

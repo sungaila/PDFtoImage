@@ -283,6 +283,40 @@ namespace PDFtoImage.Tests
 #endif
 
         [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void ToImagesStreamEarlyDisposeHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
+
+            using (var pages = ToImages(inputStream, pages: [0], leaveOpen: leaveOpen).GetEnumerator())
+            {
+                Assert.IsTrue(pages.MoveNext());
+                pages.Current.Dispose();
+            }
+
+            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The stream state should match leaveOpen after disposing the iterator early.");
+        }
+
+#if NET6_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task ToImagesAsyncStreamEarlyDisposeHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
+
+            await using (var pages = ToImagesAsync(inputStream, pages: [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator())
+            {
+                Assert.IsTrue(await pages.MoveNextAsync());
+                pages.Current.Dispose();
+            }
+
+            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The stream state should match leaveOpen after disposing the async iterator early.");
+        }
+#endif
+
+        [TestMethod]
         public void GetPageCountStreamLeaveOpenDefault()
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));

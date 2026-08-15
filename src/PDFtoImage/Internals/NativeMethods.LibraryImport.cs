@@ -9,14 +9,6 @@ namespace PDFtoImage.Internals
 {
     internal static partial class NativeMethods
     {
-        public static void SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, uint color)
-        {
-            lock (LockString)
-            {
-                Imports.FPDF_SetFormFieldHighlightColor(hHandle, fieldType, new CULong(color));
-            }
-        }
-
         public static bool Bitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color)
         {
             lock (LockString)
@@ -33,25 +25,6 @@ namespace PDFtoImage.Internals
             }
         }
 
-        /// <summary>
-        /// Opens a document using a .NET Stream. Allows opening huge
-        /// PDFs without loading them into memory first.
-        /// </summary>
-        /// <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
-        /// <param name="password">Password, if the PDF is protected. Can be null.</param>
-        /// <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
-        /// <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-        public unsafe static IntPtr LoadCustomDocument(Stream input, string? password, int id)
-        {
-            delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
-            var access = new FPDF_FILEACCESS(new CULong((uint)input.Length), getBlock, id);
-
-            lock (LockString)
-            {
-                return Imports.FPDF_LoadCustomDocument(in access, password);
-            }
-        }
-
         public static FPDF_ERR GetLastError()
         {
             lock (LockString)
@@ -59,6 +32,49 @@ namespace PDFtoImage.Internals
                 return (FPDF_ERR)checked((uint)Imports.FPDF_GetLastError().Value.ToUInt64());
             }
         }
+
+        private unsafe static IntPtr CreateAvailFileAccessState(Stream input, int id)
+        {
+            delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
+            var access = new FPDF_FILEACCESS(new CULong(checked((nuint)input.Length)), getBlock, id);
+
+            var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
+
+            try
+            {
+                Marshal.StructureToPtr(access, fileAccessState, false);
+                return fileAccessState;
+            }
+            catch
+            {
+                Marshal.FreeHGlobal(fileAccessState);
+                throw;
+            }
+        }
+
+        private static IntPtr Avail_GetDocumentCore(IntPtr avail, string? password)
+            => Imports.FPDFAvail_GetDocument(avail, password);
+
+        private unsafe static IntPtr GetIsDataAvailCallbackPointer()
+        {
+            delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, int> callback = &FX_IsDataAvail;
+            return (IntPtr)callback;
+        }
+
+        private unsafe static IntPtr GetAddSegmentCallbackPointer()
+        {
+            delegate* unmanaged[Cdecl]<IntPtr, nuint, nuint, void> callback = &FX_AddSegment;
+            return (IntPtr)callback;
+        }
+
+        // PDFtoImage gives PDFium a complete seekable stream, matching pdfium_test's local-file
+        // availability provider: all requested byte ranges are reported as present and download
+        // hints are intentionally ignored.
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        private static int FX_IsDataAvail(IntPtr param, nuint offset, nuint size) => 1;
+
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        private static void FX_AddSegment(IntPtr param, nuint offset, nuint size) { }
 
         [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
         private static int FPDF_GetBlock(IntPtr param, CULong position, IntPtr buffer, CULong size)
@@ -148,14 +164,6 @@ namespace PDFtoImage.Internals
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDF_SetFormFieldHighlightColor(IntPtr hHandle, int fieldType, CULong color);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial void FPDF_SetFormFieldHighlightAlpha(IntPtr hHandle, byte alpha);
-
-            [LibraryImport("pdfium")]
-            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
             [LibraryImport("pdfium")]
@@ -210,9 +218,29 @@ namespace PDFtoImage.Internals
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial IntPtr FPDFAvail_Create(IntPtr file_avail, IntPtr file);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial void FPDFAvail_Destroy(IntPtr avail);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsDocAvail(IntPtr avail, IntPtr hints);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsPageAvail(IntPtr avail, int page_index, IntPtr hints);
+
+            [LibraryImport("pdfium")]
+            [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+            public static partial int FPDFAvail_IsFormAvail(IntPtr avail, IntPtr hints);
+
             [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-            public static partial IntPtr FPDF_LoadCustomDocument(in FPDF_FILEACCESS access, string? password);
+            public static partial IntPtr FPDFAvail_GetDocument(IntPtr avail, string? password);
 
             [LibraryImport("pdfium")]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -230,6 +258,7 @@ namespace PDFtoImage.Internals
             private readonly delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> m_GetBlock = m_GetBlock;
             private readonly IntPtr m_Param = m_Param;
         }
+
     }
 }
 #endif
