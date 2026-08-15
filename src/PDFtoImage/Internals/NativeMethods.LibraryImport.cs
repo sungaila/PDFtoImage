@@ -36,7 +36,7 @@ namespace PDFtoImage.Internals
         private unsafe static IntPtr CreateAvailFileAccessState(Stream input, int id)
         {
             delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
-            var access = new FPDF_FILEACCESS(new CULong((uint)input.Length), getBlock, id);
+            var access = new FPDF_FILEACCESS(new CULong(checked((nuint)input.Length)), getBlock, id);
 
             var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
 

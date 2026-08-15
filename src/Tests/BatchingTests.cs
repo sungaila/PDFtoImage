@@ -67,6 +67,16 @@ namespace PDFtoImage.Tests
                 i++;
             }
         }
+
+        [TestMethod]
+        public void ToImagesWithNegativeSelectionThrows()
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+            using var enumerator = ToImages(inputStream, [-1]).GetEnumerator();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => enumerator.MoveNext());
+        }
+
         [TestMethod]
         [DataRow(0)]
         [DataRow(1)]
@@ -274,6 +284,18 @@ namespace PDFtoImage.Tests
                 CompareStreams(expectedPath, outputStream);
                 i++;
             }
+        }
+
+        [TestMethod]
+        public async Task ToImagesWithNegativeSelectionThrowsAsync()
+        {
+            using var inputStream = GetInputStream(Path.Combine("..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () =>
+            {
+                await foreach (var bitmap in ToImagesAsync(inputStream, [-1], cancellationToken: TestContext!.CancellationToken))
+                    bitmap.Dispose();
+            });
         }
 #endif
     }

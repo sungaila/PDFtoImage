@@ -45,7 +45,17 @@ namespace PDFtoImage.Internals
 
             if (stream.Length > uint.MaxValue)
             {
-                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported.");
+#if BROWSER
+                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on WebAssembly.");
+#elif !NET6_0_OR_GREATER
+                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported by the legacy interop bindings used by this target framework.");
+#else
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    throw new NotSupportedException("PDF streams larger than 4 GiB cannot be accessed on Windows. This is a technical limitation of PDFium's FPDF_FILEACCESS API.");
+
+                if (IntPtr.Size == 4)
+                    throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on 32-bit platforms.");
+#endif
             }
 
             try
