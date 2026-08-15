@@ -1,0 +1,2 @@
+DeviceIoControl
+FSCTL_SET_SPARSE
