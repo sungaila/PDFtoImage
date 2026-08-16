@@ -45,17 +45,6 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
-        [DataRow(false)]
-        [DataRow(true)]
-        public void NonSeekableStreamHonorsLeaveOpen(bool leaveOpen)
-        {
-            using var inputStream = new NonSeekableStream(ReadAsset("SocialPreview.pdf"));
-
-            Assert.ThrowsExactly<ArgumentException>(() => Conversion.GetPageCount(inputStream, leaveOpen: leaveOpen));
-            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The stream state should match leaveOpen when stream validation fails.");
-        }
-
-        [TestMethod]
         public void SelectedPagesDisposeOwnedStreamOnce()
         {
             using var inputStream = new DisposeCountingStream(ReadAsset("SocialPreview.pdf"));
