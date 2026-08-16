@@ -463,6 +463,15 @@
         <member name="M:PDFtoImage.Exceptions.PdfUnsupportedSecuritySchemeException.#ctor">
             <inheritdoc/>
         </member>
+        <member name="M:PDFtoImage.Internals.NativeMethods.Avail_Create(System.Int64,System.Int32,System.IntPtr@)">
+            <summary>
+            Creates an availability provider over a .NET Stream.
+            </summary>
+            <param name="length">The validated length of the registered stream.</param>
+            <param name="id">The id the stream is registered under.</param>
+            <param name="fileAccessState">Native FPDF_FILEACCESS storage retained for the provider lifetime. Pass to <see cref="M:PDFtoImage.Internals.NativeMethods.Avail_Destroy(System.IntPtr,System.IntPtr)"/> after closing the document.</param>
+            <returns>An IntPtr to the FPDF_AVAIL object.</returns>
+        </member>
         <member name="T:PDFtoImage.Internals.NativeMethods.FPDFBitmap">
             <summary>
             A number indicating for bitmap format.
@@ -558,6 +567,41 @@
             Set whether fill paths need to be stroked. This flag is only used when FPDF_COLORSCHEME is passed in, since with a single fill color for paths the boundaries of adjacent fill paths are less visible.
             </summary>
         </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_AVAILABILITY.PDF_DATA_ERROR">
+            <summary>
+            A common error is returned. Data availability unknown.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_AVAILABILITY.PDF_DATA_NOTAVAIL">
+            <summary>
+            Data not yet available.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_AVAILABILITY.PDF_DATA_AVAIL">
+            <summary>
+            Data available.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_FORM_AVAILABILITY.PDF_FORM_ERROR">
+            <summary>
+            A common eror, in general incorrect parameters.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_FORM_AVAILABILITY.PDF_FORM_NOTAVAIL">
+            <summary>
+            Data not available.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_FORM_AVAILABILITY.PDF_FORM_AVAIL">
+            <summary>
+            Data available.
+            </summary>
+        </member>
+        <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_FORM_AVAILABILITY.PDF_FORM_NOTEXIST">
+            <summary>
+            No form data.
+            </summary>
+        </member>
         <member name="F:PDFtoImage.Internals.NativeMethods.FPDF_ERR.SUCCESS">
             <summary>
             No error.
@@ -593,16 +637,6 @@
             Page not found or content error.
             </summary>
         </member>
-        <member name="M:PDFtoImage.Internals.NativeMethods.LoadCustomDocument(System.IO.Stream,System.String,System.Int32)">
-            <summary>
-            Opens a document using a .NET Stream. Allows opening huge
-            PDFs without loading them into memory first.
-            </summary>
-            <param name="input">The input Stream. Don't dispose prior to closing the pdf.</param>
-            <param name="password">Password, if the PDF is protected. Can be null.</param>
-            <param name="id">Retrieves an IntPtr to the COM object for the Stream. The caller must release this with Marshal.Release prior to Disposing the Stream.</param>
-            <returns>An IntPtr to the FPDF_DOCUMENT object.</returns>
-        </member>
         <member name="T:PDFtoImage.Internals.PdfDocument">
             <summary>
             Provides functionality to render a PDF document.
@@ -618,7 +652,7 @@
         </member>
         <member name="P:PDFtoImage.Internals.PdfDocument.PageSizes">
             <summary>
-            Size of each page in the PDF document.
+            Size of each page in the PDF document. Each page is measured on first access and then cached.
             </summary>
         </member>
         <member name="M:PDFtoImage.Internals.PdfDocument.Dispose">
@@ -631,6 +665,11 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
             <param name="disposing">Whether this method is called from <see cref="M:PDFtoImage.Internals.PdfDocument.Dispose"/>.</param>
+        </member>
+        <member name="T:PDFtoImage.Internals.PdfPageSizes">
+            <summary>
+            The page sizes of a document, each measured the first time it is asked for.
+            </summary>
         </member>
         <member name="T:PDFtoImage.IRenderOptions">
             <summary>
