@@ -2,6 +2,7 @@
 using PDFtoImage.Exceptions;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using static PDFtoImage.Tests.TestUtils;
 
 namespace PDFtoImage.Tests
@@ -114,6 +115,46 @@ namespace PDFtoImage.Tests
 
             Assert.ThrowsExactly<PdfPageNotFoundException>(() => pages.MoveNext());
         }
+
+        [TestMethod]
+        public void ToImagesAllPagesThrowsWhenUnreachablePageIsReached()
+        {
+            using var inputStream = OpenAsset();
+
+            using var pages = Conversion.ToImages(inputStream, leaveOpen: true).GetEnumerator();
+
+            Assert.IsTrue(pages.MoveNext(), "The page before the unreachable one should still be rendered.");
+            pages.Current.Dispose();
+
+            Assert.ThrowsExactly<PdfPageNotFoundException>(() => pages.MoveNext());
+        }
+
+#if NET6_0_OR_GREATER
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task ToImagesAsyncAllPagesFailureHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = OpenAsset();
+
+            await using (var pages = Conversion.ToImagesAsync(
+                inputStream,
+                leaveOpen: leaveOpen,
+                cancellationToken: TestContext!.CancellationToken)
+                .GetAsyncEnumerator(TestContext!.CancellationToken))
+            {
+                Assert.IsTrue(await pages.MoveNextAsync(), "The page before the unreachable one should still be rendered.");
+                pages.Current.Dispose();
+
+                await Assert.ThrowsExactlyAsync<PdfPageNotFoundException>(async () =>
+                {
+                    await pages.MoveNextAsync();
+                });
+            }
+
+            Assert.AreEqual(leaveOpen, inputStream.CanRead, "The stream state should match leaveOpen when deferred async rendering fails.");
+        }
+#endif
 
         [TestMethod]
         public void ToImagesPageFailureDisposesOwnedStream()

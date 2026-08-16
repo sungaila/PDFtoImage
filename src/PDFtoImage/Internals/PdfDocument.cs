@@ -38,7 +38,15 @@ namespace PDFtoImage.Internals
         {
             _file = new PdfFile(stream, password, disposeStream);
 
-            PageSizes = new PdfPageSizes(_file, _file.GetPageCount());
+            try
+            {
+                PageSizes = new PdfPageSizes(_file, _file.GetPageCount());
+            }
+            catch
+            {
+                _file.Dispose();
+                throw;
+            }
         }
 
         private const int MaxTileWidth = 4000;
@@ -274,7 +282,7 @@ namespace PDFtoImage.Internals
                 handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), bitmap.RowBytes);
 
                 if (handle == IntPtr.Zero)
-                    throw PdfException.CreateException(NativeMethods.GetLastError())!;
+                    throw PdfException.CreateException(NativeMethods.GetLastError()) ?? new PdfUnknownException();
 
                 cancellationToken.ThrowIfCancellationRequested();
 

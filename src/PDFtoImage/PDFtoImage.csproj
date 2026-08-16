@@ -23,10 +23,9 @@
     <PackageIcon>Icon_128.png</PackageIcon>
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <Description>A .NET library to render PDF files into images.</Description>
-    <PackageReleaseNotes>- Update SkiaSharp dependency to 4.150.1.
-- Update PDFium dependency to 152.0.7961.
-- Fix WebAssembly build and enable WasmEnableExceptionHandling.
-- Remove target framework net8.0-browser.</PackageReleaseNotes>
+    <PackageReleaseNotes>- Improved support for linearized and problematic PDFs using PDFium’s Availability API.
+- Added lazy page-size loading so inaccessible pages no longer block unrelated pages.
+- Relaxed the 4 GiB stream limit on supported 64-bit Unix platforms.</PackageReleaseNotes>
     <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Skia PNG JPG JPEG WEBP Xamarin Android iOS MacCatalyst Catalyst MAUI wasm WebAssembly</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

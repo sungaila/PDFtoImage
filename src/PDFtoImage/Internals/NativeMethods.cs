@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace PDFtoImage.Internals
@@ -67,13 +66,13 @@ namespace PDFtoImage.Internals
         /// <summary>
         /// Creates an availability provider over a .NET Stream.
         /// </summary>
-        /// <param name="input">The input Stream. Don't dispose prior to destroying the provider.</param>
+        /// <param name="length">The validated length of the registered stream.</param>
         /// <param name="id">The id the stream is registered under.</param>
         /// <param name="fileAccessState">Native FPDF_FILEACCESS storage retained for the provider lifetime. Pass to <see cref="Avail_Destroy"/> after closing the document.</param>
         /// <returns>An IntPtr to the FPDF_AVAIL object.</returns>
-        public static IntPtr Avail_Create(Stream input, int id, out IntPtr fileAccessState)
+        public static IntPtr Avail_Create(long length, int id, out IntPtr fileAccessState)
         {
-            fileAccessState = CreateAvailFileAccessState(input, id);
+            fileAccessState = CreateAvailFileAccessState(length, id);
 
             try
             {

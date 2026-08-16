@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <ProductVersion>5.3.0</ProductVersion>
+    <ProductVersion>5.4.0</ProductVersion>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>

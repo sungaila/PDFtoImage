@@ -1,7 +1,6 @@
 ﻿#if !NET6_0_OR_GREATER || BROWSER
 using System;
 using System.Buffers;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -34,14 +33,14 @@ namespace PDFtoImage.Internals
             }
         }
 
-        private unsafe static IntPtr CreateAvailFileAccessState(Stream input, int id)
+        private unsafe static IntPtr CreateAvailFileAccessState(long length, int id)
         {
 #if BROWSER
             delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
-            var access = new FPDF_FILEACCESS((uint)input.Length, (IntPtr)getBlock, id);
+            var access = new FPDF_FILEACCESS(checked((uint)length), (IntPtr)getBlock, id);
 #else
             var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
-            var access = new FPDF_FILEACCESS((uint)input.Length, getBlock, (IntPtr)id);
+            var access = new FPDF_FILEACCESS(checked((uint)length), getBlock, (IntPtr)id);
 #endif
 
             var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());

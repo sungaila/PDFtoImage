@@ -306,7 +306,7 @@ namespace PDFtoImage.Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 
-            await using (var pages = ToImagesAsync(inputStream, pages: [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator())
+            await using (var pages = ToImagesAsync(inputStream, pages: [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken))
             {
                 Assert.IsTrue(await pages.MoveNextAsync());
                 pages.Current.Dispose();
