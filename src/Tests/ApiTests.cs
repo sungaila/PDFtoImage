@@ -306,7 +306,7 @@ namespace PDFtoImage.Tests
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview.pdf"));
 
-            await using (var pages = ToImagesAsync(inputStream, pages: [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator())
+            await using (var pages = ToImagesAsync(inputStream, pages: [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken))
             {
                 Assert.IsTrue(await pages.MoveNextAsync());
                 pages.Current.Dispose();
@@ -429,8 +429,6 @@ namespace PDFtoImage.Tests
 
             GetPageSizes(inputStream, false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
-
-            Assert.ThrowsExactly<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
         }
     }
 }

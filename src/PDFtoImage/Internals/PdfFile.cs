@@ -26,44 +26,41 @@ namespace PDFtoImage.Internals
 
         public PdfFile(Stream stream, string? password, bool disposeStream)
         {
-            PdfLibrary.EnsureLoaded();
-
             _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+            _disposeStream = disposeStream;
 
             try
             {
-                // test if the given stream is seekable by getting its length
-                _ = _stream.Length;
-            }
-            catch (NotSupportedException ex)
-            {
+                if (!_stream.CanRead)
+                    throw new ArgumentException("The given stream does not support reading.", nameof(stream));
+
                 if (!_stream.CanSeek)
-                    throw new ArgumentException("The given stream does not support seeking.", nameof(stream), ex);
+                    throw new ArgumentException("The given stream does not support seeking.", nameof(stream));
 
-                throw;
-            }
+                // Read Length only once. Besides validating the stream, this exact value is passed
+                // to FPDF_FILEACCESS so custom streams cannot report a different length later.
+                var length = _stream.Length;
 
-            if (stream.Length > uint.MaxValue)
-            {
+                if (length > uint.MaxValue)
+                {
 #if BROWSER
-                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on WebAssembly.");
+                    throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on WebAssembly.");
 #elif !NET6_0_OR_GREATER
-                throw new NotSupportedException("PDF streams larger than 4 GiB are not supported by the legacy interop bindings used by this target framework.");
+                    throw new NotSupportedException("PDF streams larger than 4 GiB are not supported by the legacy interop bindings used by this target framework.");
 #else
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    throw new NotSupportedException("PDF streams larger than 4 GiB cannot be accessed on Windows. This is a technical limitation of PDFium's FPDF_FILEACCESS API.");
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        throw new NotSupportedException("PDF streams larger than 4 GiB cannot be accessed on Windows. This is a technical limitation of PDFium's FPDF_FILEACCESS API.");
 
-                if (IntPtr.Size == 4)
-                    throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on 32-bit platforms.");
+                    if (IntPtr.Size == 4)
+                        throw new NotSupportedException("PDF streams larger than 4 GiB are not supported on 32-bit platforms.");
 #endif
-            }
+                }
 
-            try
-            {
+                PdfLibrary.EnsureLoaded();
+
                 _id = StreamManager.Register(stream);
-                _disposeStream = disposeStream;
 
-                _avail = NativeMethods.Avail_Create(stream, _id, out _fileAccessState);
+                _avail = NativeMethods.Avail_Create(length, _id, out _fileAccessState);
 
                 if (_avail == IntPtr.Zero)
                     throw new PdfUnknownException();

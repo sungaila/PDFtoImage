@@ -101,6 +101,43 @@ namespace PDFtoImage.Tests
             Assert.AreEqual(1, Conversion.GetPageCount(validStream));
         }
 
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void NonReadableStreamHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = new CapabilityStream(canRead: false, canSeek: true);
+
+            var exception = Assert.ThrowsExactly<ArgumentException>(() => Conversion.GetPageCount(inputStream, leaveOpen: leaveOpen));
+
+            Assert.AreEqual("stream", exception.ParamName);
+            Assert.AreEqual(leaveOpen, inputStream.IsOpen, "The stream state should match leaveOpen after capability validation fails.");
+            Assert.AreEqual(0, inputStream.LengthReadCount, "Length should not be queried for a non-readable stream.");
+        }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void NonSeekableStreamHonorsLeaveOpen(bool leaveOpen)
+        {
+            using var inputStream = new CapabilityStream(canRead: true, canSeek: false);
+
+            var exception = Assert.ThrowsExactly<ArgumentException>(() => Conversion.GetPageCount(inputStream, leaveOpen: leaveOpen));
+
+            Assert.AreEqual("stream", exception.ParamName);
+            Assert.AreEqual(leaveOpen, inputStream.IsOpen, "The stream state should match leaveOpen after capability validation fails.");
+            Assert.AreEqual(0, inputStream.LengthReadCount, "Length should not be queried for a non-seekable stream.");
+        }
+
+        [TestMethod]
+        public void StreamLengthIsReadOnlyOnceWhenOpeningDocument()
+        {
+            using var inputStream = new LengthCountingStream(ReadAsset("SocialPreview.pdf"));
+
+            Assert.AreEqual(1, Conversion.GetPageCount(inputStream, leaveOpen: true));
+            Assert.AreEqual(1, inputStream.LengthReadCount, "The stream length should be captured once and reused for FPDF_FILEACCESS.");
+        }
+
         private static byte[] ReadAsset(string fileName)
         {
             using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
@@ -129,6 +166,13 @@ namespace PDFtoImage.Tests
                 => base.Read(buffer, offset, Math.Min(count, _maxReadSize));
         }
 
+        private sealed class NonSeekableStream(byte[] buffer) : MemoryStream(buffer, writable: false)
+        {
+            public override bool CanSeek => false;
+
+            public override long Length => throw new NotSupportedException();
+        }
+
         private sealed class DisposeCountingStream(byte[] buffer) : MemoryStream(buffer, writable: false)
         {
             public int DisposeCount { get; private set; }
@@ -146,6 +190,66 @@ namespace PDFtoImage.Tests
         {
             public override int Read(byte[] buffer, int offset, int count)
                 => throw new IOException("Simulated stream read failure.");
+        }
+
+        private sealed class LengthCountingStream(byte[] buffer) : MemoryStream(buffer, writable: false)
+        {
+            public int LengthReadCount { get; private set; }
+
+            public override long Length
+            {
+                get
+                {
+                    LengthReadCount++;
+                    return base.Length;
+                }
+            }
+        }
+
+        private sealed class CapabilityStream(bool canRead, bool canSeek) : Stream
+        {
+            public bool IsOpen { get; private set; } = true;
+
+            public int LengthReadCount { get; private set; }
+
+            public override bool CanRead => IsOpen && canRead;
+
+            public override bool CanSeek => IsOpen && canSeek;
+
+            public override bool CanWrite => false;
+
+            public override long Length
+            {
+                get
+                {
+                    LengthReadCount++;
+                    throw new InvalidOperationException("Length must not be queried before stream capability validation.");
+                }
+            }
+
+            public override long Position
+            {
+                get => throw new NotSupportedException();
+                set => throw new NotSupportedException();
+            }
+
+            public override void Flush() => throw new NotSupportedException();
+
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+            public override void SetLength(long value) => throw new NotSupportedException();
+
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                    IsOpen = false;
+
+                base.Dispose(disposing);
+            }
         }
     }
 }

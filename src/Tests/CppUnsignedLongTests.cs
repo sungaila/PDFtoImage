@@ -190,6 +190,56 @@ namespace PDFtoImage.Tests
             stream.Write(bytes, 0, bytes.Length);
         }
 
+        private static bool IsAboveUInt32Unsupported
+        {
+            get
+            {
+#if !NET6_0_OR_GREATER
+                return true;
+#else
+                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || IntPtr.Size == 4;
+#endif
+            }
+        }
+
+        private sealed class LargeLengthStream : Stream
+        {
+            private bool _disposed;
+
+            public override bool CanRead => !_disposed;
+            public override bool CanSeek => !_disposed;
+            public override bool CanWrite => false;
+            public override long Length => Exactly4GiB;
+
+            public override long Position
+            {
+                get => 0;
+                set => throw new NotSupportedException();
+            }
+
+            public override void Flush() => throw new NotSupportedException();
+
+            public override int Read(byte[] buffer, int offset, int count)
+                => throw new NotSupportedException();
+
+            public override long Seek(long offset, SeekOrigin origin)
+                => throw new NotSupportedException();
+
+            public override void SetLength(long value)
+                => throw new NotSupportedException();
+
+            public override void Write(byte[] buffer, int offset, int count)
+                => throw new NotSupportedException();
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                    _disposed = true;
+
+                base.Dispose(disposing);
+            }
+        }
+
         private static void AssertRenders(FileStream stream)
         {
             Assert.AreEqual(1, Conversion.GetPageCount(stream, leaveOpen: true));
@@ -215,6 +265,20 @@ namespace PDFtoImage.Tests
 
             AssertRenders(stream);
 #endif
+        }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void UnsupportedLargeStreamHonorsLeaveOpen(bool leaveOpen)
+        {
+            if (!IsAboveUInt32Unsupported)
+                return;
+
+            using var stream = new LargeLengthStream();
+
+            Assert.ThrowsExactly<NotSupportedException>(() => Conversion.GetPageCount(stream, leaveOpen: leaveOpen));
+            Assert.AreEqual(leaveOpen, stream.CanRead, "The stream state should match leaveOpen when the platform size guard rejects the PDF.");
         }
 
         [TestMethod]
