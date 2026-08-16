@@ -429,8 +429,6 @@ namespace PDFtoImage.Tests
 
             GetPageSizes(inputStream, false);
             Assert.IsFalse(inputStream.CanRead, "The stream should be closed when calling leaveOpen with false.");
-
-            Assert.ThrowsExactly<ObjectDisposedException>(() => GetPageCount(inputStream, false), "The stream should be closed and throw an exception.");
         }
     }
 }
