@@ -93,7 +93,7 @@ namespace PDFtoImage.Internals
         // availability provider: all requested byte ranges are reported as present and download
         // hints are intentionally ignored.
 #if BROWSER
-[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
         // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FX_IsDataAvailDelegate))]
@@ -101,7 +101,7 @@ namespace PDFtoImage.Internals
         private static int FX_IsDataAvail(IntPtr param, UIntPtr offset, UIntPtr size) => 1;
 
 #if BROWSER
-[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
         // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FX_AddSegmentDelegate))]
@@ -109,7 +109,7 @@ namespace PDFtoImage.Internals
         private static void FX_AddSegment(IntPtr param, UIntPtr offset, UIntPtr size) { }
 
 #if BROWSER
-[UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+        [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
 #else
         // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FPDF_GetBlockDelegate))]

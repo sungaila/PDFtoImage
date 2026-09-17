@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Assembly -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
+    <AssemblyName>PDFtoImage.Parallel</AssemblyName>
+    <RootNamespace>PDFtoImage.Parallel</RootNamespace>
+    <EmbedAllSources>true</EmbedAllSources>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configurations>Debug;Release;ReleaseSigned</Configurations>
+  </PropertyGroup>
+
+  <!-- NuGet -->
+  <PropertyGroup>
+    <VersionPrefix>$(ProductVersion)</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>David Sungaila</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Icon_128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
+    <Description>Renders PDF files in parallel by distributing PDFium work across isolated worker processes.</Description>
+    <PackageReleaseNotes>- Initial release with a Windows worker pool, named-pipe IPC and automatic worker cleanup.</PackageReleaseNotes>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Windows Parallel Multiprocess IPC</PackageTags>
+    <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <!-- C# compiler -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Features>strict</Features>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!-- PolySharp settings -->
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
+    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
+    <PolySharpIncludeGeneratedTypes>System.Runtime.Versioning.SupportedOSPlatformAttribute</PolySharpIncludeGeneratedTypes>
+  </PropertyGroup>
+
+  <!-- Debug builds -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <VersionSuffix>debug</VersionSuffix>
+  </PropertyGroup>
+
+  <!-- Release builds -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release' or '$(Configuration)'=='ReleaseSigned'">
+    <Optimize>true</Optimize>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Project references -->
+  <ItemGroup>
+    <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
+  </ItemGroup>
+
+  <!-- allow Tests project to access worker diagnostics -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PDFtoImage.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091ebe9be3d942cb6a7303e2d48d89ed88a202c86294bf3eee9ef98fe0824df513bdcf8786a6c45d3c02058d8947903143d4be345d335a430e94200ba60fdddf8bf9d575ad94537dd0117eacd029b4c07226b0f70325cc1153ce6f612d8c587b43f8912b0ef5730f8f6e227baffd8d7cfe97bc4bcf10ab38430891d785dc27bd7</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <!-- Source generators -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" PrivateAssets="all" Condition="'$(TargetFramework)'=='netstandard2.1'" />
+  </ItemGroup>
+
+  <!-- NuGet assets -->
+  <ItemGroup>
+    <None Include="..\..\etc\Icon_Parallel_128.png" Pack="true" PackagePath="Icon_128.png" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

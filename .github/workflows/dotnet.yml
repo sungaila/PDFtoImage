@@ -36,7 +36,7 @@ on:
         default: false
       publish_testresults:
         type: boolean
-        description: Publish test results
+        description: Update test result badge data
         required: true
         default: true
       generate_attestation:
@@ -230,7 +230,9 @@ jobs:
       - name: Build
         run: dotnet build src/PDFtoImage.Build.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Pack
-        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
+        run: |
+          dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
+          dotnet pack src/Parallel/Parallel.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Publish libraries
         uses: actions/upload-artifact@v7
         with:
@@ -247,6 +249,8 @@ jobs:
           path: |
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
+            src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
+            src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
       - name: Publish tests
         uses: actions/upload-artifact@v7
@@ -272,6 +276,11 @@ jobs:
       TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
+      - name: Checkout MTP configuration
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: global.json
+          sparse-checkout-cone-mode: false
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -287,19 +296,19 @@ jobs:
           name: Test assemblies
       - name: .NET Framework 4.7.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net471/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\net471\PDFtoImage.Tests.exe --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\net481\PDFtoImage.Tests.exe --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
-        run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net8.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 9
         if: success() || failure()
-        run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net9.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 10
         if: success() || failure()
-        run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net10.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@v7
@@ -488,12 +497,11 @@ jobs:
           docker run --rm pdftoimage-smoke:windows-servercore-aot
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   publish-test-results:
-    name: Publish tests results
+    name: Aggregate test result statistics
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      checks: write
-      pull-requests: write
+      contents: read
     concurrency:
       group: "publish-test-results"
       cancel-in-progress: false
@@ -505,11 +513,13 @@ jobs:
           pattern: Test results (*)
           merge-multiple: true
           path: artifacts
-      - name: Publish test results
+      - name: Aggregate test result statistics
         uses: EnricoMi/publish-unit-test-result-action@c9bbcabcaf28c5ce2a9f8b6ee91c62873071b2ce
         with:
           files: artifacts/**/*.trx
-          check_name: Test results
+          check_run: false
+          comment_mode: off
+          job_summary: false
           compare_to_earlier_commit: false
           action_fail_on_inconclusive: true
           json_file: test-results.json
@@ -575,7 +585,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
-          dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
+          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --output Detailed" -f xml -o "coverage.xml"
 
           .\.sonar\scanner\dotnet-sonarscanner end
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
