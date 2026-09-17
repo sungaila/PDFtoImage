@@ -1,6 +1,6 @@
-using PDFtoImage;
 using SkiaSharp;
 using System;
+using System.Buffers;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -38,14 +38,19 @@ namespace PDFtoImage.Parallel.Internals
             return stream.ToArray();
         }
 
-        internal static async Task WriteMessageAsync(Stream stream, byte[] message, CancellationToken cancellationToken)
+        internal static Task WriteMessageAsync(Stream stream, byte[] message, CancellationToken cancellationToken) =>
+            WriteMessageAsync(stream, message, ReadOnlyMemory<byte>.Empty, cancellationToken);
+
+        internal static async Task WriteMessageAsync(Stream stream, byte[] message, ReadOnlyMemory<byte> suffix, CancellationToken cancellationToken)
         {
-            if (message.Length > MaximumMessageLength)
+            if ((long)message.Length + suffix.Length > MaximumMessageLength)
                 throw new InvalidDataException("The IPC message is too large.");
 
-            var header = BitConverter.GetBytes(message.Length);
+            var header = BitConverter.GetBytes(message.Length + suffix.Length);
             await stream.WriteAsync(header, cancellationToken).ConfigureAwait(false);
             await stream.WriteAsync(message, cancellationToken).ConfigureAwait(false);
+            if (!suffix.IsEmpty)
+                await stream.WriteAsync(suffix, cancellationToken).ConfigureAwait(false);
             await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -59,7 +64,7 @@ namespace PDFtoImage.Parallel.Internals
             await ReadExactlyAsync(stream, header, firstRead, header.Length - firstRead, cancellationToken).ConfigureAwait(false);
 
             var messageLength = BitConverter.ToInt32(header, 0);
-            if (messageLength < 0 || messageLength > MaximumMessageLength)
+            if (messageLength <= 0 || messageLength > MaximumMessageLength)
                 throw new InvalidDataException("The IPC message has an invalid length.");
 
             var message = new byte[messageLength];
@@ -155,7 +160,7 @@ namespace PDFtoImage.Parallel.Internals
                 reader.ReadBoolean());
         }
 
-        internal static void WriteBitmap(BinaryWriter writer, SKBitmap bitmap)
+        internal static unsafe void WriteBitmap(BinaryWriter writer, SKBitmap bitmap)
         {
             writer.Write(bitmap.Width);
             writer.Write(bitmap.Height);
@@ -164,14 +169,51 @@ namespace PDFtoImage.Parallel.Internals
             writer.Write(bitmap.RowBytes);
             writer.Write(bitmap.ByteCount);
 
-            var pixels = new byte[bitmap.ByteCount];
-            Marshal.Copy(bitmap.GetPixels(), pixels, 0, pixels.Length);
-            writer.Write(pixels);
+            writer.Write(new ReadOnlySpan<byte>((void*)bitmap.GetPixels(), bitmap.ByteCount));
         }
 
-        internal static SKBitmap ReadBitmap(byte[] payload)
+        internal static async Task WriteBitmapResponseAsync(Stream stream, SKBitmap bitmap, CancellationToken cancellationToken)
         {
+            var metadata = CreateMessage(writer =>
+            {
+                writer.Write((byte)WorkerResponse.Success);
+                writer.Write(bitmap.Width);
+                writer.Write(bitmap.Height);
+                writer.Write((int)bitmap.ColorType);
+                writer.Write((int)bitmap.AlphaType);
+                writer.Write(bitmap.RowBytes);
+                writer.Write(bitmap.ByteCount);
+            });
+            if ((long)metadata.Length + bitmap.ByteCount > MaximumMessageLength)
+                throw new InvalidDataException("The rendered bitmap exceeds the IPC message limit.");
+
+            await stream.WriteAsync(BitConverter.GetBytes(metadata.Length + bitmap.ByteCount), cancellationToken).ConfigureAwait(false);
+            await stream.WriteAsync(metadata, cancellationToken).ConfigureAwait(false);
+            var buffer = ArrayPool<byte>.Shared.Rent(64 * 1024);
+            try
+            {
+                for (var offset = 0; offset < bitmap.ByteCount;)
+                {
+                    var count = Math.Min(buffer.Length, bitmap.ByteCount - offset);
+                    Marshal.Copy(IntPtr.Add(bitmap.GetPixels(), offset), buffer, 0, count);
+                    await stream.WriteAsync(buffer.AsMemory(0, count), cancellationToken).ConfigureAwait(false);
+                    offset += count;
+                }
+                await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer, clearArray: true);
+            }
+        }
+
+        internal static SKBitmap ReadBitmap(byte[] payload, int offset = 0)
+        {
+            const int metadataSize = 6 * sizeof(int);
+            if (offset < 0 || offset > payload.Length - metadataSize)
+                throw new InvalidDataException("A worker returned incomplete bitmap metadata.");
             using var reader = CreateReader(payload);
+            reader.BaseStream.Position = offset;
             var width = reader.ReadInt32();
             var height = reader.ReadInt32();
             var colorType = (SKColorType)reader.ReadInt32();
@@ -179,7 +221,10 @@ namespace PDFtoImage.Parallel.Internals
             var rowBytes = reader.ReadInt32();
             var byteCount = reader.ReadInt32();
 
-            if (width <= 0 || height <= 0 || rowBytes <= 0 || byteCount <= 0 || byteCount > payload.Length)
+            // Validate using wide arithmetic BEFORE allocating native memory.
+            if (width <= 0 || height <= 0 || colorType != SKColorType.Bgra8888 || alphaType != SKAlphaType.Premul ||
+                (long)width * 4 != rowBytes || (long)rowBytes * height != byteCount ||
+                byteCount != payload.Length - offset - metadataSize)
                 throw new InvalidDataException("A worker returned invalid bitmap metadata.");
 
             var bitmap = new SKBitmap(width, height, colorType, alphaType);
@@ -188,11 +233,7 @@ namespace PDFtoImage.Parallel.Internals
                 if (bitmap.RowBytes != rowBytes || bitmap.ByteCount != byteCount)
                     throw new InvalidDataException("A worker returned incompatible bitmap metadata.");
 
-                var pixels = reader.ReadBytes(byteCount);
-                if (pixels.Length != byteCount || reader.BaseStream.Position != reader.BaseStream.Length)
-                    throw new InvalidDataException("A worker returned incomplete bitmap data.");
-
-                Marshal.Copy(pixels, 0, bitmap.GetPixels(), pixels.Length);
+                Marshal.Copy(payload, offset + metadataSize, bitmap.GetPixels(), byteCount);
                 return bitmap;
             }
             catch

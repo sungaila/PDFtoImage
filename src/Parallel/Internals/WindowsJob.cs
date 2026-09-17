@@ -8,7 +8,7 @@ using Windows.Win32.System.JobObjects;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    [SupportedOSPlatform("windows6.2")]
+    [SupportedOSPlatform("windows10.0")]
     internal sealed class WindowsJob : IDisposable
     {
         private readonly SafeFileHandle _handle;

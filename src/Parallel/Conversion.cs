@@ -15,7 +15,7 @@ namespace PDFtoImage.Parallel
     /// <summary>
     /// Renders PDF pages concurrently in isolated worker processes.
     /// </summary>
-    [SupportedOSPlatform("windows6.2")]
+    [SupportedOSPlatform("windows10.0")]
 #if NETCOREAPP
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1510")]
 #endif
@@ -24,7 +24,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders one PDF page as one job in the worker pool.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static Task<SKBitmap> ToImageAsync(
             byte[] pdfAsByteArray,
             Index page = default,
@@ -39,7 +39,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders one PDF page from a stream as one job in the worker pool.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static async Task<SKBitmap> ToImageAsync(
             Stream pdfStream,
             Index page = default,
@@ -68,7 +68,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders one page from a Base64-encoded PDF as one job in the worker pool.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static Task<SKBitmap> ToImageAsync(
             string pdfAsBase64String,
             Index page = default,
@@ -85,7 +85,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders all pages of a PDF into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             byte[] pdfAsByteArray,
             string? password = null,
@@ -99,7 +99,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders a range of PDF pages into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             byte[] pdfAsByteArray,
             Range pages,
@@ -114,7 +114,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders selected PDF pages into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             byte[] pdfAsByteArray,
             IEnumerable<int> pages,
@@ -131,7 +131,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders all pages of a PDF stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             Stream pdfStream,
             bool leaveOpen = false,
@@ -146,7 +146,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders a range of PDF pages from a stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             Stream pdfStream,
             Range pages,
@@ -162,7 +162,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders selected PDF pages from a stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             Stream pdfStream,
             IEnumerable<int> pages,
@@ -180,7 +180,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders all pages of a Base64-encoded PDF into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             string pdfAsBase64String,
             string? password = null,
@@ -196,7 +196,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders a range of pages from a Base64-encoded PDF into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             string pdfAsBase64String,
             Range pages,
@@ -213,7 +213,7 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders selected pages from a Base64-encoded PDF into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows6.2")]
+        [SupportedOSPlatform("windows10.0")]
         public static IAsyncEnumerable<SKBitmap> ToImagesAsync(
             string pdfAsBase64String,
             IEnumerable<int> pages,
@@ -266,16 +266,16 @@ namespace PDFtoImage.Parallel
                 throw new ArgumentNullException(nameof(pdfAsByteArray));
 
             EnsureWindows();
-            var actualWorkerCount = GetWorkerCount(workerCount);
+            _ = GetWorkerCount(workerCount);
 
-            await using var pool = await WorkerPool.CreateAsync(actualWorkerCount, pdfAsByteArray, password, cancellationToken).ConfigureAwait(false);
+            await using var pool = await WorkerPool.CreateAsync(1, pdfAsByteArray, password, cancellationToken).ConfigureAwait(false);
             var pageNumber = page.GetOffset(pool.PageCount);
 
             if (pageNumber < 0 || pageNumber >= pool.PageCount)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number must be between 0 and {pool.PageCount - 1}. The PDF has {pool.PageCount} pages in total.");
 
             var bitmapBytes = await pool.RenderPageAsync(pageNumber, options, cancellationToken).ConfigureAwait(false);
-            return PipeProtocol.ReadBitmap(bitmapBytes);
+            return PipeProtocol.ReadBitmap(bitmapBytes, 1);
         }
 
         private static async IAsyncEnumerable<SKBitmap> ToImagesCoreAsync(
@@ -293,50 +293,40 @@ namespace PDFtoImage.Parallel
             var actualWorkerCount = GetWorkerCount(workerCount);
 
             WorkerPool? pool = null;
-            var pending = new Queue<Task<byte[]>>();
+            using var enumerationCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             try
             {
-                pool = await WorkerPool.CreateAsync(actualWorkerCount, pdfAsByteArray, password, cancellationToken).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+                if (pages.MaximumCount == 0)
+                    yield break;
+
+                pool = await WorkerPool.CreateAsync(Math.Min(actualWorkerCount, pages.MaximumCount), pdfAsByteArray, password,
+                    cancellationToken, pageCount => pages.Resolve(pageCount).Length).ConfigureAwait(false);
                 var pageNumbers = pages.Resolve(pool.PageCount);
-                using var pageEnumerator = ((IEnumerable<int>)pageNumbers).GetEnumerator();
-
-                for (var i = 0; i < actualWorkerCount && pageEnumerator.MoveNext(); i++)
-                    pending.Enqueue(pool.RenderPageAsync(pageEnumerator.Current, options, cancellationToken));
-
-                while (pending.Count > 0)
+                if (pageNumbers.Length == 0)
+                    yield break;
+                // A bounded look-ahead lets idle workers progress beyond a slow
+                // earlier page, while limiting retained out-of-order bitmaps.
+                await foreach (var bitmapBytes in OrderedScheduler.RunAsync(
+                    pageNumbers, (int)Math.Min(pageNumbers.Length, (long)pool.WorkerCount * 2),
+                    (page, token) => pool.RenderPageAsync(page, options, token), enumerationCancellation.Token).ConfigureAwait(false))
                 {
-                    var bitmapBytes = await pending.Dequeue().ConfigureAwait(false);
-
-                    if (pageEnumerator.MoveNext())
-                        pending.Enqueue(pool.RenderPageAsync(pageEnumerator.Current, options, cancellationToken));
-
-                    yield return PipeProtocol.ReadBitmap(bitmapBytes);
+                    yield return PipeProtocol.ReadBitmap(bitmapBytes, 1);
                 }
             }
             finally
             {
+                enumerationCancellation.Cancel();
                 if (pool != null)
                     await pool.DisposeAsync().ConfigureAwait(false);
-
-                while (pending.Count > 0)
-                {
-                    try
-                    {
-                        await pending.Dequeue().ConfigureAwait(false);
-                    }
-                    catch
-                    {
-                        // The worker pool is being torn down; pending failures are expected here.
-                    }
-                }
             }
         }
 
         private static void EnsureWindows()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                throw new PlatformNotSupportedException("PDFtoImage.Parallel currently supports Windows only.");
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Environment.OSVersion.Version.Major < 10)
+                throw new PlatformNotSupportedException("PDFtoImage.Parallel requires Windows 10 / Windows Server 2016 or newer.");
         }
 
         private static int GetWorkerCount(int? workerCount)
@@ -364,12 +354,14 @@ namespace PDFtoImage.Parallel
 
             internal static PageSelection FromPages(int[] pages) => new(null, pages);
 
+            internal int MaximumCount => _pages?.Length ?? int.MaxValue;
+
             internal int[] Resolve(int pageCount)
             {
                 if (_pages != null)
                 {
                     return _pages.Any(page => page < 0 || page >= pageCount)
-                        ? throw new ArgumentOutOfRangeException(nameof(pageCount), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
+                        ? throw new ArgumentOutOfRangeException("pages", $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
                         : _pages;
                 }
 

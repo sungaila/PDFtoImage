@@ -14,14 +14,17 @@ using Windows.Win32.System.Threading;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    [SupportedOSPlatform("windows6.2")]
+    [SupportedOSPlatform("windows10.0")]
     internal static class WorkerProcessLauncher
     {
         internal const string WorkerPipeEnvironmentVariable = "PDFTOIMAGE_PARALLEL_WORKER_PIPE";
 
         internal static unsafe Process StartSuspendedAndAssign(WindowsJob job, string pipeName)
         {
-            var processPath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (AppContext.TryGetSwitch("System.StartupHookProvider.IsSupported", out var hooksSupported) && !hooksSupported)
+                throw new PlatformNotSupportedException("PDFtoImage.Parallel requires enabled .NET startup hooks.");
+            using var currentProcess = Process.GetCurrentProcess();
+            var processPath = currentProcess.MainModule?.FileName;
             if (string.IsNullOrWhiteSpace(processPath))
                 throw new InvalidOperationException("The current process executable could not be determined.");
 
@@ -33,54 +36,78 @@ namespace PDFtoImage.Parallel.Internals
             var commandLineBuffer = (commandLine + '\0').ToCharArray();
             var commandLineSpan = commandLineBuffer.AsSpan();
             var environment = CreateEnvironmentBlock(startupHookPath, pipeName);
-            var startupInfo = new STARTUPINFOW { cb = (uint)sizeof(STARTUPINFOW) };
+            var startupInfo = new STARTUPINFOEXW();
+            startupInfo.StartupInfo.cb = (uint)sizeof(STARTUPINFOEXW);
+            nuint attributeSize = 0;
+            ParallelPInvoke.InitializeProcThreadAttributeList(default, 1, 0, &attributeSize);
+            var attributeMemory = Marshal.AllocHGlobal(checked((IntPtr)(long)attributeSize));
+            var initialized = false;
+            var jobReference = false;
 
-            fixed (char* environmentPointer = environment)
+            try
             {
-                if (!ParallelPInvoke.CreateProcess(
-                    processPath,
-                    ref commandLineSpan,
-                    null,
-                    null,
-                    false,
-                    PROCESS_CREATION_FLAGS.CREATE_SUSPENDED |
-                    PROCESS_CREATION_FLAGS.CREATE_NO_WINDOW |
-                    PROCESS_CREATION_FLAGS.CREATE_UNICODE_ENVIRONMENT,
-                    environmentPointer,
-                    Environment.CurrentDirectory,
-                    startupInfo,
-                    out var processInformation))
-                {
-                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not create a PDF conversion worker process.");
-                }
+                startupInfo.lpAttributeList = new LPPROC_THREAD_ATTRIBUTE_LIST((void*)attributeMemory);
+                if (!ParallelPInvoke.InitializeProcThreadAttributeList(startupInfo.lpAttributeList, 1, 0, &attributeSize))
+                    throw new Win32Exception(Marshal.GetLastWin32Error());
+                initialized = true;
+                job.Handle.DangerousAddRef(ref jobReference);
+                var jobHandle = job.Handle.DangerousGetHandle();
+                if (!ParallelPInvoke.UpdateProcThreadAttribute(startupInfo.lpAttributeList, 0,
+                    ParallelPInvoke.PROC_THREAD_ATTRIBUTE_JOB_LIST, &jobHandle, (nuint)sizeof(IntPtr), null, null))
+                    throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not configure atomic worker job assignment.");
 
-                using var processHandle = new SafeFileHandle((IntPtr)processInformation.hProcess, true);
-                using var threadHandle = new SafeFileHandle((IntPtr)processInformation.hThread, true);
-                var process = Process.GetProcessById(checked((int)processInformation.dwProcessId));
-
-                try
+                fixed (char* environmentPointer = environment)
                 {
-                    if (!ParallelPInvoke.AssignProcessToJobObject(job.Handle, processHandle))
+                    if (!ParallelPInvoke.CreateProcess(
+                        processPath,
+                        ref commandLineSpan,
+                        null,
+                        null,
+                        false,
+                        PROCESS_CREATION_FLAGS.CREATE_SUSPENDED |
+                        PROCESS_CREATION_FLAGS.EXTENDED_STARTUPINFO_PRESENT |
+                        PROCESS_CREATION_FLAGS.CREATE_NO_WINDOW |
+                        PROCESS_CREATION_FLAGS.CREATE_UNICODE_ENVIRONMENT,
+                        environmentPointer,
+                        Environment.CurrentDirectory,
+                        in startupInfo.StartupInfo,
+                        out var processInformation))
                     {
-                        var error = Marshal.GetLastWin32Error();
-                        ParallelPInvoke.TerminateProcess(processHandle, 1);
-                        throw new Win32Exception(error, "Could not assign the PDF conversion worker to its Windows job object.");
+                        throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not create a PDF conversion worker process.");
                     }
 
-                    if (ParallelPInvoke.ResumeThread(threadHandle) == uint.MaxValue)
-                    {
-                        var error = Marshal.GetLastWin32Error();
-                        ParallelPInvoke.TerminateProcess(processHandle, 1);
-                        throw new Win32Exception(error, "Could not resume the PDF conversion worker process.");
-                    }
+                    using var processHandle = new SafeFileHandle((IntPtr)processInformation.hProcess, true);
+                    using var threadHandle = new SafeFileHandle((IntPtr)processInformation.hThread, true);
+                    Process? process = null;
 
-                    return process;
+                    try
+                    {
+                        process = Process.GetProcessById(checked((int)processInformation.dwProcessId));
+
+                        if (ParallelPInvoke.ResumeThread(threadHandle) == uint.MaxValue)
+                        {
+                            var error = Marshal.GetLastWin32Error();
+                            ParallelPInvoke.TerminateProcess(processHandle, 1);
+                            throw new Win32Exception(error, "Could not resume the PDF conversion worker process.");
+                        }
+
+                        return process;
+                    }
+                    catch
+                    {
+                        ParallelPInvoke.TerminateProcess(processHandle, 1);
+                        process?.Dispose();
+                        throw;
+                    }
                 }
-                catch
-                {
-                    process.Dispose();
-                    throw;
-                }
+            }
+            finally
+            {
+                if (initialized)
+                    ParallelPInvoke.DeleteProcThreadAttributeList(startupInfo.lpAttributeList);
+                Marshal.FreeHGlobal(attributeMemory);
+                if (jobReference)
+                    job.Handle.DangerousRelease();
             }
         }
 
@@ -119,8 +146,10 @@ namespace PDFtoImage.Parallel.Internals
 
             var entryAssemblyPath = Assembly.GetEntryAssembly()?.Location;
             var isDotnetHost = string.Equals(Path.GetFileNameWithoutExtension(processPath), "dotnet", StringComparison.OrdinalIgnoreCase);
-            if (isDotnetHost)
-                AppendArgument(commandLine, "exec");
+            if (!isDotnetHost)
+                return commandLine.ToString();
+
+            AppendArgument(commandLine, "exec");
 
             var depsFile = FindApplicationDepsFile(entryAssemblyPath);
             var runtimeConfig = GetRuntimeConfigFile(depsFile);
@@ -143,10 +172,6 @@ namespace PDFtoImage.Parallel.Internals
 
                 AppendArgument(commandLine, entryAssemblyPath);
             }
-
-            var arguments = Environment.GetCommandLineArgs();
-            for (var index = 1; index < arguments.Length; index++)
-                AppendArgument(commandLine, arguments[index]);
 
             return commandLine.ToString();
         }

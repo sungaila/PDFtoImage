@@ -5,7 +5,10 @@ using System.Runtime.Versioning;
 /// <summary>
 /// Bootstraps a worker before the host application's entry point is invoked.
 /// </summary>
-[SupportedOSPlatform("windows6.2")]
+[SupportedOSPlatform("windows10.0")]
+#if NETCOREAPP
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
+#endif
 public static class StartupHook
 {
     /// <summary>

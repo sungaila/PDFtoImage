@@ -11,8 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ParallelConversion = PDFtoImage.Parallel.Conversion;
 using static PDFtoImage.Tests.TestUtils;
+using ParallelConversion = PDFtoImage.Parallel.Conversion;
 
 namespace PDFtoImage.Tests
 {

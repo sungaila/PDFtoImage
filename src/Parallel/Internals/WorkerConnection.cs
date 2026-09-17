@@ -1,15 +1,14 @@
-using PDFtoImage;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Versioning;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    [SupportedOSPlatform("windows6.2")]
+    [SupportedOSPlatform("windows10.0")]
     internal sealed class WorkerConnection : IDisposable
     {
         private readonly NamedPipeServerStream _pipe;
@@ -40,13 +39,24 @@ namespace PDFtoImage.Parallel.Internals
 
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 worker._process = WorkerProcessLauncher.StartSuspendedAndAssign(job, pipeName);
 
                 using var startupCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                 startupCancellation.CancelAfter(TimeSpan.FromSeconds(30));
+                worker._process.EnableRaisingEvents = true;
+                EventHandler onExit = (_, _) =>
+                {
+                    // Unsubscribing cannot retract an already queued Exited callback.
+                    try { startupCancellation.Cancel(); }
+                    catch (ObjectDisposedException) { }
+                };
+                worker._process.Exited += onExit;
 
                 try
                 {
+                    if (worker._process.HasExited)
+                        throw new EndOfStreamException("The PDF conversion worker exited before connecting.");
                     await pipe.WaitForConnectionAsync(startupCancellation.Token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
@@ -55,6 +65,10 @@ namespace PDFtoImage.Parallel.Internals
                         throw new TimeoutException("The PDF conversion worker exited before connecting.");
 
                     throw new TimeoutException("The PDF conversion worker did not connect within 30 seconds.");
+                }
+                finally
+                {
+                    worker._process.Exited -= onExit;
                 }
 
                 var helloMessage = await PipeProtocol.ReadMessageAsync(pipe, startupCancellation.Token).ConfigureAwait(false);
@@ -72,11 +86,10 @@ namespace PDFtoImage.Parallel.Internals
                     writer.Write((byte)WorkerCommand.LoadDocument);
                     PipeProtocol.WriteNullableString(writer, password);
                     writer.Write(pdf.Length);
-                    writer.Write(pdf);
                 });
 
-                await PipeProtocol.WriteMessageAsync(pipe, loadMessage, cancellationToken).ConfigureAwait(false);
-                var loadResponse = await ReadRequiredMessageAsync(pipe, cancellationToken).ConfigureAwait(false);
+                await PipeProtocol.WriteMessageAsync(pipe, loadMessage, pdf, startupCancellation.Token).ConfigureAwait(false);
+                var loadResponse = await ReadRequiredMessageAsync(pipe, startupCancellation.Token).ConfigureAwait(false);
                 using var loadReader = PipeProtocol.CreateReader(loadResponse);
                 PipeProtocol.ThrowIfError(loadReader);
 
@@ -104,7 +117,7 @@ namespace PDFtoImage.Parallel.Internals
                 var response = await ReadRequiredMessageAsync(_pipe, cancellationToken).ConfigureAwait(false);
                 using var reader = PipeProtocol.CreateReader(response);
                 PipeProtocol.ThrowIfError(reader);
-                return reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
+                return response;
             }
             catch (IOException exception)
             {

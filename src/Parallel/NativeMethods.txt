@@ -5,3 +5,8 @@ JOBOBJECT_EXTENDED_LIMIT_INFORMATION
 ResumeThread
 SetInformationJobObject
 TerminateProcess
+InitializeProcThreadAttributeList
+UpdateProcThreadAttribute
+DeleteProcThreadAttributeList
+PROC_THREAD_ATTRIBUTE_JOB_LIST
+STARTUPINFOEXW

@@ -296,19 +296,19 @@ jobs:
           name: Test assemblies
       - name: .NET Framework 4.7.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: .\net471\PDFtoImage.Tests.exe --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\net471\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: .\net481\PDFtoImage.Tests.exe --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\net481\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
-        run: dotnet test --test-modules net8.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net8.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 9
         if: success() || failure()
-        run: dotnet test --test-modules net9.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net9.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 10
         if: success() || failure()
-        run: dotnet test --test-modules net10.0/PDFtoImage.Tests.dll -- --report-trx --report-gh --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@v7
@@ -585,7 +585,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
-          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --output Detailed" -f xml -o "coverage.xml"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --no-build --output Detailed" -f xml -o "coverage.xml"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           .\.sonar\scanner\dotnet-sonarscanner end
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

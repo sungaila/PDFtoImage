@@ -1,14 +1,13 @@
-using SkiaSharp;
 using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Versioning;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    [SupportedOSPlatform("windows6.2")]
+    [SupportedOSPlatform("windows10.0")]
     internal static class WorkerHost
     {
         internal static async Task<int> RunAsync(string pipeName)
@@ -28,70 +27,79 @@ namespace PDFtoImage.Parallel.Internals
                     }),
                     CancellationToken.None).ConfigureAwait(false);
 
-                byte[]? pdf = null;
-                string? password = null;
+                WorkerDocument? document = null;
 
-                while (true)
+                try
                 {
-                    var message = await PipeProtocol.ReadMessageAsync(pipe, CancellationToken.None).ConfigureAwait(false);
-                    if (message == null)
-                        return 0;
-
-                    using var reader = PipeProtocol.CreateReader(message);
-                    var command = (WorkerCommand)reader.ReadByte();
-
-                    if (command == WorkerCommand.Shutdown)
-                        return 0;
-
-                    try
+                    while (true)
                     {
-                        byte[] response;
-                        switch (command)
+                        var message = await PipeProtocol.ReadMessageAsync(pipe, CancellationToken.None).ConfigureAwait(false);
+                        if (message == null)
+                            return 0;
+
+                        using var reader = PipeProtocol.CreateReader(message);
+                        var command = (WorkerCommand)reader.ReadByte();
+
+                        if (command == WorkerCommand.Shutdown)
+                            return 0;
+
+                        try
                         {
-                            case WorkerCommand.LoadDocument:
-                                password = PipeProtocol.ReadNullableString(reader);
-                                var length = reader.ReadInt32();
-                                if (length < 0 || length > message.Length)
-                                    throw new InvalidDataException("The PDF payload has an invalid length.");
+                            byte[] response;
+                            switch (command)
+                            {
+                                case WorkerCommand.LoadDocument:
+                                    var password = PipeProtocol.ReadNullableString(reader);
+                                    var length = reader.ReadInt32();
+                                    if (length < 0 || length != message.Length - reader.BaseStream.Position)
+                                        throw new InvalidDataException("The PDF payload has an invalid length.");
 
-                                pdf = reader.ReadBytes(length);
-                                if (pdf.Length != length)
-                                    throw new EndOfStreamException("The PDF payload is incomplete.");
-
-                                var pageCount = global::PDFtoImage.Conversion.GetPageCount(pdf, password);
-                                response = PipeProtocol.CreateMessage(writer =>
-                                {
-                                    writer.Write((byte)WorkerResponse.Success);
-                                    writer.Write(pageCount);
-                                });
-                                break;
-
-                            case WorkerCommand.RenderPage:
-                                if (pdf == null)
-                                    throw new InvalidOperationException("No PDF document has been loaded.");
-
-                                var page = reader.ReadInt32();
-                                var options = PipeProtocol.ReadRenderOptions(reader);
-                                using (var bitmap = global::PDFtoImage.Conversion.ToImage(pdf, page, password, options))
-                                {
+                                    document?.Dispose();
+                                    document = null;
+                                    var pdfStream = new MemoryStream(message, (int)reader.BaseStream.Position, length, false);
+                                    try
+                                    {
+                                        document = new WorkerDocument(pdfStream, password);
+                                    }
+                                    catch
+                                    {
+                                        pdfStream.Dispose();
+                                        throw;
+                                    }
                                     response = PipeProtocol.CreateMessage(writer =>
                                     {
                                         writer.Write((byte)WorkerResponse.Success);
-                                        PipeProtocol.WriteBitmap(writer, bitmap);
+                                        writer.Write(document.PageCount);
                                     });
-                                }
-                                break;
+                                    break;
 
-                            default:
-                                throw new InvalidDataException("The worker received an unknown command.");
+                                case WorkerCommand.RenderPage:
+                                    if (document == null)
+                                        throw new InvalidOperationException("No PDF document has been loaded.");
+
+                                    var page = reader.ReadInt32();
+                                    var options = PipeProtocol.ReadRenderOptions(reader);
+                                    using (var bitmap = document.Render(page, options))
+                                    {
+                                        await PipeProtocol.WriteBitmapResponseAsync(pipe, bitmap, CancellationToken.None).ConfigureAwait(false);
+                                    }
+                                    continue;
+
+                                default:
+                                    throw new InvalidDataException("The worker received an unknown command.");
+                            }
+
+                            await PipeProtocol.WriteMessageAsync(pipe, response, CancellationToken.None).ConfigureAwait(false);
                         }
-
-                        await PipeProtocol.WriteMessageAsync(pipe, response, CancellationToken.None).ConfigureAwait(false);
+                        catch (Exception exception)
+                        {
+                            await PipeProtocol.WriteMessageAsync(pipe, PipeProtocol.CreateErrorResponse(exception), CancellationToken.None).ConfigureAwait(false);
+                        }
                     }
-                    catch (Exception exception)
-                    {
-                        await PipeProtocol.WriteMessageAsync(pipe, PipeProtocol.CreateErrorResponse(exception), CancellationToken.None).ConfigureAwait(false);
-                    }
+                }
+                finally
+                {
+                    document?.Dispose();
                 }
             }
             catch

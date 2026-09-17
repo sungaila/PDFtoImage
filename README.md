@@ -57,7 +57,7 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ## Parallelization
 The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks, so a single process can only render one PDF page at a time.
 
-On Windows, [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes and named-pipe IPC. The package is not available on NuGet yet. Workers are assigned to a Windows Job Object so they are also terminated if the parent process exits unexpectedly.
+On Windows 10 / Windows Server 2016 or newer, [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes and named-pipe IPC. The package is not available on NuGet yet. Workers are assigned atomically to a Windows Job Object when created, so they are also terminated if the parent process exits unexpectedly, including during worker startup.
 
 ```csharp
 await foreach (var image in PDFtoImage.Parallel.Conversion.ToImagesAsync(
@@ -71,7 +71,13 @@ await foreach (var image in PDFtoImage.Parallel.Conversion.ToImagesAsync(
 }
 ```
 
-Single-page requests are available through `PDFtoImage.Parallel.Conversion.ToImageAsync`. If subprocesses and IPC are not suitable for your application, Ghostscript may be easier for this use case, since (under certain conditions) it can support multiple instances within the same process.
+Single-page requests are available through `PDFtoImage.Parallel.Conversion.ToImageAsync` and start only one worker. Multi-page calls use up to `workerCount` workers (default: processor count), capped at the document and selection size. Each worker keeps its native PDF document open. Results are returned in the requested order, including duplicate pages; a bounded look-ahead of at most twice the worker count allows other workers to progress while an earlier page is slow. Dispose each returned bitmap, and dispose the async enumerator when stopping early (`await foreach` does this automatically).
+
+Each conversion call owns its own pool; pools are not shared between calls. Cancelling an in-flight IPC request or losing a worker ends that pool and fails the operation rather than silently omitting or retrying pages. PDF input is retained in each worker, and large rendered pages still require memory for the bounded result buffer. This is intended for batches where parallel rendering outweighs process startup and IPC costs.
+
+Workers re-launch the application's normal .NET host using a startup hook, before its entry point runs. Framework-dependent `dotnet app.dll` and apphost executables are supported. Single-file publishing, NativeAOT, trimming, custom native hosts and disabled startup hooks are not supported. The `netstandard2.1` asset provides API compatibility for modern .NET hosts, not Mono or .NET Framework support.
+
+If subprocesses and IPC are not suitable for your application, Ghostscript may be easier for this use case, since (under certain conditions) it can support multiple instances within the same process.
 
 ## Index and Range for .NET Framework
 [PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable the use of `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed, which **should not be** used directly by your project:
