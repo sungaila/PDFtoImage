@@ -47,7 +47,7 @@ namespace PDFtoImage.Tests
             {
                 using var inputStream = GetInputStream(Path.Combine("..", "Assets", "SocialPreview with password 123456 (AES-256).pdf"));
                 Assert.ThrowsExactly<PdfPasswordProtectedException>(() => GetPageCount(inputStream, password: "wrong"));
-            }));
+            }, TestContext!.CancellationToken));
 
             await Task.WhenAll(tasks);
         }

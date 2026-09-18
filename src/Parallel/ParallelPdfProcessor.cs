@@ -17,7 +17,6 @@ namespace PDFtoImage.Parallel
     [SupportedOSPlatform("windows10.0")]
     [SupportedOSPlatform("linux")]
     [SupportedOSPlatform("macos")]
-#pragma warning disable RS0026 // First-release overloads mirror PDFtoImage's input shapes.
     public sealed class ParallelPdfProcessor : IDisposable, IAsyncDisposable
     {
         private readonly WorkerPool _pool;
@@ -136,8 +135,6 @@ namespace PDFtoImage.Parallel
 
             return ToImagesFromStreamAsync(pdfStream, PageSelection.FromPages([.. pages]), leaveOpen, password, options, cancellationToken);
         }
-
-#pragma warning restore RS0026
 
         private async IAsyncEnumerable<SKBitmap> ToImagesFromStreamAsync(Stream pdfStream, PageSelection pages, bool leaveOpen, string? password, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
         {

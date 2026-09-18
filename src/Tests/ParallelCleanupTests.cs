@@ -35,13 +35,13 @@ namespace PDFtoImage.Tests
         private static ObservedWorker[] ObserveWorkers(WorkerPool pool)
         {
             var slots = (IEnumerable)typeof(WorkerPool).GetField("_workers", Fields)!.GetValue(pool)!;
-            return slots.Cast<object>().Select((slot, index) =>
+            return [.. slots.Cast<object>().Select((slot, index) =>
             {
                 var field = slot.GetType().GetField("Worker", Fields)!;
                 var observed = new ObservedWorker((WorkerConnection)field.GetValue(slot)!, fail: index == 0);
                 field.SetValue(slot, observed);
                 return observed;
-            }).ToArray();
+            })];
         }
 
         private static void AssertSynchronizationResourcesDisposed(WorkerPool pool)
@@ -63,7 +63,7 @@ namespace PDFtoImage.Tests
             {
                 var request = new PdfRequest(Pdf, null);
                 await Task.WhenAll(pool.GetPageCountAsync(request, TestContext!.CancellationToken), pool.GetPageCountAsync(request, TestContext.CancellationToken));
-                processes = pool.WorkerProcessIds.Select(Process.GetProcessById).ToArray();
+                processes = [.. pool.WorkerProcessIds.Select(Process.GetProcessById)];
                 Assert.HasCount(2, processes);
                 var observed = ObserveWorkers(pool);
                 var error = asynchronous
@@ -143,7 +143,7 @@ namespace PDFtoImage.Tests
             }
             await Assert.ThrowsAsync<OperationCanceledException>(() => request);
             var error = await Assert.ThrowsExactlyAsync<AggregateException>(() => dispose.WaitAsync(TimeSpan.FromSeconds(10), TestContext.CancellationToken));
-            Assert.AreSequenceEqual(new[] { "stop workers", "worker cleanup", "pool resources" }, error.InnerExceptions.Select(exception => exception.Message).ToArray());
+            Assert.AreSequenceEqual(["stop workers", "worker cleanup", "pool resources"], [.. error.InnerExceptions.Select(exception => exception.Message)]);
             Assert.IsTrue(first.Disposed && second.Disposed);
             Assert.IsTrue(pool.ResourcesDisposed);
             AssertSynchronizationResourcesDisposed(pool);

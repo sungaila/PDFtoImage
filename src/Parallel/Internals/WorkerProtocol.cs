@@ -65,7 +65,7 @@ namespace PDFtoImage.Parallel.Internals
         }
 
         internal static void WriteMessage(Stream stream, byte[] message) =>
-            WriteMessage(stream, message, ReadOnlySpan<byte>.Empty);
+            WriteMessage(stream, message, []);
 
         internal static void WriteMessage(Stream stream, byte[] message, ReadOnlySpan<byte> suffix)
         {

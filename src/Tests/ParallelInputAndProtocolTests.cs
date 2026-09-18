@@ -72,7 +72,7 @@ namespace PDFtoImage.Tests
             using var actual = await processor.ToImageAsync(input, leaveOpen: leaveOpen, options: options, cancellationToken: TestContext!.CancellationToken);
             using var expected = Conversion.ToImage(Pdf, options: options);
             AssertBitmapsEqual(expected, actual);
-            Assert.IsTrue(input.ReadCalls > 1);
+            Assert.IsGreaterThan(1, input.ReadCalls);
             Assert.AreEqual(leaveOpen, input.CanRead);
             if (leaveOpen)
                 Assert.AreEqual(Pdf.Length + 3L, input.Position);
@@ -127,7 +127,7 @@ namespace PDFtoImage.Tests
             var error = await Assert.ThrowsExactlyAsync<InvalidDataException>(() =>
                 processor.ToImageAsync(input, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken));
 
-            StringAssert.Contains(error.Message, "maximum transferable size");
+            Assert.Contains("maximum transferable size", error.Message);
             Assert.AreEqual(0, input.ReadCalls);
             Assert.AreEqual(leaveOpen, input.CanRead);
             Assert.IsEmpty(processor.WorkerProcessIds);
@@ -140,8 +140,8 @@ namespace PDFtoImage.Tests
             var error = await Assert.ThrowsExactlyAsync<InvalidDataException>(() =>
                 PdfInputReader.ReadAsync(input, Pdf.Length - 1, TestContext!.CancellationToken));
 
-            StringAssert.Contains(error.Message, "maximum transferable size");
-            Assert.IsTrue(input.ReadCalls > 1);
+            Assert.Contains("maximum transferable size", error.Message);
+            Assert.IsGreaterThan(1, input.ReadCalls);
             Assert.IsTrue(input.CanRead);
         }
 

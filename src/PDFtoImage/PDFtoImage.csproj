@@ -42,7 +42,7 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SignAssembly>True</SignAssembly>
-  </PropertyGroup>
+	</PropertyGroup>
 	
   <!-- PolySharp settings -->
   <PropertyGroup>

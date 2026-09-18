@@ -77,14 +77,9 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        [OSCondition(OperatingSystems.OSX)]
         public async Task MacLifetimeDisconnectTerminatesWorkerWithOpenCommandConnection()
         {
-            if (!OperatingSystem.IsMacOS())
-            {
-                Assert.Inconclusive("The explicit inherited lifetime pipe is only required on macOS.");
-                return;
-            }
-
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(15));
             var pipeName = Guid.NewGuid().ToString("N");
