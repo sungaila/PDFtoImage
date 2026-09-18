@@ -83,18 +83,39 @@ namespace PDFtoImage.Parallel.Internals
 
         public async Task ReleaseDocumentAsync(PdfRequest request)
         {
-            (Slot Slot, WorkerConnectionWindows Worker)[] workers;
+            var idleSlots = new List<Slot>();
+
             lock (_gate)
             {
                 if (_disposed)
                     return;
 
-                workers = [.. _workers
-                    .Where(slot => slot.Worker != null)
-                    .Select(slot => (slot, slot.Worker!))];
+                _activeOperations++;
+
+                // A zero-timeout lease is the essential part of request cleanup:
+                // workers that are now busy with another request are left alone.
+                var attempts = _available.Count;
+                for (var i = 0; i < attempts; i++)
+                {
+                    if (!_slots.Wait(0) || !_available.TryPop(out var slot))
+                        break;
+
+                    idleSlots.Add(slot);
+                }
             }
 
-            await Task.WhenAll(workers.Select(worker => ReleaseDocumentAsync(worker.Slot, worker.Worker, request))).ConfigureAwait(false);
+            try
+            {
+                await Task.WhenAll(idleSlots.Select(slot => ReleaseDocumentFromIdleSlotAsync(slot, request))).ConfigureAwait(false);
+            }
+            finally
+            {
+                lock (_gate)
+                {
+                    _activeOperations--;
+                    CompleteDisposalIfDrained();
+                }
+            }
         }
 
         public Guid?[] WorkerDocumentIds
@@ -247,11 +268,14 @@ namespace PDFtoImage.Parallel.Internals
             await _drained.Task.ConfigureAwait(false);
         }
 
-        private async Task ReleaseDocumentAsync(Slot slot, WorkerConnectionWindows worker, PdfRequest request)
+        private async Task ReleaseDocumentFromIdleSlotAsync(Slot slot, PdfRequest request)
         {
             try
             {
-                await worker.UnloadDocumentAsync(request.Id, _shutdown.Token).ConfigureAwait(false);
+                var worker = slot.Worker;
+
+                if (worker != null)
+                    await worker.UnloadDocumentAsync(request.Id, _shutdown.Token).ConfigureAwait(false);
             }
             catch (OperationCanceledException) when (_shutdown.IsCancellationRequested)
             {
@@ -259,13 +283,19 @@ namespace PDFtoImage.Parallel.Internals
             }
             catch
             {
+                var worker = slot.Worker;
+
                 lock (_gate)
                 {
-                    if (ReferenceEquals(slot.Worker, worker))
-                        slot.Worker = null;
+                    slot.Worker = null;
                 }
 
-                worker.Dispose();
+                worker?.Dispose();
+            }
+            finally
+            {
+                _available.Push(slot);
+                _slots.Release();
             }
         }
 

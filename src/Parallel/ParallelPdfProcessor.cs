@@ -303,7 +303,7 @@ namespace PDFtoImage.Parallel
                 if (_pages != null)
                 {
                     return _pages.Any(page => page < 0 || page >= pageCount)
-                        ? throw new ArgumentOutOfRangeException("pages", $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
+                        ? throw new ArgumentOutOfRangeException(nameof(pageCount), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
                         : _pages;
                 }
 

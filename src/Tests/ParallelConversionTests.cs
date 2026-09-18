@@ -126,7 +126,7 @@ namespace PDFtoImage.Tests
             using var recovered = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext.CancellationToken);
             Assert.AreNotEqual(worker.Id, pool.WorkerProcessIds.Single());
             using var expected = global::PDFtoImage.Conversion.ToImage(pdf, options: TestRenderOptions);
-            CollectionAssert.AreEqual(expected.Bytes, recovered.Bytes);
+            Assert.AreSequenceEqual(expected.Bytes, recovered.Bytes);
         }
 
         [TestMethod]

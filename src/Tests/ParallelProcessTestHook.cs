@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 // Loaded explicitly via DOTNET_STARTUP_HOOKS only by the process-lifetime tests.
 // Ordinary test runs return immediately. Parallel workers prepend their own hook
 // and exit before executing this hook or the application's Main method.
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
 public static class StartupHook
 {
     public static void Initialize()

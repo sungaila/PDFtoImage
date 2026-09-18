@@ -11,6 +11,10 @@ namespace PDFtoImage.Parallel.Internals
     [SupportedOSPlatform("windows10.0")]
     internal sealed class WindowsJob : IDisposable
     {
+        internal const JOB_OBJECT_LIMIT RequiredLimitFlags =
+            JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE |
+            JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION;
+
         private readonly SafeFileHandle _handle;
 
         private WindowsJob(SafeFileHandle handle)
@@ -29,7 +33,7 @@ namespace PDFtoImage.Parallel.Internals
 
             var information = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
 
-            information.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+            information.BasicLimitInformation.LimitFlags = RequiredLimitFlags;
 
             var bytes = MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref information, 1));
 

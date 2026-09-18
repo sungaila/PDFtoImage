@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 /// Bootstraps a worker before the host application's entry point is invoked.
 /// </summary>
 [SupportedOSPlatform("windows10.0")]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
+//[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
 internal static class StartupHook
 {
     /// <summary>

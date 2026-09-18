@@ -46,7 +46,7 @@ namespace PDFtoImage.Tests
                 using var writer = new StreamWriter(pipe, leaveOpen: true) { AutoFlush = true };
                 var ids = await reader.ReadLineAsync(timeout.Token);
                 Assert.IsNotNull(ids);
-                workers = ids.Split(',').Select(int.Parse).Select(Process.GetProcessById).ToArray();
+                workers = [.. ids.Split(',').Select(int.Parse).Select(Process.GetProcessById)];
                 Assert.HasCount(2, workers);
 
                 if (killParent)

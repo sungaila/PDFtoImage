@@ -59,14 +59,16 @@ namespace PDFtoImage.Parallel.Internals
                 using var startupTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
                 using var startupCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, startupTimeout.Token);
                 worker._process.EnableRaisingEvents = true;
-                var processExited = false;
-                EventHandler onExit = (_, _) =>
+
+                void onExit(object? _1, EventArgs _2)
                 {
-                    processExited = true;
                     // Unsubscribing cannot retract an already queued Exited callback.
-                    try { startupCancellation.Cancel(); }
+                    try
+                    {
+                        startupCancellation.Cancel();
+                    }
                     catch (ObjectDisposedException) { }
-                };
+                }
                 worker._process.Exited += onExit;
 
                 try
@@ -82,13 +84,17 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     throw;
                 }
+                catch (TimeoutException) when (worker._process.HasExited)
+                {
+                    throw new EndOfStreamException("The PDF conversion worker exited during startup.");
+                }
+                catch (OperationCanceledException) when (worker._process.HasExited)
+                {
+                    throw new EndOfStreamException("The PDF conversion worker exited during startup.");
+                }
                 catch (OperationCanceledException) when (startupTimeout.IsCancellationRequested)
                 {
                     throw new TimeoutException("The PDF conversion worker did not complete startup within 30 seconds.");
-                }
-                catch (OperationCanceledException) when (processExited || worker._process.HasExited)
-                {
-                    throw new EndOfStreamException("The PDF conversion worker exited during startup.");
                 }
                 finally
                 {

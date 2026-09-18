@@ -24,8 +24,7 @@ namespace PDFtoImage.Parallel.Internals
             if (AppContext.TryGetSwitch("System.StartupHookProvider.IsSupported", out var hooksSupported) && !hooksSupported)
                 throw new PlatformNotSupportedException("PDFtoImage.Parallel requires enabled .NET startup hooks.");
 
-            using var currentProcess = Process.GetCurrentProcess();
-            var processPath = currentProcess.MainModule?.FileName;
+            var processPath = Environment.ProcessPath;
 
             if (string.IsNullOrWhiteSpace(processPath))
                 throw new InvalidOperationException("The current process executable could not be determined.");
@@ -88,7 +87,7 @@ namespace PDFtoImage.Parallel.Internals
                         throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not create a PDF conversion worker process.");
                     }
 
-                    using var processHandle = new SafeFileHandle((IntPtr)processInformation.hProcess, true);
+                    using var processHandle = new SafeProcessHandle((IntPtr)processInformation.hProcess, true);
                     using var threadHandle = new SafeFileHandle((IntPtr)processInformation.hThread, true);
                     Process? process = null;
 
@@ -223,7 +222,7 @@ namespace PDFtoImage.Parallel.Internals
             if (depsFile == null || !depsFile.EndsWith(depsSuffix, StringComparison.OrdinalIgnoreCase))
                 return null;
 
-            var runtimeConfig = depsFile.Substring(0, depsFile.Length - depsSuffix.Length) + ".runtimeconfig.json";
+            var runtimeConfig = string.Concat(depsFile.AsSpan(0, depsFile.Length - depsSuffix.Length), ".runtimeconfig.json");
 
             return File.Exists(runtimeConfig) ? runtimeConfig : null;
         }

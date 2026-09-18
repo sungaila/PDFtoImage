@@ -103,7 +103,7 @@ namespace PDFtoImage.Tests
                 for (var i = 0; i < 4; i++)
                 {
                     using var bitmap = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
-                    CollectionAssert.AreEqual(otherExpected.Bytes, bitmap.Bytes);
+                    Assert.AreSequenceEqual(otherExpected.Bytes, bitmap.Bytes);
                 }
             }
             await Task.WhenAll(Batch(), Batch(), Singles());
@@ -116,7 +116,7 @@ namespace PDFtoImage.Tests
         public async Task ConverterRemainsUsableAfterEndingEnumeration(bool cancel)
         {
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
-            await using (var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator())
+            await using (var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator(TestContext.CancellationToken))
             {
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 iterator.Current.Dispose();
@@ -141,7 +141,7 @@ namespace PDFtoImage.Tests
             await _converter.DisposeAsync();
             await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
             {
-                await foreach (var bitmap in _converter.ToImagesAsync(OpenPdf(Pdf), Array.Empty<int>()))
+                await foreach (var bitmap in _converter.ToImagesAsync(OpenPdf(Pdf), [], cancellationToken: TestContext.CancellationToken))
                     bitmap.Dispose();
             });
         }
@@ -150,7 +150,7 @@ namespace PDFtoImage.Tests
         public async Task CancellingOneBatchDoesNotCancelAnIndependentJob()
         {
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
-            await using var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator();
+            await using var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator(TestContext.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             iterator.Current.Dispose();
             var otherJob = _converter.ToImageAsync(OpenPdf(Pdf), 2, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
@@ -165,7 +165,7 @@ namespace PDFtoImage.Tests
         {
             using var image = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             using var process = System.Diagnostics.Process.GetProcessById(_converter.WorkerProcessIds.Single());
-            await Task.WhenAll(Task.Run(_converter.Dispose), Task.Run(async () => await _converter.DisposeAsync()));
+            await Task.WhenAll(Task.Run(_converter.Dispose, TestContext.CancellationToken), Task.Run(async () => await _converter.DisposeAsync(), TestContext.CancellationToken));
             Assert.IsTrue(process.HasExited);
         }
 
@@ -212,13 +212,13 @@ namespace PDFtoImage.Tests
                 pageBitmap.Dispose();
 
             var processIds = processor.WorkerProcessIds;
-            CollectionAssert.AreEqual(new[] { 1 }, processor.WorkerDocumentLoadCounts);
+            Assert.AreSequenceEqual([1], processor.WorkerDocumentLoadCounts);
             Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
 
             var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var bitmap = await processor.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
-            CollectionAssert.AreEqual(processIds, processor.WorkerProcessIds);
-            CollectionAssert.AreEqual(new[] { 2 }, processor.WorkerDocumentLoadCounts);
+            Assert.AreSequenceEqual(processIds, processor.WorkerProcessIds);
+            Assert.AreSequenceEqual([2], processor.WorkerDocumentLoadCounts);
             Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
         }
 
@@ -244,9 +244,18 @@ namespace PDFtoImage.Tests
             var worker = await WorkerConnectionWindows.StartAsync(job, TestContext!.CancellationToken);
             using var process = System.Diagnostics.Process.GetProcessById(worker.ProcessId);
 
-            await Task.WhenAll(Task.Run(worker.Dispose), Task.Run(worker.Dispose));
+            await Task.WhenAll(Task.Run(worker.Dispose, TestContext.CancellationToken), Task.Run(worker.Dispose, TestContext.CancellationToken));
             await process.WaitForExitAsync(TestContext.CancellationToken);
             Assert.IsTrue(process.HasExited);
+        }
+
+        [TestMethod]
+        public void WorkerJobTerminatesOnUnhandledNativeException()
+        {
+            var field = typeof(WindowsJob).GetField(nameof(WindowsJob.RequiredLimitFlags), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            var flags = (Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT)field!.GetRawConstantValue()!;
+            Assert.AreNotEqual<uint>(0, (uint)(flags & Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION));
+            Assert.AreNotEqual<uint>(0, (uint)(flags & Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE));
         }
 
         [TestMethod]
@@ -257,7 +266,7 @@ namespace PDFtoImage.Tests
             await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
                 _converter.ToImageAsync(OpenPdf(pdf), password: "wrong", cancellationToken: TestContext.CancellationToken));
             using var second = await _converter.ToImageAsync(OpenPdf(pdf), password: "123456", options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
-            CollectionAssert.AreEqual(first.Bytes, second.Bytes);
+            Assert.AreSequenceEqual(first.Bytes, second.Bytes);
         }
 
         [TestMethod]
@@ -280,18 +289,18 @@ namespace PDFtoImage.Tests
             var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var second = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             using var expected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
-            CollectionAssert.AreEqual(expected.Bytes, second.Bytes);
-            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
+            Assert.AreSequenceEqual(expected.Bytes, second.Bytes);
+            Assert.AreSequenceEqual(ids, _converter.WorkerProcessIds);
             using var third = await _converter.ToImageAsync(OpenPdf(Pdf), 2, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             ComparePage(third, 2);
-            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
+            Assert.AreSequenceEqual(ids, _converter.WorkerProcessIds);
         }
 
         [TestMethod]
         public async Task SinglePageSelectionOnlyStartsOneWorker()
         {
             await using var converter = new ParallelPdfProcessor(int.MaxValue);
-            await foreach (var bitmap in converter.ToImagesAsync(OpenPdf(Pdf), new[] { 0 }, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
+            await foreach (var bitmap in converter.ToImagesAsync(OpenPdf(Pdf), [0], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 using (bitmap)
                     ComparePage(bitmap, 0);
@@ -311,7 +320,7 @@ namespace PDFtoImage.Tests
             try { await Task.WhenAll(pending).WaitAsync(TimeSpan.FromSeconds(10), TestContext!.CancellationToken); }
             catch (Exception exception) when (exception is OperationCanceledException or ParallelConversionException or ObjectDisposedException) { }
             Assert.IsTrue(pending.All(task => task.IsCompleted));
-            Assert.HasCount(0, pool.WorkerProcessIds);
+            Assert.IsEmpty(pool.WorkerProcessIds);
         }
 
         [TestMethod]
@@ -323,7 +332,7 @@ namespace PDFtoImage.Tests
                 _converter.ToImageAsync(new MemoryStream([1, 2, 3], writable: false), cancellationToken: TestContext.CancellationToken));
             using var bitmap = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             ComparePage(bitmap, 0);
-            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
+            Assert.AreSequenceEqual(ids, _converter.WorkerProcessIds);
         }
 
         [TestMethod]
@@ -335,7 +344,7 @@ namespace PDFtoImage.Tests
                 using var first = document.Render(2, new RenderOptions(Dpi: 40));
                 using var rotated = document.Render(0, new RenderOptions(Dpi: 30, Grayscale: true));
                 using var expected = global::PDFtoImage.Conversion.ToImage(Pdf, 0, options: new RenderOptions(Dpi: 30, Grayscale: true));
-                CollectionAssert.AreEqual(expected.Bytes, rotated.Bytes);
+                Assert.AreSequenceEqual(expected.Bytes, rotated.Bytes);
                 using var third = document.Render(1, new RenderOptions(Dpi: 40));
                 ComparePage(first, 2);
                 ComparePage(third, 1);
@@ -348,7 +357,7 @@ namespace PDFtoImage.Tests
         public async Task DuplicatesAndFromEndRangeMatchOriginalBytes()
         {
             var pageCount = global::PDFtoImage.Conversion.GetPageCount(Pdf);
-            foreach (var pages in new[] { new[] { 2, 0, 2, 1 }, new[] { pageCount - 2, pageCount - 1 } })
+            foreach (var pages in new[] { new[] { 2, 0, 2, 1 }, [pageCount - 2, pageCount - 1] })
             {
                 var results = pages.Length == 2
                     ? _converter.ToImagesAsync(OpenPdf(Pdf), ^2..^0, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken)
@@ -366,7 +375,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task EmptySelectionDoesNotLaunchWorkersOrParsePdf()
         {
-            await foreach (var bitmap in _converter.ToImagesAsync(new MemoryStream(Array.Empty<byte>(), writable: false), Array.Empty<int>(), cancellationToken: TestContext!.CancellationToken))
+            await foreach (var bitmap in _converter.ToImagesAsync(new MemoryStream([], writable: false), [], cancellationToken: TestContext!.CancellationToken))
             {
                 bitmap.Dispose();
                 Assert.Fail("An empty selection must not return bitmaps.");
@@ -416,11 +425,11 @@ namespace PDFtoImage.Tests
             {
                 await fourth.Task.WaitAsync(timeout.Token);
                 Assert.AreEqual(4, Volatile.Read(ref started), "The look-ahead window must be bounded.");
-                Assert.HasCount(0, output, "Output must wait for the first page.");
+                Assert.IsEmpty(output, "Output must wait for the first page.");
             }
             finally { first.TrySetResult(); }
             await consume;
-            CollectionAssert.AreEqual(Enumerable.Range(0, 9).ToArray(), output);
+            Assert.AreSequenceEqual([.. Enumerable.Range(0, 9)], output);
         }
 
         [TestMethod]
@@ -511,7 +520,7 @@ namespace PDFtoImage.Tests
             var response = await PipeProtocol.ReadMessageAsync(pipe, TestContext.CancellationToken);
             Assert.IsNotNull(response);
             using var decoded = PipeProtocol.ReadBitmap(response, 1);
-            CollectionAssert.AreEqual(original.Bytes, decoded.Bytes);
+            Assert.AreSequenceEqual(original.Bytes, decoded.Bytes);
             Assert.AreEqual(pipe.Length, pipe.Position);
         }
     }
