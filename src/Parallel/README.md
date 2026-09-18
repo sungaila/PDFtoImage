@@ -71,3 +71,5 @@ CoreCLR workers enter through a trim-preserved startup hook. Native AOT workers 
 
 ## Memory considerations
 The PDF input is buffered before it is sent to workers, and the same document can be loaded into more than one worker during concurrent rendering. Large PDFs combined with a high worker count can therefore increase memory usage. Choose `workerCount` according to the workload and available memory.
+
+Each IPC message is limited to 1 GiB. A PDF must therefore be slightly smaller than 1 GiB because the load message also contains protocol metadata and the optional password. Known oversized stream lengths are rejected before allocation; unknown-length streams are rejected while they are buffered. A rendered bitmap, including its response metadata, must also fit into one 1 GiB IPC message.

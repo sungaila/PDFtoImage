@@ -120,13 +120,7 @@ namespace PDFtoImage.Parallel.Internals
 
             _documentId = null;
 
-            var header = WorkerProtocol.CreateMessage(writer =>
-            {
-                writer.Write((byte)WorkerCommand.LoadDocument);
-                WorkerProtocol.WriteNullableString(writer, request.Password);
-                writer.Write(request.Bytes.Length);
-                writer.Write(request.Id.ToByteArray());
-            });
+            var header = WorkerProtocol.CreateLoadDocumentHeader(request.Password, request.Bytes.Length, request.Id);
 
             try
             {

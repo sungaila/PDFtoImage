@@ -111,7 +111,7 @@ namespace PDFtoImage.Parallel
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             using var request = BeginRequest(cancellationToken);
-            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, request.Token).ConfigureAwait(false);
+            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
             return await ToImageCoreAsync(pdf, page, password, options, request.Token).ConfigureAwait(false);
         }
 
@@ -141,41 +141,53 @@ namespace PDFtoImage.Parallel
 
         private async IAsyncEnumerable<SKBitmap> ToImagesFromStreamAsync(Stream pdfStream, PageSelection pages, bool leaveOpen, string? password, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            using var request = BeginRequest(cancellationToken);
-            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, request.Token).ConfigureAwait(false);
+            CancellationTokenSource enumerationCancellation;
+            byte[] pdf;
 
-            await foreach (var image in ToImagesCoreAsync(pdf, pages, password, options, request.Token).ConfigureAwait(false))
-                yield return image;
+            using (var request = BeginRequest(cancellationToken))
+            {
+                pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
+                enumerationCancellation = CreateEnumerationCancellation(cancellationToken);
+            }
+
+            using (enumerationCancellation)
+            {
+                await using var iterator = ToImagesCoreAsync(pdf, pages, password, options, enumerationCancellation.Token)
+                    .GetAsyncEnumerator(enumerationCancellation.Token);
+
+                while (true)
+                {
+                    SKBitmap image;
+
+                    // A paused async iterator must not count as an active public request.
+                    // The enumeration-level token still cancels queued/pending worker work
+                    // when the processor is disposed.
+                    using (var request = BeginRequest(enumerationCancellation.Token))
+                    {
+                        if (!await iterator.MoveNextAsync().ConfigureAwait(false))
+                            yield break;
+
+                        image = iterator.Current;
+                    }
+
+                    yield return image;
+                }
+            }
         }
 
-        private async Task<byte[]> ReadPdfAsync(Stream pdfStream, bool leaveOpen, CancellationToken cancellationToken)
+        private async Task<byte[]> ReadPdfAsync(Stream pdfStream, bool leaveOpen, string? password, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
             try
             {
                 _pool.ThrowIfDisposed();
                 cancellationToken.ThrowIfCancellationRequested();
-
-                if (pdfStream.CanSeek && pdfStream.CanRead)
-                {
-                    var remaining = pdfStream.Length - pdfStream.Position;
-
-                    if (remaining >= 0 && remaining <= Array.MaxLength)
-                    {
-                        var bytes = new byte[(int)remaining];
-                        await pdfStream.ReadExactlyAsync(bytes, cancellationToken).ConfigureAwait(false);
-                        return bytes;
-                    }
-                }
-
-                using var memoryStream = new MemoryStream();
-                await pdfStream.CopyToAsync(memoryStream, 81920, cancellationToken).ConfigureAwait(false);
-                return memoryStream.ToArray();
+                return await PdfInputReader.ReadAsync(pdfStream, WorkerProtocol.GetMaximumPdfLength(password), cancellationToken).ConfigureAwait(false);
             }
             finally
             {
                 if (!leaveOpen)
-                    pdfStream.Dispose();
+                    await pdfStream.DisposeAsync();
             }
         }
 
@@ -240,6 +252,15 @@ namespace PDFtoImage.Parallel
             finally
             {
                 await _pool.ReleaseDocumentAsync(request).ConfigureAwait(false);
+            }
+        }
+
+        private CancellationTokenSource CreateEnumerationCancellation(CancellationToken cancellationToken)
+        {
+            lock (_gate)
+            {
+                ObjectDisposedException.ThrowIf(_disposed, this);
+                return CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _shutdown.Token);
             }
         }
 

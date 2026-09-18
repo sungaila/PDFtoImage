@@ -34,6 +34,25 @@ namespace PDFtoImage.Parallel.Internals
 
         private const int MaximumMessageLength = 1024 * 1024 * 1024;
 
+        internal static byte[] CreateLoadDocumentHeader(string? password, int pdfLength, Guid requestId) =>
+            CreateMessage(writer =>
+            {
+                writer.Write((byte)WorkerCommand.LoadDocument);
+                WriteNullableString(writer, password);
+                writer.Write(pdfLength);
+                writer.Write(requestId.ToByteArray());
+            });
+
+        internal static int GetMaximumPdfLength(string? password)
+        {
+            var headerLength = CreateLoadDocumentHeader(password, 0, Guid.Empty).Length;
+
+            if (headerLength >= MaximumMessageLength)
+                throw new InvalidDataException("The PDF password and protocol metadata exceed the IPC message limit.");
+
+            return MaximumMessageLength - headerLength;
+        }
+
         internal static byte[] CreateMessage(Action<BinaryWriter> write)
         {
             using var stream = new MemoryStream();
@@ -158,18 +177,6 @@ namespace PDFtoImage.Parallel.Internals
             {
                 throw new InvalidDataException("The render options payload is invalid.", exception);
             }
-        }
-
-        internal static unsafe void WriteBitmap(BinaryWriter writer, SKBitmap bitmap)
-        {
-            writer.Write(bitmap.Width);
-            writer.Write(bitmap.Height);
-            writer.Write((int)bitmap.ColorType);
-            writer.Write((int)bitmap.AlphaType);
-            writer.Write(bitmap.RowBytes);
-            writer.Write(bitmap.ByteCount);
-
-            writer.Write(new ReadOnlySpan<byte>((void*)bitmap.GetPixels(), bitmap.ByteCount));
         }
 
         internal static void WriteBitmapResponse(Stream stream, SKBitmap bitmap)

@@ -113,6 +113,38 @@ namespace PDFtoImage.Tests
             Assert.IsEmpty(processor.WorkerProcessIds);
         }
 
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task OversizedSeekablePdfIsRejectedBeforeReadingOrStartingWorker(bool leaveOpen)
+        {
+            await using var processor = new ParallelPdfProcessor(1);
+            using var input = new ChunkedInputStream(seekable: true)
+            {
+                ExtraLength = checked(WorkerProtocol.GetMaximumPdfLength(null) - Pdf.Length + 1)
+            };
+
+            var error = await Assert.ThrowsExactlyAsync<InvalidDataException>(() =>
+                processor.ToImageAsync(input, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken));
+
+            StringAssert.Contains(error.Message, "maximum transferable size");
+            Assert.AreEqual(0, input.ReadCalls);
+            Assert.AreEqual(leaveOpen, input.CanRead);
+            Assert.IsEmpty(processor.WorkerProcessIds);
+        }
+
+        [TestMethod]
+        public async Task NonSeekablePdfLimitIsEnforcedWhileBuffering()
+        {
+            using var input = new ChunkedInputStream(seekable: false);
+            var error = await Assert.ThrowsExactlyAsync<InvalidDataException>(() =>
+                PdfInputReader.ReadAsync(input, Pdf.Length - 1, TestContext!.CancellationToken));
+
+            StringAssert.Contains(error.Message, "maximum transferable size");
+            Assert.IsTrue(input.ReadCalls > 1);
+            Assert.IsTrue(input.CanRead);
+        }
+
         private sealed class ReplayStream(byte[] requests, Stream responses) : MemoryStream(requests, writable: false)
         {
             public override bool CanWrite => true;

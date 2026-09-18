@@ -213,14 +213,17 @@ namespace PDFtoImage.Parallel.Internals
             }
             finally
             {
-                if (slot != null)
-                    _available.Push(slot);
-
-                if (acquired)
-                    _slots.Release();
-
                 lock (_gate)
                 {
+                    // Publishing a free slot is one state transition. ReleaseDocumentAsync
+                    // observes the stack and semaphore under the same gate, so it must never
+                    // see a slot before its semaphore permit (or vice versa).
+                    if (slot != null)
+                        _available.Push(slot);
+
+                    if (acquired)
+                        _slots.Release();
+
                     _activeOperations--;
                     CompleteDisposalIfDrained();
                 }
@@ -301,8 +304,11 @@ namespace PDFtoImage.Parallel.Internals
             }
             finally
             {
-                _available.Push(slot);
-                _slots.Release();
+                lock (_gate)
+                {
+                    _available.Push(slot);
+                    _slots.Release();
+                }
             }
         }
 

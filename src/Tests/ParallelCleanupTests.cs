@@ -166,6 +166,28 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        public async Task ProcessorDisposeAsyncDoesNotWaitForPausedEnumeration()
+        {
+            var processor = new ParallelPdfProcessor(1);
+            var iterator = processor.ToImagesAsync(new MemoryStream(Pdf), options: new RenderOptions(Dpi: 40),
+                cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext.CancellationToken);
+
+            try
+            {
+                Assert.IsTrue(await iterator.MoveNextAsync());
+                iterator.Current.Dispose();
+
+                await processor.DisposeAsync().AsTask().WaitAsync(TimeSpan.FromSeconds(10), TestContext.CancellationToken);
+                await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () => await iterator.MoveNextAsync());
+            }
+            finally
+            {
+                await iterator.DisposeAsync();
+                processor.Dispose();
+            }
+        }
+
+        [TestMethod]
         public async Task ProcessorDisposeFailureStillWaitsForPublicRequestCleanup()
         {
             var processor = new ParallelPdfProcessor(1);

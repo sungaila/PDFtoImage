@@ -37,9 +37,15 @@ namespace PDFtoImage.Tests
                 Assert.AreEqual(pages.Length, index);
             }
 
-            await Task.WhenAll(Render(Pdf), Render(OtherPdf));
-            Assert.HasCount(2, processor.WorkerProcessIds);
-            Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
+            // Repeat the overlap so request cleanup repeatedly races with workers becoming
+            // idle. A free slot and its semaphore permit must be published atomically.
+            for (var iteration = 0; iteration < 8; iteration++)
+            {
+                await Task.WhenAll(Render(Pdf), Render(OtherPdf));
+                Assert.HasCount(2, processor.WorkerProcessIds);
+                Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null),
+                    $"A worker retained a document after concurrent cleanup in iteration {iteration}.");
+            }
         }
 
         [TestMethod]
