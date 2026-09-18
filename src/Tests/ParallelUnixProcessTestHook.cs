@@ -1,4 +1,4 @@
-#if NET9_0_OR_GREATER
+#if NET11_0_OR_GREATER
 using PDFtoImage.Parallel.Internals;
 using System;
 using System.Diagnostics;
@@ -13,7 +13,7 @@ namespace PDFtoImage.Tests
 {
     internal static class ParallelUnixProcessTestHook
     {
-        internal const string ParentPipeVariable = "PDFTOIMAGE_TEST_UNIX_PARENT";
+        internal const string ParentPipeVariable = "PDFTOIMAGE_TEST_UNIX_PARENT_PIPE";
 
         internal static void Initialize()
         {
@@ -29,7 +29,7 @@ namespace PDFtoImage.Tests
             using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(45));
             using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             await pipe.ConnectAsync(timeout.Token);
-            await using var pool = new WorkerPoolUnix(2);
+            await using var pool = new WorkerPool(2);
             var request = new PdfRequest(SlowPdf(), null);
             await Task.WhenAll(pool.GetPageCountAsync(request, timeout.Token), pool.GetPageCountAsync(request, timeout.Token));
             var workers = pool.WorkerProcessIds.Select(Process.GetProcessById).ToArray();
@@ -44,7 +44,6 @@ namespace PDFtoImage.Tests
                 using var writer = new StreamWriter(pipe, leaveOpen: true) { AutoFlush = true };
                 using var reader = new StreamReader(pipe, leaveOpen: true);
                 await writer.WriteLineAsync(string.Join(",", pool.WorkerProcessIds));
-                await writer.WriteLineAsync(pool.SocketDirectory);
                 await reader.ReadLineAsync(timeout.Token);
                 await pool.DisposeAsync();
                 try { await Task.WhenAll(renders); }

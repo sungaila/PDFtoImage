@@ -98,6 +98,20 @@ namespace PDFtoImage.Tests
             }
         }
 
+        internal static void AssertBitmapMatchesPng(string expectedPath, SKBitmap actual)
+        {
+            if (TestBase.SaveOutputInGeneratedFolder)
+            {
+                using var output = CreateOutputStream(expectedPath);
+                actual.Encode(output, SKEncodedImageFormat.Png, 100);
+            }
+
+            using var stream = GetExpectedStream(expectedPath);
+            using var codec = SKCodec.Create(stream);
+            using var expected = SKBitmap.Decode(codec, codec.Info.WithColorType(actual.ColorType).WithAlphaType(actual.AlphaType));
+            AssertBitmapsEqual(expected, actual);
+        }
+
         public static string GetPlatformAsString()
         {
 #if NET471_OR_GREATER || NETCOREAPP
@@ -153,8 +167,9 @@ namespace PDFtoImage.Tests
             {
                 if (!File.Exists(outputPath))
                 {
-                    if (!Directory.Exists(outputPath))
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+                    var directory = Path.GetDirectoryName(outputPath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
 
                     return new FileStream(
                         outputPath,

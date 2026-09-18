@@ -1,4 +1,4 @@
-#if NET9_0_OR_GREATER
+#if NET11_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Parallel;
 using PDFtoImage.Parallel.Internals;
@@ -26,7 +26,9 @@ namespace PDFtoImage.Tests
 
         private static MemoryStream OpenPdf(byte[] bytes) => new(bytes, writable: false);
 
-        private static byte[] Pdf => File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"));
+        private static readonly byte[] Pdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+        private static readonly byte[] OtherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
 
         private sealed class DisposableResult : IDisposable
         {
@@ -78,15 +80,13 @@ namespace PDFtoImage.Tests
 
         private static void ComparePage(SKBitmap bitmap, int page)
         {
-            using var output = new MemoryStream();
-            bitmap.Encode(output, SKEncodedImageFormat.Png, 100);
-            TestUtils.CompareStreams(Path.Combine("..", "Assets", "Expected", "WINDOWS", $"Wikimedia_Commons_web_{page}.png"), output);
+            AssertBitmapMatchesPng(Path.Combine("..", "Assets", "Expected", "WINDOWS", $"Wikimedia_Commons_web_{page}.png"), bitmap);
         }
 
         [TestMethod]
         public async Task DifferentDocumentsAndBatchesCanRunConcurrently()
         {
-            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            var otherPdf = OtherPdf;
             using var otherExpected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
             async Task Batch()
             {
@@ -219,7 +219,7 @@ namespace PDFtoImage.Tests
             Assert.AreSequenceEqual([1], processor.WorkerDocumentLoadCounts);
             Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
 
-            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            var otherPdf = OtherPdf;
             using var bitmap = await processor.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             Assert.AreSequenceEqual(processIds, processor.WorkerProcessIds);
             Assert.AreSequenceEqual([2], processor.WorkerDocumentLoadCounts);
@@ -229,11 +229,11 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task ReleaseDocumentDoesNotWaitForBusySlot()
         {
-            await using var pool = new WorkerPoolWindows(1);
+            await using var pool = new WorkerPool(1);
             var request = new PdfRequest(Pdf, null);
             await pool.GetPageCountAsync(request, TestContext!.CancellationToken);
 
-            var poolType = typeof(WorkerPoolWindows);
+            var poolType = typeof(WorkerPool);
             var slots = (SemaphoreSlim)poolType.GetField("_slots", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(pool)!;
             var available = poolType.GetField("_available", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(pool)!;
             var tryPop = available.GetType().GetMethod("TryPop")!;
@@ -269,28 +269,18 @@ namespace PDFtoImage.Tests
             await connect;
 
             using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
-            await Assert.ThrowsExactlyAsync<TimeoutException>(() => WorkerConnectionWindows.ReadHelloAsync(server, TestContext.CancellationToken, timeout.Token));
+            await Assert.ThrowsExactlyAsync<TimeoutException>(() => WorkerConnection.ReadHelloAsync(server, TestContext.CancellationToken, timeout.Token));
         }
 
         [TestMethod]
         public async Task ConcurrentWorkerConnectionDisposalIsIdempotent()
         {
-            using var job = WindowsJob.Create();
-            var worker = await WorkerConnectionWindows.StartAsync(job, TestContext!.CancellationToken);
+            var worker = await WorkerConnection.StartAsync(TestContext!.CancellationToken);
             using var process = System.Diagnostics.Process.GetProcessById(worker.ProcessId);
 
             await Task.WhenAll(Task.Run(worker.Dispose, TestContext.CancellationToken), Task.Run(worker.Dispose, TestContext.CancellationToken));
             await process.WaitForExitAsync(TestContext.CancellationToken);
             Assert.IsTrue(process.HasExited);
-        }
-
-        [TestMethod]
-        public void WorkerJobTerminatesOnUnhandledNativeException()
-        {
-            var field = typeof(WindowsJob).GetField(nameof(WindowsJob.RequiredLimitFlags), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
-            var flags = (Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT)field!.GetRawConstantValue()!;
-            Assert.AreNotEqual<uint>(0, (uint)(flags & Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION));
-            Assert.AreNotEqual<uint>(0, (uint)(flags & Windows.Win32.System.JobObjects.JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE));
         }
 
         [TestMethod]
@@ -321,7 +311,7 @@ namespace PDFtoImage.Tests
         {
             using var first = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             var ids = _converter.WorkerProcessIds;
-            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            var otherPdf = OtherPdf;
             using var second = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             using var expected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
             AssertBitmapsEqual(expected, second);

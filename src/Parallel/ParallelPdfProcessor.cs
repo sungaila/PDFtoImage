@@ -20,7 +20,7 @@ namespace PDFtoImage.Parallel
 #pragma warning disable RS0026 // First-release overloads mirror PDFtoImage's input shapes.
     public sealed class ParallelPdfProcessor : IDisposable, IAsyncDisposable
     {
-        private readonly IWorkerPool _pool;
+        private readonly WorkerPool _pool;
 
         private readonly CancellationTokenSource _shutdown = new();
 
@@ -44,7 +44,7 @@ namespace PDFtoImage.Parallel
 
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count, nameof(workerCount));
 
-            _pool = WorkerPoolFactory.Create(count);
+            _pool = new WorkerPool(count);
         }
 
         internal int[] WorkerProcessIds => _pool.WorkerProcessIds;
@@ -88,9 +88,15 @@ namespace PDFtoImage.Parallel
         /// <summary>Stops all workers and waits for outstanding worker requests and cleanup.</summary>
         public async ValueTask DisposeAsync()
         {
-            Dispose();
-            await _requestsDrained.Task.ConfigureAwait(false);
-            await _pool.DisposeAsync().ConfigureAwait(false);
+            try
+            {
+                Dispose();
+            }
+            finally
+            {
+                await _requestsDrained.Task.ConfigureAwait(false);
+                await _pool.DisposeAsync().ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -148,6 +154,20 @@ namespace PDFtoImage.Parallel
             try
             {
                 _pool.ThrowIfDisposed();
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (pdfStream.CanSeek && pdfStream.CanRead)
+                {
+                    var remaining = pdfStream.Length - pdfStream.Position;
+
+                    if (remaining >= 0 && remaining <= Array.MaxLength)
+                    {
+                        var bytes = new byte[(int)remaining];
+                        await pdfStream.ReadExactlyAsync(bytes, cancellationToken).ConfigureAwait(false);
+                        return bytes;
+                    }
+                }
+
                 using var memoryStream = new MemoryStream();
                 await pdfStream.CopyToAsync(memoryStream, 81920, cancellationToken).ConfigureAwait(false);
                 return memoryStream.ToArray();

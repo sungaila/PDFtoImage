@@ -1,8 +1,7 @@
-#if NET9_0_OR_GREATER
+#if NET11_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Exceptions;
 using PDFtoImage.Parallel;
-using SkiaSharp;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -28,6 +27,10 @@ namespace PDFtoImage.Tests
 
         private static MemoryStream OpenPdf(byte[] bytes) => new(bytes, writable: false);
 
+        private static readonly byte[] WikimediaPdf = ReadAsset("Wikimedia_Commons_web.pdf");
+
+        private static readonly byte[] OtherPdf = ReadAsset("hundesteuer-anmeldung.pdf");
+
         private static readonly RenderOptions TestRenderOptions = new(Dpi: 40);
 
         [TestMethod]
@@ -43,17 +46,14 @@ namespace PDFtoImage.Tests
                 options: TestRenderOptions,
 
                 cancellationToken: TestContext!.CancellationToken);
-            using var outputStream = CreateOutputStream(expectedPath);
-
-            actual.Encode(outputStream, SKEncodedImageFormat.Png, 100);
-            CompareStreams(expectedPath, outputStream);
+            AssertBitmapMatchesPng(expectedPath, actual);
             Assert.IsTrue(inputStream.CanRead, "The input stream should remain open when leaveOpen is true.");
         }
 
         [TestMethod]
         public async Task ToImagesAsyncPreservesRequestedOrder()
         {
-            var pdf = ReadAsset("Wikimedia_Commons_web.pdf");
+            var pdf = WikimediaPdf;
             int[] pages = [2, 0, 1];
             var actualPageCount = 0;
 
@@ -65,12 +65,7 @@ namespace PDFtoImage.Tests
                 cancellationToken: TestContext!.CancellationToken))
             {
                 using (bitmap)
-                using (var outputStream = CreateOutputStream(GetExpectedPagePath(pages[actualPageCount])))
-                {
-                    bitmap.Encode(outputStream, SKEncodedImageFormat.Png, 100);
-                    CompareStreams(GetExpectedPagePath(pages[actualPageCount]), outputStream);
-                    actualPageCount++;
-                }
+                    AssertBitmapMatchesPng(GetExpectedPagePath(pages[actualPageCount++]), bitmap);
             }
 
             Assert.AreEqual(pages.Length, actualPageCount);
@@ -84,12 +79,9 @@ namespace PDFtoImage.Tests
             using var actual = await _converter.ToImageAsync(
                 inputStream,
                 options: TestRenderOptions,
-
                 cancellationToken: TestContext!.CancellationToken);
-            using var outputStream = CreateOutputStream(expectedPath);
 
-            actual.Encode(outputStream, SKEncodedImageFormat.Png, 100);
-            CompareStreams(expectedPath, outputStream);
+            AssertBitmapMatchesPng(expectedPath, actual);
         }
 
         [TestMethod]
@@ -108,7 +100,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task KilledWorkerProducesParallelConversionException()
         {
-            var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
+            var pdf = OtherPdf;
             await using var pool = new ParallelPdfProcessor(1);
             using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             using var worker = Process.GetProcessById(pool.WorkerProcessIds.Single());
@@ -130,7 +122,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task DisposingPoolTerminatesWorkers()
         {
-            var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
+            var pdf = OtherPdf;
             var pool = new ParallelPdfProcessor(2);
             using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             var workers = pool.WorkerProcessIds.Select(Process.GetProcessById).ToArray();
@@ -172,7 +164,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task OutOfRangePageSelectionIsRejected()
         {
-            var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
+            var pdf = OtherPdf;
 
             var exception = await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
             {
@@ -199,7 +191,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task CancellationStopsAsyncEnumeration()
         {
-            var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
+            var pdf = OtherPdf;
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             cancellation.Cancel();
 
@@ -223,10 +215,7 @@ namespace PDFtoImage.Tests
 
         private static byte[] ReadAsset(string fileName)
         {
-            using var inputStream = OpenAsset(fileName);
-            using var memoryStream = new MemoryStream();
-            inputStream.CopyTo(memoryStream);
-            return memoryStream.ToArray();
+            return File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", fileName));
         }
 
         private static string GetExpectedPagePath(int page) =>

@@ -1,4 +1,4 @@
-#if NET9_0_OR_GREATER
+#if NET11_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;

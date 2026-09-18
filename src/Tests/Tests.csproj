@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSTest.Sdk/4.4.1">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
     <AssemblyName>PDFtoImage.Tests</AssemblyName>
     <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -39,7 +39,7 @@
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
-    <ProjectReference Include="..\Parallel\Parallel.csproj" Condition="'$(TargetFramework)' != 'net471' and '$(TargetFramework)' != 'net481' and '$(TargetFramework)' != 'net8.0'" />
+    <ProjectReference Include="..\Parallel\Parallel.csproj" Condition="'$(TargetFramework)' == 'net11.0'" />
   </ItemGroup>
 	
   <!-- Test dependencies -->

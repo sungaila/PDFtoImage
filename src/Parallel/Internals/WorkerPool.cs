@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    internal abstract class WorkerPool : IWorkerPool
+    internal class WorkerPool : IDisposable, IAsyncDisposable
     {
         protected sealed class Slot
         {
@@ -31,9 +31,11 @@ namespace PDFtoImage.Parallel.Internals
 
         private bool _cleanupFinished;
 
+        private List<Exception>? _cleanupErrors;
+
         private int _activeOperations;
 
-        protected WorkerPool(int workerCount)
+        internal WorkerPool(int workerCount)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(workerCount);
             WorkerCount = workerCount;
@@ -41,7 +43,8 @@ namespace PDFtoImage.Parallel.Internals
             _slots = new SemaphoreSlim(workerCount);
         }
 
-        protected abstract Task<WorkerConnection> StartWorkerAsync(CancellationToken cancellationToken);
+        protected virtual Task<WorkerConnection> StartWorkerAsync(CancellationToken cancellationToken) =>
+            WorkerConnection.StartAsync(cancellationToken);
 
         protected virtual void StopWorkers() { }
 
@@ -241,30 +244,34 @@ namespace PDFtoImage.Parallel.Internals
                 }
             }
 
-            try
-            {
-                _shutdown.Cancel();
+            var errors = new List<Exception>();
 
-                StopWorkers();
+            TryCleanup(_shutdown.Cancel, errors);
+            TryCleanup(StopWorkers, errors);
 
-                foreach (var worker in workers)
-                {
-                    worker.Dispose();
-                }
-            }
-            finally
+            foreach (var worker in workers)
+                TryCleanup(worker.Dispose, errors);
+
+            lock (_gate)
             {
-                lock (_gate)
-                {
-                    _cleanupFinished = true;
-                    CompleteDisposalIfDrained();
-                }
+                _cleanupErrors = errors;
+                _cleanupFinished = true;
+
+                CompleteDisposalIfDrained();
+
+                if (errors.Count > 0)
+                    throw new AggregateException("Worker pool cleanup failed.", errors);
             }
         }
 
         public async ValueTask DisposeAsync()
         {
-            Dispose();
+            try
+            {
+                Dispose();
+            }
+            catch (AggregateException) { /* Report all cleanup errors after draining below. */ }
+
             await _drained.Task.ConfigureAwait(false);
         }
 
@@ -304,22 +311,27 @@ namespace PDFtoImage.Parallel.Internals
             if (!_cleanupFinished || _activeOperations != 0 || _drained.Task.IsCompleted)
                 return;
 
+            var errors = _cleanupErrors!;
+
+            TryCleanup(DisposeResources, errors);
+            TryCleanup(_slots.Dispose, errors);
+            TryCleanup(_shutdown.Dispose, errors);
+
+            if (errors.Count == 0)
+                _drained.TrySetResult();
+            else
+                _drained.TrySetException(new AggregateException("Worker pool cleanup failed.", errors));
+        }
+
+        private static void TryCleanup(Action cleanup, List<Exception> errors)
+        {
             try
             {
-                try
-                {
-                    DisposeResources();
-                }
-                finally
-                {
-                    _slots.Dispose();
-                    _shutdown.Dispose();
-                }
-                _drained.TrySetResult();
+                cleanup();
             }
             catch (Exception exception)
             {
-                _drained.TrySetException(exception);
+                errors.Add(exception);
             }
         }
     }

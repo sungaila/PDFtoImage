@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # escape=`
 
-ARG DOTNET_VERSION=10.0
+ARG DOTNET_VERSION=11.0
 ARG WINDOWS_VERSION=ltsc2025
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-windowsservercore-${WINDOWS_VERSION} AS publish
@@ -11,11 +11,11 @@ WORKDIR C:/src
 COPY ["src/Directory.Packages.props", "src/Directory.Packages.props"]
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
-RUN dotnet restore "src/FrameworkTests/AotConsole/AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=false -p:SelfContained=true
+RUN dotnet restore "src/FrameworkTests/AotConsole/AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true
 
 COPY . .
 WORKDIR C:/src/src
-RUN dotnet publish "FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -r win-x64 -o C:/app/publish --no-restore -p:TargetFramework=net10.0 -p:PublishAot=false -p:SelfContained=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
+RUN dotnet publish "FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -r win-x64 -o C:/app/publish --no-restore -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
 
 FROM mcr.microsoft.com/windows/servercore:${WINDOWS_VERSION} AS final
 WORKDIR C:/app

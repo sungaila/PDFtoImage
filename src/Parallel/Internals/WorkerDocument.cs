@@ -2,8 +2,8 @@ using PDFtoImage.Internals;
 using SkiaSharp;
 using System;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Linq;
+using System.Runtime.Versioning;
 
 namespace PDFtoImage.Parallel.Internals
 {

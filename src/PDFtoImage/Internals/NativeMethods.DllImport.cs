@@ -25,13 +25,8 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static FPDF_ERR GetLastError()
-        {
-            lock (LockString)
-            {
-                return (FPDF_ERR)Imports.FPDF_GetLastError();
-            }
-        }
+        private static FPDF_ERR GetLastErrorCore()
+            => (FPDF_ERR)Imports.FPDF_GetLastError();
 
         private unsafe static IntPtr CreateAvailFileAccessState(long length, int id)
         {

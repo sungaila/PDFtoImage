@@ -81,9 +81,14 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
@@ -126,9 +131,14 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
@@ -159,9 +169,14 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
@@ -217,9 +232,14 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
@@ -289,6 +309,11 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Download test assemblies
         if: (success() || failure())
         uses: actions/download-artifact@v8
@@ -309,6 +334,9 @@ jobs:
       - name: .NET 10
         if: success() || failure()
         run: dotnet test --test-modules net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 11
+        if: success() || failure()
+        run: dotnet test --test-modules net11.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net11.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@v7
@@ -478,17 +506,17 @@ jobs:
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
-      - name: Setup .NET
+      - name: Setup .NET 11 RC
         if: success() || failure()
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.x
-          dotnet-quality: ga
+          dotnet-version: 11.0.x
+          dotnet-quality: preview
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
       - name: console (Windows Server Core, Native AOT)
         if: success() || failure()
         run: |
@@ -553,11 +581,16 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Disable .NET problem matcher (no annotations)
         run: echo "::remove-matcher owner=csc::"
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst

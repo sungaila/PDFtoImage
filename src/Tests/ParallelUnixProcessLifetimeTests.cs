@@ -1,4 +1,4 @@
-#if NET9_0_OR_GREATER
+#if NET11_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Parallel.Internals;
 using System;
@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,7 +44,6 @@ namespace PDFtoImage.Tests
             start.Environment[ParallelUnixProcessTestHook.ParentPipeVariable] = pipeName;
             using var parent = Process.Start(start)!;
             Process[] workers = [];
-            string? socketDirectory = null;
             try
             {
                 await pipe.WaitForConnectionAsync(timeout.Token);
@@ -54,21 +52,16 @@ namespace PDFtoImage.Tests
                 var ids = await reader.ReadLineAsync(timeout.Token);
                 Assert.IsNotNull(ids);
                 workers = [.. ids.Split(',').Select(int.Parse).Select(Process.GetProcessById)];
-                socketDirectory = await reader.ReadLineAsync(timeout.Token);
-                Assert.IsNotNull(socketDirectory);
                 Assert.HasCount(2, workers);
                 if (killParent)
-                    parent.Kill(); // Only the parent. The workers must detect EOF themselves.
+                    parent.Kill(); // Only the parent. Worker parent-death handling must do the rest.
                 else
                     await writer.WriteLineAsync("dispose");
                 await parent.WaitForExitAsync(timeout.Token);
                 foreach (var worker in workers)
                     await worker.WaitForExitAsync(timeout.Token).WaitAsync(TimeSpan.FromSeconds(10), timeout.Token);
                 if (!killParent)
-                {
                     Assert.AreEqual(0, parent.ExitCode);
-                    Assert.IsFalse(Directory.Exists(socketDirectory));
-                }
             }
             finally
             {
@@ -80,50 +73,29 @@ namespace PDFtoImage.Tests
                         worker.Kill();
                     worker.Dispose();
                 }
-                // SIGKILL cannot run the parent's directory cleanup. No listener
-                // path remains after startup; remove its empty directory here.
-                if (socketDirectory != null && Directory.Exists(socketDirectory))
-                    Directory.Delete(socketDirectory);
             }
         }
 
         [TestMethod]
-        public async Task LifetimeDisconnectTerminatesWorkerWithOpenCommandConnection()
+        public async Task MacLifetimeDisconnectTerminatesWorkerWithOpenCommandConnection()
         {
+            if (!OperatingSystem.IsMacOS())
+            {
+                Assert.Inconclusive("The explicit inherited lifetime pipe is only required on macOS.");
+                return;
+            }
+
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(15));
-            await using var pool = new WorkerPoolUnix(1);
-            var lifetimePath = Path.Combine(pool.SocketDirectory, "l");
-            var commandPath = Path.Combine(pool.SocketDirectory, "c");
-            using var listener = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-            using var commandListener = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-            listener.Bind(new UnixDomainSocketEndPoint(lifetimePath));
-            listener.Listen(1);
-            commandListener.Bind(new UnixDomainSocketEndPoint(commandPath));
-            commandListener.Listen(1);
-            var start = StartInfo(true);
-            start.Environment["DOTNET_STARTUP_HOOKS"] = typeof(WorkerPoolUnix).Assembly.Location;
-            start.Environment[WorkerProcessLauncherUnix.WorkerSocketEnvironmentVariable] = commandPath;
-            start.Environment[WorkerProcessLauncherUnix.WorkerLifetimeEnvironmentVariable] = lifetimePath;
-            using var worker = Process.Start(start)!;
-            try
-            {
-                using var lifetime = await listener.AcceptAsync(timeout.Token);
-                using var command = await commandListener.AcceptAsync(timeout.Token);
-                using var stream = new NetworkStream(command);
-                await WorkerConnection.ReadHelloAsync(stream, timeout.Token, timeout.Token);
-                lifetime.Dispose();
-                await worker.WaitForExitAsync(timeout.Token);
-            }
-            finally
-            {
-                if (!worker.HasExited)
-                    worker.Kill();
-                listener.Dispose();
-                commandListener.Dispose();
-                File.Delete(lifetimePath);
-                File.Delete(commandPath);
-            }
+            var pipeName = "PDFtoImage.Tests." + Guid.NewGuid().ToString("N");
+            using var pipe = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte,
+                PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+            using var worker = WorkerProcessLauncher.Start(pipeName, out var lifetime);
+            using var lifetimeHandle = lifetime ?? throw new InvalidOperationException("macOS workers require a parent lifetime handle.");
+            await pipe.WaitForConnectionAsync(timeout.Token);
+            await WorkerConnection.ReadHelloAsync(pipe, timeout.Token, timeout.Token);
+            lifetimeHandle.Dispose();
+            await worker.WaitForExitAsync(timeout.Token);
         }
     }
 }

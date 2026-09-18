@@ -1,7 +1,8 @@
+using Microsoft.Win32.SafeHandles;
 using PDFtoImage.Parallel.Internals;
 using System;
+using System.Globalization;
 using System.IO.Pipes;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,30 +16,32 @@ internal static class StartupHook
     /// </summary>
     public static void Initialize()
     {
-        if (OperatingSystem.IsWindowsVersionAtLeast(10))
+        if (!OperatingSystem.IsWindowsVersionAtLeast(10) && !OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
+            return;
+
+        var pipeName = Environment.GetEnvironmentVariable(WorkerProcessLauncher.WorkerPipeEnvironmentVariable);
+        if (string.IsNullOrEmpty(pipeName))
+            return;
+
+        var lifetimeValue = Environment.GetEnvironmentVariable(WorkerProcessLauncher.WorkerLifetimeEnvironmentVariable);
+        Environment.SetEnvironmentVariable(WorkerProcessLauncher.WorkerPipeEnvironmentVariable, null);
+        Environment.SetEnvironmentVariable(WorkerProcessLauncher.WorkerLifetimeEnvironmentVariable, null);
+
+        if (!string.IsNullOrEmpty(lifetimeValue))
         {
-            var pipeName = Environment.GetEnvironmentVariable(WorkerProcessLauncherWindows.WorkerPipeEnvironmentVariable);
-            if (string.IsNullOrEmpty(pipeName))
-                return;
-            Environment.SetEnvironmentVariable(WorkerProcessLauncherWindows.WorkerPipeEnvironmentVariable, null);
-            Environment.Exit(RunWindowsAsync(pipeName).GetAwaiter().GetResult());
-        }
-        else if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
-        {
-            var commandPath = Environment.GetEnvironmentVariable(WorkerProcessLauncherUnix.WorkerSocketEnvironmentVariable);
-            var lifetimePath = Environment.GetEnvironmentVariable(WorkerProcessLauncherUnix.WorkerLifetimeEnvironmentVariable);
-            if (string.IsNullOrEmpty(commandPath) && string.IsNullOrEmpty(lifetimePath))
-                return;
-            Environment.SetEnvironmentVariable(WorkerProcessLauncherUnix.WorkerSocketEnvironmentVariable, null);
-            Environment.SetEnvironmentVariable(WorkerProcessLauncherUnix.WorkerLifetimeEnvironmentVariable, null);
-            if (string.IsNullOrEmpty(commandPath) || string.IsNullOrEmpty(lifetimePath))
+            if (!long.TryParse(lifetimeValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var rawHandle) || rawHandle < 0)
                 Environment.Exit(1);
-            Environment.Exit(RunUnixAsync(commandPath!, lifetimePath!).GetAwaiter().GetResult());
+
+            WorkerLifetime.StartWatchdog(new SafeFileHandle(new IntPtr(rawHandle), ownsHandle: true));
         }
+
+        Environment.Exit(RunAsync(pipeName).GetAwaiter().GetResult());
     }
 
     [System.Runtime.Versioning.SupportedOSPlatform("windows10.0")]
-    private static async Task<int> RunWindowsAsync(string pipeName)
+    [System.Runtime.Versioning.SupportedOSPlatform("linux")]
+    [System.Runtime.Versioning.SupportedOSPlatform("macos")]
+    private static async Task<int> RunAsync(string pipeName)
     {
         try
         {
@@ -47,35 +50,9 @@ internal static class StartupHook
             await pipe.ConnectAsync(timeout.Token).ConfigureAwait(false);
             return await WorkerHost.RunAsync(pipe).ConfigureAwait(false);
         }
-        catch { return 1; }
-    }
-
-    [System.Runtime.Versioning.SupportedOSPlatform("linux")]
-    [System.Runtime.Versioning.SupportedOSPlatform("macos")]
-    private static async Task<int> RunUnixAsync(string commandPath, string lifetimePath)
-    {
-        try
+        catch
         {
-            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-            // The watchdog owns this socket until process exit. Disposing it here
-            // could race the hook's normal exit with the watchdog's emergency exit.
-            var lifetime = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-            try
-            {
-                await lifetime.ConnectAsync(new UnixDomainSocketEndPoint(lifetimePath), timeout.Token).ConfigureAwait(false);
-                WorkerLifetimeUnix.StartWatchdog(lifetime);
-            }
-            catch
-            {
-                lifetime.Dispose();
-                throw;
-            }
-
-            using var command = new Socket(AddressFamily.Unix, SocketType.Stream, ProtocolType.Unspecified);
-            await command.ConnectAsync(new UnixDomainSocketEndPoint(commandPath), timeout.Token).ConfigureAwait(false);
-            using var stream = new NetworkStream(command, ownsSocket: false);
-            return await WorkerHost.RunAsync(stream).ConfigureAwait(false);
+            return 1;
         }
-        catch { return 1; }
     }
 }
