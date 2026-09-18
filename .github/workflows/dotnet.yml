@@ -307,6 +307,15 @@ jobs:
         with:
           dotnet-version: 11.0.x
           dotnet-quality: 'preview'
+      - name: Setup .NET workloads
+        run: >
+          dotnet workload install --include-previews
+          maui-android
+          maui-ios
+          maui-maccatalyst
+          maui-windows
+          wasm-tools
+          wasm-tools-net10
       - name: Build .NET Framework test assemblies
         if: runner.os == 'Windows'
         run: |
