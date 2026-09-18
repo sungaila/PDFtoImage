@@ -94,13 +94,12 @@ jobs:
         dotnet-version: 11.0.x
         dotnet-quality: 'preview'
     
-    - name: Setup .NET workloads
+    - name: Build .NET
       if: matrix.language == 'csharp'
       shell: bash
       run: |
-        dotnet workload install --include-previews maui-android maui-ios maui-maccatalyst maui-windows wasm-tools wasm-tools-net10
-        dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
-        dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
+        dotnet restore "src/PDFtoImage/PDFtoImage.csproj" -p:TargetFrameworks=net11.0
+        dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release -p:TargetFrameworks=net11.0 --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4

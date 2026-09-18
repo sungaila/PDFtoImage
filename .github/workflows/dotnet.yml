@@ -307,26 +307,17 @@ jobs:
         with:
           dotnet-version: 11.0.x
           dotnet-quality: 'preview'
-      - name: Setup .NET workloads
-        run: >
-          dotnet workload install --include-previews
-          maui-android
-          maui-ios
-          maui-maccatalyst
-          maui-windows
-          wasm-tools
-          wasm-tools-net10
       - name: Build .NET Framework test assemblies
         if: runner.os == 'Windows'
         run: |
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net471 -p:VersionSuffix=ci
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net481 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net471 -p:TargetFrameworks=net471 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net481 -p:TargetFrameworks=net481 -p:VersionSuffix=ci
       - name: Build .NET test assemblies
         run: |
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net8.0 -p:VersionSuffix=ci
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 -p:VersionSuffix=ci
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net10.0 -p:VersionSuffix=ci
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net11.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net8.0 -p:TargetFrameworks=net8.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 -p:TargetFrameworks=net9.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net10.0 -p:TargetFrameworks=net10.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net11.0 -p:TargetFrameworks=net11.0 -p:VersionSuffix=ci
       - name: .NET Framework 4.7.1
         if: runner.os == 'Windows' && (success() || failure())
         run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net471\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
@@ -525,8 +516,8 @@ jobs:
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFrameworks=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFrameworks=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
       - name: console (Windows Server Core, Native AOT)
         if: success() || failure()
         run: |
@@ -598,12 +589,6 @@ jobs:
           dotnet-quality: 'preview'
       - name: Disable .NET problem matcher (no annotations)
         run: echo "::remove-matcher owner=csc::"
-      - name: Setup .NET workloads
-        run: >
-          dotnet workload install --include-previews
-          maui-android
-          maui-ios
-          maui-maccatalyst
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
@@ -627,9 +612,9 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug -p:TargetFrameworks=net11.0
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --no-build --output Detailed" -f xml -o "coverage.xml"
+          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --no-build -p:TargetFrameworks=net11.0 --output Detailed" -f xml -o "coverage.xml"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           .\.sonar\scanner\dotnet-sonarscanner end
