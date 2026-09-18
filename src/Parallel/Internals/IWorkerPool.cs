@@ -1,7 +1,7 @@
+using SkiaSharp;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using SkiaSharp;
 
 namespace PDFtoImage.Parallel.Internals
 {
@@ -13,11 +13,17 @@ namespace PDFtoImage.Parallel.Internals
 
         int[] WorkerProcessIds { get; }
 
+        Guid?[] WorkerDocumentIds { get; }
+
+        int[] WorkerDocumentLoadCounts { get; }
+
         void ThrowIfDisposed();
 
         Task<int> GetPageCountAsync(PdfRequest request, CancellationToken cancellationToken);
 
         Task<SKBitmap> RenderPageAsync(PdfRequest request, Index page, RenderOptions options, CancellationToken cancellationToken);
+
+        Task ReleaseDocumentAsync(PdfRequest request);
     }
 
     // Identity belongs to a conversion operation, not the mutable input array.

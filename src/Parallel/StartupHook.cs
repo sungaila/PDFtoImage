@@ -7,7 +7,7 @@ using System.Runtime.Versioning;
 /// </summary>
 [SupportedOSPlatform("windows10.0")]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
-public static class StartupHook
+internal static class StartupHook
 {
     /// <summary>
     /// Runs the worker host when this process was started by PDFtoImage.Parallel.

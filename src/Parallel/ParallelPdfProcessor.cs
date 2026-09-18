@@ -20,6 +20,18 @@ namespace PDFtoImage.Parallel
     {
         private readonly IWorkerPool _pool;
 
+        private readonly CancellationTokenSource _shutdown = new();
+
+        private readonly Lock _gate = new();
+
+        private readonly TaskCompletionSource _requestsDrained = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        private bool _disposed;
+
+        private bool _shutdownDisposed;
+
+        private int _activeRequests;
+
         /// <summary>
         /// Creates a reusable pool. Workers start on demand, up to the specified limit.
         /// </summary>
@@ -35,11 +47,41 @@ namespace PDFtoImage.Parallel
 
         internal int[] WorkerProcessIds => _pool.WorkerProcessIds;
 
+        internal Guid?[] WorkerDocumentIds => _pool.WorkerDocumentIds;
+
+        internal int[] WorkerDocumentLoadCounts => _pool.WorkerDocumentLoadCounts;
+
         /// <summary>Stops all workers and cancels active and queued requests. Safe to call repeatedly.</summary>
-        public void Dispose() => _pool.Dispose();
+        public void Dispose()
+        {
+            var disposeShutdown = false;
+            lock (_gate)
+            {
+                if (_disposed)
+                    return;
+
+                _disposed = true;
+                if (_activeRequests == 0)
+                {
+                    _requestsDrained.TrySetResult();
+                    _shutdownDisposed = true;
+                    disposeShutdown = true;
+                }
+            }
+
+            _shutdown.Cancel();
+            if (disposeShutdown)
+                _shutdown.Dispose();
+            _pool.Dispose();
+        }
 
         /// <summary>Stops all workers and waits for outstanding worker requests and cleanup.</summary>
-        public ValueTask DisposeAsync() => _pool.DisposeAsync();
+        public async ValueTask DisposeAsync()
+        {
+            Dispose();
+            await _requestsDrained.Task.ConfigureAwait(false);
+            await _pool.DisposeAsync().ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Renders one page from a PDF stream as one job in the worker pool.
@@ -53,8 +95,9 @@ namespace PDFtoImage.Parallel
         [SupportedOSPlatform("windows10.0")]
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
-            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, cancellationToken).ConfigureAwait(false);
-            return await ToImageCoreAsync(pdf, page, password, options, cancellationToken).ConfigureAwait(false);
+            using var request = BeginRequest(cancellationToken);
+            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, request.Token).ConfigureAwait(false);
+            return await ToImageCoreAsync(pdf, page, password, options, request.Token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,9 +129,10 @@ namespace PDFtoImage.Parallel
 
         private async IAsyncEnumerable<SKBitmap> ToImagesFromStreamAsync(Stream pdfStream, PageSelection pages, bool leaveOpen, string? password, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
-            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, cancellationToken).ConfigureAwait(false);
+            using var request = BeginRequest(cancellationToken);
+            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, request.Token).ConfigureAwait(false);
 
-            await foreach (var image in ToImagesCoreAsync(pdf, pages, password, options, cancellationToken).ConfigureAwait(false))
+            await foreach (var image in ToImagesCoreAsync(pdf, pages, password, options, request.Token).ConfigureAwait(false))
                 yield return image;
         }
 
@@ -113,17 +157,23 @@ namespace PDFtoImage.Parallel
         {
             _pool.ThrowIfDisposed();
             var request = new PdfRequest(pdf, password);
-            var bitmap = await _pool.RenderPageAsync(request, page, options, cancellationToken).ConfigureAwait(false);
-
             try
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                return bitmap;
+                var bitmap = await _pool.RenderPageAsync(request, page, options, cancellationToken).ConfigureAwait(false);
+                try
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return bitmap;
+                }
+                catch
+                {
+                    bitmap.Dispose();
+                    throw;
+                }
             }
-            catch
+            finally
             {
-                bitmap.Dispose();
-                throw;
+                await _pool.ReleaseDocumentAsync(request).ConfigureAwait(false);
             }
         }
 
@@ -136,27 +186,95 @@ namespace PDFtoImage.Parallel
                 yield break;
 
             var request = new PdfRequest(pdf, password);
-            var pageCount = await _pool.GetPageCountAsync(request, cancellationToken).ConfigureAwait(false);
-            var pageNumbers = pages.Resolve(pageCount);
-
-            if (pageNumbers.Length == 0)
-                yield break;
-
-            await foreach (var bitmap in OrderedScheduler.RunAsync(
-                pageNumbers, (int)Math.Min(pageNumbers.Length, (long)_pool.WorkerCount * 2),
-                (page, token) => _pool.RenderPageAsync(request, page, options, token), cancellationToken).ConfigureAwait(false))
+            try
             {
-                try
-                {
-                    _pool.ThrowIfDisposed();
-                }
-                catch
-                {
-                    bitmap.Dispose();
-                    throw;
-                }
+                var pageCount = await _pool.GetPageCountAsync(request, cancellationToken).ConfigureAwait(false);
+                var pageNumbers = pages.Resolve(pageCount);
 
-                yield return bitmap;
+                if (pageNumbers.Length == 0)
+                    yield break;
+
+                await foreach (var bitmap in OrderedScheduler.RunAsync(
+                    pageNumbers, (int)Math.Min(pageNumbers.Length, (long)_pool.WorkerCount * 2),
+                    (page, token) => _pool.RenderPageAsync(request, page, options, token), cancellationToken).ConfigureAwait(false))
+                {
+                    try
+                    {
+                        _pool.ThrowIfDisposed();
+                    }
+                    catch
+                    {
+                        bitmap.Dispose();
+                        throw;
+                    }
+
+                    yield return bitmap;
+                }
+            }
+            finally
+            {
+                await _pool.ReleaseDocumentAsync(request).ConfigureAwait(false);
+            }
+        }
+
+        private RequestCancellation BeginRequest(CancellationToken cancellationToken)
+        {
+            lock (_gate)
+            {
+                ObjectDisposedException.ThrowIf(_disposed, this);
+                _activeRequests++;
+            }
+
+            try
+            {
+                return new RequestCancellation(this, CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _shutdown.Token));
+            }
+            catch
+            {
+                EndRequest();
+                throw;
+            }
+        }
+
+        private void EndRequest()
+        {
+            var disposeShutdown = false;
+            lock (_gate)
+            {
+                _activeRequests--;
+                if (_disposed && _activeRequests == 0)
+                {
+                    _requestsDrained.TrySetResult();
+                    if (!_shutdownDisposed)
+                    {
+                        _shutdownDisposed = true;
+                        disposeShutdown = true;
+                    }
+                }
+            }
+
+            if (disposeShutdown)
+                _shutdown.Dispose();
+        }
+
+        private sealed class RequestCancellation : IDisposable
+        {
+            private ParallelPdfProcessor? _processor;
+
+            internal RequestCancellation(ParallelPdfProcessor processor, CancellationTokenSource source)
+            {
+                _processor = processor;
+                Source = source;
+            }
+
+            private CancellationTokenSource Source { get; }
+
+            internal CancellationToken Token => Source.Token;
+
+            public void Dispose()
+            {
+                Source.Dispose();
+                Interlocked.Exchange(ref _processor, null)?.EndRequest();
             }
         }
 

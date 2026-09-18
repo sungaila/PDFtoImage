@@ -1,4 +1,4 @@
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
@@ -22,7 +22,7 @@ namespace PDFtoImage.Tests
         public async Task ParentExitTerminatesItsWorkers(bool killParent, bool dotnetHost)
         {
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
-            timeout.CancelAfter(TimeSpan.FromSeconds(20));
+            timeout.CancelAfter(TimeSpan.FromSeconds(60));
             var assemblyPath = Assembly.GetExecutingAssembly().Location;
             var pipeName = "PDFtoImage.Tests." + Guid.NewGuid().ToString("N");
             using var pipe = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte,

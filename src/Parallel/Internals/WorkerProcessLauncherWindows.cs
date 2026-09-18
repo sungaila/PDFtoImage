@@ -45,6 +45,7 @@ namespace PDFtoImage.Parallel.Internals
 
             nuint attributeSize = 0;
 
+            // This first call intentionally queries the buffer size required for the attribute list.
             ParallelPInvoke.InitializeProcThreadAttributeList(default, 1, 0, &attributeSize);
 
             var attributeMemory = Marshal.AllocHGlobal(checked((IntPtr)(long)attributeSize));
@@ -99,7 +100,6 @@ namespace PDFtoImage.Parallel.Internals
                         {
                             var error = Marshal.GetLastWin32Error();
 
-                            ParallelPInvoke.TerminateProcess(processHandle, 1);
                             throw new Win32Exception(error, "Could not resume the PDF conversion worker process.");
                         }
 

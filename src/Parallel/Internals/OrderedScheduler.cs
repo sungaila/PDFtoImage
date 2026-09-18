@@ -22,7 +22,7 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     pending.Enqueue(render(input.Current, cancellation.Token));
                 }
-                    
+
                 while (pending.Count > 0)
                 {
                     cancellation.Token.ThrowIfCancellationRequested();

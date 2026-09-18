@@ -34,6 +34,47 @@ namespace PDFtoImage.Tests
             public void Dispose() => IsDisposed = true;
         }
 
+        private sealed class BlockingReadStream : Stream
+        {
+            private readonly TaskCompletionSource _readStarted = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            private readonly TaskCompletionSource _cancellationObserved = new(TaskCreationOptions.RunContinuationsAsynchronously);
+            private readonly TaskCompletionSource _allowCleanup = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            internal Task ReadStarted => _readStarted.Task;
+
+            internal Task CancellationObserved => _cancellationObserved.Task;
+
+            internal void AllowCleanup() => _allowCleanup.TrySetResult();
+
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => false;
+            public override long Length => throw new NotSupportedException();
+            public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+            public override void Flush() => throw new NotSupportedException();
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+            public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+            {
+                _readStarted.TrySetResult();
+                try
+                {
+                    await Task.Delay(Timeout.InfiniteTimeSpan, cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    _cancellationObserved.TrySetResult();
+                    await _allowCleanup.Task;
+                    throw;
+                }
+
+                return 0;
+            }
+        }
+
         private static void ComparePage(SKBitmap bitmap, int page)
         {
             using var output = new MemoryStream();
@@ -125,6 +166,86 @@ namespace PDFtoImage.Tests
             using var image = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             using var process = System.Diagnostics.Process.GetProcessById(_converter.WorkerProcessIds.Single());
             await Task.WhenAll(Task.Run(_converter.Dispose), Task.Run(async () => await _converter.DisposeAsync()));
+            Assert.IsTrue(process.HasExited);
+        }
+
+        [TestMethod]
+        public async Task DisposeAsyncCancelsStreamReadAndWaitsForRequestCleanup()
+        {
+            var processor = new ParallelPdfProcessor(1);
+            var stream = new BlockingReadStream();
+            var request = processor.ToImageAsync(stream, cancellationToken: TestContext!.CancellationToken);
+            await stream.ReadStarted.WaitAsync(TestContext.CancellationToken);
+
+            var dispose = processor.DisposeAsync().AsTask();
+            await stream.CancellationObserved.WaitAsync(TestContext.CancellationToken);
+            Assert.IsFalse(dispose.IsCompleted, "DisposeAsync must await the public request cleanup.");
+
+            stream.AllowCleanup();
+            await Assert.ThrowsAsync<OperationCanceledException>(() => request);
+            await dispose;
+            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => processor.ToImageAsync(OpenPdf(Pdf), cancellationToken: TestContext.CancellationToken));
+        }
+
+        [TestMethod]
+        public async Task UserCancellationDoesNotDisposeProcessor()
+        {
+            var stream = new BlockingReadStream();
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
+            var request = _converter.ToImageAsync(stream, cancellationToken: cancellation.Token);
+            await stream.ReadStarted.WaitAsync(TestContext.CancellationToken);
+
+            cancellation.Cancel();
+            await stream.CancellationObserved.WaitAsync(TestContext.CancellationToken);
+            stream.AllowCleanup();
+            await Assert.ThrowsAsync<OperationCanceledException>(() => request);
+
+            using var bitmap = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            ComparePage(bitmap, 0);
+        }
+
+        [TestMethod]
+        public async Task CompletedRequestUnloadsDocumentsButReusesWorkerProcess()
+        {
+            await using var processor = new ParallelPdfProcessor(1);
+            await foreach (var pageBitmap in processor.ToImagesAsync(OpenPdf(Pdf), [0, 1, 2], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
+                pageBitmap.Dispose();
+
+            var processIds = processor.WorkerProcessIds;
+            CollectionAssert.AreEqual(new[] { 1 }, processor.WorkerDocumentLoadCounts);
+            Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
+
+            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            using var bitmap = await processor.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            CollectionAssert.AreEqual(processIds, processor.WorkerProcessIds);
+            CollectionAssert.AreEqual(new[] { 2 }, processor.WorkerDocumentLoadCounts);
+            Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
+        }
+
+        [TestMethod]
+        public async Task StartupConnectionWithoutHelloTimesOut()
+        {
+            var pipeName = "PDFtoImage.Tests." + Guid.NewGuid().ToString("N");
+            using var server = new System.IO.Pipes.NamedPipeServerStream(pipeName, System.IO.Pipes.PipeDirection.InOut, 1,
+                System.IO.Pipes.PipeTransmissionMode.Byte, System.IO.Pipes.PipeOptions.Asynchronous | System.IO.Pipes.PipeOptions.CurrentUserOnly);
+            using var client = new System.IO.Pipes.NamedPipeClientStream(".", pipeName, System.IO.Pipes.PipeDirection.InOut, System.IO.Pipes.PipeOptions.Asynchronous);
+            var connect = client.ConnectAsync(TestContext!.CancellationToken);
+            await server.WaitForConnectionAsync(TestContext.CancellationToken);
+            await connect;
+
+            using var timeout = new CancellationTokenSource(TimeSpan.FromMilliseconds(50));
+            await Assert.ThrowsExactlyAsync<TimeoutException>(() => WorkerConnectionWindows.ReadHelloAsync(server, TestContext.CancellationToken, timeout.Token));
+        }
+
+        [TestMethod]
+        public async Task ConcurrentWorkerConnectionDisposalIsIdempotent()
+        {
+            using var job = WindowsJob.Create();
+            var worker = await WorkerConnectionWindows.StartAsync(job, TestContext!.CancellationToken);
+            using var process = System.Diagnostics.Process.GetProcessById(worker.ProcessId);
+
+            await Task.WhenAll(Task.Run(worker.Dispose), Task.Run(worker.Dispose));
+            await process.WaitForExitAsync(TestContext.CancellationToken);
             Assert.IsTrue(process.HasExited);
         }
 

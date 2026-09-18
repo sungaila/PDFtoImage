@@ -13,14 +13,20 @@ namespace PDFtoImage.Parallel.Internals
     internal enum WorkerCommand : byte
     {
         LoadDocument = 1,
+
         RenderPage = 2,
-        Shutdown = 3
+
+        Shutdown = 3,
+
+        UnloadDocument = 4
     }
 
     internal enum WorkerResponse : byte
     {
         Success = 1,
+
         Error = 2,
+
         Hello = 3
     }
 
