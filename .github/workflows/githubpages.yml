@@ -28,6 +28,7 @@ jobs:
           maui-ios
           maui-maccatalyst
           wasm-tools
+          wasm-tools-net10
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         shell: pwsh

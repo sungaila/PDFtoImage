@@ -94,6 +94,7 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Component detection
@@ -144,6 +145,7 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Format
@@ -245,6 +247,7 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build

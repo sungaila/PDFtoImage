@@ -98,7 +98,7 @@ jobs:
       if: matrix.language == 'csharp'
       shell: bash
       run: |
-        dotnet workload install --include-previews maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
+        dotnet workload install --include-previews maui-android maui-ios maui-maccatalyst maui-windows wasm-tools wasm-tools-net10
         dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
         dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
 
