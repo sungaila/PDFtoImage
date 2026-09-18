@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+    <TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst;net11.0;net11.0-browser;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
     <AssemblyName>PDFtoImage</AssemblyName>
     <RootNamespace>PDFtoImage</RootNamespace>
     <EmbedAllSources>true</EmbedAllSources>
@@ -42,7 +42,7 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SignAssembly>True</SignAssembly>
-  </PropertyGroup>
+	</PropertyGroup>
 	
   <!-- PolySharp settings -->
   <PropertyGroup>
@@ -73,7 +73,7 @@
   <!-- NuGet Icon -->
   <ItemGroup>
     <None Include="..\..\etc\Icon_128.png" Pack="true" PackagePath="" />
-    <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 	<!-- Target platform properties -->
@@ -140,6 +140,9 @@
 	
   <!-- allow Tests project to access internals -->
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PDFtoImage.Parallel, PublicKey=0024000004800000940000000602000000240000525341310004000001000100390ce86d0d9a456d18e97efbd221e96f89f9421ab64cf84dc89e22faf94ab5b2af73d31ab5cba128a7c549ee100935824100f055fdff209257f8a1926ca0d155a5f77b287a15fc6d3ff61c70a34d113bee2f8058a1e54a1190734618b15b4c0029a1ad5c0f40f75925d647fb2b10ed1091a5c93ed420f33ba2429523629236a4</_Parameter1>
+    </AssemblyAttribute>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>PDFtoImage.Tests, PublicKey=002400000480000094000000060200000024000052534131000400000100010091ebe9be3d942cb6a7303e2d48d89ed88a202c86294bf3eee9ef98fe0824df513bdcf8786a6c45d3c02058d8947903143d4be345d335a430e94200ba60fdddf8bf9d575ad94537dd0117eacd029b4c07226b0f70325cc1153ce6f612d8c587b43f8912b0ef5730f8f6e227baffd8d7cfe97bc4bcf10ab38430891d785dc27bd7</_Parameter1>
     </AssemblyAttribute>

@@ -1,4 +1,4 @@
-﻿# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_64.png) PDFtoImage
+# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png) PDFtoImage
 
 [![GitHub Workflow Build Status](https://img.shields.io/github/actions/workflow/status/sungaila/PDFtoImage/dotnet.yml?event=push&style=flat-square&logo=github&logoColor=white)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
 [![GitHub Workflow Test Runs Succeeded](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgist.githubusercontent.com%2Fsungaila%2F003e8ab2211221897e4b3c0e564ed7b6%2Fraw&query=%24.stats.runs_succ&suffix=%20passed&style=flat-square&logo=github&logoColor=white&label=tests&color=45cc11)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
@@ -54,14 +54,33 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 
-## No parallelization support
-The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks.
+## Parallelization
+The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks, so a single process can only render one PDF page at a time.
 
-This means that you can only process one PDF at a time.
+[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
 
-If you need true parallel processing, you’ll have to spawn multiple processes and distribute the workload across them, then collect the results using inter-process communication (IPC) and appropriate serialization.
+Apphost executables, `dotnet app.dll`, trimmed single-file and Native AOT applications are supported. CoreCLR workers enter through a trim-preserved startup hook; Native AOT workers use an eager module initializer instead. Dispose the processor to terminate its workers. Worker lifetime is tied to the parent process on Windows and Linux through .NET 11 process APIs; macOS uses an inherited lifetime pipe.
 
-Ghostscript may be easier for this use case, since (under certain conditions) it can support multiple instances within the same process.
+```csharp
+// start a pool of 8 worker processes
+await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 8);
+
+// reuse the same pool for different PDFs, including concurrent requests
+using var a = await converter.ToImageAsync(File.OpenRead("a.pdf"), 0);
+using var b = await converter.ToImageAsync(File.OpenRead("b.pdf"), 0);
+
+await foreach (var image in converter.ToImagesAsync(File.OpenRead("document.pdf")))
+{
+    using (image)
+    {
+        // process pages in their requested order
+    }
+}
+```
+
+Workers start on demand and live until the converter is disposed. The default limit is the processor count. Dispose returned bitmaps; cancellation or a failed worker does not prevent later requests.
+
+If subprocesses are unsuitable, Ghostscript may be an alternative because it can support multiple instances within one process under certain conditions.
 
 ## Index and Range for .NET Framework
 [PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable the use of `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed, which **should not be** used directly by your project:

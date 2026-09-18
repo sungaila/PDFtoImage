@@ -1,8 +1,9 @@
 {
   "solution": {
-    "path": "PDFtoImage.sln",
+    "path": "PDFtoImage.slnx",
     "projects": [
       "PDFtoImage\\PDFtoImage.csproj",
+      "Parallel\\Parallel.csproj",
       "Tests\\Tests.csproj"
     ]
   }

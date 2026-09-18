@@ -36,7 +36,7 @@ on:
         default: false
       publish_testresults:
         type: boolean
-        description: Publish test results
+        description: Update test result badge data
         required: true
         default: true
       generate_attestation:
@@ -81,14 +81,20 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Component detection
@@ -126,14 +132,20 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Format
@@ -159,9 +171,14 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
@@ -217,20 +234,28 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
-          dotnet workload install
+          dotnet workload install --include-previews
           maui-android
           maui-ios
           maui-maccatalyst
           maui-windows
           wasm-tools
+          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
         run: dotnet build src/PDFtoImage.Build.slnf -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Pack
-        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
+        run: |
+          dotnet pack src/PDFtoImage/PDFtoImage.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
+          dotnet pack src/Parallel/Parallel.csproj -c ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }} -p:VersionSuffix=ci --no-restore
       - name: Publish libraries
         uses: actions/upload-artifact@v7
         with:
@@ -247,31 +272,28 @@ jobs:
           path: |
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/PDFtoImage/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
+            src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
+            src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
-      - name: Publish tests
-        uses: actions/upload-artifact@v7
-        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
-        with:
-          name: Test assemblies
-          path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
-          if-no-files-found: error
-          retention-days: 1
-          compression-level: 9
   test:
     permissions:
       contents: read
     name: Test (${{ matrix.os }})
-    needs: build
     strategy:
       fail-fast: false
       matrix:
         os: [windows-11-arm, windows-2022, windows-2025, ubuntu-22.04, ubuntu-22.04-arm, ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04, ubuntu-26.04-arm, macos-14, macos-15, macos-15-intel, macos-26, macos-26-intel]
     runs-on: ${{ matrix.os }}
     env:
+      BUILD_CONFIGURATION: ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
       TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -280,26 +302,40 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
-      - name: Download test assemblies
-        if: (success() || failure())
-        uses: actions/download-artifact@v8
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
         with:
-          name: Test assemblies
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
+      - name: Build .NET Framework test assemblies
+        if: runner.os == 'Windows'
+        run: |
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net471 -p:TargetFrameworks=net471 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net481 -p:TargetFrameworks=net481 -p:VersionSuffix=ci
+      - name: Build .NET test assemblies
+        run: |
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net8.0 -p:TargetFrameworks=net8.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 -p:TargetFrameworks=net9.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net10.0 -p:TargetFrameworks=net10.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net11.0 -p:TargetFrameworks=net11.0 -p:VersionSuffix=ci
       - name: .NET Framework 4.7.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net471/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net471\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: dotnet test net481/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net481\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
-        run: dotnet test net8.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net8.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 9
         if: success() || failure()
-        run: dotnet test net9.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net9.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 10
         if: success() || failure()
-        run: dotnet test net10.0/*.Tests.dll --logger trx --verbosity detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
+      - name: .NET 11
+        if: success() || failure()
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net11.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@v7
@@ -406,6 +442,7 @@ jobs:
           sparse-checkout: |
             src/Directory.Packages.props
             src/PDFtoImage
+            src/Parallel
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
           sparse-checkout-cone-mode: false
@@ -440,6 +477,7 @@ jobs:
           sparse-checkout: |
             src/Directory.Packages.props
             src/PDFtoImage
+            src/Parallel
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
           sparse-checkout-cone-mode: false
@@ -469,17 +507,18 @@ jobs:
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
-      - name: Setup .NET
+      - name: Setup .NET 11 RC
         if: success() || failure()
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.x
-          dotnet-quality: ga
+          dotnet-version: 11.0.x
+          dotnet-quality: preview
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net10.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+          if (-not (Test-Path "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot\PDFtoImage.FrameworkTests.AotConsole.exe")) { throw "Native AOT publish did not produce the expected executable." }
       - name: console (Windows Server Core, Native AOT)
         if: success() || failure()
         run: |
@@ -488,12 +527,11 @@ jobs:
           docker run --rm pdftoimage-smoke:windows-servercore-aot
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
   publish-test-results:
-    name: Publish tests results
+    name: Aggregate test result statistics
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      checks: write
-      pull-requests: write
+      contents: read
     concurrency:
       group: "publish-test-results"
       cancel-in-progress: false
@@ -505,11 +543,13 @@ jobs:
           pattern: Test results (*)
           merge-multiple: true
           path: artifacts
-      - name: Publish test results
+      - name: Aggregate test result statistics
         uses: EnricoMi/publish-unit-test-result-action@c9bbcabcaf28c5ce2a9f8b6ee91c62873071b2ce
         with:
           files: artifacts/**/*.trx
-          check_name: Test results
+          check_run: false
+          comment_mode: off
+          job_summary: false
           compare_to_earlier_commit: false
           action_fail_on_inconclusive: true
           json_file: test-results.json
@@ -543,14 +583,13 @@ jobs:
             9.x
             10.x
           dotnet-quality: 'ga'
+      - name: Setup .NET 11 RC
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 11.0.x
+          dotnet-quality: 'preview'
       - name: Disable .NET problem matcher (no annotations)
         run: echo "::remove-matcher owner=csc::"
-      - name: Setup .NET workloads
-        run: >
-          dotnet workload install
-          maui-android
-          maui-ios
-          maui-maccatalyst
       - name: Setup dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
       - name: Setup JDK 17
@@ -574,8 +613,10 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sungaila_PDFtoImage" /o:"sungaila" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug
-          dotnet-coverage collect "dotnet test src/PDFtoImage.SonarCloud.slnf --verbosity detailed" -f xml -o "coverage.xml"
+          dotnet build src/PDFtoImage.SonarCloud.slnf -c Debug -p:TargetFrameworks=net11.0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet-coverage collect "dotnet test --solution src/PDFtoImage.SonarCloud.slnf --no-build -p:TargetFrameworks=net11.0 --output Detailed" -f xml -o "coverage.xml"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           .\.sonar\scanner\dotnet-sonarscanner end
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

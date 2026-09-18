@@ -1,11 +1,12 @@
 {
   "solution": {
-    "path": "PDFtoImage.sln",
+    "path": "PDFtoImage.slnx",
     "projects": [
       "FrameworkTests\\AotConsole\\AotConsole.csproj",
       "FrameworkTests\\AspNetCore\\AspNetCore.csproj",
       "FrameworkTests\\MauiApp\\MauiApp.csproj",
       "PDFtoImage\\PDFtoImage.csproj",
+      "Parallel\\Parallel.csproj",
       "Tests\\Tests.csproj",
       "WebConverter\\WebConverter.csproj"
     ]
