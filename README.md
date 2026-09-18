@@ -1,4 +1,4 @@
-# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_64.png) PDFtoImage
+# ![PDFtoImage Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_128.png) PDFtoImage
 
 [![GitHub Workflow Build Status](https://img.shields.io/github/actions/workflow/status/sungaila/PDFtoImage/dotnet.yml?event=push&style=flat-square&logo=github&logoColor=white)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
 [![GitHub Workflow Test Runs Succeeded](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgist.githubusercontent.com%2Fsungaila%2F003e8ab2211221897e4b3c0e564ed7b6%2Fraw&query=%24.stats.runs_succ&suffix=%20passed&style=flat-square&logo=github&logoColor=white&label=tests&color=45cc11)](https://github.com/sungaila/PDFtoImage/actions/workflows/dotnet.yml)
@@ -57,7 +57,7 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ## Parallelization
 The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks, so a single process can only render one PDF page at a time.
 
-[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes on .NET 11. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
+[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
 
 Apphost executables, `dotnet app.dll`, trimmed single-file and Native AOT applications are supported. CoreCLR workers enter through a trim-preserved startup hook; Native AOT workers use an eager module initializer instead. Dispose the processor to terminate its workers. Worker lifetime is tied to the parent process on Windows and Linux through .NET 11 process APIs; macOS uses an inherited lifetime pipe.
 

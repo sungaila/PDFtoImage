@@ -115,6 +115,14 @@ namespace PDFtoImage.Tests
 
         private sealed class ReplayStream(byte[] requests, Stream responses) : MemoryStream(requests, writable: false)
         {
+            public override bool CanWrite => true;
+
+            public override void Flush() => responses.Flush();
+
+            public override void Write(byte[] buffer, int offset, int count) => responses.Write(buffer, offset, count);
+
+            public override void Write(ReadOnlySpan<byte> buffer) => responses.Write(buffer);
+
             public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) =>
                 responses.WriteAsync(buffer, cancellationToken);
         }

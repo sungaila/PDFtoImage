@@ -1,1 +1,11 @@
 #nullable enable
+PDFtoImage.Parallel.ParallelConversionException
+PDFtoImage.Parallel.ParallelConversionException.RemoteExceptionType.get -> string!
+PDFtoImage.Parallel.ParallelPdfProcessor
+PDFtoImage.Parallel.ParallelPdfProcessor.Dispose() -> void
+PDFtoImage.Parallel.ParallelPdfProcessor.DisposeAsync() -> System.Threading.Tasks.ValueTask
+PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor(int? workerCount = null) -> void
+PDFtoImage.Parallel.ParallelPdfProcessor.ToImageAsync(System.IO.Stream! pdfStream, System.Index page = default(System.Index), bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Collections.Generic.IEnumerable<int>! pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Range pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!

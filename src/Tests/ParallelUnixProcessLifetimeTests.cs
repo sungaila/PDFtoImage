@@ -36,7 +36,7 @@ namespace PDFtoImage.Tests
         {
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(60));
-            var pipeName = "pti-test-" + Guid.NewGuid().ToString("N");
+            var pipeName = Guid.NewGuid().ToString("N");
             using var pipe = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte,
                 PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
             var start = StartInfo(dotnetHost);
@@ -87,7 +87,7 @@ namespace PDFtoImage.Tests
 
             using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             timeout.CancelAfter(TimeSpan.FromSeconds(15));
-            var pipeName = "PDFtoImage.Tests." + Guid.NewGuid().ToString("N");
+            var pipeName = Guid.NewGuid().ToString("N");
             using var pipe = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte,
                 PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
             using var worker = WorkerProcessLauncher.Start(pipeName, out var lifetime);

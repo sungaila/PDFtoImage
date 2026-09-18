@@ -37,7 +37,7 @@ namespace PDFtoImage.Parallel.Internals
 
         internal static async Task<WorkerConnection> StartAsync(CancellationToken cancellationToken)
         {
-            var pipeName = "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N");
+            var pipeName = Guid.NewGuid().ToString("N");
             var pipe = new NamedPipeServerStream(
                 pipeName,
                 PipeDirection.InOut,
