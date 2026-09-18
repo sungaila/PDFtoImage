@@ -15,8 +15,6 @@ namespace PDFtoImage.Parallel.Internals
     {
         private readonly NamedPipeServerStream _pipe;
 
-        private readonly SemaphoreSlim _operationGate = new(1, 1);
-
         private Process? _process;
 
         private int _disposed;
@@ -113,44 +111,28 @@ namespace PDFtoImage.Parallel.Internals
         internal async Task<T> ExecuteAsync<T>(PdfRequest request,
             Func<int, CancellationToken, Task<T>> execute, CancellationToken cancellationToken)
         {
-            await _operationGate.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                var pageCount = await LoadDocumentAsync(request, cancellationToken).ConfigureAwait(false);
-                return await execute(pageCount, cancellationToken).ConfigureAwait(false);
-            }
-            finally
-            {
-                _operationGate.Release();
-            }
+            var pageCount = await LoadDocumentAsync(request, cancellationToken).ConfigureAwait(false);
+            return await execute(pageCount, cancellationToken).ConfigureAwait(false);
         }
 
         internal async Task UnloadDocumentAsync(Guid requestId, CancellationToken cancellationToken)
         {
-            await _operationGate.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                if (_documentId != requestId)
-                    return;
+            if (_documentId != requestId)
+                return;
 
-                var request = PipeProtocol.CreateMessage(writer =>
-                {
-                    writer.Write((byte)WorkerCommand.UnloadDocument);
-                    writer.Write(requestId.ToByteArray());
-                });
-                await PipeProtocol.WriteMessageAsync(_pipe, request, cancellationToken).ConfigureAwait(false);
-                var response = await ReadRequiredMessageAsync(_pipe, cancellationToken).ConfigureAwait(false);
-                using var reader = PipeProtocol.CreateReader(response);
-                PipeProtocol.ThrowIfError(reader);
-                if (reader.BaseStream.Position != reader.BaseStream.Length)
-                    throw new InvalidDataException("The worker returned an invalid unload response.");
-                _documentId = null;
-                _pageCount = 0;
-            }
-            finally
+            var request = PipeProtocol.CreateMessage(writer =>
             {
-                _operationGate.Release();
-            }
+                writer.Write((byte)WorkerCommand.UnloadDocument);
+                writer.Write(requestId.ToByteArray());
+            });
+            await PipeProtocol.WriteMessageAsync(_pipe, request, cancellationToken).ConfigureAwait(false);
+            var response = await ReadRequiredMessageAsync(_pipe, cancellationToken).ConfigureAwait(false);
+            using var reader = PipeProtocol.CreateReader(response);
+            PipeProtocol.ThrowIfError(reader);
+            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                throw new InvalidDataException("The worker returned an invalid unload response.");
+            _documentId = null;
+            _pageCount = 0;
         }
 
         private async Task<int> LoadDocumentAsync(PdfRequest request, CancellationToken cancellationToken)

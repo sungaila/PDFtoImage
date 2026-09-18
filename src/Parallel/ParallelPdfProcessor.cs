@@ -28,7 +28,7 @@ namespace PDFtoImage.Parallel
 
         private bool _disposed;
 
-        private bool _shutdownDisposed;
+        private bool _cleanupFinished;
 
         private int _activeRequests;
 
@@ -54,25 +54,33 @@ namespace PDFtoImage.Parallel
         /// <summary>Stops all workers and cancels active and queued requests. Safe to call repeatedly.</summary>
         public void Dispose()
         {
-            var disposeShutdown = false;
             lock (_gate)
             {
                 if (_disposed)
                     return;
 
                 _disposed = true;
-                if (_activeRequests == 0)
-                {
-                    _requestsDrained.TrySetResult();
-                    _shutdownDisposed = true;
-                    disposeShutdown = true;
-                }
             }
 
-            _shutdown.Cancel();
-            if (disposeShutdown)
-                _shutdown.Dispose();
-            _pool.Dispose();
+            try
+            {
+                _shutdown.Cancel();
+            }
+            finally
+            {
+                try
+                {
+                    _pool.Dispose();
+                }
+                finally
+                {
+                    lock (_gate)
+                    {
+                        _cleanupFinished = true;
+                        CompleteDisposalIfDrained();
+                    }
+                }
+            }
         }
 
         /// <summary>Stops all workers and waits for outstanding worker requests and cleanup.</summary>
@@ -238,23 +246,20 @@ namespace PDFtoImage.Parallel
 
         private void EndRequest()
         {
-            var disposeShutdown = false;
             lock (_gate)
             {
                 _activeRequests--;
-                if (_disposed && _activeRequests == 0)
-                {
-                    _requestsDrained.TrySetResult();
-                    if (!_shutdownDisposed)
-                    {
-                        _shutdownDisposed = true;
-                        disposeShutdown = true;
-                    }
-                }
+                CompleteDisposalIfDrained();
             }
+        }
 
-            if (disposeShutdown)
-                _shutdown.Dispose();
+        private void CompleteDisposalIfDrained()
+        {
+            if (!_cleanupFinished || _activeRequests != 0 || _requestsDrained.Task.IsCompleted)
+                return;
+
+            _shutdown.Dispose();
+            _requestsDrained.TrySetResult();
         }
 
         private sealed class RequestCancellation : IDisposable

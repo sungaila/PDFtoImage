@@ -15,6 +15,7 @@ internal static class StartupHook
     public static void Initialize()
     {
         var pipeName = Environment.GetEnvironmentVariable(WorkerProcessLauncherWindows.WorkerPipeEnvironmentVariable);
+
         if (string.IsNullOrEmpty(pipeName))
             return;
 

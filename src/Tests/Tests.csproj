@@ -46,6 +46,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Testing.Extensions.GitHubActionsReport" />
     <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
+		<PackageReference Include="System.Buffers" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
+		<PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />

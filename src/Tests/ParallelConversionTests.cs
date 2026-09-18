@@ -176,7 +176,7 @@ namespace PDFtoImage.Tests
         {
             var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
 
-            await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
             {
                 await foreach (var bitmap in _converter.ToImagesAsync(
                     OpenPdf(pdf),
@@ -187,6 +187,8 @@ namespace PDFtoImage.Tests
                     bitmap.Dispose();
                 }
             });
+
+            Assert.AreEqual("pageCount", exception.ParamName);
         }
 
         [TestMethod]

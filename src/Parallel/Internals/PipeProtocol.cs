@@ -16,9 +16,7 @@ namespace PDFtoImage.Parallel.Internals
 
         RenderPage = 2,
 
-        Shutdown = 3,
-
-        UnloadDocument = 4
+        UnloadDocument = 3
     }
 
     internal enum WorkerResponse : byte

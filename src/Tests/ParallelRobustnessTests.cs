@@ -177,7 +177,9 @@ namespace PDFtoImage.Tests
             var request = processor.ToImageAsync(stream, cancellationToken: TestContext!.CancellationToken);
             await stream.ReadStarted.WaitAsync(TestContext.CancellationToken);
 
-            var dispose = processor.DisposeAsync().AsTask();
+            var dispose = Task.WhenAll(
+                Task.Run(processor.Dispose, TestContext.CancellationToken),
+                Task.Run(async () => await processor.DisposeAsync(), TestContext.CancellationToken));
             await stream.CancellationObserved.WaitAsync(TestContext.CancellationToken);
             Assert.IsFalse(dispose.IsCompleted, "DisposeAsync must await the public request cleanup.");
 
@@ -220,6 +222,37 @@ namespace PDFtoImage.Tests
             Assert.AreSequenceEqual(processIds, processor.WorkerProcessIds);
             Assert.AreSequenceEqual([2], processor.WorkerDocumentLoadCounts);
             Assert.IsTrue(processor.WorkerDocumentIds.All(id => id == null));
+        }
+
+        [TestMethod]
+        public async Task ReleaseDocumentDoesNotWaitForBusySlot()
+        {
+            await using var pool = new WorkerPoolWindows(1);
+            var request = new PdfRequest(Pdf, null);
+            await pool.GetPageCountAsync(request, TestContext!.CancellationToken);
+
+            var poolType = typeof(WorkerPoolWindows);
+            var slots = (SemaphoreSlim)poolType.GetField("_slots", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(pool)!;
+            var available = poolType.GetField("_available", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.GetValue(pool)!;
+            var tryPop = available.GetType().GetMethod("TryPop")!;
+            var push = available.GetType().GetMethod("Push")!;
+            object?[] arguments = [null];
+            Assert.IsTrue((bool)tryPop.Invoke(available, arguments)!);
+            Assert.IsTrue(slots.Wait(0, TestContext.CancellationToken));
+
+            try
+            {
+                await pool.ReleaseDocumentAsync(request);
+                Assert.Contains(request.Id, pool.WorkerDocumentIds, "Cleanup must not wait for a worker that another request already owns.");
+            }
+            finally
+            {
+                push.Invoke(available, [arguments[0]]);
+                slots.Release();
+            }
+
+            await pool.ReleaseDocumentAsync(request);
+            Assert.IsTrue(pool.WorkerDocumentIds.All(id => id == null));
         }
 
         [TestMethod]

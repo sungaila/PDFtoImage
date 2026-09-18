@@ -43,9 +43,6 @@ namespace PDFtoImage.Parallel.Internals
                         using var reader = PipeProtocol.CreateReader(message);
                         var command = (WorkerCommand)reader.ReadByte();
 
-                        if (command == WorkerCommand.Shutdown)
-                            return 0;
-
                         try
                         {
                             byte[] response;
