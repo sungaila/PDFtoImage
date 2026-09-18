@@ -2,10 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Exceptions;
 using PDFtoImage.Parallel;
-using PDFtoImage.Parallel.Internals;
 using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -126,7 +124,7 @@ namespace PDFtoImage.Tests
             using var recovered = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext.CancellationToken);
             Assert.AreNotEqual(worker.Id, pool.WorkerProcessIds.Single());
             using var expected = global::PDFtoImage.Conversion.ToImage(pdf, options: TestRenderOptions);
-            Assert.AreSequenceEqual(expected.Bytes, recovered.Bytes);
+            AssertBitmapsEqual(expected, recovered);
         }
 
         [TestMethod]

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static PDFtoImage.Tests.TestUtils;
 
 namespace PDFtoImage.Tests
 {
@@ -103,7 +104,8 @@ namespace PDFtoImage.Tests
                 for (var i = 0; i < 4; i++)
                 {
                     using var bitmap = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
-                    Assert.AreSequenceEqual(otherExpected.Bytes, bitmap.Bytes);
+
+                    AssertBitmapsEqual(otherExpected, bitmap);
                 }
             }
             await Task.WhenAll(Batch(), Batch(), Singles());
@@ -299,7 +301,7 @@ namespace PDFtoImage.Tests
             await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
                 _converter.ToImageAsync(OpenPdf(pdf), password: "wrong", cancellationToken: TestContext.CancellationToken));
             using var second = await _converter.ToImageAsync(OpenPdf(pdf), password: "123456", options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
-            Assert.AreSequenceEqual(first.Bytes, second.Bytes);
+            AssertBitmapsEqual(first, second);
         }
 
         [TestMethod]
@@ -322,7 +324,7 @@ namespace PDFtoImage.Tests
             var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
             using var second = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             using var expected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
-            Assert.AreSequenceEqual(expected.Bytes, second.Bytes);
+            AssertBitmapsEqual(expected, second);
             Assert.AreSequenceEqual(ids, _converter.WorkerProcessIds);
             using var third = await _converter.ToImageAsync(OpenPdf(Pdf), 2, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             ComparePage(third, 2);
@@ -377,7 +379,7 @@ namespace PDFtoImage.Tests
                 using var first = document.Render(2, new RenderOptions(Dpi: 40));
                 using var rotated = document.Render(0, new RenderOptions(Dpi: 30, Grayscale: true));
                 using var expected = global::PDFtoImage.Conversion.ToImage(Pdf, 0, options: new RenderOptions(Dpi: 30, Grayscale: true));
-                Assert.AreSequenceEqual(expected.Bytes, rotated.Bytes);
+                AssertBitmapsEqual(expected, rotated);
                 using var third = document.Render(1, new RenderOptions(Dpi: 40));
                 ComparePage(first, 2);
                 ComparePage(third, 1);
@@ -553,7 +555,7 @@ namespace PDFtoImage.Tests
             var response = await PipeProtocol.ReadMessageAsync(pipe, TestContext.CancellationToken);
             Assert.IsNotNull(response);
             using var decoded = PipeProtocol.ReadBitmap(response, 1);
-            Assert.AreSequenceEqual(original.Bytes, decoded.Bytes);
+            AssertBitmapsEqual(original, decoded);
             Assert.AreEqual(pipe.Length, pipe.Position);
         }
     }

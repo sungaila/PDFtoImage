@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkiaSharp;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -81,6 +82,20 @@ namespace PDFtoImage.Tests
                 offset += read;
             }
 #endif
+        }
+
+        public static void AssertBitmapsEqual(SKBitmap expected, SKBitmap actual)
+        {
+            Assert.AreEqual(expected.Width, actual.Width);
+            Assert.AreEqual(expected.Height, actual.Height);
+            Assert.AreEqual(expected.ColorType, actual.ColorType);
+            Assert.AreEqual(expected.AlphaType, actual.AlphaType);
+            Assert.AreEqual(expected.RowBytes, actual.RowBytes);
+
+            if (!expected.GetPixelSpan().SequenceEqual(actual.GetPixelSpan()))
+            {
+                Assert.Fail("The bitmap pixel data differs.");
+            }
         }
 
         public static string GetPlatformAsString()
