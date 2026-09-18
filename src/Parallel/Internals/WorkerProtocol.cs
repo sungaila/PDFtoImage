@@ -1,10 +1,10 @@
 using SkiaSharp;
 using System;
 using System.Buffers;
-using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -104,75 +104,19 @@ namespace PDFtoImage.Parallel.Internals
             return reader.ReadBoolean() ? reader.ReadString() : null;
         }
 
-        internal static void WriteRenderOptions(BinaryWriter writer, RenderOptions options)
-        {
-            writer.Write(options.Dpi);
-            WriteNullableInt32(writer, options.Width);
-            WriteNullableInt32(writer, options.Height);
-            writer.Write(options.WithAnnotations);
-            writer.Write(options.WithFormFill);
-            writer.Write(options.WithAspectRatio);
-            writer.Write((int)options.Rotation);
-            writer.Write((int)options.AntiAliasing);
-
-            writer.Write(options.BackgroundColor.HasValue);
-            if (options.BackgroundColor.HasValue)
-            {
-                var color = options.BackgroundColor.Value;
-                writer.Write(color.Red);
-                writer.Write(color.Green);
-                writer.Write(color.Blue);
-                writer.Write(color.Alpha);
-            }
-
-            writer.Write(options.Bounds.HasValue);
-            if (options.Bounds.HasValue)
-            {
-                var bounds = options.Bounds.Value;
-                writer.Write(bounds.X);
-                writer.Write(bounds.Y);
-                writer.Write(bounds.Width);
-                writer.Write(bounds.Height);
-            }
-
-            writer.Write(options.UseTiling);
-            writer.Write(options.DpiRelativeToBounds);
-            writer.Write(options.Grayscale);
-        }
+        internal static void WriteRenderOptions(BinaryWriter writer, RenderOptions options) =>
+            JsonSerializer.Serialize(writer.BaseStream, options, WorkerJsonSerializerContext.Default.RenderOptions);
 
         internal static RenderOptions ReadRenderOptions(BinaryReader reader)
         {
-            var dpi = reader.ReadInt32();
-            var width = ReadNullableInt32(reader);
-            var height = ReadNullableInt32(reader);
-            var withAnnotations = reader.ReadBoolean();
-            var withFormFill = reader.ReadBoolean();
-            var withAspectRatio = reader.ReadBoolean();
-            var rotation = (PdfRotation)reader.ReadInt32();
-            var antiAliasing = (PdfAntiAliasing)reader.ReadInt32();
-
-            SKColor? backgroundColor = null;
-            if (reader.ReadBoolean())
-                backgroundColor = new SKColor(reader.ReadByte(), reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-
-            RectangleF? bounds = null;
-            if (reader.ReadBoolean())
-                bounds = new RectangleF(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-
-            return new RenderOptions(
-                dpi,
-                width,
-                height,
-                withAnnotations,
-                withFormFill,
-                withAspectRatio,
-                rotation,
-                antiAliasing,
-                backgroundColor,
-                bounds,
-                reader.ReadBoolean(),
-                reader.ReadBoolean(),
-                reader.ReadBoolean());
+            try
+            {
+                return JsonSerializer.Deserialize(reader.BaseStream, WorkerJsonSerializerContext.Default.RenderOptions);
+            }
+            catch (JsonException exception)
+            {
+                throw new InvalidDataException("The render options payload is invalid.", exception);
+            }
         }
 
         internal static unsafe void WriteBitmap(BinaryWriter writer, SKBitmap bitmap)
@@ -288,19 +232,6 @@ namespace PDFtoImage.Parallel.Internals
                 throw new InvalidDataException("The worker returned an invalid response.");
 
             throw new ParallelConversionException(reader.ReadString(), reader.ReadString(), ReadNullableString(reader));
-        }
-
-        private static void WriteNullableInt32(BinaryWriter writer, int? value)
-        {
-            writer.Write(value.HasValue);
-
-            if (value.HasValue)
-                writer.Write(value.Value);
-        }
-
-        private static int? ReadNullableInt32(BinaryReader reader)
-        {
-            return reader.ReadBoolean() ? reader.ReadInt32() : null;
         }
 
         private static async Task ReadExactlyAsync(Stream stream, byte[] buffer, int offset, int count, CancellationToken cancellationToken)

@@ -56,7 +56,7 @@ namespace PDFtoImage.Parallel.Internals
                 using var startupCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, startupTimeout.Token);
 
                 var connectionTask = pipe.WaitForConnectionAsync(startupCancellation.Token);
-                var exitTask = process.WaitForExitAsync();
+                var exitTask = process.WaitForExitAsync(CancellationToken.None);
                 var completed = await Task.WhenAny(connectionTask, exitTask).ConfigureAwait(false);
 
                 if (completed == exitTask)

@@ -14,6 +14,10 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TestParallel)' == 'true'">
+    <DefineConstants>$(DefineConstants);PDFTOIMAGE_PARALLEL</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
@@ -30,5 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PDFtoImage\PDFtoImage.csproj" />
+    <ProjectReference Include="..\..\Parallel\Parallel.csproj" Condition="'$(TestParallel)' == 'true'" />
   </ItemGroup>
 </Project>

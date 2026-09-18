@@ -27,8 +27,8 @@ namespace PDFtoImage.Parallel.Internals
 
             start.Environment.TryGetValue("DOTNET_STARTUP_HOOKS", out var existingHooks);
             start.Environment["DOTNET_STARTUP_HOOKS"] = string.IsNullOrEmpty(existingHooks)
-                ? command.StartupHookPath
-                : command.StartupHookPath + Path.PathSeparator + existingHooks;
+                ? command.StartupHookAssemblyName
+                : command.StartupHookAssemblyName + Path.PathSeparator + existingHooks;
             start.Environment[WorkerPipeEnvironmentVariable] = pipeName;
             start.Environment.Remove(WorkerLifetimeEnvironmentVariable);
 

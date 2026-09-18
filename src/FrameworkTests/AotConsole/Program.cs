@@ -22,7 +22,12 @@ public static class Program
             FileAccess.Read,
             FileShare.Read);
 
+#if PDFTOIMAGE_PARALLEL
+        using var processor = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 2);
+        using var bitmap = processor.ToImageAsync(input, 0).GetAwaiter().GetResult();
+#else
         using var bitmap = PDFtoImage.Conversion.ToImage(input, 0);
+#endif
 
         Console.WriteLine($"SocialPreview.pdf size: {bitmap.Width}x{bitmap.Height}");
         Console.WriteLine();

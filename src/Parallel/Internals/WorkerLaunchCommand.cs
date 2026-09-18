@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    internal sealed record WorkerLaunchCommand(string ProcessPath, string StartupHookPath, List<string> Arguments)
+    internal sealed record WorkerLaunchCommand(string ProcessPath, string StartupHookAssemblyName, List<string> Arguments)
     {
         internal static WorkerLaunchCommand Create()
         {
@@ -16,11 +16,15 @@ namespace PDFtoImage.Parallel.Internals
             if (string.IsNullOrWhiteSpace(processPath))
                 throw new InvalidOperationException("The current process executable could not be determined.");
 
-            var startupHookPath = typeof(StartupHook).Assembly.Location;
-            if (string.IsNullOrWhiteSpace(startupHookPath))
-                throw new PlatformNotSupportedException("Single-file applications are not supported by PDFtoImage.Parallel workers.");
+            var startupHookAssemblyName = typeof(StartupHook).Assembly.GetName().Name;
 
-            var command = new WorkerLaunchCommand(processPath, startupHookPath, []);
+            if (string.IsNullOrWhiteSpace(startupHookAssemblyName))
+                throw new InvalidOperationException("The PDFtoImage.Parallel startup hook assembly name could not be determined.");
+
+            // Startup hooks can be specified by simple assembly name. Unlike Assembly.Location,
+            // this also works when PDFtoImage.Parallel is bundled into a single-file application.
+            var command = new WorkerLaunchCommand(processPath, startupHookAssemblyName, []);
+            
             if (!string.Equals(Path.GetFileNameWithoutExtension(processPath), "dotnet", StringComparison.OrdinalIgnoreCase))
                 return command;
 

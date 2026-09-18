@@ -2,7 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Parallel;
 using PDFtoImage.Parallel.Internals;
+using SkiaSharp;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -115,6 +117,33 @@ namespace PDFtoImage.Tests
         {
             public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) =>
                 responses.WriteAsync(buffer, cancellationToken);
+        }
+
+        [TestMethod]
+        public void RenderOptionsRoundTripUsesSourceGeneratedJson()
+        {
+            var expected = new RenderOptions(
+                Dpi: 144,
+                Width: 320,
+                Height: null,
+                WithAnnotations: true,
+                WithFormFill: true,
+                WithAspectRatio: true,
+                Rotation: PdfRotation.Rotate270,
+                AntiAliasing: PdfAntiAliasing.Text | PdfAntiAliasing.Paths,
+                BackgroundColor: new SKColor(1, 2, 3, 4),
+                Bounds: new RectangleF(1.25f, 2.5f, 300.75f, 400.5f),
+                UseTiling: true,
+                DpiRelativeToBounds: true,
+                Grayscale: true);
+
+            var message = WorkerProtocol.CreateMessage(writer => WorkerProtocol.WriteRenderOptions(writer, expected));
+            using var reader = WorkerProtocol.CreateReader(message);
+
+            var actual = WorkerProtocol.ReadRenderOptions(reader);
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(reader.BaseStream.Length, reader.BaseStream.Position);
         }
 
         [TestMethod]

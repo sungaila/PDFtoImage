@@ -24,7 +24,8 @@ RUN --mount=type=cache,id=nuget-ubuntu-singlefile,target=/root/.nuget/packages,s
       -r "$rid" \
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=false \
-      -p:SelfContained=true && \
+      -p:SelfContained=true \
+      -p:TestParallel=true && \
     dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
       -c "$BUILD_CONFIGURATION" \
       -f net11.0 \
@@ -34,6 +35,7 @@ RUN --mount=type=cache,id=nuget-ubuntu-singlefile,target=/root/.nuget/packages,s
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=false \
       -p:SelfContained=true \
+      -p:TestParallel=true \
       -p:PublishSingleFile=true \
       -p:IncludeNativeLibrariesForSelfExtract=true \
       -p:EnableCompressionInSingleFile=true

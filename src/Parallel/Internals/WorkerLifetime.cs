@@ -7,6 +7,7 @@ namespace PDFtoImage.Parallel.Internals
 {
     internal static class WorkerLifetime
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2022")]
         internal static void StartWatchdog(SafeFileHandle lifetime)
         {
             using var ready = new ManualResetEventSlim();

@@ -446,6 +446,7 @@ jobs:
           sparse-checkout: |
             src/Directory.Packages.props
             src/PDFtoImage
+            src/Parallel
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
           sparse-checkout-cone-mode: false
@@ -480,6 +481,7 @@ jobs:
           sparse-checkout: |
             src/Directory.Packages.props
             src/PDFtoImage
+            src/Parallel
             src/FrameworkTests/AotConsole
             src/Tests/Assets/SocialPreview.pdf
           sparse-checkout-cone-mode: false

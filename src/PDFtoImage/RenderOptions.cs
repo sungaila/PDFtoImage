@@ -19,6 +19,9 @@ namespace PDFtoImage
     /// <param name="UseTiling">Specifies that the PDF should be rendered as several segments and merged into the final image. This can help in cases where the output image is too large, causing corrupted images (e.g. missing text) or crashes.</param>
     /// <param name="DpiRelativeToBounds">Specifies that <see cref="Dpi"/> and <see cref="WithAspectRatio"/> will be calculated relative to <see cref="Bounds"/> instead of the original PDF.</param>
     /// <param name="Grayscale">Specifies that the PDF should be rendered in Grayscale mode.</param>
+#if NETCOREAPP
+    [method: System.Text.Json.Serialization.JsonConstructor]
+#endif
     public readonly record struct RenderOptions(
         int Dpi = 300,
         int? Width = null,
