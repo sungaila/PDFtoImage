@@ -2,12 +2,14 @@ using PDFtoImage.Internals;
 using SkiaSharp;
 using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.Versioning;
+using System.Linq;
 
 namespace PDFtoImage.Parallel.Internals
 {
     [SupportedOSPlatform("windows10.0")]
+    [SupportedOSPlatform("linux")]
+    [SupportedOSPlatform("macos")]
     internal sealed class WorkerDocument : IDisposable
     {
         private readonly PdfDocument _document;

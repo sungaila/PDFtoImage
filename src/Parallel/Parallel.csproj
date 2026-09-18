@@ -22,8 +22,8 @@
     <PackageIcon>Icon_128.png</PackageIcon>
     <PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
     <Description>Renders PDF files in parallel by distributing PDFium work across isolated worker processes.</Description>
-    <PackageReleaseNotes>- Initial release with a Windows worker pool, named-pipe IPC and automatic worker cleanup.</PackageReleaseNotes>
-    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Windows Parallel Multiprocess IPC</PackageTags>
+    <PackageReleaseNotes>- Initial release with Windows, Linux and macOS worker pools and automatic worker cleanup.</PackageReleaseNotes>
+    <PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Windows Linux macOS Parallel Multiprocess IPC</PackageTags>
     <RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>true</IncludeSymbols>

@@ -57,7 +57,9 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ## Parallelization
 The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks, so a single process can only render one PDF page at a time.
 
-[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes and named-pipe IPC. The package works on Windows, Linux and macOS only. Workers are assigned atomically to a Windows Job Object when created, so they are also terminated if the parent process exits unexpectedly, including during worker startup.
+[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes on .NET 9 and .NET 10. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
+
+Both apphost executables and `dotnet app.dll` are supported. Workers require enabled .NET startup hooks; single-file and Native AOT applications are not supported. Dispose the processor to terminate workers and remove its temporary directory. An abrupt Unix parent exit may leave an empty temporary directory behind.
 
 ```csharp
 // start a pool of 8 worker processes

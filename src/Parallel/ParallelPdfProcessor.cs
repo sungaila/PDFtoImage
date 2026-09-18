@@ -15,6 +15,8 @@ namespace PDFtoImage.Parallel
     /// Renders PDF pages concurrently in isolated worker processes.
     /// </summary>
     [SupportedOSPlatform("windows10.0")]
+    [SupportedOSPlatform("linux")]
+    [SupportedOSPlatform("macos")]
 #pragma warning disable RS0026 // First-release overloads mirror PDFtoImage's input shapes.
     public sealed class ParallelPdfProcessor : IDisposable, IAsyncDisposable
     {
@@ -100,7 +102,6 @@ namespace PDFtoImage.Parallel
         /// <param name="password">The optional PDF password.</param>
         /// <param name="options">Rendering options.</param>
         /// <param name="cancellationToken">Cancels reading or rendering the request.</param>
-        [SupportedOSPlatform("windows10.0")]
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             using var request = BeginRequest(cancellationToken);
@@ -111,21 +112,18 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Renders all pages from a PDF stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows10.0")]
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default) =>
             ToImagesFromStreamAsync(pdfStream, PageSelection.All, leaveOpen, password, options, cancellationToken);
 
         /// <summary>
         /// Renders a range of pages from a PDF stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows10.0")]
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, Range pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default) =>
             ToImagesFromStreamAsync(pdfStream, PageSelection.FromRange(pages), leaveOpen, password, options, cancellationToken);
 
         /// <summary>
         /// Renders selected pages from a PDF stream into images using worker processes.
         /// </summary>
-        [SupportedOSPlatform("windows10.0")]
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, IEnumerable<int> pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(pages);
@@ -303,12 +301,13 @@ namespace PDFtoImage.Parallel
 
             internal int MaximumCount => _pages?.Length ?? int.MaxValue;
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2208")]
             internal int[] Resolve(int pageCount)
             {
                 if (_pages != null)
                 {
                     return _pages.Any(page => page < 0 || page >= pageCount)
-                        ? throw new ArgumentOutOfRangeException(nameof(pageCount), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
+                        ? throw new ArgumentOutOfRangeException("pages", $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.")
                         : _pages;
                 }
 

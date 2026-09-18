@@ -186,7 +186,7 @@ namespace PDFtoImage.Tests
                 }
             });
 
-            Assert.AreEqual("pageCount", exception.ParamName);
+            Assert.AreEqual("pages", exception.ParamName);
         }
 
         [TestMethod]

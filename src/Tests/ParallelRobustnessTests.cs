@@ -517,20 +517,20 @@ namespace PDFtoImage.Tests
         public async Task InvalidFrameLengthsAreRejected(int length)
         {
             using var stream = new MemoryStream(BitConverter.GetBytes(length));
-            await Assert.ThrowsExactlyAsync<InvalidDataException>(() => PipeProtocol.ReadMessageAsync(stream, TestContext!.CancellationToken));
+            await Assert.ThrowsExactlyAsync<InvalidDataException>(() => WorkerProtocol.ReadMessageAsync(stream, TestContext!.CancellationToken));
         }
 
         [TestMethod]
         public async Task TruncatedFrameIsRejected()
         {
             using var stream = new MemoryStream([4, 0, 0, 0, 1]);
-            await Assert.ThrowsExactlyAsync<EndOfStreamException>(() => PipeProtocol.ReadMessageAsync(stream, TestContext!.CancellationToken));
+            await Assert.ThrowsExactlyAsync<EndOfStreamException>(() => WorkerProtocol.ReadMessageAsync(stream, TestContext!.CancellationToken));
         }
 
         [TestMethod]
         public void InvalidBitmapDimensionsAreRejectedBeforeNativeAllocation()
         {
-            var payload = PipeProtocol.CreateMessage(writer =>
+            var payload = WorkerProtocol.CreateMessage(writer =>
             {
                 writer.Write(int.MaxValue);
                 writer.Write(int.MaxValue);
@@ -540,8 +540,8 @@ namespace PDFtoImage.Tests
                 writer.Write(4);
                 writer.Write(0);
             });
-            Assert.ThrowsExactly<InvalidDataException>(() => PipeProtocol.ReadBitmap(payload));
-            Assert.ThrowsExactly<InvalidDataException>(() => PipeProtocol.ReadBitmap([1, 2, 3]));
+            Assert.ThrowsExactly<InvalidDataException>(() => WorkerProtocol.ReadBitmap(payload));
+            Assert.ThrowsExactly<InvalidDataException>(() => WorkerProtocol.ReadBitmap([1, 2, 3]));
         }
 
         [TestMethod]
@@ -550,11 +550,11 @@ namespace PDFtoImage.Tests
             using var original = new SKBitmap(320, 240, SKColorType.Bgra8888, SKAlphaType.Premul);
             original.Erase(new SKColor(40, 80, 120, 160));
             using var pipe = new MemoryStream();
-            await PipeProtocol.WriteBitmapResponseAsync(pipe, original, TestContext!.CancellationToken);
+            await WorkerProtocol.WriteBitmapResponseAsync(pipe, original, TestContext!.CancellationToken);
             pipe.Position = 0;
-            var response = await PipeProtocol.ReadMessageAsync(pipe, TestContext.CancellationToken);
+            var response = await WorkerProtocol.ReadMessageAsync(pipe, TestContext.CancellationToken);
             Assert.IsNotNull(response);
-            using var decoded = PipeProtocol.ReadBitmap(response, 1);
+            using var decoded = WorkerProtocol.ReadBitmap(response, 1);
             AssertBitmapsEqual(original, decoded);
             Assert.AreEqual(pipe.Length, pipe.Position);
         }

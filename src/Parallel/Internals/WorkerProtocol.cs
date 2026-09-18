@@ -28,9 +28,9 @@ namespace PDFtoImage.Parallel.Internals
         Hello = 3
     }
 
-    internal static class PipeProtocol
+    internal static class WorkerProtocol
     {
-        internal const int Version = 2;
+        internal const int Version = 1;
 
         private const int MaximumMessageLength = 1024 * 1024 * 1024;
 

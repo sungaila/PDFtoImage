@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.IO.Pipes;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,23 +7,20 @@ using System.Threading.Tasks;
 namespace PDFtoImage.Parallel.Internals
 {
     [SupportedOSPlatform("windows10.0")]
+    [SupportedOSPlatform("linux")]
+    [SupportedOSPlatform("macos")]
     internal static class WorkerHost
     {
-        internal static async Task<int> RunAsync(string pipeName)
+        internal static async Task<int> RunAsync(Stream stream)
         {
             try
             {
-                using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-                using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-
-                await pipe.ConnectAsync(cancellation.Token).ConfigureAwait(false);
-
-                await PipeProtocol.WriteMessageAsync(
-                    pipe,
-                    PipeProtocol.CreateMessage(writer =>
+                await WorkerProtocol.WriteMessageAsync(
+                    stream,
+                    WorkerProtocol.CreateMessage(writer =>
                     {
                         writer.Write((byte)WorkerResponse.Hello);
-                        writer.Write(PipeProtocol.Version);
+                        writer.Write(WorkerProtocol.Version);
                     }),
                     CancellationToken.None).ConfigureAwait(false);
 
@@ -35,12 +31,12 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     while (true)
                     {
-                        var message = await PipeProtocol.ReadMessageAsync(pipe, CancellationToken.None).ConfigureAwait(false);
+                        var message = await WorkerProtocol.ReadMessageAsync(stream, CancellationToken.None).ConfigureAwait(false);
 
                         if (message == null)
                             return 0;
 
-                        using var reader = PipeProtocol.CreateReader(message);
+                        using var reader = WorkerProtocol.CreateReader(message);
                         var command = (WorkerCommand)reader.ReadByte();
 
                         try
@@ -50,7 +46,7 @@ namespace PDFtoImage.Parallel.Internals
                             switch (command)
                             {
                                 case WorkerCommand.LoadDocument:
-                                    var password = PipeProtocol.ReadNullableString(reader);
+                                    var password = WorkerProtocol.ReadNullableString(reader);
                                     var length = reader.ReadInt32();
                                     var documentIdBytes = reader.ReadBytes(16);
 
@@ -77,7 +73,7 @@ namespace PDFtoImage.Parallel.Internals
                                         pdfStream.Dispose();
                                         throw;
                                     }
-                                    response = PipeProtocol.CreateMessage(writer =>
+                                    response = WorkerProtocol.CreateMessage(writer =>
                                     {
                                         writer.Write((byte)WorkerResponse.Success);
                                         writer.Write(document.PageCount);
@@ -90,11 +86,11 @@ namespace PDFtoImage.Parallel.Internals
                                         throw new InvalidOperationException("No PDF document has been loaded.");
 
                                     var page = reader.ReadInt32();
-                                    var options = PipeProtocol.ReadRenderOptions(reader);
+                                    var options = WorkerProtocol.ReadRenderOptions(reader);
 
                                     using (var bitmap = document.Render(page, options))
                                     {
-                                        await PipeProtocol.WriteBitmapResponseAsync(pipe, bitmap, CancellationToken.None).ConfigureAwait(false);
+                                        await WorkerProtocol.WriteBitmapResponseAsync(stream, bitmap, CancellationToken.None).ConfigureAwait(false);
                                     }
 
                                     continue;
@@ -111,18 +107,18 @@ namespace PDFtoImage.Parallel.Internals
                                         documentId = null;
                                     }
 
-                                    response = PipeProtocol.CreateMessage(writer => writer.Write((byte)WorkerResponse.Success));
+                                    response = WorkerProtocol.CreateMessage(writer => writer.Write((byte)WorkerResponse.Success));
                                     break;
 
                                 default:
                                     throw new InvalidDataException("The worker received an unknown command.");
                             }
 
-                            await PipeProtocol.WriteMessageAsync(pipe, response, CancellationToken.None).ConfigureAwait(false);
+                            await WorkerProtocol.WriteMessageAsync(stream, response, CancellationToken.None).ConfigureAwait(false);
                         }
                         catch (Exception exception)
                         {
-                            await PipeProtocol.WriteMessageAsync(pipe, PipeProtocol.CreateErrorResponse(exception), CancellationToken.None).ConfigureAwait(false);
+                            await WorkerProtocol.WriteMessageAsync(stream, WorkerProtocol.CreateErrorResponse(exception), CancellationToken.None).ConfigureAwait(false);
                         }
                     }
                 }

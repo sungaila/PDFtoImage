@@ -14,6 +14,7 @@ public static class StartupHook
 {
     public static void Initialize()
     {
+        PDFtoImage.Tests.ParallelUnixProcessTestHook.Initialize();
         var pipeName = Environment.GetEnvironmentVariable("PDFTOIMAGE_TEST_PARENT_PIPE");
         if (string.IsNullOrEmpty(pipeName))
             return;
