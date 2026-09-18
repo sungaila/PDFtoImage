@@ -1,47 +1,69 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace PDFtoImage.Parallel.Internals
 {
-    internal sealed record WorkerLaunchCommand(string ProcessPath, string StartupHookAssemblyName, List<string> Arguments)
+    internal sealed record WorkerLaunchCommand(string ProcessPath, string? StartupHookAssemblyName, List<string> Arguments)
     {
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicMethods, typeof(StartupHook))]
         internal static WorkerLaunchCommand Create()
         {
-            if (AppContext.TryGetSwitch("System.StartupHookProvider.IsSupported", out var hooksSupported) && !hooksSupported)
-                throw new PlatformNotSupportedException("PDFtoImage.Parallel requires enabled .NET startup hooks.");
+            var useStartupHook = RuntimeFeature.IsDynamicCodeSupported;
+
+            if (useStartupHook && AppContext.TryGetSwitch("System.StartupHookProvider.IsSupported", out var hooksSupported) && !hooksSupported)
+                throw new PlatformNotSupportedException("PDFtoImage.Parallel requires enabled .NET startup hooks when running on CoreCLR.");
 
             var processPath = Environment.ProcessPath;
             if (string.IsNullOrWhiteSpace(processPath))
                 throw new InvalidOperationException("The current process executable could not be determined.");
 
-            var startupHookAssemblyName = typeof(StartupHook).Assembly.GetName().Name;
+            string? startupHookAssemblyName = null;
 
-            if (string.IsNullOrWhiteSpace(startupHookAssemblyName))
-                throw new InvalidOperationException("The PDFtoImage.Parallel startup hook assembly name could not be determined.");
+            if (useStartupHook)
+            {
+                startupHookAssemblyName = typeof(StartupHook).Assembly.GetName().Name;
 
-            // Startup hooks can be specified by simple assembly name. Unlike Assembly.Location,
-            // this also works when PDFtoImage.Parallel is bundled into a single-file application.
+                if (string.IsNullOrWhiteSpace(startupHookAssemblyName))
+                    throw new InvalidOperationException("The PDFtoImage.Parallel startup hook assembly name could not be determined.");
+            }
+
+            // CoreCLR loads the worker bootstrap through DOTNET_STARTUP_HOOKS. Native AOT
+            // cannot use startup hooks; its eager module initializer enters the same bootstrap
+            // before the application's Main method instead.
             var command = new WorkerLaunchCommand(processPath, startupHookAssemblyName, []);
-            
+
             if (!string.Equals(Path.GetFileNameWithoutExtension(processPath), "dotnet", StringComparison.OrdinalIgnoreCase))
                 return command;
 
-            var entryAssemblyPath = Assembly.GetEntryAssembly()?.Location;
+            var entryAssemblyPath = GetManagedEntryAssemblyPath();
+
             if (string.IsNullOrWhiteSpace(entryAssemblyPath))
                 throw new InvalidOperationException("The managed entry assembly could not be determined.");
 
             command.Arguments.Add("exec");
+
             var depsFile = FindApplicationDepsFile(entryAssemblyPath);
             var runtimeConfig = GetRuntimeConfigFile(depsFile);
+
             if (runtimeConfig != null)
                 command.Arguments.AddRange(["--runtimeconfig", runtimeConfig]);
+
             if (depsFile != null)
                 command.Arguments.AddRange(["--depsfile", depsFile]);
+
             command.Arguments.Add(entryAssemblyPath);
+
             return command;
         }
+
+
+        [UnconditionalSuppressMessage("SingleFile", "IL3000", Justification =
+            "This path is only used when Environment.ProcessPath is the dotnet host. Single-file applications use their apphost and return before reaching it.")]
+        private static string? GetManagedEntryAssemblyPath() => Assembly.GetEntryAssembly()?.Location;
 
         private static string? FindApplicationDepsFile(string? entryAssemblyPath)
         {

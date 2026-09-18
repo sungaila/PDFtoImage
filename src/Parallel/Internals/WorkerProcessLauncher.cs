@@ -25,10 +25,19 @@ namespace PDFtoImage.Parallel.Internals
             foreach (var argument in command.Arguments)
                 start.ArgumentList.Add(argument);
 
-            start.Environment.TryGetValue("DOTNET_STARTUP_HOOKS", out var existingHooks);
-            start.Environment["DOTNET_STARTUP_HOOKS"] = string.IsNullOrEmpty(existingHooks)
-                ? command.StartupHookAssemblyName
-                : command.StartupHookAssemblyName + Path.PathSeparator + existingHooks;
+            if (command.StartupHookAssemblyName is { } startupHookAssemblyName)
+            {
+                start.Environment.TryGetValue("DOTNET_STARTUP_HOOKS", out var existingHooks);
+                start.Environment["DOTNET_STARTUP_HOOKS"] = string.IsNullOrEmpty(existingHooks)
+                    ? startupHookAssemblyName
+                    : startupHookAssemblyName + Path.PathSeparator + existingHooks;
+            }
+            else
+            {
+                // Native AOT enters worker mode through WorkerBootstrap's module initializer.
+                start.Environment.Remove("DOTNET_STARTUP_HOOKS");
+            }
+
             start.Environment[WorkerPipeEnvironmentVariable] = pipeName;
             start.Environment.Remove(WorkerLifetimeEnvironmentVariable);
 

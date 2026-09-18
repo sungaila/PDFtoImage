@@ -24,7 +24,8 @@ RUN --mount=type=cache,id=nuget-ubuntu-chiseled-aot,target=/root/.nuget/packages
       -r "$rid" \
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=true \
-      -p:SelfContained=true && \
+      -p:SelfContained=true \
+      -p:TestParallel=true && \
     dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
       -c "$BUILD_CONFIGURATION" \
       -f net11.0 \
@@ -34,6 +35,7 @@ RUN --mount=type=cache,id=nuget-ubuntu-chiseled-aot,target=/root/.nuget/packages
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=true \
       -p:SelfContained=true \
+      -p:TestParallel=true \
       -p:StripSymbols=true
 
 # Do not use resolute-chiseled-aot here: PDFium/SkiaSharp may need libstdc++.

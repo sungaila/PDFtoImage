@@ -59,7 +59,7 @@ The native PDFium library used by this project for rendering is **not thread-saf
 
 [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes on .NET 11. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
 
-Apphost executables, `dotnet app.dll`, and untrimmed single-file applications are supported. Workers require enabled .NET startup hooks; Native AOT applications are not supported. Dispose the processor to terminate its workers. Worker lifetime is tied to the parent process on Windows and Linux through .NET 11 process APIs; macOS uses an inherited lifetime pipe.
+Apphost executables, `dotnet app.dll`, trimmed single-file and Native AOT applications are supported. CoreCLR workers enter through a trim-preserved startup hook; Native AOT workers use an eager module initializer instead. Dispose the processor to terminate its workers. Worker lifetime is tied to the parent process on Windows and Linux through .NET 11 process APIs; macOS uses an inherited lifetime pipe.
 
 ```csharp
 // start a pool of 8 worker processes

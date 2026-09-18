@@ -26,7 +26,8 @@ RUN --mount=type=cache,id=nuget-ubuntu-aot,target=/root/.nuget/packages,sharing=
       -r "$rid" \
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=true \
-      -p:SelfContained=true && \
+      -p:SelfContained=true \
+      -p:TestParallel=true && \
     dotnet publish FrameworkTests/AotConsole/AotConsole.csproj \
       -c "$BUILD_CONFIGURATION" \
       -f net11.0 \
@@ -36,6 +37,7 @@ RUN --mount=type=cache,id=nuget-ubuntu-aot,target=/root/.nuget/packages,sharing=
       -p:TargetFrameworks=net11.0 \
       -p:PublishAot=true \
       -p:SelfContained=true \
+      -p:TestParallel=true \
       -p:StripSymbols=true
 
 # The normal runtime-deps image intentionally retains C++ runtime dependencies

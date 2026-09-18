@@ -16,6 +16,8 @@
 
   <PropertyGroup Condition="'$(TestParallel)' == 'true'">
     <DefineConstants>$(DefineConstants);PDFTOIMAGE_PARALLEL</DefineConstants>
+    <!-- ProjectReference builds do not import the NuGet package's buildTransitive asset. -->
+    <StartupHookSupport Condition="'$(PublishTrimmed)' == 'true' and '$(PublishAot)' != 'true'">true</StartupHookSupport>
   </PropertyGroup>
 
   <PropertyGroup>

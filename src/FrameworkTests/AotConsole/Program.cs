@@ -23,9 +23,11 @@ public static class Program
             FileShare.Read);
 
 #if PDFTOIMAGE_PARALLEL
+        Console.WriteLine("Renderer: PDFtoImage.Parallel");
         using var processor = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 2);
         using var bitmap = processor.ToImageAsync(input, 0).GetAwaiter().GetResult();
 #else
+        Console.WriteLine("Renderer: PDFtoImage");
         using var bitmap = PDFtoImage.Conversion.ToImage(input, 0);
 #endif
 

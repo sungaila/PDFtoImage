@@ -12,11 +12,11 @@ COPY ["src/Directory.Packages.props", "src/Directory.Packages.props"]
 COPY ["src/FrameworkTests/AotConsole/AotConsole.csproj", "src/FrameworkTests/AotConsole/AotConsole.csproj"]
 COPY ["src/PDFtoImage", "src/PDFtoImage"]
 COPY ["src/Parallel", "src/Parallel"]
-RUN dotnet restore "src/FrameworkTests/AotConsole/AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true -p:TestParallel=true
+RUN dotnet restore "src/FrameworkTests/AotConsole/AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true -p:TestParallel=true -p:PublishTrimmed=true
 
 COPY . .
 WORKDIR C:/src/src
-RUN dotnet publish "FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -r win-x64 -o C:/app/publish --no-restore -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true -p:TestParallel=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
+RUN dotnet publish "FrameworkTests/AotConsole/AotConsole.csproj" -c %BUILD_CONFIGURATION% -r win-x64 -o C:/app/publish --no-restore -p:TargetFramework=net11.0 -p:PublishAot=false -p:SelfContained=true -p:TestParallel=true -p:PublishTrimmed=true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true
 
 FROM mcr.microsoft.com/windows/servercore:${WINDOWS_VERSION} AS final
 WORKDIR C:/app

@@ -520,8 +520,8 @@ jobs:
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
         run: |
-          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true
-          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
+          dotnet restore "src\FrameworkTests\AotConsole\AotConsole.csproj" -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true
+          dotnet publish "src\FrameworkTests\AotConsole\AotConsole.csproj" -c Release -r win-x64 -p:TargetFramework=net11.0 -p:PublishAot=true -p:SelfContained=true -p:TestParallel=true -p:StripSymbols=true -o "$env:GITHUB_WORKSPACE\artifacts\win-x64-aot" --no-restore
       - name: console (Windows Server Core, Native AOT)
         if: success() || failure()
         run: |

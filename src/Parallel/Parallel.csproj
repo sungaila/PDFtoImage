@@ -3,6 +3,8 @@
   <!-- Assembly -->
   <PropertyGroup>
     <TargetFramework>net11.0</TargetFramework>
+    <IsTrimmable>true</IsTrimmable>
+    <IsAotCompatible>true</IsAotCompatible>
     <AssemblyName>PDFtoImage.Parallel</AssemblyName>
     <RootNamespace>PDFtoImage.Parallel</RootNamespace>
     <SignAssembly>true</SignAssembly>
@@ -79,5 +81,6 @@
   <ItemGroup>
     <None Include="..\..\etc\Icon_Parallel_128.png" Link="Icon_128.png" Pack="true" PackagePath="Icon_128.png" />
     <None Include="..\..\README.md" Pack="true" PackagePath="" />
+    <None Update="PDFtoImage.Parallel.targets" Pack="true" PackagePath="buildTransitive\PDFtoImage.Parallel.targets" />
   </ItemGroup>
 </Project>
