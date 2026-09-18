@@ -275,35 +275,25 @@ jobs:
             src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.nupkg
             src/Parallel/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}/*.snupkg
           if-no-files-found: error
-      - name: Publish tests
-        uses: actions/upload-artifact@v7
-        if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
-        with:
-          name: Test assemblies
-          path: src/Tests/bin/${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
-          if-no-files-found: error
-          retention-days: 1
-          compression-level: 9
   test:
     permissions:
       contents: read
     name: Test (${{ matrix.os }})
-    needs: build
     strategy:
       fail-fast: false
       matrix:
         os: [windows-11-arm, windows-2022, windows-2025, ubuntu-22.04, ubuntu-22.04-arm, ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04, ubuntu-26.04-arm, macos-14, macos-15, macos-15-intel, macos-26, macos-26-intel]
     runs-on: ${{ matrix.os }}
     env:
+      BUILD_CONFIGURATION: ${{ github.event_name != 'workflow_dispatch' && 'Debug' || inputs.build_configuration }}
       DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: "true"
       TERM: xterm-256color
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_tests) == true
     steps:
-      - name: Checkout MTP configuration
+      - name: Checkout
         uses: actions/checkout@v7
         with:
-          sparse-checkout: global.json
-          sparse-checkout-cone-mode: false
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
@@ -317,29 +307,35 @@ jobs:
         with:
           dotnet-version: 11.0.x
           dotnet-quality: 'preview'
-      - name: Download test assemblies
-        if: (success() || failure())
-        uses: actions/download-artifact@v8
-        with:
-          name: Test assemblies
+      - name: Build .NET Framework test assemblies
+        if: runner.os == 'Windows'
+        run: |
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net471 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net481 -p:VersionSuffix=ci
+      - name: Build .NET test assemblies
+        run: |
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net8.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net10.0 -p:VersionSuffix=ci
+          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net11.0 -p:VersionSuffix=ci
       - name: .NET Framework 4.7.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: .\net471\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net471/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net471\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
-        run: .\net481\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net481/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net481\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 8
         if: success() || failure()
-        run: dotnet test --test-modules net8.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net8.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net8.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 9
         if: success() || failure()
-        run: dotnet test --test-modules net9.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net9.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net9.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 10
         if: success() || failure()
-        run: dotnet test --test-modules net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net10.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 11
         if: success() || failure()
-        run: dotnet test --test-modules net11.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings net11.0/SaveOutputInGeneratedFolder.runsettings' || '' }}
+        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net11.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: Upload test results
         if: success() || failure()
         uses: actions/upload-artifact@v7
