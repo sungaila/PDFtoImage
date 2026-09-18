@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     <AssemblyName>PDFtoImage.Parallel</AssemblyName>
     <RootNamespace>PDFtoImage.Parallel</RootNamespace>
     <SignAssembly>true</SignAssembly>
@@ -14,7 +14,7 @@
 
   <!-- NuGet -->
   <PropertyGroup>
-    <VersionPrefix>$(ProductVersion)</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -36,15 +36,15 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Features>strict</Features>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <WarningsAsErrors>nullable;RS0016;RS0017</WarningsAsErrors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <!-- PolySharp settings -->
-  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
-    <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
-    <PolySharpIncludeGeneratedTypes>System.Runtime.Versioning.SupportedOSPlatformAttribute</PolySharpIncludeGeneratedTypes>
-  </PropertyGroup>
+  <!-- The public surface is identical on all supported frameworks. -->
+  <ItemGroup>
+    <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+  </ItemGroup>
 
   <!-- Debug builds -->
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
@@ -73,7 +73,7 @@
   <!-- Source generators -->
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
-    <PackageReference Include="PolySharp" PrivateAssets="all" Condition="'$(TargetFramework)'=='netstandard2.1'" />
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" PrivateAssets="all" />
   </ItemGroup>
 
   <!-- NuGet assets -->

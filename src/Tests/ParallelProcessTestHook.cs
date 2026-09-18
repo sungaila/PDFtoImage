@@ -1,5 +1,5 @@
-#if NET8_0_OR_GREATER
-using PDFtoImage.Parallel.Internals;
+#if NET9_0_OR_GREATER
+using PDFtoImage.Parallel;
 using System;
 using System.IO;
 using System.IO.Pipes;
@@ -24,13 +24,26 @@ public static class StartupHook
     {
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
+
         await pipe.ConnectAsync(timeout.Token);
+
         var pdf = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"), timeout.Token);
-        await using var pool = await WorkerPool.CreateAsync(2, pdf, null, timeout.Token);
+
+        await using var pool = new ParallelPdfProcessor(2);
+
+        var warmup = await Task.WhenAll(
+            pool.ToImageAsync(new MemoryStream(pdf, writable: false), options: new PDFtoImage.RenderOptions(Dpi: 40), cancellationToken: timeout.Token),
+            pool.ToImageAsync(new MemoryStream(pdf, writable: false), options: new PDFtoImage.RenderOptions(Dpi: 40), cancellationToken: timeout.Token));
+
+        foreach (var bitmap in warmup)
+            bitmap.Dispose();
+
         using var writer = new StreamWriter(pipe, leaveOpen: true) { AutoFlush = true };
         using var reader = new StreamReader(pipe, leaveOpen: true);
+
         await writer.WriteLineAsync(string.Join(",", pool.WorkerProcessIds));
         await reader.ReadLineAsync(timeout.Token);
+
         return 0;
     }
 }

@@ -1,4 +1,4 @@
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Exceptions;
 using PDFtoImage.Parallel;
@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static PDFtoImage.Tests.TestUtils;
-using ParallelConversion = PDFtoImage.Parallel.Conversion;
 
 namespace PDFtoImage.Tests
 {
@@ -21,19 +20,30 @@ namespace PDFtoImage.Tests
     [OSCondition(OperatingSystems.Windows)]
     public sealed class ParallelConversionTests : TestBase
     {
+        private ParallelPdfProcessor _converter = null!;
+
+        [TestInitialize]
+        public void CreateConverter() => _converter = new ParallelPdfProcessor(2);
+
+        [TestCleanup]
+        public async Task DisposeConverter() => await _converter.DisposeAsync();
+
+        private static MemoryStream OpenPdf(byte[] bytes) => new(bytes, writable: false);
+
         private static readonly RenderOptions TestRenderOptions = new(Dpi: 40);
 
         [TestMethod]
         public async Task ToImageAsyncRendersSingleJob()
         {
             var expectedPath = GetExpectedPagePath(1);
+
             using var inputStream = OpenAsset("Wikimedia_Commons_web.pdf");
-            using var actual = await ParallelConversion.ToImageAsync(
+            using var actual = await _converter.ToImageAsync(
                 inputStream,
                 page: 1,
                 leaveOpen: true,
                 options: TestRenderOptions,
-                workerCount: 2,
+
                 cancellationToken: TestContext!.CancellationToken);
             using var outputStream = CreateOutputStream(expectedPath);
 
@@ -49,11 +59,11 @@ namespace PDFtoImage.Tests
             int[] pages = [2, 0, 1];
             var actualPageCount = 0;
 
-            await foreach (var bitmap in ParallelConversion.ToImagesAsync(
-                pdf,
+            await foreach (var bitmap in _converter.ToImagesAsync(
+                OpenPdf(pdf),
                 pages,
                 options: TestRenderOptions,
-                workerCount: 2,
+
                 cancellationToken: TestContext!.CancellationToken))
             {
                 using (bitmap)
@@ -69,14 +79,14 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
-        public async Task ToImageAsyncSupportsBase64Input()
+        public async Task ToImageAsyncSupportsStreamInput()
         {
             var expectedPath = GetExpectedPagePath(0);
-            var pdfAsBase64 = Convert.ToBase64String(ReadAsset("Wikimedia_Commons_web.pdf"));
-            using var actual = await ParallelConversion.ToImageAsync(
-                pdfAsBase64,
+            using var inputStream = OpenAsset("Wikimedia_Commons_web.pdf");
+            using var actual = await _converter.ToImageAsync(
+                inputStream,
                 options: TestRenderOptions,
-                workerCount: 1,
+
                 cancellationToken: TestContext!.CancellationToken);
             using var outputStream = CreateOutputStream(expectedPath);
 
@@ -89,9 +99,9 @@ namespace PDFtoImage.Tests
         {
             var invalidPdf = ReadAsset("DummyImage.png");
             var exception = await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
-                ParallelConversion.ToImageAsync(
-                    invalidPdf,
-                    workerCount: 1,
+                _converter.ToImageAsync(
+                    OpenPdf(invalidPdf),
+
                     cancellationToken: TestContext!.CancellationToken));
 
             Assert.AreEqual(typeof(PdfInvalidFormatException).FullName, exception.RemoteExceptionType);
@@ -101,24 +111,30 @@ namespace PDFtoImage.Tests
         public async Task KilledWorkerProducesParallelConversionException()
         {
             var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
-            await using var pool = await WorkerPool.CreateAsync(1, pdf, null, TestContext!.CancellationToken);
+            await using var pool = new ParallelPdfProcessor(1);
+            using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             using var worker = Process.GetProcessById(pool.WorkerProcessIds.Single());
 
             worker.Kill();
             await worker.WaitForExitAsync(TestContext.CancellationToken);
 
             var exception = await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
-                pool.RenderPageAsync(0, TestRenderOptions, TestContext.CancellationToken));
+                pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext.CancellationToken));
 
             Assert.AreEqual("WorkerProcessTerminated", exception.RemoteExceptionType);
             Assert.IsInstanceOfType<IOException>(exception.InnerException);
+            using var recovered = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext.CancellationToken);
+            Assert.AreNotEqual(worker.Id, pool.WorkerProcessIds.Single());
+            using var expected = global::PDFtoImage.Conversion.ToImage(pdf, options: TestRenderOptions);
+            CollectionAssert.AreEqual(expected.Bytes, recovered.Bytes);
         }
 
         [TestMethod]
         public async Task DisposingPoolTerminatesWorkers()
         {
             var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
-            var pool = await WorkerPool.CreateAsync(2, pdf, null, TestContext!.CancellationToken);
+            var pool = new ParallelPdfProcessor(2);
+            using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             var workers = pool.WorkerProcessIds.Select(Process.GetProcessById).ToArray();
 
             try
@@ -145,10 +161,10 @@ namespace PDFtoImage.Tests
             var inputStream = OpenAsset("SocialPreview with password 123456 (AES-256).pdf");
 
             var exception = await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
-                ParallelConversion.ToImageAsync(
+                _converter.ToImageAsync(
                     inputStream,
                     password: "wrong",
-                    workerCount: 1,
+
                     cancellationToken: TestContext!.CancellationToken));
 
             Assert.AreEqual(typeof(PdfPasswordProtectedException).FullName, exception.RemoteExceptionType);
@@ -162,10 +178,10 @@ namespace PDFtoImage.Tests
 
             await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(async () =>
             {
-                await foreach (var bitmap in ParallelConversion.ToImagesAsync(
-                    pdf,
+                await foreach (var bitmap in _converter.ToImagesAsync(
+                    OpenPdf(pdf),
                     [-1, 0],
-                    workerCount: 1,
+
                     cancellationToken: TestContext!.CancellationToken))
                 {
                     bitmap.Dispose();
@@ -174,15 +190,10 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
-        public async Task InvalidWorkerCountIsRejected()
+        public void InvalidWorkerCountIsRejected()
         {
-            var pdf = ReadAsset("hundesteuer-anmeldung.pdf");
-
-            await Assert.ThrowsExactlyAsync<ArgumentOutOfRangeException>(() =>
-                ParallelConversion.ToImageAsync(
-                    pdf,
-                    workerCount: 0,
-                    cancellationToken: TestContext!.CancellationToken));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(0));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(-1));
         }
 
         [TestMethod]
@@ -194,10 +205,10 @@ namespace PDFtoImage.Tests
 
             await Assert.ThrowsAsync<OperationCanceledException>(async () =>
             {
-                await foreach (var bitmap in ParallelConversion.ToImagesAsync(
-                    pdf,
+                await foreach (var bitmap in _converter.ToImagesAsync(
+                    OpenPdf(pdf),
                     options: TestRenderOptions,
-                    workerCount: 2,
+
                     cancellationToken: cancellation.Token))
                 {
                     bitmap.Dispose();

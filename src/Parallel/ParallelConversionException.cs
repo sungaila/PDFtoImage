@@ -12,14 +12,8 @@ namespace PDFtoImage.Parallel
         /// </summary>
         public string RemoteExceptionType { get; }
 
-        internal ParallelConversionException(
-            string remoteExceptionType,
-            string message,
-            string? remoteStackTrace,
-            Exception? innerException = null)
-            : base(
-                message + (string.IsNullOrWhiteSpace(remoteStackTrace) ? string.Empty : Environment.NewLine + remoteStackTrace),
-                innerException)
+        internal ParallelConversionException(string remoteExceptionType, string message, string? remoteStackTrace, Exception? innerException = null)
+            : base(message + (string.IsNullOrWhiteSpace(remoteStackTrace) ? string.Empty : Environment.NewLine + remoteStackTrace), innerException)
         {
             RemoteExceptionType = remoteExceptionType;
         }

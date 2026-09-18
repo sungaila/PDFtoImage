@@ -1,4 +1,4 @@
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFtoImage.Parallel;
 using PDFtoImage.Parallel.Internals;
@@ -9,14 +9,30 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ParallelConversion = PDFtoImage.Parallel.Conversion;
 
 namespace PDFtoImage.Tests
 {
     [TestClass, DoNotParallelize, OSCondition(OperatingSystems.Windows)]
     public sealed class ParallelRobustnessTests : TestBase
     {
+        private ParallelPdfProcessor _converter = null!;
+
+        [TestInitialize]
+        public void CreateConverter() => _converter = new ParallelPdfProcessor(2);
+
+        [TestCleanup]
+        public async Task DisposeConverter() => await _converter.DisposeAsync();
+
+        private static MemoryStream OpenPdf(byte[] bytes) => new(bytes, writable: false);
+
         private static byte[] Pdf => File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"));
+
+        private sealed class DisposableResult : IDisposable
+        {
+            internal bool IsDisposed { get; private set; }
+
+            public void Dispose() => IsDisposed = true;
+        }
 
         private static void ComparePage(SKBitmap bitmap, int page)
         {
@@ -26,53 +42,167 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        public async Task DifferentDocumentsAndBatchesCanRunConcurrently()
+        {
+            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            using var otherExpected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
+            async Task Batch()
+            {
+                var index = 0;
+                int[] pages = [2, 0, 1, 2];
+                await foreach (var bitmap in _converter.ToImagesAsync(OpenPdf(Pdf), pages, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
+                {
+                    using (bitmap)
+                        ComparePage(bitmap, pages[index++]);
+                }
+                Assert.AreEqual(pages.Length, index);
+            }
+            async Task Singles()
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    using var bitmap = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+                    CollectionAssert.AreEqual(otherExpected.Bytes, bitmap.Bytes);
+                }
+            }
+            await Task.WhenAll(Batch(), Batch(), Singles());
+            Assert.HasCount(2, _converter.WorkerProcessIds);
+        }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task ConverterRemainsUsableAfterEndingEnumeration(bool cancel)
+        {
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
+            await using (var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator())
+            {
+                Assert.IsTrue(await iterator.MoveNextAsync());
+                iterator.Current.Dispose();
+                if (cancel)
+                {
+                    cancellation.Cancel();
+                    await Assert.ThrowsAsync<OperationCanceledException>(async () => await iterator.MoveNextAsync());
+                }
+            }
+            using var next = await _converter.ToImageAsync(OpenPdf(Pdf), 1, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            ComparePage(next, 1);
+        }
+
+        [TestMethod]
+        public async Task SynchronousDisposeStopsWorkersAndRejectsEnumeration()
+        {
+            using var image = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            using var process = System.Diagnostics.Process.GetProcessById(_converter.WorkerProcessIds.Single());
+            _converter.Dispose();
+            Assert.IsTrue(process.HasExited);
+            _converter.Dispose();
+            await _converter.DisposeAsync();
+            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
+            {
+                await foreach (var bitmap in _converter.ToImagesAsync(OpenPdf(Pdf), Array.Empty<int>()))
+                    bitmap.Dispose();
+            });
+        }
+
+        [TestMethod]
+        public async Task CancellingOneBatchDoesNotCancelAnIndependentJob()
+        {
+            using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
+            await using var iterator = _converter.ToImagesAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: cancellation.Token).GetAsyncEnumerator();
+            Assert.IsTrue(await iterator.MoveNextAsync());
+            iterator.Current.Dispose();
+            var otherJob = _converter.ToImageAsync(OpenPdf(Pdf), 2, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            cancellation.Cancel();
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await iterator.MoveNextAsync());
+            using var image = await otherJob;
+            ComparePage(image, 2);
+        }
+
+        [TestMethod]
+        public async Task ConcurrentDisposalIsIdempotent()
+        {
+            using var image = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            using var process = System.Diagnostics.Process.GetProcessById(_converter.WorkerProcessIds.Single());
+            await Task.WhenAll(Task.Run(_converter.Dispose), Task.Run(async () => await _converter.DisposeAsync()));
+            Assert.IsTrue(process.HasExited);
+        }
+
+        [TestMethod]
+        public async Task PasswordAndRequestIdentityAreNotCachedAcrossCalls()
+        {
+            var pdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "SocialPreview with password 123456 (AES-256).pdf"));
+            using var first = await _converter.ToImageAsync(OpenPdf(pdf), password: "123456", options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
+                _converter.ToImageAsync(OpenPdf(pdf), password: "wrong", cancellationToken: TestContext.CancellationToken));
+            using var second = await _converter.ToImageAsync(OpenPdf(pdf), password: "123456", options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            CollectionAssert.AreEqual(first.Bytes, second.Bytes);
+        }
+
+        [TestMethod]
         public async Task ConcurrentJobsReuseIdleWorkersWithoutMixingPipeFrames()
         {
-            await using var pool = await WorkerPool.CreateAsync(2, Pdf, null, TestContext!.CancellationToken);
             var requests = Enumerable.Range(0, 12).Select(async i =>
             {
-                var bytes = await pool.RenderPageAsync(i % 3, new RenderOptions(Dpi: 40), TestContext.CancellationToken);
-                using var bitmap = PipeProtocol.ReadBitmap(bytes, 1);
+                using var bitmap = await _converter.ToImageAsync(OpenPdf(Pdf), i % 3, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
                 ComparePage(bitmap, i % 3);
             });
             await Task.WhenAll(requests);
+            Assert.HasCount(2, _converter.WorkerProcessIds);
         }
 
         [TestMethod]
-        public async Task WorkerCountIsCappedAtDocumentPageCount()
+        public async Task SequentialDocumentsReuseTheSameProcess()
         {
-            await using var pool = await WorkerPool.CreateAsync(int.MaxValue, Pdf, null, TestContext!.CancellationToken);
-            Assert.AreEqual(pool.PageCount, pool.WorkerCount);
+            using var first = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            var ids = _converter.WorkerProcessIds;
+            var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "hundesteuer-anmeldung.pdf"));
+            using var second = await _converter.ToImageAsync(OpenPdf(otherPdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            using var expected = global::PDFtoImage.Conversion.ToImage(otherPdf, options: new RenderOptions(Dpi: 40));
+            CollectionAssert.AreEqual(expected.Bytes, second.Bytes);
+            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
+            using var third = await _converter.ToImageAsync(OpenPdf(Pdf), 2, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
+            ComparePage(third, 2);
+            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
         }
 
         [TestMethod]
-        public async Task WorkerCountIsCappedAtSelectionSize()
+        public async Task SinglePageSelectionOnlyStartsOneWorker()
         {
-            await using var pool = await WorkerPool.CreateAsync(int.MaxValue, Pdf, null, TestContext!.CancellationToken, _ => 1);
-            Assert.AreEqual(1, pool.WorkerCount);
+            await using var converter = new ParallelPdfProcessor(int.MaxValue);
+            await foreach (var bitmap in converter.ToImagesAsync(OpenPdf(Pdf), new[] { 0 }, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
+            {
+                using (bitmap)
+                    ComparePage(bitmap, 0);
+            }
+            Assert.HasCount(1, converter.WorkerProcessIds);
         }
 
         [TestMethod]
         public async Task DisposalCompletesActiveAndQueuedRequests()
         {
-            var pool = await WorkerPool.CreateAsync(1, Pdf, null, TestContext!.CancellationToken);
-            var pending = Enumerable.Range(0, 20)
-                .Select(i => pool.RenderPageAsync(i % 3, new RenderOptions(Dpi: 40), TestContext.CancellationToken)).ToArray();
+            await using var pool = new ParallelPdfProcessor(1);
+            var pending = Enumerable.Range(0, 20).Select(async i =>
+            {
+                using var image = await pool.ToImageAsync(OpenPdf(Pdf), i % 3, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            }).ToArray();
             await pool.DisposeAsync();
-            try { await Task.WhenAll(pending).WaitAsync(TimeSpan.FromSeconds(10), TestContext.CancellationToken); }
-            catch (Exception exception) when (exception is OperationCanceledException or ParallelConversionException) { }
+            try { await Task.WhenAll(pending).WaitAsync(TimeSpan.FromSeconds(10), TestContext!.CancellationToken); }
+            catch (Exception exception) when (exception is OperationCanceledException or ParallelConversionException or ObjectDisposedException) { }
             Assert.IsTrue(pending.All(task => task.IsCompleted));
+            Assert.HasCount(0, pool.WorkerProcessIds);
         }
 
         [TestMethod]
         public async Task ManagedWorkerErrorDoesNotCorruptFollowingRequest()
         {
-            await using var pool = await WorkerPool.CreateAsync(1, Pdf, null, TestContext!.CancellationToken);
-            var exception = await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
-                pool.RenderPageAsync(-1, new RenderOptions(Dpi: 40), TestContext.CancellationToken));
-            Assert.AreEqual(typeof(ArgumentOutOfRangeException).FullName, exception.RemoteExceptionType);
-            using var bitmap = PipeProtocol.ReadBitmap(await pool.RenderPageAsync(0, new RenderOptions(Dpi: 40), TestContext.CancellationToken), 1);
+            using var first = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            var ids = _converter.WorkerProcessIds;
+            await Assert.ThrowsExactlyAsync<ParallelConversionException>(() =>
+                _converter.ToImageAsync(new MemoryStream([1, 2, 3], writable: false), cancellationToken: TestContext.CancellationToken));
+            using var bitmap = await _converter.ToImageAsync(OpenPdf(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             ComparePage(bitmap, 0);
+            CollectionAssert.AreEqual(ids, _converter.WorkerProcessIds);
         }
 
         [TestMethod]
@@ -100,8 +230,8 @@ namespace PDFtoImage.Tests
             foreach (var pages in new[] { new[] { 2, 0, 2, 1 }, new[] { pageCount - 2, pageCount - 1 } })
             {
                 var results = pages.Length == 2
-                    ? ParallelConversion.ToImagesAsync(Pdf, ^2..^0, options: new RenderOptions(Dpi: 40), workerCount: 2, cancellationToken: TestContext!.CancellationToken)
-                    : ParallelConversion.ToImagesAsync(Pdf, pages, options: new RenderOptions(Dpi: 40), workerCount: 2, cancellationToken: TestContext!.CancellationToken);
+                    ? _converter.ToImagesAsync(OpenPdf(Pdf), ^2..^0, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken)
+                    : _converter.ToImagesAsync(OpenPdf(Pdf), pages, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
                 var count = 0;
                 await foreach (var bitmap in results)
                 {
@@ -115,7 +245,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task EmptySelectionDoesNotLaunchWorkersOrParsePdf()
         {
-            await foreach (var bitmap in ParallelConversion.ToImagesAsync(Array.Empty<byte>(), Array.Empty<int>(), cancellationToken: TestContext!.CancellationToken))
+            await foreach (var bitmap in _converter.ToImagesAsync(new MemoryStream(Array.Empty<byte>(), writable: false), Array.Empty<int>(), cancellationToken: TestContext!.CancellationToken))
             {
                 bitmap.Dispose();
                 Assert.Fail("An empty selection must not return bitmaps.");
@@ -125,10 +255,10 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task DisposedPoolRejectsNewJobs()
         {
-            var pool = await WorkerPool.CreateAsync(1, Pdf, null, TestContext!.CancellationToken);
+            var pool = new ParallelPdfProcessor(1);
             await pool.DisposeAsync();
             await pool.DisposeAsync();
-            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => pool.RenderPageAsync(0, default, TestContext.CancellationToken));
+            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => pool.ToImageAsync(OpenPdf(Pdf), cancellationToken: TestContext!.CancellationToken));
         }
 
         [TestMethod]
@@ -187,6 +317,32 @@ namespace PDFtoImage.Tests
             await foreach (var _ in OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 4, Render, TestContext!.CancellationToken))
                 break;
             Assert.AreEqual(3, cancelled);
+        }
+
+        [TestMethod]
+        public async Task EarlyEnumerationExitDisposesCompletedPendingResults()
+        {
+            var results = new List<DisposableResult>();
+            async Task<DisposableResult> Render(int page, CancellationToken token)
+            {
+                var result = new DisposableResult();
+                results.Add(result);
+                if (page == 0)
+                    return result;
+
+                try { await Task.Delay(Timeout.Infinite, token); }
+                catch (OperationCanceledException) { return result; }
+                return result;
+            }
+
+            await foreach (var result in OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 4, Render, TestContext!.CancellationToken))
+            {
+                result.Dispose(); // The yielded result belongs to the caller.
+                break;
+            }
+
+            Assert.HasCount(4, results);
+            Assert.IsTrue(results.All(result => result.IsDisposed));
         }
 
         [TestMethod]

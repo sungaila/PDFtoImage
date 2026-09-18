@@ -1,33 +1,37 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
+using SkiaSharp;
 
 namespace PDFtoImage.Parallel.Internals
 {
     [SupportedOSPlatform("windows10.0")]
-    internal sealed class WorkerConnection : IDisposable
+    internal sealed class WorkerConnectionWindows : IDisposable
     {
         private readonly NamedPipeServerStream _pipe;
+
         private Process? _process;
 
-        private WorkerConnection(NamedPipeServerStream pipe)
+        private Guid? _documentId;
+
+        private int _pageCount;
+
+        private WorkerConnectionWindows(NamedPipeServerStream pipe)
         {
             _pipe = pipe;
         }
 
         internal int ProcessId => _process?.Id ?? 0;
 
-        internal static async Task<(WorkerConnection Worker, int PageCount)> StartAsync(
-            WindowsJob job,
-            byte[] pdf,
-            string? password,
-            CancellationToken cancellationToken)
+        internal static async Task<WorkerConnectionWindows> StartAsync(WindowsJob job, CancellationToken cancellationToken)
         {
             var pipeName = "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N");
+
             var pipe = new NamedPipeServerStream(
                 pipeName,
                 PipeDirection.InOut,
@@ -35,14 +39,15 @@ namespace PDFtoImage.Parallel.Internals
                 PipeTransmissionMode.Byte,
                 PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
 
-            var worker = new WorkerConnection(pipe);
+            var worker = new WorkerConnectionWindows(pipe);
 
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                worker._process = WorkerProcessLauncher.StartSuspendedAndAssign(job, pipeName);
+                worker._process = WorkerProcessLauncherWindows.StartSuspendedAndAssign(job, pipeName);
 
                 using var startupCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
                 startupCancellation.CancelAfter(TimeSpan.FromSeconds(30));
                 worker._process.EnableRaisingEvents = true;
                 EventHandler onExit = (_, _) =>
@@ -57,6 +62,7 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     if (worker._process.HasExited)
                         throw new EndOfStreamException("The PDF conversion worker exited before connecting.");
+
                     await pipe.WaitForConnectionAsync(startupCancellation.Token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
@@ -71,9 +77,8 @@ namespace PDFtoImage.Parallel.Internals
                     worker._process.Exited -= onExit;
                 }
 
-                var helloMessage = await PipeProtocol.ReadMessageAsync(pipe, startupCancellation.Token).ConfigureAwait(false);
-                if (helloMessage == null)
-                    throw new EndOfStreamException("The PDF conversion worker exited during startup.");
+                var helloMessage = await PipeProtocol.ReadMessageAsync(pipe, startupCancellation.Token).ConfigureAwait(false)
+                    ?? throw new EndOfStreamException("The PDF conversion worker exited during startup.");
 
                 using (var helloReader = PipeProtocol.CreateReader(helloMessage))
                 {
@@ -81,19 +86,7 @@ namespace PDFtoImage.Parallel.Internals
                         throw new InvalidDataException("The PDF conversion worker uses an incompatible protocol version.");
                 }
 
-                var loadMessage = PipeProtocol.CreateMessage(writer =>
-                {
-                    writer.Write((byte)WorkerCommand.LoadDocument);
-                    PipeProtocol.WriteNullableString(writer, password);
-                    writer.Write(pdf.Length);
-                });
-
-                await PipeProtocol.WriteMessageAsync(pipe, loadMessage, pdf, startupCancellation.Token).ConfigureAwait(false);
-                var loadResponse = await ReadRequiredMessageAsync(pipe, startupCancellation.Token).ConfigureAwait(false);
-                using var loadReader = PipeProtocol.CreateReader(loadResponse);
-                PipeProtocol.ThrowIfError(loadReader);
-
-                return (worker, loadReader.ReadInt32());
+                return worker;
             }
             catch
             {
@@ -102,7 +95,46 @@ namespace PDFtoImage.Parallel.Internals
             }
         }
 
-        internal async Task<byte[]> RenderPageAsync(int page, RenderOptions options, CancellationToken cancellationToken)
+        internal async Task<int> LoadDocumentAsync(PdfRequest request, CancellationToken cancellationToken)
+        {
+            if (_documentId == request.Id)
+                return _pageCount;
+
+            _documentId = null;
+
+            var header = PipeProtocol.CreateMessage(writer =>
+            {
+                writer.Write((byte)WorkerCommand.LoadDocument);
+                PipeProtocol.WriteNullableString(writer, request.Password);
+                writer.Write(request.Bytes.Length);
+            });
+
+            try
+            {
+                await PipeProtocol.WriteMessageAsync(_pipe, header, request.Bytes, cancellationToken).ConfigureAwait(false);
+
+                var response = await ReadRequiredMessageAsync(_pipe, cancellationToken).ConfigureAwait(false);
+
+                using var reader = PipeProtocol.CreateReader(response);
+
+                PipeProtocol.ThrowIfError(reader);
+                _pageCount = reader.ReadInt32();
+
+                if (_pageCount < 0 || reader.BaseStream.Position != reader.BaseStream.Length)
+                    throw new InvalidDataException("The worker returned an invalid page count.");
+
+                _documentId = request.Id;
+
+                return _pageCount;
+            }
+            catch (IOException exception)
+            {
+                throw new ParallelConversionException("WorkerProcessTerminated",
+                    "The PDF conversion worker failed while loading a document.", null, exception);
+            }
+        }
+
+        internal async Task<SKBitmap> RenderPageAsync(int page, RenderOptions options, CancellationToken cancellationToken)
         {
             try
             {
@@ -114,10 +146,13 @@ namespace PDFtoImage.Parallel.Internals
                 });
 
                 await PipeProtocol.WriteMessageAsync(_pipe, request, cancellationToken).ConfigureAwait(false);
+
                 var response = await ReadRequiredMessageAsync(_pipe, cancellationToken).ConfigureAwait(false);
                 using var reader = PipeProtocol.CreateReader(response);
+
                 PipeProtocol.ThrowIfError(reader);
-                return response;
+
+                return PipeProtocol.ReadBitmap(response, checked((int)reader.BaseStream.Position));
             }
             catch (IOException exception)
             {
@@ -132,8 +167,25 @@ namespace PDFtoImage.Parallel.Internals
         public void Dispose()
         {
             _pipe.Dispose();
-            _process?.Dispose();
-            _process = null;
+
+            var process = Interlocked.Exchange(ref _process, null);
+
+            if (process == null)
+                return;
+
+            try
+            {
+                if (!process.HasExited)
+                    process.Kill();
+
+                process.WaitForExit();
+            }
+            catch (InvalidOperationException) { /* The process already exited. */ }
+            catch (Win32Exception) when (process.HasExited) { /* The job terminated it concurrently. */ }
+            finally
+            {
+                process.Dispose();
+            }
         }
 
         private static async Task<byte[]> ReadRequiredMessageAsync(Stream stream, CancellationToken cancellationToken)

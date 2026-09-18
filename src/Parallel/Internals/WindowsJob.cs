@@ -23,11 +23,14 @@ namespace PDFtoImage.Parallel.Internals
         internal static WindowsJob Create()
         {
             var handle = ParallelPInvoke.CreateJobObject(null, null);
+
             if (handle.IsInvalid)
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not create a Windows job object.");
 
             var information = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
+
             information.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+
             var bytes = MemoryMarshal.AsBytes(MemoryMarshal.CreateReadOnlySpan(ref information, 1));
 
             if (!ParallelPInvoke.SetInformationJobObject(handle, JOBOBJECTINFOCLASS.JobObjectExtendedLimitInformation, bytes))

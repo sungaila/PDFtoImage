@@ -15,7 +15,7 @@ using Windows.Win32.System.Threading;
 namespace PDFtoImage.Parallel.Internals
 {
     [SupportedOSPlatform("windows10.0")]
-    internal static class WorkerProcessLauncher
+    internal static class WorkerProcessLauncherWindows
     {
         internal const string WorkerPipeEnvironmentVariable = "PDFTOIMAGE_PARALLEL_WORKER_PIPE";
 
@@ -23,12 +23,15 @@ namespace PDFtoImage.Parallel.Internals
         {
             if (AppContext.TryGetSwitch("System.StartupHookProvider.IsSupported", out var hooksSupported) && !hooksSupported)
                 throw new PlatformNotSupportedException("PDFtoImage.Parallel requires enabled .NET startup hooks.");
+
             using var currentProcess = Process.GetCurrentProcess();
             var processPath = currentProcess.MainModule?.FileName;
+
             if (string.IsNullOrWhiteSpace(processPath))
                 throw new InvalidOperationException("The current process executable could not be determined.");
 
             var startupHookPath = typeof(StartupHook).Assembly.Location;
+
             if (string.IsNullOrWhiteSpace(startupHookPath))
                 throw new PlatformNotSupportedException("Single-file applications are not supported by PDFtoImage.Parallel workers.");
 
@@ -37,9 +40,13 @@ namespace PDFtoImage.Parallel.Internals
             var commandLineSpan = commandLineBuffer.AsSpan();
             var environment = CreateEnvironmentBlock(startupHookPath, pipeName);
             var startupInfo = new STARTUPINFOEXW();
+
             startupInfo.StartupInfo.cb = (uint)sizeof(STARTUPINFOEXW);
+
             nuint attributeSize = 0;
+
             ParallelPInvoke.InitializeProcThreadAttributeList(default, 1, 0, &attributeSize);
+
             var attributeMemory = Marshal.AllocHGlobal(checked((IntPtr)(long)attributeSize));
             var initialized = false;
             var jobReference = false;
@@ -47,11 +54,15 @@ namespace PDFtoImage.Parallel.Internals
             try
             {
                 startupInfo.lpAttributeList = new LPPROC_THREAD_ATTRIBUTE_LIST((void*)attributeMemory);
+
                 if (!ParallelPInvoke.InitializeProcThreadAttributeList(startupInfo.lpAttributeList, 1, 0, &attributeSize))
                     throw new Win32Exception(Marshal.GetLastWin32Error());
+
                 initialized = true;
                 job.Handle.DangerousAddRef(ref jobReference);
+
                 var jobHandle = job.Handle.DangerousGetHandle();
+
                 if (!ParallelPInvoke.UpdateProcThreadAttribute(startupInfo.lpAttributeList, 0,
                     ParallelPInvoke.PROC_THREAD_ATTRIBUTE_JOB_LIST, &jobHandle, (nuint)sizeof(IntPtr), null, null))
                     throw new Win32Exception(Marshal.GetLastWin32Error(), "Could not configure atomic worker job assignment.");
@@ -87,6 +98,7 @@ namespace PDFtoImage.Parallel.Internals
                         if (ParallelPInvoke.ResumeThread(threadHandle) == uint.MaxValue)
                         {
                             var error = Marshal.GetLastWin32Error();
+
                             ParallelPInvoke.TerminateProcess(processHandle, 1);
                             throw new Win32Exception(error, "Could not resume the PDF conversion worker process.");
                         }
@@ -105,7 +117,9 @@ namespace PDFtoImage.Parallel.Internals
             {
                 if (initialized)
                     ParallelPInvoke.DeleteProcThreadAttributeList(startupInfo.lpAttributeList);
+
                 Marshal.FreeHGlobal(attributeMemory);
+
                 if (jobReference)
                     job.Handle.DangerousRelease();
             }
@@ -114,6 +128,7 @@ namespace PDFtoImage.Parallel.Internals
         private static char[] CreateEnvironmentBlock(string startupHookPath, string pipeName)
         {
             var variables = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
             foreach (DictionaryEntry entry in Environment.GetEnvironmentVariables())
             {
                 if (entry.Key is string name && entry.Value is string value)
@@ -127,6 +142,7 @@ namespace PDFtoImage.Parallel.Internals
             variables[WorkerPipeEnvironmentVariable] = pipeName;
 
             var block = new StringBuilder();
+
             foreach (var variable in variables)
             {
                 block.Append(variable.Key);
@@ -146,6 +162,7 @@ namespace PDFtoImage.Parallel.Internals
 
             var entryAssemblyPath = Assembly.GetEntryAssembly()?.Location;
             var isDotnetHost = string.Equals(Path.GetFileNameWithoutExtension(processPath), "dotnet", StringComparison.OrdinalIgnoreCase);
+
             if (!isDotnetHost)
                 return commandLine.ToString();
 
@@ -153,6 +170,7 @@ namespace PDFtoImage.Parallel.Internals
 
             var depsFile = FindApplicationDepsFile(entryAssemblyPath);
             var runtimeConfig = GetRuntimeConfigFile(depsFile);
+
             if (runtimeConfig != null)
             {
                 AppendArgument(commandLine, "--runtimeconfig");
@@ -181,6 +199,7 @@ namespace PDFtoImage.Parallel.Internals
             if (!string.IsNullOrWhiteSpace(entryAssemblyPath))
             {
                 var adjacentDepsFile = Path.ChangeExtension(entryAssemblyPath, ".deps.json");
+
                 if (File.Exists(adjacentDepsFile))
                     return adjacentDepsFile;
             }
@@ -200,10 +219,12 @@ namespace PDFtoImage.Parallel.Internals
         private static string? GetRuntimeConfigFile(string? depsFile)
         {
             const string depsSuffix = ".deps.json";
+
             if (depsFile == null || !depsFile.EndsWith(depsSuffix, StringComparison.OrdinalIgnoreCase))
                 return null;
 
             var runtimeConfig = depsFile.Substring(0, depsFile.Length - depsSuffix.Length) + ".runtimeconfig.json";
+
             return File.Exists(runtimeConfig) ? runtimeConfig : null;
         }
 
@@ -218,7 +239,9 @@ namespace PDFtoImage.Parallel.Internals
         private static string QuoteArgument(string argument)
         {
             var quoted = new StringBuilder(argument.Length + 2);
+
             quoted.Append('"');
+
             var backslashCount = 0;
 
             foreach (var character in argument)

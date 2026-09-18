@@ -1,4 +1,3 @@
-AssignProcessToJobObject
 CreateJobObject
 CreateProcess
 JOBOBJECT_EXTENDED_LIMIT_INFORMATION

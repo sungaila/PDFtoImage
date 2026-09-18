@@ -27,13 +27,16 @@ namespace PDFtoImage.Parallel.Internals
     internal static class PipeProtocol
     {
         internal const int Version = 2;
+
         private const int MaximumMessageLength = 1024 * 1024 * 1024;
 
         internal static byte[] CreateMessage(Action<BinaryWriter> write)
         {
             using var stream = new MemoryStream();
             using (var writer = new BinaryWriter(stream, Encoding.UTF8, true))
+            {
                 write(writer);
+            }
 
             return stream.ToArray();
         }
@@ -47,10 +50,13 @@ namespace PDFtoImage.Parallel.Internals
                 throw new InvalidDataException("The IPC message is too large.");
 
             var header = BitConverter.GetBytes(message.Length + suffix.Length);
+
             await stream.WriteAsync(header, cancellationToken).ConfigureAwait(false);
             await stream.WriteAsync(message, cancellationToken).ConfigureAwait(false);
+
             if (!suffix.IsEmpty)
                 await stream.WriteAsync(suffix, cancellationToken).ConfigureAwait(false);
+
             await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -58,17 +64,21 @@ namespace PDFtoImage.Parallel.Internals
         {
             var header = new byte[sizeof(int)];
             var firstRead = await stream.ReadAsync(header, cancellationToken).ConfigureAwait(false);
+
             if (firstRead == 0)
                 return null;
 
             await ReadExactlyAsync(stream, header, firstRead, header.Length - firstRead, cancellationToken).ConfigureAwait(false);
 
             var messageLength = BitConverter.ToInt32(header, 0);
+
             if (messageLength <= 0 || messageLength > MaximumMessageLength)
                 throw new InvalidDataException("The IPC message has an invalid length.");
 
             var message = new byte[messageLength];
+
             await ReadExactlyAsync(stream, message, 0, message.Length, cancellationToken).ConfigureAwait(false);
+
             return message;
         }
 
@@ -80,6 +90,7 @@ namespace PDFtoImage.Parallel.Internals
         internal static void WriteNullableString(BinaryWriter writer, string? value)
         {
             writer.Write(value != null);
+
             if (value != null)
                 writer.Write(value);
         }
@@ -184,12 +195,15 @@ namespace PDFtoImage.Parallel.Internals
                 writer.Write(bitmap.RowBytes);
                 writer.Write(bitmap.ByteCount);
             });
+
             if ((long)metadata.Length + bitmap.ByteCount > MaximumMessageLength)
                 throw new InvalidDataException("The rendered bitmap exceeds the IPC message limit.");
 
             await stream.WriteAsync(BitConverter.GetBytes(metadata.Length + bitmap.ByteCount), cancellationToken).ConfigureAwait(false);
             await stream.WriteAsync(metadata, cancellationToken).ConfigureAwait(false);
+
             var buffer = ArrayPool<byte>.Shared.Rent(64 * 1024);
+
             try
             {
                 for (var offset = 0; offset < bitmap.ByteCount;)
@@ -199,6 +213,7 @@ namespace PDFtoImage.Parallel.Internals
                     await stream.WriteAsync(buffer.AsMemory(0, count), cancellationToken).ConfigureAwait(false);
                     offset += count;
                 }
+
                 await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
             finally
@@ -210,10 +225,13 @@ namespace PDFtoImage.Parallel.Internals
         internal static SKBitmap ReadBitmap(byte[] payload, int offset = 0)
         {
             const int metadataSize = 6 * sizeof(int);
+
             if (offset < 0 || offset > payload.Length - metadataSize)
                 throw new InvalidDataException("A worker returned incomplete bitmap metadata.");
+
             using var reader = CreateReader(payload);
             reader.BaseStream.Position = offset;
+
             var width = reader.ReadInt32();
             var height = reader.ReadInt32();
             var colorType = (SKColorType)reader.ReadInt32();
@@ -228,6 +246,7 @@ namespace PDFtoImage.Parallel.Internals
                 throw new InvalidDataException("A worker returned invalid bitmap metadata.");
 
             var bitmap = new SKBitmap(width, height, colorType, alphaType);
+
             try
             {
                 if (bitmap.RowBytes != rowBytes || bitmap.ByteCount != byteCount)
@@ -257,6 +276,7 @@ namespace PDFtoImage.Parallel.Internals
         internal static void ThrowIfError(BinaryReader reader)
         {
             var response = (WorkerResponse)reader.ReadByte();
+
             if (response == WorkerResponse.Success)
                 return;
 
@@ -269,6 +289,7 @@ namespace PDFtoImage.Parallel.Internals
         private static void WriteNullableInt32(BinaryWriter writer, int? value)
         {
             writer.Write(value.HasValue);
+
             if (value.HasValue)
                 writer.Write(value.Value);
         }
@@ -283,6 +304,7 @@ namespace PDFtoImage.Parallel.Internals
             while (count > 0)
             {
                 var read = await stream.ReadAsync(buffer.AsMemory(offset, count), cancellationToken).ConfigureAwait(false);
+
                 if (read == 0)
                     throw new EndOfStreamException("The worker closed its IPC pipe unexpectedly.");
 

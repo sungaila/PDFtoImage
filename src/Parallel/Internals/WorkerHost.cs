@@ -16,6 +16,7 @@ namespace PDFtoImage.Parallel.Internals
             {
                 using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
                 using var cancellation = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+
                 await pipe.ConnectAsync(cancellation.Token).ConfigureAwait(false);
 
                 await PipeProtocol.WriteMessageAsync(
@@ -34,6 +35,7 @@ namespace PDFtoImage.Parallel.Internals
                     while (true)
                     {
                         var message = await PipeProtocol.ReadMessageAsync(pipe, CancellationToken.None).ConfigureAwait(false);
+
                         if (message == null)
                             return 0;
 
@@ -46,17 +48,21 @@ namespace PDFtoImage.Parallel.Internals
                         try
                         {
                             byte[] response;
+
                             switch (command)
                             {
                                 case WorkerCommand.LoadDocument:
                                     var password = PipeProtocol.ReadNullableString(reader);
                                     var length = reader.ReadInt32();
+
                                     if (length < 0 || length != message.Length - reader.BaseStream.Position)
                                         throw new InvalidDataException("The PDF payload has an invalid length.");
 
                                     document?.Dispose();
                                     document = null;
+
                                     var pdfStream = new MemoryStream(message, (int)reader.BaseStream.Position, length, false);
+
                                     try
                                     {
                                         document = new WorkerDocument(pdfStream, password);
@@ -71,6 +77,7 @@ namespace PDFtoImage.Parallel.Internals
                                         writer.Write((byte)WorkerResponse.Success);
                                         writer.Write(document.PageCount);
                                     });
+
                                     break;
 
                                 case WorkerCommand.RenderPage:
@@ -79,10 +86,12 @@ namespace PDFtoImage.Parallel.Internals
 
                                     var page = reader.ReadInt32();
                                     var options = PipeProtocol.ReadRenderOptions(reader);
+
                                     using (var bitmap = document.Render(page, options))
                                     {
                                         await PipeProtocol.WriteBitmapResponseAsync(pipe, bitmap, CancellationToken.None).ConfigureAwait(false);
                                     }
+
                                     continue;
 
                                 default:

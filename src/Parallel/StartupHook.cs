@@ -6,9 +6,7 @@ using System.Runtime.Versioning;
 /// Bootstraps a worker before the host application's entry point is invoked.
 /// </summary>
 [SupportedOSPlatform("windows10.0")]
-#if NETCOREAPP
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1050")]
-#endif
 public static class StartupHook
 {
     /// <summary>
@@ -16,11 +14,11 @@ public static class StartupHook
     /// </summary>
     public static void Initialize()
     {
-        var pipeName = Environment.GetEnvironmentVariable(WorkerProcessLauncher.WorkerPipeEnvironmentVariable);
+        var pipeName = Environment.GetEnvironmentVariable(WorkerProcessLauncherWindows.WorkerPipeEnvironmentVariable);
         if (string.IsNullOrEmpty(pipeName))
             return;
 
-        Environment.SetEnvironmentVariable(WorkerProcessLauncher.WorkerPipeEnvironmentVariable, null);
+        Environment.SetEnvironmentVariable(WorkerProcessLauncherWindows.WorkerPipeEnvironmentVariable, null);
 
         var exitCode = WorkerHost.RunAsync(pipeName).GetAwaiter().GetResult();
         Environment.Exit(exitCode);

@@ -39,7 +39,7 @@
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
-    <ProjectReference Include="..\Parallel\Parallel.csproj" Condition="'$(TargetFramework)' != 'net471' and '$(TargetFramework)' != 'net481'" />
+    <ProjectReference Include="..\Parallel\Parallel.csproj" Condition="'$(TargetFramework)' != 'net471' and '$(TargetFramework)' != 'net481' and '$(TargetFramework)' != 'net8.0'" />
   </ItemGroup>
 	
   <!-- Test dependencies -->
