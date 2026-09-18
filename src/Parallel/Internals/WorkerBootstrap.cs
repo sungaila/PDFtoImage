@@ -3,8 +3,6 @@ using System;
 using System.Globalization;
 using System.IO.Pipes;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PDFtoImage.Parallel.Internals
 {
@@ -42,22 +40,22 @@ namespace PDFtoImage.Parallel.Internals
                 WorkerLifetime.StartWatchdog(new SafeFileHandle(new IntPtr(rawHandle), ownsHandle: true));
             }
 
-            Environment.Exit(RunAsync(pipeName).GetAwaiter().GetResult());
+            // Native AOT enters worker mode from this module initializer. Keep the worker loop
+            // synchronous so module initialization never blocks on an asynchronous continuation.
+            Environment.Exit(Run(pipeName));
         }
 
         [System.Runtime.Versioning.SupportedOSPlatform("windows10.0")]
         [System.Runtime.Versioning.SupportedOSPlatform("linux")]
         [System.Runtime.Versioning.SupportedOSPlatform("macos")]
-        private static async Task<int> RunAsync(string pipeName)
+        private static int Run(string pipeName)
         {
             try
             {
-                using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
-                using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                using var pipe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None);
+                pipe.Connect(30000);
 
-                await pipe.ConnectAsync(timeout.Token).ConfigureAwait(false);
-
-                return await WorkerHost.RunAsync(pipe).ConfigureAwait(false);
+                return WorkerHost.Run(pipe);
             }
             catch
             {

@@ -40,9 +40,9 @@ jobs:
           sed -i 's|const base = "/"|const base = "/PDFtoImage/"|g' service-worker.published.js
           sed -i "s|Response.redirect('/', 303);|Response.redirect('/PDFtoImage/', 303);|g" service-worker.published.js
       - name: Restore
-        run: dotnet restore src/WebConverter/WebConverter.csproj -p:TargetFrameworks=net10.0-browser
+        run: dotnet restore src/WebConverter/WebConverter.csproj -p:TargetFramework=net10.0-browser
       - name: Publish
-        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:TargetFrameworks=net10.0-browser -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
+        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:TargetFramework=net10.0-browser -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
       - name: Create .nojekyll file
         run: touch src/WebConverter/bin/Release/net10.0-browser/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes

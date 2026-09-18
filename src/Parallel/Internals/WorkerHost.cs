@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Runtime.Versioning;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace PDFtoImage.Parallel.Internals
 {
@@ -11,18 +9,17 @@ namespace PDFtoImage.Parallel.Internals
     [SupportedOSPlatform("macos")]
     internal static class WorkerHost
     {
-        internal static async Task<int> RunAsync(Stream stream)
+        internal static int Run(Stream stream)
         {
             try
             {
-                await WorkerProtocol.WriteMessageAsync(
+                WorkerProtocol.WriteMessage(
                     stream,
                     WorkerProtocol.CreateMessage(writer =>
                     {
                         writer.Write((byte)WorkerResponse.Hello);
                         writer.Write(WorkerProtocol.Version);
-                    }),
-                    CancellationToken.None).ConfigureAwait(false);
+                    }));
 
                 WorkerDocument? document = null;
                 Guid? documentId = null;
@@ -31,7 +28,7 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     while (true)
                     {
-                        var message = await WorkerProtocol.ReadMessageAsync(stream, CancellationToken.None).ConfigureAwait(false);
+                        var message = WorkerProtocol.ReadMessage(stream);
 
                         if (message == null)
                             return 0;
@@ -93,7 +90,7 @@ namespace PDFtoImage.Parallel.Internals
 
                                     using (var bitmap = document.Render(page, options))
                                     {
-                                        await WorkerProtocol.WriteBitmapResponseAsync(stream, bitmap, CancellationToken.None).ConfigureAwait(false);
+                                        WorkerProtocol.WriteBitmapResponse(stream, bitmap);
                                     }
 
                                     continue;
@@ -117,11 +114,11 @@ namespace PDFtoImage.Parallel.Internals
                                     throw new InvalidDataException("The worker received an unknown command.");
                             }
 
-                            await WorkerProtocol.WriteMessageAsync(stream, response, CancellationToken.None).ConfigureAwait(false);
+                            WorkerProtocol.WriteMessage(stream, response);
                         }
                         catch (Exception exception)
                         {
-                            await WorkerProtocol.WriteMessageAsync(stream, WorkerProtocol.CreateErrorResponse(exception), CancellationToken.None).ConfigureAwait(false);
+                            WorkerProtocol.WriteMessage(stream, WorkerProtocol.CreateErrorResponse(exception));
                         }
                     }
                 }

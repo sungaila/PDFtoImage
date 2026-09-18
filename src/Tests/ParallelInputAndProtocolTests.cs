@@ -173,7 +173,7 @@ namespace PDFtoImage.Tests
 
             using var responses = new MemoryStream();
             using var stream = new ReplayStream(requests.ToArray(), responses);
-            Assert.AreEqual(0, await WorkerHost.RunAsync(stream));
+            Assert.AreEqual(0, WorkerHost.Run(stream));
             responses.Position = 0;
             await WorkerConnection.ReadHelloAsync(responses, TestContext.CancellationToken, CancellationToken.None);
             var loaded = await WorkerProtocol.ReadMessageAsync(responses, TestContext.CancellationToken);

@@ -45,6 +45,25 @@ namespace PDFtoImage.Parallel.Internals
             return stream.ToArray();
         }
 
+        internal static void WriteMessage(Stream stream, byte[] message) =>
+            WriteMessage(stream, message, ReadOnlySpan<byte>.Empty);
+
+        internal static void WriteMessage(Stream stream, byte[] message, ReadOnlySpan<byte> suffix)
+        {
+            if ((long)message.Length + suffix.Length > MaximumMessageLength)
+                throw new InvalidDataException("The IPC message is too large.");
+
+            var header = BitConverter.GetBytes(message.Length + suffix.Length);
+
+            stream.Write(header);
+            stream.Write(message);
+
+            if (!suffix.IsEmpty)
+                stream.Write(suffix);
+
+            stream.Flush();
+        }
+
         internal static Task WriteMessageAsync(Stream stream, byte[] message, CancellationToken cancellationToken) =>
             WriteMessageAsync(stream, message, ReadOnlyMemory<byte>.Empty, cancellationToken);
 
@@ -62,6 +81,28 @@ namespace PDFtoImage.Parallel.Internals
                 await stream.WriteAsync(suffix, cancellationToken).ConfigureAwait(false);
 
             await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        internal static byte[]? ReadMessage(Stream stream)
+        {
+            var header = new byte[sizeof(int)];
+            var firstRead = stream.Read(header, 0, header.Length);
+
+            if (firstRead == 0)
+                return null;
+
+            ReadExactly(stream, header, firstRead, header.Length - firstRead);
+
+            var messageLength = BitConverter.ToInt32(header, 0);
+
+            if (messageLength <= 0 || messageLength > MaximumMessageLength)
+                throw new InvalidDataException("The IPC message has an invalid length.");
+
+            var message = new byte[messageLength];
+
+            ReadExactly(stream, message, 0, message.Length);
+
+            return message;
         }
 
         internal static async Task<byte[]?> ReadMessageAsync(Stream stream, CancellationToken cancellationToken)
@@ -129,6 +170,45 @@ namespace PDFtoImage.Parallel.Internals
             writer.Write(bitmap.ByteCount);
 
             writer.Write(new ReadOnlySpan<byte>((void*)bitmap.GetPixels(), bitmap.ByteCount));
+        }
+
+        internal static void WriteBitmapResponse(Stream stream, SKBitmap bitmap)
+        {
+            var metadata = CreateMessage(writer =>
+            {
+                writer.Write((byte)WorkerResponse.Success);
+                writer.Write(bitmap.Width);
+                writer.Write(bitmap.Height);
+                writer.Write((int)bitmap.ColorType);
+                writer.Write((int)bitmap.AlphaType);
+                writer.Write(bitmap.RowBytes);
+                writer.Write(bitmap.ByteCount);
+            });
+
+            if ((long)metadata.Length + bitmap.ByteCount > MaximumMessageLength)
+                throw new InvalidDataException("The rendered bitmap exceeds the IPC message limit.");
+
+            stream.Write(BitConverter.GetBytes(metadata.Length + bitmap.ByteCount));
+            stream.Write(metadata);
+
+            var buffer = ArrayPool<byte>.Shared.Rent(64 * 1024);
+
+            try
+            {
+                for (var offset = 0; offset < bitmap.ByteCount;)
+                {
+                    var count = Math.Min(buffer.Length, bitmap.ByteCount - offset);
+                    Marshal.Copy(IntPtr.Add(bitmap.GetPixels(), offset), buffer, 0, count);
+                    stream.Write(buffer, 0, count);
+                    offset += count;
+                }
+
+                stream.Flush();
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer, clearArray: true);
+            }
         }
 
         internal static async Task WriteBitmapResponseAsync(Stream stream, SKBitmap bitmap, CancellationToken cancellationToken)
@@ -232,6 +312,20 @@ namespace PDFtoImage.Parallel.Internals
                 throw new InvalidDataException("The worker returned an invalid response.");
 
             throw new ParallelConversionException(reader.ReadString(), reader.ReadString(), ReadNullableString(reader));
+        }
+
+        private static void ReadExactly(Stream stream, byte[] buffer, int offset, int count)
+        {
+            while (count > 0)
+            {
+                var read = stream.Read(buffer, offset, count);
+
+                if (read == 0)
+                    throw new EndOfStreamException("The worker closed its IPC pipe unexpectedly.");
+
+                offset += read;
+                count -= read;
+            }
         }
 
         private static async Task ReadExactlyAsync(Stream stream, byte[] buffer, int offset, int count, CancellationToken cancellationToken)
