@@ -84,7 +84,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
@@ -94,7 +94,6 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
-          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Component detection
@@ -135,7 +134,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
@@ -145,7 +144,6 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
-          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Format
@@ -174,7 +172,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
@@ -237,7 +235,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
@@ -247,7 +245,6 @@ jobs:
           maui-maccatalyst
           maui-windows
           wasm-tools
-          wasm-tools-net10
       - name: Restore
         run: dotnet restore src/PDFtoImage.Build.slnf
       - name: Build
@@ -305,7 +302,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Build .NET Framework test assemblies
         if: runner.os == 'Windows'
@@ -511,7 +508,7 @@ jobs:
         if: success() || failure()
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: preview
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
@@ -586,7 +583,7 @@ jobs:
       - name: Setup .NET 11 RC
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 11.0.x
+          dotnet-version: 11.x
           dotnet-quality: 'preview'
       - name: Disable .NET problem matcher (no annotations)
         run: echo "::remove-matcher owner=csc::"

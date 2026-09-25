@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFramework>net10.0-browser</TargetFramework>
+    <TargetFramework>net11.0-browser</TargetFramework>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <AssemblyName>PDFtoImage.WebConverter</AssemblyName>
     <RootNamespace>PDFtoImage.WebConverter</RootNamespace>
     <StartupObject>PDFtoImage.WebConverter.Client.Program</StartupObject>
     <VersionPrefix>$(ProductVersion)</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>preview</VersionSuffix>
     <RunAOTCompilation>true</RunAOTCompilation>
     <WasmNativeStrip>true</WasmNativeStrip>
     <WasmStripILAfterAOT>true</WasmStripILAfterAOT>
@@ -59,6 +59,19 @@
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
   </ItemGroup>
+
+  <!-- SkiaSharp 4.152.1 selects its Emscripten 3.1.56 archive for net11.0-browser. -->
+  <Target Name="_SelectNet11SkiaSharpNativeArchive"
+          BeforeTargets="_PrepareForBrowserWasmBuildNative"
+          Condition="'$(TargetFramework)' == 'net11.0-browser'">
+    <ItemGroup>
+      <_OldSkiaSharpNativeArchive Include="@(NativeFileReference)"
+                                  Condition="$([System.String]::Copy('%(NativeFileReference.FullPath)').Replace('\','/').Contains('libSkiaSharp.a/3.1.56/'))" />
+      <NativeFileReference Remove="@(_OldSkiaSharpNativeArchive)" />
+      <NativeFileReference Include="$(SkiaSharpStaticLibraryPath)\5.0.6\$(_SkiaSharpNativeBinaryType)\libSkiaSharp.a"
+                           Condition="'@(_OldSkiaSharpNativeArchive)' != ''" />
+    </ItemGroup>
+  </Target>
 	
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />

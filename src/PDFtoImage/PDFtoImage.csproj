@@ -16,7 +16,7 @@
   <!-- NuGet -->
   <PropertyGroup>
     <VersionPrefix>$(ProductVersion)</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>preview</VersionSuffix>
     <Authors>David Sungaila</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
