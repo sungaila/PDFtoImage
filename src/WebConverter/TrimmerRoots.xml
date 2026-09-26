@@ -1,0 +1,5 @@
+<linker>
+	<assembly fullname="PDFtoImage.WebConverter">
+		<type fullname="PDFtoImage.WebConverter.Shared.MainLayout" preserve="all" />
+	</assembly>
+</linker>

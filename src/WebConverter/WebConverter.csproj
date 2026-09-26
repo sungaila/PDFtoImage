@@ -58,6 +58,10 @@
 		<ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<TrimmerRootDescriptor Include="TrimmerRoots.xml" />
+	</ItemGroup>
+
 	<!-- SkiaSharp 4.152.1 selects its Emscripten 3.1.56 archive for net11.0-browser. -->
 	<Target Name="_SelectNet11SkiaSharpNativeArchive"
           BeforeTargets="_PrepareForBrowserWasmBuildNative"
