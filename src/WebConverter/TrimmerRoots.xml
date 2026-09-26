@@ -3,5 +3,7 @@
 		<type fullname="PDFtoImage.WebConverter.Shared.MainLayout" preserve="all" />
 		<type fullname="PDFtoImage.WebConverter.Pages.Index" preserve="all" />
 		<type fullname="PDFtoImage.WebConverter.Pages.Readme" preserve="all" />
+		<type fullname="PDFtoImage.WebConverter.Models.FilesStringyfied" preserve="all" />
+		<type fullname="PDFtoImage.WebConverter.Models.FileStringyfied" preserve="all" />
 	</assembly>
 </linker>
