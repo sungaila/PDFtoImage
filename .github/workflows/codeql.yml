@@ -87,14 +87,19 @@ jobs:
           9.x
           10.x
         dotnet-quality: 'ga'
+    - name: Setup .NET 11 RC
+      if: matrix.language == 'csharp'
+      uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: 11.0.x
+        dotnet-quality: 'preview'
     
-    - name: Setup .NET workloads
+    - name: Build .NET
       if: matrix.language == 'csharp'
       shell: bash
       run: |
-        dotnet workload install maui-android maui-ios maui-maccatalyst maui-windows wasm-tools
-        dotnet restore "src/PDFtoImage/PDFtoImage.csproj"
-        dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release
+        dotnet restore "src/PDFtoImage/PDFtoImage.csproj" -p:TargetFrameworks=net11.0
+        dotnet build "src/PDFtoImage/PDFtoImage.csproj" --configuration Release -p:TargetFrameworks=net11.0 --no-restore
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4

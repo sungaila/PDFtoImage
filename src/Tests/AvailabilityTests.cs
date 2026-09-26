@@ -140,10 +140,7 @@ namespace PDFtoImage.Tests
 
         private static byte[] ReadAsset(string fileName)
         {
-            using var inputStream = GetInputStream(Path.Combine("..", "Assets", fileName));
-            using var buffer = new MemoryStream();
-            inputStream.CopyTo(buffer);
-            return buffer.ToArray();
+            return File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", fileName));
         }
 
         private static void AssertPdfException(Action action)

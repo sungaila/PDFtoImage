@@ -1,0 +1,10 @@
+<Project>
+  <!--
+    PublishTrimmed disables CoreCLR startup hooks by default. PDFtoImage.Parallel
+    uses one to enter worker mode before the consuming application's Main method.
+    Native AOT does not use this switch; its module initializer performs bootstrap.
+  -->
+  <PropertyGroup Condition="'$(PublishTrimmed)' == 'true' and '$(PublishAot)' != 'true'">
+    <StartupHookSupport>true</StartupHookSupport>
+  </PropertyGroup>
+</Project>

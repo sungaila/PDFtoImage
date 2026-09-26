@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="MSTest.Sdk/4.4.1">
   <!-- Assembly -->
   <PropertyGroup>
-    <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
     <AssemblyName>PDFtoImage.Tests</AssemblyName>
     <RootNamespace>PDFtoImage.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -10,12 +10,14 @@
 	
   <!-- C# compiler -->
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Features>strict</Features>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CS0618,CA1416</NoWarn>
     <SignAssembly>True</SignAssembly>
+		<PreferNativeArm64 Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'">true</PreferNativeArm64>
+		<Prefer32Bit Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'">false</Prefer32Bit>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -39,13 +41,17 @@
   <!-- Project references -->
   <ItemGroup>
     <ProjectReference Include="..\PDFtoImage\PDFtoImage.csproj" />
+    <ProjectReference Include="..\Parallel\Parallel.csproj" Condition="'$(TargetFramework)' == 'net11.0'" />
   </ItemGroup>
 	
-  <!-- NuGet Icon -->
+  <!-- Test dependencies -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Testing.Extensions.GitHubActionsReport" />
     <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
-    <PackageReference Include="MSTest.TestAdapter" />
-    <PackageReference Include="MSTest.TestFramework" />
+		<PackageReference Include="System.Buffers" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
+		<PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />
   </ItemGroup>
 </Project>

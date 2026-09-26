@@ -20,15 +20,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: 10.x
-          dotnet-quality: 'ga'
+          dotnet-version: 11.x
+          dotnet-quality: 'preview'
       - name: Setup .NET workloads
-        run: >
-          dotnet workload install
-          maui-android
-          maui-ios
-          maui-maccatalyst
-          wasm-tools
+        run: dotnet workload install wasm-tools --include-previews
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         shell: pwsh
@@ -46,13 +41,13 @@ jobs:
           sed -i 's|const base = "/"|const base = "/PDFtoImage/"|g' service-worker.published.js
           sed -i "s|Response.redirect('/', 303);|Response.redirect('/PDFtoImage/', 303);|g" service-worker.published.js
       - name: Restore
-        run: dotnet restore src/WebConverter/WebConverter.csproj
+        run: dotnet restore src/WebConverter/WebConverter.csproj -p:TargetFramework=net11.0-browser
       - name: Publish
-        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
+        run: dotnet publish src/WebConverter/WebConverter.csproj -c Release -p:TargetFramework=net11.0-browser -p:PublishProfile=src/WebConverter/Properties/PublishProfiles/PublishSite.pubxml -p:VersionSuffix=ci --no-restore
       - name: Create .nojekyll file
-        run: touch src/WebConverter/bin/Release/net10.0-browser/publish/wwwroot/.nojekyll
+        run: touch src/WebConverter/bin/Release/net11.0-browser/publish/wwwroot/.nojekyll
       - name: Update service-worker-assets.js hashes
-        working-directory: src/WebConverter/bin/Release/net10.0-browser/publish/wwwroot
+        working-directory: src/WebConverter/bin/Release/net11.0-browser/publish/wwwroot
         if: false
         run: |
           jsFile=$(<service-worker-assets.js)
@@ -84,7 +79,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: src/WebConverter/bin/Release/net10.0-browser/publish/wwwroot
+          path: src/WebConverter/bin/Release/net11.0-browser/publish/wwwroot
   deploy:
     name: Deploy
     needs: publish

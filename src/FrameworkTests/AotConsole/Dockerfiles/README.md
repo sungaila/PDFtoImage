@@ -24,8 +24,10 @@ docker buildx build --load --platform linux/arm64 \
 docker run --rm --platform linux/arm64 pdftoimage-smoke:alpine-aot
 ```
 
-The `singlefile` variants enable `IncludeNativeLibrariesForSelfExtract` to test
-that PDFium and SkiaSharp native assets remain usable after bundle extraction.
+The `singlefile` variants enable trimming plus `IncludeNativeLibrariesForSelfExtract`
+to verify that the CoreCLR startup hook survives trimming and that PDFium and
+SkiaSharp native assets remain usable after bundle extraction. The Native AOT
+variants exercise `PDFtoImage.Parallel` through its module-initializer bootstrap.
 
 ## Windows
 
