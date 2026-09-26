@@ -16,8 +16,8 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <NoWarn>CS0618,CA1416</NoWarn>
     <SignAssembly>True</SignAssembly>
-		<PreferNativeArm64>true</PreferNativeArm64>
-		<Prefer32Bit>false</Prefer32Bit>
+		<PreferNativeArm64 Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'">true</PreferNativeArm64>
+		<Prefer32Bit Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'">false</Prefer32Bit>
   </PropertyGroup>
 	
   <ItemGroup>
