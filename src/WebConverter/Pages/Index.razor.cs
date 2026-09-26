@@ -91,7 +91,6 @@ namespace PDFtoImage.WebConverter.Pages
             Model.Input = null;
             Model.Output?.Dispose();
             Model.Output = null;
-            StateHasChanged();
 
             try
             {
