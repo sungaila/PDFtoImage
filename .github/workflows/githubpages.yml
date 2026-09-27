@@ -78,7 +78,7 @@ jobs:
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: src/WebConverter/bin/Release/net10.0-browser/publish/wwwroot
+          path: src/WebConverter/bin/Release/net11.0-browser/publish/wwwroot
   deploy:
     name: Deploy
     needs: publish

@@ -183,13 +183,17 @@ jobs:
       - name: Install CycloneDX tool
         run: dotnet tool install --global CycloneDX
       - name: Pack
-        run: dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
+        run: |
+          dotnet pack src/PDFtoImage/PDFtoImage.csproj -c Release -p:VersionSuffix=ci
+          dotnet pack src/Parallel/Parallel.csproj -c Release -p:VersionSuffix=ci
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
+            src/Parallel/bin/Release/*.nupkg
+            src/Parallel/bin/Release/*.snupkg
       - name: Publish NuGet packages
         uses: actions/upload-artifact@v7
         with:
@@ -197,21 +201,34 @@ jobs:
           path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
+            src/Parallel/bin/Release/*.nupkg
+            src/Parallel/bin/Release/*.snupkg
           if-no-files-found: error
-      - name: Generate SBOM (CycloneDX JSON)
+      - name: Generate PDFtoImage SBOM (CycloneDX JSON)
         run: dotnet-CycloneDX src/PDFtoImage/PDFtoImage.csproj -o artifacts -F Json -fn sbom.json
-      - name: Attest SBOM for NuGet packages
+      - name: Generate PDFtoImage.Parallel SBOM (CycloneDX JSON)
+        run: dotnet-CycloneDX src/Parallel/Parallel.csproj -o artifacts -F Json -fn sbom-parallel.json
+      - name: Attest PDFtoImage SBOM
         uses: actions/attest-sbom@v4
         with:
           subject-path: |
             src/PDFtoImage/bin/Release/*.nupkg
             src/PDFtoImage/bin/Release/*.snupkg
           sbom-path: artifacts/sbom.json
+      - name: Attest PDFtoImage.Parallel SBOM
+        uses: actions/attest-sbom@v4
+        with:
+          subject-path: |
+            src/Parallel/bin/Release/*.nupkg
+            src/Parallel/bin/Release/*.snupkg
+          sbom-path: artifacts/sbom-parallel.json
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v7
         with:
           name: SBOM (CycloneDX)
-          path: artifacts/sbom.json
+          path: |
+            artifacts/sbom.json
+            artifacts/sbom-parallel.json
           if-no-files-found: error
   build:
     name: Build
