@@ -5,16 +5,12 @@
 [![Website](https://img.shields.io/website?up_message=online&down_message=offline&url=https%3A%2F%2Fwww.sungaila.de%2FPDFtoImage%2F&style=flat-square&label=website)](https://www.sungaila.de/PDFtoImage/)
 [![GitHub license](https://img.shields.io/github/license/sungaila/PDFtoImage?style=flat-square)](https://github.com/sungaila/PDFtoImage/blob/master/LICENSE)
 
-A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images.
+A .NET library for rendering PDF files as images.
 
-PDFtoImage is built on top of:
-* [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
-* [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
-
-For true multi-process rendering on .NET 11, see [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel/).
+PDFtoImage uses [PDFium](https://pdfium.googlesource.com/pdfium/) for rendering and [SkiaSharp](https://github.com/mono/SkiaSharp) for images.
 
 ## Getting started
-Call a static method from `PDFtoImage.Conversion`. Here is an example of how to render the first page of a PDF file as a PNG image:
+Render the first page of a PDF as PNG with `PDFtoImage.Conversion`:
 
 ```csharp
 using var pdf = File.OpenRead("document.pdf");
@@ -25,11 +21,9 @@ PDFtoImage.Conversion.SavePng(
     page: 0);
 ```
 
-`SaveJpeg`, `SavePng`, `SaveWebp` and `ToImage` render a **single page**.
+`SaveJpeg`, `SavePng`, `SaveWebp`, and `ToImage` render a single page. `ToImages` and `ToImagesAsync` render multiple pages.
 
-`ToImages` and `ToImagesAsync` render **multiple pages**.
-
-*Note: [`SkiaSharp.SKBitmap`](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode) method.*
+Dispose returned `SKBitmap` instances after use. To save one, use [SKBitmap.Encode](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?view=skiasharp).
 
 ### Unity project installation
 1. Open your project and navigate to `Window` → `Package Management` → `Package Manager`.
@@ -55,12 +49,13 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 
 ## Parallel rendering
-PDFium is **not thread-safe**, so calls into PDFium are protected by locks and a single process renders only one page at a time.
+PDFium is not thread-safe, so PDFtoImage serializes PDFium calls within each process. For parallel rendering on .NET 11 or later, use [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel/). It runs PDFium in separate worker processes.
 
-For true parallel rendering through isolated worker processes, install [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel/). It is a separate package built on top of PDFtoImage.
+See the [Parallel README](https://github.com/sungaila/PDFtoImage/blob/master/src/Parallel/README.md) for examples.
 
 ## Index and Range for .NET Framework
-[PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed and **should not be used directly** by your project:
+[PolySharp](https://github.com/Sergio0694/PolySharp) provides `System.Index` and `System.Range` for .NET Framework projects. It also exposes the following generated types; avoid using them directly:
+
 - `System.Index`
 - `System.Range`
 - `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute`

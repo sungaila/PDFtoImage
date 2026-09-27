@@ -8,14 +8,12 @@
 [![Website](https://img.shields.io/website?up_message=online&down_message=offline&url=https%3A%2F%2Fwww.sungaila.de%2FPDFtoImage%2F&style=flat-square&label=website)](https://www.sungaila.de/PDFtoImage/)
 [![GitHub license](https://img.shields.io/github/license/sungaila/PDFtoImage?style=flat-square)](https://github.com/sungaila/PDFtoImage/blob/master/LICENSE)
 
-A .NET library to render [PDF files](https://en.wikipedia.org/wiki/PDF) into images.
+A .NET library for rendering PDF files as images.
 
-This .NET library is built on top of
-* [PDFium](https://pdfium.googlesource.com/pdfium/) (native PDF renderer)
-* [SkiaSharp](https://github.com/mono/SkiaSharp) (cross-platform 2D graphics API)
+PDFtoImage uses [PDFium](https://pdfium.googlesource.com/pdfium/) for rendering and [SkiaSharp](https://github.com/mono/SkiaSharp) for images.
 
 ## Getting started
-Call a static method from `PDFtoImage.Conversion`. Here is an example of how to render the first page of a PDF file as a PNG image:
+Render the first page of a PDF as PNG with `PDFtoImage.Conversion`:
 
 ```csharp
 using var pdf = File.OpenRead("document.pdf");
@@ -26,64 +24,39 @@ PDFtoImage.Conversion.SavePng(
     page: 0);
 ```
 
-`SaveJpeg`, `SavePng`, `SaveWebp` and `ToImage` for a **single page**.
+`SaveJpeg`, `SavePng`, `SaveWebp`, and `ToImage` render a single page. `ToImages` and `ToImagesAsync` render multiple pages.
 
-`ToImages` and `ToImagesAsync` for **multiple pages**.
-
-*Note: [`SkiaSharp.SKBitmap`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap) can be exported with the [`Encode`](https://docs.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?SkiaSharp_SKBitmap_Encode_System_IO_Stream_SkiaSharp_SKEncodedImageFormat_System_Int32_) method.*
+Dispose returned `SKBitmap` instances after use. To save one, use [SKBitmap.Encode](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?view=skiasharp).
 
 ### Unity project installation
 1. Open your project and navigate to `Window` → `Package Management` → `Package Manager`.
 1. Click on the `+` button (top-left corner) and select `Install package from git URL...`.
 1. Enter the following URL and confirm with the `Install` button:
+
 ```
 https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 ```
 
 ## Supported runtimes
-* [.NET (Core)](https://learn.microsoft.com/en-us/dotnet/core/introduction)
+* [.NET](https://learn.microsoft.com/en-us/dotnet/core/introduction)
 * [.NET Framework](https://learn.microsoft.com/en-us/dotnet/framework/get-started/overview)
-* [Mono](https://www.mono-project.com)
+* [Mono](https://www.mono-project.com/)
 
 ## Tested and supported frameworks
 * [ASP.NET](https://learn.microsoft.com/en-us/aspnet/overview)
 * [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
 * [Blazor WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly)
-* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding iOS, see https://github.com/sungaila/PDFtoImage/issues/141)
-* [Unity](https://docs.unity3d.com/Manual/Mono.html) (excluding iOS, see https://github.com/sungaila/PDFtoImage/issues/141)
+* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding iOS, see [#141](https://github.com/sungaila/PDFtoImage/issues/141))
+* [Unity](https://docs.unity3d.com/Manual/Mono.html) (excluding iOS, see [#141](https://github.com/sungaila/PDFtoImage/issues/141))
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 
-## Parallelization
-The native PDFium library used by this project for rendering is **not thread-safe**. For that reason, all calls into PDFium are protected with locks, so a single process can only render one PDF page at a time.
-
-[PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel) provides true parallel rendering through isolated worker processes. It supports Windows 10 / Windows Server 2016 or newer, Linux and macOS.
-
-Apphost executables, `dotnet app.dll`, trimmed single-file and Native AOT applications are supported. CoreCLR workers enter through a trim-preserved startup hook; Native AOT workers use an eager module initializer instead. Dispose the processor to terminate its workers. Worker lifetime is tied to the parent process on Windows and Linux through .NET 11 process APIs; macOS uses an inherited lifetime pipe.
-
-```csharp
-// start a pool of 8 worker processes
-await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 8);
-
-// reuse the same pool for different PDFs, including concurrent requests
-using var a = await converter.ToImageAsync(File.OpenRead("a.pdf"), 0);
-using var b = await converter.ToImageAsync(File.OpenRead("b.pdf"), 0);
-
-await foreach (var image in converter.ToImagesAsync(File.OpenRead("document.pdf")))
-{
-    using (image)
-    {
-        // process pages in their requested order
-    }
-}
-```
-
-Workers start on demand and live until the converter is disposed. The default limit is the processor count. Dispose returned bitmaps; cancellation or a failed worker does not prevent later requests.
-
-If subprocesses are unsuitable, Ghostscript may be an alternative because it can support multiple instances within one process under certain conditions.
+## Parallel rendering
+PDFium is not thread-safe, so PDFtoImage serializes PDFium calls within each process. For parallel rendering on .NET 11 or later, use [PDFtoImage.Parallel](https://www.nuget.org/packages/PDFtoImage.Parallel/). It runs PDFium in separate worker processes; see the [Parallel README](src/Parallel/README.md) for examples.
 
 ## Index and Range for .NET Framework
-[PolySharp](https://github.com/Sergio0694/PolySharp) is used to enable the use of `System.Index` and `System.Range` in .NET Framework projects. As a side effect, the following classes are generated and exposed, which **should not be** used directly by your project:
+[PolySharp](https://github.com/Sergio0694/PolySharp) provides `System.Index` and `System.Range` for .NET Framework projects. It also exposes the following generated types; avoid using them directly:
+
 - `System.Index`
 - `System.Range`
 - `System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute`

@@ -9,17 +9,17 @@ True parallel PDF rendering for [PDFtoImage](https://www.nuget.org/packages/PDFt
 PDFium is not thread-safe, so the main PDFtoImage package serializes access to it inside a process. PDFtoImage.Parallel creates multiple worker processes instead, allowing pages and independent PDFs to be rendered concurrently.
 
 ## Requirements
-* .NET 11
-* Windows 10 / Windows Server 2016 or newer, Linux, or macOS
-* Permission to start subprocesses
 
-The package references [PDFtoImage](https://www.nuget.org/packages/PDFtoImage/) for the actual PDF rendering implementation.
+* .NET 11 or later
+* Windows 10 or later / Windows Server 2016 or later / Linux (glibc or musl) / macOS 14 or later
+* Ability to launch child processes and use local pipes
 
 ## Getting started
+
 Create one `ParallelPdfProcessor` and reuse it for multiple conversions:
 
 ```csharp
-await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 8);
+await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor();
 
 using var image = await converter.ToImageAsync(
     File.OpenRead("document.pdf"),
@@ -29,7 +29,7 @@ using var image = await converter.ToImageAsync(
 The same pool can serve concurrent requests for different PDFs:
 
 ```csharp
-await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 8);
+await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor();
 
 var first = converter.ToImageAsync(File.OpenRead("a.pdf"), 0);
 var second = converter.ToImageAsync(File.OpenRead("b.pdf"), 0);
@@ -52,24 +52,30 @@ await foreach (var image in converter.ToImagesAsync(File.OpenRead("document.pdf"
 }
 ```
 
-Dispose returned `SKBitmap` instances after use.
+Dispose returned `SKBitmap` instances after use. To save one, use [SKBitmap.Encode](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?view=skiasharp).
+
+## ASP.NET Core dependency injection
+
+Register one processor as a singleton so requests share its worker pool:
+
+```csharp
+builder.Services.AddSingleton(_ => new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 4));
+```
+
+Omitting `workerCount` or passing `null` uses [`Environment.ProcessorCount`](https://learn.microsoft.com/en-us/dotnet/api/system.environment.processorcount).
 
 ## Worker pool and lifetime
-Workers start on demand and are reused until the processor is disposed. The default worker limit is the processor count; pass an explicit `workerCount` when a smaller process or memory footprint is preferable.
 
-Cancellation and worker failures do not make the processor unusable for later requests. Dispose the processor to terminate its workers. Worker lifetime is also tied to the parent process so orphan workers are cleaned up when the parent exits.
+Workers start on demand and are reused until the processor is disposed. Set `workerCount` to control the pool size.
+
+Cancellation or a worker failure does not prevent later requests. Workers also exit if the parent process stops.
 
 ## Deployment
-PDFtoImage.Parallel supports:
-* framework-dependent apphost executables
-* `dotnet app.dll`
-* self-contained applications
-* trimmed single-file applications
-* Native AOT applications
 
-CoreCLR workers enter through a trim-preserved startup hook. Native AOT workers enter through a module initializer.
+Framework-dependent, self-contained, trimmed single-file, and Native AOT applications are supported.
 
 ## Memory considerations
-The PDF input is buffered before it is sent to workers, and the same document can be loaded into more than one worker during concurrent rendering. Large PDFs combined with a high worker count can therefore increase memory usage. Choose `workerCount` according to the workload and available memory.
 
-Each IPC message is limited to 1 GiB. A PDF must therefore be slightly smaller than 1 GiB because the load message also contains protocol metadata and the optional password. Known oversized stream lengths are rejected before allocation; unknown-length streams are rejected while they are buffered. A rendered bitmap, including its response metadata, must also fit into one 1 GiB IPC message.
+The processor buffers each PDF in memory, and workers may load additional copies. Large PDFs and concurrent requests can use substantial memory.
+
+PDF data and rendered bitmaps must each fit in a 1 GiB IPC message, including protocol metadata.
