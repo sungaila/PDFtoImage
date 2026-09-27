@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 	<!-- Assembly -->
 	<PropertyGroup>
@@ -25,7 +24,9 @@
 		<PackageIcon>Icon_128.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
 		<Description>Renders PDF files in parallel by distributing PDFium work across isolated worker processes.</Description>
-		<PackageReleaseNotes>- Initial release with Windows, Linux and macOS worker pools and automatic worker cleanup.</PackageReleaseNotes>
+		<PackageReleaseNotes>- Initial release for .NET 11 with parallel PDF rendering through isolated worker processes on Windows, Linux and macOS.
+- Added reusable worker pools, ordered page results and automatic worker cleanup.
+- Supports self-contained, trimmed single-file and Native AOT applications.</PackageReleaseNotes>
 		<PackageTags>PDF Bitmap Image Convert Conversion C# PDFium SkiaSharp Windows Linux macOS Parallel Multiprocess IPC</PackageTags>
 		<RepositoryUrl>https://github.com/sungaila/PDFtoImage.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
