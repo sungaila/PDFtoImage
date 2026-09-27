@@ -79,3 +79,6 @@ Framework-dependent, self-contained, trimmed single-file, and Native AOT applica
 The processor buffers each PDF in memory, and workers may load additional copies. Large PDFs and concurrent requests can use substantial memory.
 
 PDF data and rendered bitmaps must each fit in a 1 GiB IPC message, including protocol metadata.
+
+## Worker bootstrap
+No separate worker executable is deployed. PDFtoImage.Parallel re-launches the consuming application and enters worker mode before `Main`. CoreCLR uses a startup hook, so `System.StartupHookProvider.IsSupported` must not be explicitly disabled; the package explicitly re-enables startup-hook support for trimmed CoreCLR publishes. Native AOT uses a module initializer instead.

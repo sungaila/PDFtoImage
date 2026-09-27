@@ -23,6 +23,8 @@ namespace PDFtoImage.Parallel.Internals
 
         protected readonly SemaphoreSlim _slots;
 
+        private readonly SemaphoreSlim _documentCleanup = new(1, 1);
+
         private readonly CancellationTokenSource _shutdown = new();
 
         private readonly TaskCompletionSource _drained = new(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -87,33 +89,50 @@ namespace PDFtoImage.Parallel.Internals
 
         public async Task ReleaseDocumentAsync(PdfRequest request)
         {
-            var idleSlots = new List<Slot>();
-
             lock (_gate)
             {
                 if (_disposed)
                     return;
 
                 _activeOperations++;
-
-                // A zero-timeout lease is the essential part of request cleanup:
-                // workers that are now busy with another request are left alone.
-                var attempts = _available.Count;
-                for (var i = 0; i < attempts; i++)
-                {
-                    if (!_slots.Wait(0) || !_available.TryPop(out var slot))
-                        break;
-
-                    idleSlots.Add(slot);
-                }
             }
+
+            var cleanupAcquired = false;
 
             try
             {
+                // Cleanup temporarily leases every idle worker. Serialize cleanups so one
+                // request cannot mistake slots held by another cleanup for busy workers and
+                // leave its document loaded indefinitely. Rendering remains fully parallel.
+                await _documentCleanup.WaitAsync().ConfigureAwait(false);
+                cleanupAcquired = true;
+
+                var idleSlots = new List<Slot>();
+
+                lock (_gate)
+                {
+                    if (_disposed)
+                        return;
+
+                    // A zero-timeout lease is the essential part of request cleanup:
+                    // workers that are now busy with another request are left alone.
+                    var attempts = _available.Count;
+                    for (var i = 0; i < attempts; i++)
+                    {
+                        if (!_slots.Wait(0) || !_available.TryPop(out var slot))
+                            break;
+
+                        idleSlots.Add(slot);
+                    }
+                }
+
                 await Task.WhenAll(idleSlots.Select(slot => ReleaseDocumentFromIdleSlotAsync(slot, request))).ConfigureAwait(false);
             }
             finally
             {
+                if (cleanupAcquired)
+                    _documentCleanup.Release();
+
                 lock (_gate)
                 {
                     _activeOperations--;
@@ -321,6 +340,7 @@ namespace PDFtoImage.Parallel.Internals
 
             TryCleanup(DisposeResources, errors);
             TryCleanup(_slots.Dispose, errors);
+            TryCleanup(_documentCleanup.Dispose, errors);
             TryCleanup(_shutdown.Dispose, errors);
 
             if (errors.Count == 0)

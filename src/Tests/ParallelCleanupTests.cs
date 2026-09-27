@@ -47,8 +47,10 @@ namespace PDFtoImage.Tests
         private static void AssertSynchronizationResourcesDisposed(WorkerPool pool)
         {
             var slots = (SemaphoreSlim)typeof(WorkerPool).GetField("_slots", Fields)!.GetValue(pool)!;
+            var documentCleanup = (SemaphoreSlim)typeof(WorkerPool).GetField("_documentCleanup", Fields)!.GetValue(pool)!;
             var shutdown = (CancellationTokenSource)typeof(WorkerPool).GetField("_shutdown", Fields)!.GetValue(pool)!;
             Assert.ThrowsExactly<ObjectDisposedException>(() => slots.Wait(0));
+            Assert.ThrowsExactly<ObjectDisposedException>(() => documentCleanup.Wait(0));
             Assert.ThrowsExactly<ObjectDisposedException>(() => _ = shutdown.Token);
         }
 
@@ -88,6 +90,53 @@ namespace PDFtoImage.Tests
                     process.Dispose();
                 }
             }
+        }
+
+        [TestMethod]
+        public async Task ConcurrentCleanupDoesNotMissTemporarilyLeasedIdleWorker()
+        {
+            await using var pool = new WorkerPool(1);
+            var request = new PdfRequest(Pdf, null);
+            await pool.GetPageCountAsync(request, TestContext!.CancellationToken);
+
+            var poolType = typeof(WorkerPool);
+            var documentCleanup = (SemaphoreSlim)poolType.GetField("_documentCleanup", Fields)!.GetValue(pool)!;
+            var slots = (SemaphoreSlim)poolType.GetField("_slots", Fields)!.GetValue(pool)!;
+            var available = poolType.GetField("_available", Fields)!.GetValue(pool)!;
+            var tryPop = available.GetType().GetMethod("TryPop")!;
+            var push = available.GetType().GetMethod("Push")!;
+            object?[] arguments = [null];
+
+            Assert.IsTrue(documentCleanup.Wait(0, TestContext.CancellationToken));
+            var slotPermitHeld = false;
+            var slotHeld = false;
+            Task? release = null;
+
+            try
+            {
+                Assert.IsTrue(slots.Wait(0, TestContext.CancellationToken));
+                slotPermitHeld = true;
+                Assert.IsTrue((bool)tryPop.Invoke(available, arguments)!);
+                slotHeld = true;
+
+                // Simulate another cleanup temporarily owning this otherwise idle worker.
+                // This release must wait until the worker is visible again before scanning.
+                release = pool.ReleaseDocumentAsync(request);
+                Assert.IsFalse(release.IsCompleted, "A concurrent cleanup must wait until another cleanup returns its temporary worker leases.");
+            }
+            finally
+            {
+                if (slotHeld)
+                    push.Invoke(available, [arguments[0]]);
+
+                if (slotPermitHeld)
+                    slots.Release();
+
+                documentCleanup.Release();
+            }
+
+            await release!;
+            Assert.IsTrue(pool.WorkerDocumentIds.All(id => id == null));
         }
 
         private sealed class FailingStopPool : WorkerPool
