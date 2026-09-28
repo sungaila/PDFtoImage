@@ -178,7 +178,15 @@ namespace PDFtoImage.Parallel.Internals
             {
                 if (bitmapPath != null)
                 {
-                    using (var creator = new FileStream(bitmapPath, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { }
+                    var createOptions = new FileStreamOptions
+                    {
+                        Mode = FileMode.CreateNew,
+                        Access = FileAccess.Write,
+                        Share = FileShare.None
+                    };
+                    if (!OperatingSystem.IsWindows())
+                        createOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+                    using (var creator = new FileStream(bitmapPath, createOptions)) { }
                     if (OperatingSystem.IsWindows())
                         File.SetAttributes(bitmapPath, File.GetAttributes(bitmapPath) | FileAttributes.Temporary);
                     var lifetimeOptions = FileOptions.SequentialScan;

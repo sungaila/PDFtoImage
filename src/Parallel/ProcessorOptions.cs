@@ -29,7 +29,8 @@ namespace PDFtoImage.Parallel
         /// <summary>
         /// Directory for temporary PDFs and bitmaps in <see cref="ProcessorTransferMode.MemoryMappedFile"/> mode only.
         /// <see langword="null"/> uses <see cref="System.IO.Path.GetTempPath()"/>. A specified directory is created
-        /// if needed and is retained after temporary files are deleted.
+        /// if needed and is retained after temporary files are deleted. On a multi-user host, choose a directory
+        /// that other users cannot modify.
         /// </summary>
         public string? TempDirectory { get; init; }
     }

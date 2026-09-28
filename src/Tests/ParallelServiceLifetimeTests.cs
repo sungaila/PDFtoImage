@@ -220,6 +220,13 @@ namespace PDFtoImage.Tests
                     Assert.IsFalse(render.IsCompleted, "The slow render must remain active until it is interrupted.");
                     await Task.Delay(10, cancellation.Token);
                 }
+                if (!OperatingSystem.IsWindows())
+                {
+                    var otherPermissions = UnixFileMode.GroupRead | UnixFileMode.GroupWrite | UnixFileMode.GroupExecute |
+                        UnixFileMode.OtherRead | UnixFileMode.OtherWrite | UnixFileMode.OtherExecute;
+                    foreach (var path in Directory.GetFiles(directory.PathName))
+                        Assert.AreEqual(UnixFileMode.None, File.GetUnixFileMode(path) & otherPermissions);
+                }
                 if (interruption == "cancel")
                     cancellation.Cancel();
                 else if (interruption == "crash")

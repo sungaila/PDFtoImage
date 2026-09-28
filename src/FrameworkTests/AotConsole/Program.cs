@@ -24,7 +24,8 @@ public static class Program
 
 #if PDFTOIMAGE_PARALLEL
         Console.WriteLine("Renderer: PDFtoImage.Parallel");
-        await using var processor = new PDFtoImage.Parallel.ParallelPdfProcessor(workerCount: 2);
+        await using var processor = new PDFtoImage.Parallel.ParallelPdfProcessor(
+            new PDFtoImage.Parallel.ProcessorOptions { WorkerCount = 2 });
         using var bitmap = await processor.ToImageAsync(input, 0);
 #else
         Console.WriteLine("Renderer: PDFtoImage");

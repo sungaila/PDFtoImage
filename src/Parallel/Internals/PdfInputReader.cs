@@ -66,7 +66,18 @@ namespace PDFtoImage.Parallel.Internals
 
             try
             {
-                await using (var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, BufferSize, FileOptions.Asynchronous | FileOptions.SequentialScan))
+                var createOptions = new FileStreamOptions
+                {
+                    Mode = FileMode.CreateNew,
+                    Access = FileAccess.Write,
+                    Share = FileShare.None,
+                    BufferSize = BufferSize,
+                    Options = FileOptions.Asynchronous | FileOptions.SequentialScan
+                };
+                if (!OperatingSystem.IsWindows())
+                    createOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+
+                await using (var output = new FileStream(path, createOptions))
                 {
                     if (OperatingSystem.IsWindows())
                         File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Temporary);
