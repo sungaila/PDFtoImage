@@ -52,7 +52,7 @@ namespace PDFtoImage
             foreach (var page in pages)
             {
                 // Internals.PdfDocument -> Image
-                yield return RenderImpl(pdfDocument, page, GetRenderFlags(options), options, CancellationToken.None);
+                yield return RenderImpl(pdfDocument, page, PdfDocument.GetRenderFlags(options), options, CancellationToken.None);
             }
         }
 
@@ -83,30 +83,10 @@ namespace PDFtoImage
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => RenderImpl(pdfDocument, page, GetRenderFlags(options), options, cancellationToken), cancellationToken);
+                yield return await Task.Run(() => RenderImpl(pdfDocument, page, PdfDocument.GetRenderFlags(options), options, cancellationToken), cancellationToken);
             }
         }
 #endif
-
-        private static NativeMethods.FPDFRenderFlags GetRenderFlags(RenderOptions options)
-        {
-            NativeMethods.FPDFRenderFlags renderFlags = default;
-
-            if (options.WithAnnotations)
-                renderFlags |= NativeMethods.FPDFRenderFlags.ANNOT;
-
-            if (options.Grayscale)
-                renderFlags |= NativeMethods.FPDFRenderFlags.GRAYSCALE;
-
-            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Text))
-                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHTEXT;
-            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Images))
-                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHIMAGE;
-            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Paths))
-                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHPATH;
-
-            return renderFlags;
-        }
 
         private static SKBitmap RenderImpl(PdfDocument pdfDocument, int page, NativeMethods.FPDFRenderFlags renderFlags, RenderOptions options, CancellationToken cancellationToken)
         {

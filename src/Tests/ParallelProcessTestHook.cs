@@ -31,7 +31,7 @@ public static class StartupHook
 
         var pdf = await File.ReadAllBytesAsync(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"), timeout.Token);
 
-        await using var pool = new ParallelPdfProcessor(2);
+        await using var pool = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 2 });
 
         var warmup = await Task.WhenAll(
             pool.ToImageAsync(new MemoryStream(pdf, writable: false), options: new PDFtoImage.RenderOptions(Dpi: 40), cancellationToken: timeout.Token),

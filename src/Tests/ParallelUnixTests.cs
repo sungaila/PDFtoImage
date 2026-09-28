@@ -22,7 +22,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task ConcurrentDocumentsAndOrderedPagesMatchSerialRendering()
         {
-            await using var processor = new ParallelPdfProcessor(2);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 2 });
             var options = new RenderOptions(Dpi: 40);
             async Task Render(byte[] pdf)
             {
@@ -51,7 +51,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task WorkerCrashIsReportedAndReplacementIsLazy()
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var image = await processor.ToImageAsync(new MemoryStream(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             using var process = Process.GetProcessById(processor.WorkerProcessIds.Single());
             process.Kill();
@@ -97,8 +97,8 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task ProcessorInstancesRemainIndependent()
         {
-            await using var first = new ParallelPdfProcessor(1);
-            await using var second = new ParallelPdfProcessor(1);
+            await using var first = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            await using var second = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var firstImage = await first.ToImageAsync(new MemoryStream(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             using var secondImage = await second.ToImageAsync(new MemoryStream(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken);
             AssertBitmapsEqual(firstImage, secondImage);

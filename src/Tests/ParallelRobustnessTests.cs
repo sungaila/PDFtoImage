@@ -19,7 +19,7 @@ namespace PDFtoImage.Tests
         private ParallelPdfProcessor _converter = null!;
 
         [TestInitialize]
-        public void CreateConverter() => _converter = new ParallelPdfProcessor(2);
+        public void CreateConverter() => _converter = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 2 });
 
         [TestCleanup]
         public async Task DisposeConverter() => await _converter.DisposeAsync();
@@ -174,7 +174,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task DisposeAsyncCancelsStreamReadAndWaitsForRequestCleanup()
         {
-            var processor = new ParallelPdfProcessor(1);
+            var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             var stream = new BlockingReadStream();
             var request = processor.ToImageAsync(stream, cancellationToken: TestContext!.CancellationToken);
             await stream.ReadStarted.WaitAsync(TestContext.CancellationToken);
@@ -211,7 +211,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task CompletedRequestUnloadsDocumentsButReusesWorkerProcess()
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             await foreach (var pageBitmap in processor.ToImagesAsync(OpenPdf(Pdf), [0, 1, 2], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
                 pageBitmap.Dispose();
 
@@ -324,7 +324,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task SinglePageSelectionOnlyStartsOneWorker()
         {
-            await using var converter = new ParallelPdfProcessor(int.MaxValue);
+            await using var converter = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = int.MaxValue });
             await foreach (var bitmap in converter.ToImagesAsync(OpenPdf(Pdf), [0], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken))
             {
                 using (bitmap)
@@ -336,7 +336,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task DisposalCompletesActiveAndQueuedRequests()
         {
-            await using var pool = new ParallelPdfProcessor(1);
+            await using var pool = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             var pending = Enumerable.Range(0, 20).Select(async i =>
             {
                 using var image = await pool.ToImageAsync(OpenPdf(Pdf), i % 3, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
@@ -410,7 +410,7 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public async Task DisposedPoolRejectsNewJobs()
         {
-            var pool = new ParallelPdfProcessor(1);
+            var pool = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             await pool.DisposeAsync();
             await pool.DisposeAsync();
             await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => pool.ToImageAsync(OpenPdf(Pdf), cancellationToken: TestContext!.CancellationToken));

@@ -4,8 +4,36 @@ PDFtoImage.Parallel.ParallelConversionException.RemoteExceptionType.get -> strin
 PDFtoImage.Parallel.ParallelPdfProcessor
 PDFtoImage.Parallel.ParallelPdfProcessor.Dispose() -> void
 PDFtoImage.Parallel.ParallelPdfProcessor.DisposeAsync() -> System.Threading.Tasks.ValueTask
-PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor(int? workerCount = null) -> void
 PDFtoImage.Parallel.ParallelPdfProcessor.ToImageAsync(System.IO.Stream! pdfStream, System.Index page = default(System.Index), bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SkiaSharp.SKBitmap!>!
 PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
 PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Collections.Generic.IEnumerable<int>! pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
 PDFtoImage.Parallel.ParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Range pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.IParallelPdfProcessor
+PDFtoImage.Parallel.IParallelPdfProcessor.ToImageAsync(System.IO.Stream! pdfStream, System.Index page = default(System.Index), bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Collections.Generic.IEnumerable<int>! pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Range pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
+PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor(PDFtoImage.Parallel.ProcessorOptions! options) -> void
+PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor() -> void
+PDFtoImage.Parallel.ProcessorOptions
+PDFtoImage.Parallel.ProcessorOptions.<Clone>$() -> PDFtoImage.Parallel.ProcessorOptions!
+PDFtoImage.Parallel.ProcessorOptions.Equals(PDFtoImage.Parallel.ProcessorOptions? other) -> bool
+override PDFtoImage.Parallel.ProcessorOptions.GetHashCode() -> int
+override PDFtoImage.Parallel.ProcessorOptions.ToString() -> string!
+override PDFtoImage.Parallel.ProcessorOptions.Equals(object? obj) -> bool
+static PDFtoImage.Parallel.ProcessorOptions.operator !=(PDFtoImage.Parallel.ProcessorOptions? left, PDFtoImage.Parallel.ProcessorOptions? right) -> bool
+static PDFtoImage.Parallel.ProcessorOptions.operator ==(PDFtoImage.Parallel.ProcessorOptions? left, PDFtoImage.Parallel.ProcessorOptions? right) -> bool
+PDFtoImage.Parallel.ProcessorOptions.ReuseFileStream.get -> bool
+PDFtoImage.Parallel.ProcessorOptions.ReuseFileStream.init -> void
+PDFtoImage.Parallel.ProcessorOptions.SlotCount.get -> int?
+PDFtoImage.Parallel.ProcessorOptions.SlotCount.init -> void
+PDFtoImage.Parallel.ProcessorOptions.ProcessorOptions() -> void
+PDFtoImage.Parallel.ProcessorOptions.TempDirectory.get -> string?
+PDFtoImage.Parallel.ProcessorOptions.TempDirectory.init -> void
+PDFtoImage.Parallel.ProcessorOptions.TransferMode.get -> PDFtoImage.Parallel.ProcessorTransferMode
+PDFtoImage.Parallel.ProcessorOptions.TransferMode.init -> void
+PDFtoImage.Parallel.ProcessorOptions.WorkerCount.get -> int?
+PDFtoImage.Parallel.ProcessorOptions.WorkerCount.init -> void
+PDFtoImage.Parallel.ProcessorTransferMode
+PDFtoImage.Parallel.ProcessorTransferMode.Ipc = 0 -> PDFtoImage.Parallel.ProcessorTransferMode
+PDFtoImage.Parallel.ProcessorTransferMode.MemoryMappedFile = 1 -> PDFtoImage.Parallel.ProcessorTransferMode

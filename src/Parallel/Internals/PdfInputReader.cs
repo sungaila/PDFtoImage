@@ -8,12 +8,38 @@ namespace PDFtoImage.Parallel.Internals
 {
     internal static class PdfInputReader
     {
+        internal static FileStream? TryOpenSourceFile(FileStream source)
+        {
+            if (!source.CanRead || !source.CanSeek)
+                return null;
+
+            FileStream? readable = null;
+            try
+            {
+                readable = new FileStream(source.Name, FileMode.Open, FileAccess.Read,
+                    FileShare.Read, BufferSize, FileOptions.RandomAccess);
+                if (readable.Length == source.Length)
+                    return readable;
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+            catch (NotSupportedException) { }
+            catch (ObjectDisposedException) { }
+
+            readable?.Dispose();
+            return null;
+        }
+
         private const int BufferSize = 81920;
 
         internal static async Task<byte[]> ReadAsync(Stream stream, int maximumLength, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(stream);
             ArgumentOutOfRangeException.ThrowIfNegative(maximumLength);
+
+            // PDFium reads FileStreams by absolute offsets, independently of their current position.
+            if (stream is FileStream && stream.CanSeek)
+                stream.Position = 0;
 
             if (stream.CanSeek && stream.CanRead)
             {
@@ -55,6 +81,49 @@ namespace PDFtoImage.Parallel.Internals
             finally
             {
                 ArrayPool<byte>.Shared.Return(buffer);
+            }
+        }
+
+        internal static async Task<(string Path, FileStream Lifetime)> WriteTempFileAsync(Stream stream, string tempDirectory, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(stream);
+
+            if (stream is FileStream && stream.CanSeek)
+                stream.Position = 0;
+
+            var path = Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".pdf");
+            FileStream? lifetime = null;
+
+            try
+            {
+                var createOptions = new FileStreamOptions
+                {
+                    Mode = FileMode.CreateNew,
+                    Access = FileAccess.Write,
+                    Share = FileShare.None,
+                    BufferSize = BufferSize,
+                    Options = FileOptions.Asynchronous | FileOptions.SequentialScan
+                };
+                if (!OperatingSystem.IsWindows())
+                    createOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+
+                await using (var output = new FileStream(path, createOptions))
+                {
+                    if (OperatingSystem.IsWindows())
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Temporary);
+                    await stream.CopyToAsync(output, cancellationToken).ConfigureAwait(false);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+                var lifetimeOptions = OperatingSystem.IsWindows() ? FileOptions.DeleteOnClose : FileOptions.None;
+                lifetime = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, BufferSize, lifetimeOptions);
+                return (path, lifetime);
+            }
+            catch
+            {
+                lifetime?.Dispose();
+                File.Delete(path);
+                throw;
             }
         }
 

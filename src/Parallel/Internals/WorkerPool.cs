@@ -2,6 +2,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace PDFtoImage.Parallel.Internals
 
         protected readonly SemaphoreSlim _slots;
 
+        private readonly SemaphoreSlim? _parallelismSlots;
+
+        private readonly ProcessorTransferMode _transferMode;
+
+        private readonly string _tempDirectory;
+
         private readonly SemaphoreSlim _documentCleanup = new(1, 1);
 
         private readonly CancellationTokenSource _shutdown = new();
@@ -37,12 +44,17 @@ namespace PDFtoImage.Parallel.Internals
 
         private int _activeOperations;
 
-        internal WorkerPool(int workerCount)
+        internal WorkerPool(int workerCount, int? maxParallelism = null, ProcessorTransferMode transferMode = ProcessorTransferMode.Ipc, string? tempDirectory = null)
         {
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(workerCount);
+            if (maxParallelism is int maximum)
+                ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximum);
             WorkerCount = workerCount;
             _available = new ConcurrentStack<Slot>();
             _slots = new SemaphoreSlim(workerCount);
+            _parallelismSlots = maxParallelism is int limit ? new SemaphoreSlim(limit) : null;
+            _transferMode = transferMode;
+            _tempDirectory = tempDirectory ?? Path.GetTempPath();
         }
 
         protected virtual Task<WorkerConnection> StartWorkerAsync(CancellationToken cancellationToken) =>
@@ -84,7 +96,7 @@ namespace PDFtoImage.Parallel.Internals
                 if (offset < 0 || offset >= count)
                     throw new ArgumentOutOfRangeException(nameof(page), $"The page must be between 0 and {count - 1}.");
 
-                return worker.RenderPageAsync(offset, options, token);
+                return worker.RenderPageAsync(offset, options, _transferMode, _tempDirectory, token);
             }, cancellationToken);
 
         public async Task ReleaseDocumentAsync(PdfRequest request)
@@ -101,6 +113,7 @@ namespace PDFtoImage.Parallel.Internals
 
             try
             {
+                // Releasing documents must not queue behind unrelated render jobs.
                 // Cleanup temporarily leases every idle worker. Serialize cleanups so one
                 // request cannot mistake slots held by another cleanup for busy workers and
                 // leave its document loaded indefinitely. Rendering remains fully parallel.
@@ -171,10 +184,17 @@ namespace PDFtoImage.Parallel.Internals
             Slot? slot = null;
             WorkerConnection? worker = null;
             var acquired = false;
+            var parallelismAcquired = false;
 
             try
             {
                 using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _shutdown.Token);
+
+                if (_parallelismSlots != null)
+                {
+                    await _parallelismSlots.WaitAsync(cancellation.Token).ConfigureAwait(false);
+                    parallelismAcquired = true;
+                }
 
                 await _slots.WaitAsync(cancellation.Token).ConfigureAwait(false);
                 acquired = true;
@@ -204,12 +224,12 @@ namespace PDFtoImage.Parallel.Internals
                 return await worker.ExecuteAsync(request,
                     (pageCount, token) => execute(worker, pageCount, token), cancellation.Token).ConfigureAwait(false);
             }
-            catch (ParallelConversionException exception) when (exception.RemoteExceptionType != "WorkerProcessTerminated")
+            catch (ParallelConversionException exception) when (exception.RemoteExceptionType != "WorkerProcessTerminated" && worker is { IsDisposed: false })
             {
                 // A complete remote error frame leaves the connection synchronized.
                 throw;
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException) when (worker is { IsDisposed: false })
             {
                 // Local page validation has not altered the IPC stream.
                 throw;
@@ -242,6 +262,9 @@ namespace PDFtoImage.Parallel.Internals
 
                     if (acquired)
                         _slots.Release();
+
+                    if (parallelismAcquired)
+                        _parallelismSlots!.Release();
 
                     _activeOperations--;
                     CompleteDisposalIfDrained();
@@ -340,6 +363,8 @@ namespace PDFtoImage.Parallel.Internals
 
             TryCleanup(DisposeResources, errors);
             TryCleanup(_slots.Dispose, errors);
+            if (_parallelismSlots != null)
+                TryCleanup(_parallelismSlots.Dispose, errors);
             TryCleanup(_documentCleanup.Dispose, errors);
             TryCleanup(_shutdown.Dispose, errors);
 

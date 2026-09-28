@@ -16,6 +16,8 @@ namespace PDFtoImage.Parallel.Internals
 
         protected int _disposed;
 
+        private readonly Lock _disposeGate = new();
+
         private SafeFileHandle? _lifetime;
 
         private Guid? _documentId;
@@ -30,6 +32,8 @@ namespace PDFtoImage.Parallel.Internals
         }
 
         internal int ProcessId => _process?.ProcessId ?? 0;
+
+        internal bool IsDisposed => Volatile.Read(ref _disposed) != 0;
 
         internal Guid? DocumentId => _documentId;
 
@@ -120,11 +124,25 @@ namespace PDFtoImage.Parallel.Internals
 
             _documentId = null;
 
-            var header = WorkerProtocol.CreateLoadDocumentHeader(request.Password, request.Bytes.Length, request.Id);
-
             try
             {
-                await WorkerProtocol.WriteMessageAsync(_stream, header, request.Bytes, cancellationToken).ConfigureAwait(false);
+                if (request.FilePath is string path)
+                {
+                    var fileRequest = WorkerProtocol.CreateMessage(writer =>
+                    {
+                        writer.Write((byte)WorkerCommand.LoadDocumentFile);
+                        WorkerProtocol.WriteNullableString(writer, request.Password);
+                        writer.Write(request.Id.ToByteArray());
+                        writer.Write(path);
+                    });
+                    await WorkerProtocol.WriteMessageAsync(_stream, fileRequest, cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    var bytes = request.Bytes!;
+                    var header = WorkerProtocol.CreateLoadDocumentHeader(request.Password, bytes.Length, request.Id);
+                    await WorkerProtocol.WriteMessageAsync(_stream, header, bytes, cancellationToken).ConfigureAwait(false);
+                }
 
                 var response = await ReadRequiredMessageAsync(_stream, cancellationToken).ConfigureAwait(false);
 
@@ -148,14 +166,41 @@ namespace PDFtoImage.Parallel.Internals
             }
         }
 
-        internal async Task<SKBitmap> RenderPageAsync(int page, RenderOptions options, CancellationToken cancellationToken)
+        internal async Task<SKBitmap> RenderPageAsync(int page, RenderOptions options, ProcessorTransferMode transferMode, string tempDirectory, CancellationToken cancellationToken)
         {
+            var bitmapPath = transferMode == ProcessorTransferMode.MemoryMappedFile
+                ? Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".bitmap.raw")
+                : null;
+            FileStream? bitmapLifetime = null;
+            SKBitmap? bitmap = null;
+
             try
             {
+                if (bitmapPath != null)
+                {
+                    var createOptions = new FileStreamOptions
+                    {
+                        Mode = FileMode.CreateNew,
+                        Access = FileAccess.Write,
+                        Share = FileShare.None
+                    };
+                    if (!OperatingSystem.IsWindows())
+                        createOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+                    using (var creator = new FileStream(bitmapPath, createOptions)) { }
+                    if (OperatingSystem.IsWindows())
+                        File.SetAttributes(bitmapPath, File.GetAttributes(bitmapPath) | FileAttributes.Temporary);
+                    var lifetimeOptions = FileOptions.SequentialScan;
+                    if (OperatingSystem.IsWindows())
+                        lifetimeOptions |= FileOptions.DeleteOnClose;
+                    bitmapLifetime = new FileStream(bitmapPath, FileMode.Open, FileAccess.Read,
+                        FileShare.ReadWrite | FileShare.Delete, 4096, lifetimeOptions);
+                }
+
                 var request = WorkerProtocol.CreateMessage(writer =>
                 {
                     writer.Write((byte)WorkerCommand.RenderPage);
                     writer.Write(page);
+                    WorkerProtocol.WriteNullableString(writer, bitmapPath);
                     WorkerProtocol.WriteRenderOptions(writer, options);
                 });
 
@@ -166,38 +211,91 @@ namespace PDFtoImage.Parallel.Internals
 
                 WorkerProtocol.ThrowIfError(reader);
 
-                return WorkerProtocol.ReadBitmap(response, checked((int)reader.BaseStream.Position));
+                bitmap = bitmapPath == null
+                    ? WorkerProtocol.ReadBitmap(response, checked((int)reader.BaseStream.Position))
+                    : WorkerProtocol.ReadMappedBitmap(response, checked((int)reader.BaseStream.Position), bitmapLifetime!);
+                return bitmap;
+            }
+            catch (ParallelConversionException)
+            {
+                // A complete remote error leaves the protocol synchronized and the worker reusable.
+                throw;
             }
             catch (IOException exception)
             {
+                if (bitmapPath != null)
+                    Dispose();
                 throw new ParallelConversionException(
                     "WorkerProcessTerminated",
                     "The PDF conversion worker terminated unexpectedly.",
                     null,
                     exception);
             }
+            catch
+            {
+                if (bitmapPath != null)
+                    Dispose();
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    try
+                    {
+                        bitmapLifetime?.Dispose();
+                    }
+                    finally
+                    {
+                        if (bitmapPath != null && (bitmapLifetime == null || !OperatingSystem.IsWindows()))
+                            File.Delete(bitmapPath);
+                    }
+                }
+                catch
+                {
+                    // A failed cleanup prevents ownership from reaching the caller.
+                    bitmap?.Dispose();
+                    throw;
+                }
+            }
         }
 
         public virtual void Dispose()
         {
-            if (Interlocked.Exchange(ref _disposed, 1) != 0)
-                return;
-
-            _stream.Dispose();
-            Interlocked.Exchange(ref _lifetime, null)?.Dispose();
-
-            var process = Interlocked.Exchange(ref _process, null);
-            if (process == null)
-                return;
-
-            try
+            lock (_disposeGate)
             {
-                process.Kill();
-                process.WaitForExit();
-            }
-            finally
-            {
-                process.Dispose();
+                if (Interlocked.Exchange(ref _disposed, 1) != 0)
+                    return;
+
+                // Concurrent request cancellation and pool shutdown must both wait
+                // until this worker has released its file handles.
+                try
+                {
+                    _stream.Dispose();
+                }
+                finally
+                {
+                    try
+                    {
+                        Interlocked.Exchange(ref _lifetime, null)?.Dispose();
+                    }
+                    finally
+                    {
+                        var process = Interlocked.Exchange(ref _process, null);
+                        if (process != null)
+                        {
+                            try
+                            {
+                                process.Kill();
+                                process.WaitForExit();
+                            }
+                            finally
+                            {
+                                process.Dispose();
+                            }
+                        }
+                    }
+                }
             }
         }
 

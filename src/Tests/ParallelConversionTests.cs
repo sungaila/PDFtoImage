@@ -20,7 +20,7 @@ namespace PDFtoImage.Tests
         private ParallelPdfProcessor _converter = null!;
 
         [TestInitialize]
-        public void CreateConverter() => _converter = new ParallelPdfProcessor(2);
+        public void CreateConverter() => _converter = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 2 });
 
         [TestCleanup]
         public async Task DisposeConverter() => await _converter.DisposeAsync();
@@ -101,7 +101,7 @@ namespace PDFtoImage.Tests
         public async Task KilledWorkerProducesParallelConversionException()
         {
             var pdf = OtherPdf;
-            await using var pool = new ParallelPdfProcessor(1);
+            await using var pool = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             using var worker = Process.GetProcessById(pool.WorkerProcessIds.Single());
 
@@ -123,7 +123,7 @@ namespace PDFtoImage.Tests
         public async Task DisposingPoolTerminatesWorkers()
         {
             var pdf = OtherPdf;
-            var pool = new ParallelPdfProcessor(2);
+            var pool = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 2 });
             using var warmup = await pool.ToImageAsync(OpenPdf(pdf), options: TestRenderOptions, cancellationToken: TestContext!.CancellationToken);
             var workers = pool.WorkerProcessIds.Select(Process.GetProcessById).ToArray();
 
@@ -184,8 +184,8 @@ namespace PDFtoImage.Tests
         [TestMethod]
         public void InvalidWorkerCountIsRejected()
         {
-            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(0));
-            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(-1));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 0 }));
+            Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = -1 }));
         }
 
         [TestMethod]

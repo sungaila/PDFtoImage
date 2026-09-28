@@ -78,20 +78,49 @@ namespace PDFtoImage.Parallel.Internals
 
                                     break;
 
+                                case WorkerCommand.LoadDocumentFile:
+                                    var filePassword = WorkerProtocol.ReadNullableString(reader);
+                                    var fileDocumentIdBytes = reader.ReadBytes(16);
+                                    var filePath = reader.ReadString();
+                                    if (fileDocumentIdBytes.Length != 16 || reader.BaseStream.Position != reader.BaseStream.Length)
+                                        throw new InvalidDataException("The file PDF request has an invalid identifier or path.");
+
+                                    document?.Dispose();
+                                    document = null;
+                                    documentId = null;
+                                    var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, 4096, FileOptions.RandomAccess);
+                                    try
+                                    {
+                                        document = new WorkerDocument(fileStream, filePassword);
+                                        documentId = new Guid(fileDocumentIdBytes);
+                                    }
+                                    catch
+                                    {
+                                        document?.Dispose();
+                                        document = null;
+                                        fileStream.Dispose();
+                                        throw;
+                                    }
+
+                                    response = WorkerProtocol.CreateMessage(writer =>
+                                    {
+                                        writer.Write((byte)WorkerResponse.Success);
+                                        writer.Write(document.PageCount);
+                                    });
+                                    break;
+
                                 case WorkerCommand.RenderPage:
                                     if (document == null)
                                         throw new InvalidOperationException("No PDF document has been loaded.");
 
                                     var page = reader.ReadInt32();
+                                    var bitmapPath = WorkerProtocol.ReadNullableString(reader);
                                     var options = WorkerProtocol.ReadRenderOptions(reader);
 
                                     if (reader.BaseStream.Position != reader.BaseStream.Length)
                                         throw new InvalidDataException("The render request contains unexpected trailing data.");
 
-                                    using (var bitmap = document.Render(page, options))
-                                    {
-                                        WorkerProtocol.WriteBitmapResponse(stream, bitmap);
-                                    }
+                                    WorkerBitmapRenderer.Render(stream, document, page, options, bitmapPath);
 
                                     continue;
 
