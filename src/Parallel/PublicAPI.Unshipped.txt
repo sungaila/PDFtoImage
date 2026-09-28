@@ -5,6 +5,8 @@ PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStr
 PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Collections.Generic.IEnumerable<int>! pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
 PDFtoImage.Parallel.IParallelPdfProcessor.ToImagesAsync(System.IO.Stream! pdfStream, System.Range pages, bool leaveOpen = false, string? password = null, PDFtoImage.RenderOptions options = default(PDFtoImage.RenderOptions), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IAsyncEnumerable<SkiaSharp.SKBitmap!>!
 PDFtoImage.Parallel.IProcessorOptions
+PDFtoImage.Parallel.IProcessorOptions.ReuseFileStream.get -> bool
+PDFtoImage.Parallel.IProcessorOptions.ReuseFileStream.init -> void
 PDFtoImage.Parallel.IProcessorOptions.SlotCount.get -> int?
 PDFtoImage.Parallel.IProcessorOptions.SlotCount.init -> void
 PDFtoImage.Parallel.IProcessorOptions.TempDirectory.get -> string?
@@ -16,6 +18,8 @@ PDFtoImage.Parallel.IProcessorOptions.WorkerCount.init -> void
 PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor(PDFtoImage.Parallel.ProcessorOptions! options) -> void
 PDFtoImage.Parallel.ParallelPdfProcessor.ParallelPdfProcessor() -> void
 PDFtoImage.Parallel.ProcessorOptions
+PDFtoImage.Parallel.ProcessorOptions.ReuseFileStream.get -> bool
+PDFtoImage.Parallel.ProcessorOptions.ReuseFileStream.init -> void
 PDFtoImage.Parallel.ProcessorOptions.SlotCount.get -> int?
 PDFtoImage.Parallel.ProcessorOptions.SlotCount.init -> void
 PDFtoImage.Parallel.ProcessorOptions.ProcessorOptions() -> void

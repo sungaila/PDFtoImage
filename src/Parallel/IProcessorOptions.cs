@@ -26,6 +26,15 @@ namespace PDFtoImage.Parallel
         ProcessorTransferMode TransferMode { get; init; }
 
         /// <summary>
+        /// In <see cref="ProcessorTransferMode.MemoryMappedFile"/> mode, reuse a readable, seekable
+        /// <see cref="System.IO.FileStream"/> from position zero without copying its PDF to a temporary file.
+        /// The file must remain unchanged while it is being rendered. If it cannot be reopened for reading,
+        /// the processor copies the stream instead. The default is <see langword="true"/>; this setting has
+        /// no effect in <see cref="ProcessorTransferMode.Ipc"/> mode.
+        /// </summary>
+        bool ReuseFileStream { get; init; }
+
+        /// <summary>
         /// Directory for temporary PDF and bitmap files in <see cref="ProcessorTransferMode.MemoryMappedFile"/> mode only.
         /// <see langword="null"/> uses <see cref="System.IO.Path.GetTempPath()"/>. A specified directory is resolved
         /// to an absolute path and created when the processor is constructed. Temporary files are deleted by the host

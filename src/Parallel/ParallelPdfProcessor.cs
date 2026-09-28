@@ -23,6 +23,8 @@ namespace PDFtoImage.Parallel
 
         private readonly ProcessorTransferMode _transferMode;
 
+        private readonly bool _reuseFileStream;
+
         private readonly int? _maxParallelism;
 
         private readonly string _tempDirectory;
@@ -33,7 +35,7 @@ namespace PDFtoImage.Parallel
 
         private readonly TaskCompletionSource _requestsDrained = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        private readonly HashSet<PdfRequest> _temporaryPdfs = [];
+        private readonly HashSet<PdfRequest> _fileRequests = [];
 
         private bool _disposed;
 
@@ -68,6 +70,7 @@ namespace PDFtoImage.Parallel
             }
 
             _transferMode = options.TransferMode;
+            _reuseFileStream = options.ReuseFileStream;
             _maxParallelism = options.SlotCount;
             _pool = new WorkerPool(count, options.SlotCount, options.TransferMode, _tempDirectory);
         }
@@ -83,7 +86,7 @@ namespace PDFtoImage.Parallel
             get
             {
                 lock (_gate)
-                    return [.. _temporaryPdfs.Select(request => request.FilePath!)];
+                    return [.. _fileRequests.Where(request => request.IsTemporaryFile).Select(request => request.FilePath!)];
             }
         }
 
@@ -112,7 +115,7 @@ namespace PDFtoImage.Parallel
                 {
                     try
                     {
-                        CleanupTemporaryPdfs();
+                        CleanupFileRequests();
                     }
                     finally
                     {
@@ -252,18 +255,16 @@ namespace PDFtoImage.Parallel
                     cancellationToken.ThrowIfCancellationRequested();
                     if (_transferMode == ProcessorTransferMode.MemoryMappedFile)
                     {
-                        var (path, lifetime) = await PdfInputReader.WriteTempFileAsync(pdfStream, _tempDirectory, cancellationToken).ConfigureAwait(false);
-                        result = new PdfRequest(path, lifetime, password, ReleaseTemporaryPdf, deleteOnClose: OperatingSystem.IsWindows());
-                        var disposed = false;
-                        lock (_gate)
+                        if (_reuseFileStream && pdfStream is FileStream source && PdfInputReader.TryOpenSourceFile(source) is FileStream readable)
                         {
-                            if (_disposed)
-                                disposed = true;
-                            else
-                                _temporaryPdfs.Add(result);
+                            result = new PdfRequest(readable.Name, readable, password, ReleaseFileRequest, deleteFile: false);
+                            RegisterFileRequest(result);
+                            return result;
                         }
-                        if (disposed)
-                            throw new ObjectDisposedException(nameof(ParallelPdfProcessor));
+
+                        var (path, lifetime) = await PdfInputReader.WriteTempFileAsync(pdfStream, _tempDirectory, cancellationToken).ConfigureAwait(false);
+                        result = new PdfRequest(path, lifetime, password, ReleaseFileRequest, deleteOnClose: OperatingSystem.IsWindows());
+                        RegisterFileRequest(result);
                         return result;
                     }
 
@@ -283,17 +284,26 @@ namespace PDFtoImage.Parallel
             }
         }
 
-        private void ReleaseTemporaryPdf(PdfRequest request)
+        private void RegisterFileRequest(PdfRequest request)
         {
             lock (_gate)
-                _temporaryPdfs.Remove(request);
+            {
+                ObjectDisposedException.ThrowIf(_disposed, this);
+                _fileRequests.Add(request);
+            }
         }
 
-        private void CleanupTemporaryPdfs()
+        private void ReleaseFileRequest(PdfRequest request)
+        {
+            lock (_gate)
+                _fileRequests.Remove(request);
+        }
+
+        private void CleanupFileRequests()
         {
             PdfRequest[] requests;
             lock (_gate)
-                requests = [.. _temporaryPdfs];
+                requests = [.. _fileRequests];
 
             List<Exception>? errors = null;
             foreach (var request in requests)
@@ -309,7 +319,7 @@ namespace PDFtoImage.Parallel
             }
 
             if (errors != null)
-                throw new AggregateException("Temporary PDF cleanup failed.", errors);
+                throw new AggregateException("PDF file request cleanup failed.", errors);
         }
 
         private async Task<SKBitmap> ToImageCoreAsync(PdfRequest request, Index page, RenderOptions options, CancellationToken cancellationToken)

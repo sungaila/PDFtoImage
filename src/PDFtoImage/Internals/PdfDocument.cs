@@ -52,7 +52,64 @@ namespace PDFtoImage.Internals
         private const int MaxTileWidth = 4000;
         private const int MaxTileHeight = 4000;
 
+        internal static NativeMethods.FPDFRenderFlags GetRenderFlags(RenderOptions options)
+        {
+            NativeMethods.FPDFRenderFlags renderFlags = default;
+
+            if (options.WithAnnotations)
+                renderFlags |= NativeMethods.FPDFRenderFlags.ANNOT;
+
+            if (options.Grayscale)
+                renderFlags |= NativeMethods.FPDFRenderFlags.GRAYSCALE;
+
+            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Text))
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHTEXT;
+            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Images))
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHIMAGE;
+            if (!options.AntiAliasing.HasFlag(PdfAntiAliasing.Paths))
+                renderFlags |= NativeMethods.FPDFRenderFlags.RENDER_NO_SMOOTHPATH;
+
+            return renderFlags;
+        }
+
         public SKBitmap Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, CancellationToken cancellationToken = default)
+        {
+            SKBitmap? bitmap = null;
+            try
+            {
+                Render(page, requestedWidth, requestedHeight, dpiX, dpiY, rotate, flags, renderFormFill,
+                    backgroundColor, bounds, useTiling, withAspectRatio, dpiRelativeToBounds,
+                    (width, height) =>
+                    {
+                        bitmap = new SKBitmap(width, height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                        return (bitmap.GetPixels(), bitmap.RowBytes);
+                    }, cancellationToken);
+                return bitmap!;
+            }
+            catch
+            {
+                bitmap?.Dispose();
+                throw;
+            }
+        }
+
+        internal void Render(int page, RenderOptions options, IntPtr pixels, int rowBytes, CancellationToken cancellationToken = default) =>
+            Render(page, options, (_, _) => (pixels, rowBytes), cancellationToken);
+
+        // The callback runs after the output size is known so a worker can allocate or map
+        // its final destination. PDFium then renders directly into the returned pointer.
+        internal void Render(int page, RenderOptions options, Func<int, int, (IntPtr Pixels, int RowBytes)> getPixels, CancellationToken cancellationToken = default)
+        {
+            if (options == default)
+                options = new();
+
+            Render(page, options.Width, options.Height, options.Dpi, options.Dpi, options.Rotation,
+                GetRenderFlags(options), options.WithFormFill, options.BackgroundColor ?? SKColors.White,
+                options.Bounds, options.UseTiling, options.WithAspectRatio, options.DpiRelativeToBounds,
+                getPixels, cancellationToken);
+        }
+
+        private void Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, Func<int, int, (IntPtr Pixels, int RowBytes)> getPixels, CancellationToken cancellationToken)
         {
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
@@ -189,18 +246,26 @@ namespace PDFtoImage.Internals
                 }
             }
 
-            SKBitmap bitmap;
+            var bitmapWidth = (int)width;
+            var bitmapHeight = (int)height;
+            cancellationToken.ThrowIfCancellationRequested();
+            var (pixels, rowBytes) = getPixels(bitmapWidth, bitmapHeight);
+            if (pixels == IntPtr.Zero || bitmapWidth <= 0 || bitmapHeight <= 0 || rowBytes < checked(bitmapWidth * 4))
+                throw new ArgumentException("The destination must provide writable BGRA pixels for the rendered page.", nameof(getPixels));
 
             int horizontalTileCount = (int)Math.Ceiling(width / MaxTileWidth);
             int verticalTileCount = (int)Math.Ceiling(height / MaxTileHeight);
 
             if (!useTiling || (horizontalTileCount == 1 && verticalTileCount == 1))
             {
-                bitmap = RenderSubset(_file!, page, width, height, rotate, flags, renderFormFill, backgroundColor, bounds, originalWidth, originalHeight, cancellationToken);
+                RenderSubset(_file, page, width, height, rotate, flags, renderFormFill, backgroundColor,
+                    bounds, originalWidth, originalHeight, pixels, rowBytes, cancellationToken);
             }
             else
             {
-                bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
+                using var bitmap = new SKBitmap();
+                if (!bitmap.InstallPixels(new SKImageInfo(bitmapWidth, bitmapHeight, SKColorType.Bgra8888, SKAlphaType.Premul), pixels, rowBytes))
+                    throw new InvalidOperationException("Skia could not use the destination pixel buffer for tiled rendering.");
 
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -255,7 +320,6 @@ namespace PDFtoImage.Internals
                 canvas.Flush();
             }
 
-            return bitmap;
         }
 
         private static void AdjustForAspectRatio(ref float? width, ref float? height, SizeF pageSize)
@@ -274,12 +338,28 @@ namespace PDFtoImage.Internals
         {
             cancellationToken.ThrowIfCancellationRequested();
             var bitmap = new SKBitmap((int)width, (int)height, SKColorType.Bgra8888, SKAlphaType.Premul);
+            try
+            {
+                RenderSubset(file, page, width, height, rotate, flags, renderFormFill, backgroundColor,
+                    bounds, originalWidth, originalHeight, bitmap.GetPixels(), bitmap.RowBytes, cancellationToken);
+                return bitmap;
+            }
+            catch
+            {
+                bitmap.Dispose();
+                throw;
+            }
+        }
+
+        private static void RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, IntPtr pixels, int rowBytes, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             IntPtr handle = IntPtr.Zero;
 
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), bitmap.RowBytes, out var error);
+                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, pixels, rowBytes, out var error);
 
                 if (handle == IntPtr.Zero)
                     throw PdfException.CreateException(error) ?? new PdfUnknownException();
@@ -303,18 +383,11 @@ namespace PDFtoImage.Internals
                     renderFormFill
                 );
             }
-            catch
-            {
-                bitmap?.Dispose();
-                throw;
-            }
             finally
             {
                 if (handle != IntPtr.Zero)
                     NativeMethods.Bitmap_Destroy(handle);
             }
-
-            return bitmap;
         }
 
         /// <summary>

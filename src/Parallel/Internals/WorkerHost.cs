@@ -120,13 +120,7 @@ namespace PDFtoImage.Parallel.Internals
                                     if (reader.BaseStream.Position != reader.BaseStream.Length)
                                         throw new InvalidDataException("The render request contains unexpected trailing data.");
 
-                                    using (var bitmap = document.Render(page, options))
-                                    {
-                                        if (bitmapPath == null)
-                                            WorkerProtocol.WriteBitmapResponse(stream, bitmap);
-                                        else
-                                            WorkerProtocol.WriteMappedBitmapResponse(stream, bitmap, bitmapPath);
-                                    }
+                                    WorkerBitmapRenderer.Render(stream, document, page, options, bitmapPath);
 
                                     continue;
 

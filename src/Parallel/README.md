@@ -105,7 +105,7 @@ await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(
     });
 ```
 
-Workers read the same temporary PDF file. The host copies each mapped bitmap into the returned `SKBitmap` and removes its temporary file before returning it. Throughput depends on PDF size, output size, and temporary-storage performance; benchmark both modes for your workload.
+Workers read the same PDF file. The host copies each mapped bitmap into the returned `SKBitmap` and removes its temporary file before returning it. Throughput depends on PDF size, output size, and temporary-storage performance; benchmark both modes for your workload.
 
 ## Technical considerations
 ### Worker pool and lifetime
@@ -124,7 +124,7 @@ Framework-dependent, self-contained, trimmed single-file, and Native AOT applica
 ### Memory
 With the default `ProcessorTransferMode.Ipc`, the processor buffers each PDF in memory, copies it over IPC, and receives bitmap pixels over IPC. Workers may load additional copies. Large PDFs and concurrent requests can use substantial memory.
 
-`ProcessorTransferMode.MemoryMappedFile` buffers each PDF in a temporary file shared read-only by workers. Bitmap pixels are written into a raw, file-backed memory map and copied into the returned `SKBitmap` by the host. The host deletes bitmap files before returning each image and deletes PDF files when the request completes or is cancelled. Disposing the processor also removes PDF files held by unfinished enumerations. This mode needs writable temporary storage and trades disk I/O for lower IPC buffering.
+`ProcessorTransferMode.MemoryMappedFile` makes each PDF available as a file shared read-only by workers, creating a temporary copy when needed. Bitmap pixels are written into a raw, file-backed memory map and copied into the returned `SKBitmap` by the host. The host deletes bitmap files before returning each image and deletes temporary PDF files when the request completes or is cancelled. Disposing the processor also removes temporary PDF files held by unfinished enumerations. This mode needs writable temporary storage and trades disk I/O for lower IPC buffering.
 
 In IPC mode, PDF data and rendered bitmaps must each fit in a 1 GiB IPC message, including protocol metadata. The file-backed mode does not use this IPC payload limit for PDF data or bitmap pixels.
 

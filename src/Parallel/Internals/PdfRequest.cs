@@ -14,6 +14,8 @@ namespace PDFtoImage.Parallel.Internals
 
         private readonly bool _deleteOnClose;
 
+        private readonly bool _deleteFile;
+
         private readonly Lock _gate = new();
 
         private bool _disposed;
@@ -24,13 +26,14 @@ namespace PDFtoImage.Parallel.Internals
             Password = password;
         }
 
-        internal PdfRequest(string filePath, FileStream lifetime, string? password, Action<PdfRequest>? onDispose = null, bool deleteOnClose = false)
+        internal PdfRequest(string filePath, FileStream lifetime, string? password, Action<PdfRequest>? onDispose = null, bool deleteOnClose = false, bool deleteFile = true)
         {
             FilePath = filePath;
             Password = password;
             _lifetime = lifetime;
             _onDispose = onDispose;
             _deleteOnClose = deleteOnClose;
+            _deleteFile = deleteFile;
         }
 
         internal Guid Id { get; } = Guid.NewGuid();
@@ -38,6 +41,8 @@ namespace PDFtoImage.Parallel.Internals
         internal byte[]? Bytes { get; }
 
         internal string? FilePath { get; }
+
+        internal bool IsTemporaryFile => _deleteFile;
 
         internal string? Password { get; }
 
@@ -56,7 +61,7 @@ namespace PDFtoImage.Parallel.Internals
                 {
                     // Windows may still have a worker handle on a delete-pending file.
                     // DeleteOnClose already owns deletion; a second DeleteFile can fail.
-                    if (!_deleteOnClose)
+                    if (_deleteFile && !_deleteOnClose)
                         File.Delete(FilePath);
                 }
 

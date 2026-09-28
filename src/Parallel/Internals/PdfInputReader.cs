@@ -8,6 +8,31 @@ namespace PDFtoImage.Parallel.Internals
 {
     internal static class PdfInputReader
     {
+        internal static FileStream? TryOpenSourceFile(FileStream source)
+        {
+            if (!source.CanRead || !source.CanSeek)
+                return null;
+
+            FileStream? readable = null;
+            try
+            {
+                if (source.Position != 0)
+                    return null;
+
+                readable = new FileStream(source.Name, FileMode.Open, FileAccess.Read,
+                    FileShare.Read, BufferSize, FileOptions.RandomAccess);
+                if (readable.Length == source.Length)
+                    return readable;
+            }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+            catch (NotSupportedException) { }
+            catch (ObjectDisposedException) { }
+
+            readable?.Dispose();
+            return null;
+        }
+
         private const int BufferSize = 81920;
 
         internal static async Task<byte[]> ReadAsync(Stream stream, int maximumLength, CancellationToken cancellationToken)

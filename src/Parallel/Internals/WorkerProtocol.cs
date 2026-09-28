@@ -182,33 +182,30 @@ namespace PDFtoImage.Parallel.Internals
             }
         }
 
-        internal static void WriteBitmapResponse(Stream stream, SKBitmap bitmap)
+        internal static void ValidateIpcBitmapLength(int byteCount)
         {
-            var metadata = CreateMessage(writer =>
-            {
-                writer.Write((byte)WorkerResponse.Success);
-                writer.Write(bitmap.Width);
-                writer.Write(bitmap.Height);
-                writer.Write((int)bitmap.ColorType);
-                writer.Write((int)bitmap.AlphaType);
-                writer.Write(bitmap.RowBytes);
-                writer.Write(bitmap.ByteCount);
-            });
-
-            if ((long)metadata.Length + bitmap.ByteCount > MaximumMessageLength)
+            const int bitmapMetadataLength = 1 + 6 * sizeof(int);
+            if (byteCount <= 0 || (long)bitmapMetadataLength + byteCount > MaximumMessageLength)
                 throw new InvalidDataException("The rendered bitmap exceeds the IPC message limit.");
+        }
 
-            stream.Write(BitConverter.GetBytes(metadata.Length + bitmap.ByteCount));
+        internal static void WriteBitmapResponse(Stream stream, IntPtr pixels, int width, int height, int rowBytes)
+        {
+            var byteCount = checked(rowBytes * height);
+            ValidateIpcBitmapLength(byteCount);
+            var metadata = CreateBitmapMetadata(width, height, rowBytes, byteCount);
+
+            stream.Write(BitConverter.GetBytes(metadata.Length + byteCount));
             stream.Write(metadata);
 
             var buffer = ArrayPool<byte>.Shared.Rent(64 * 1024);
 
             try
             {
-                for (var offset = 0; offset < bitmap.ByteCount;)
+                for (var offset = 0; offset < byteCount;)
                 {
-                    var count = Math.Min(buffer.Length, bitmap.ByteCount - offset);
-                    Marshal.Copy(IntPtr.Add(bitmap.GetPixels(), offset), buffer, 0, count);
+                    var count = Math.Min(buffer.Length, byteCount - offset);
+                    Marshal.Copy(IntPtr.Add(pixels, offset), buffer, 0, count);
                     stream.Write(buffer, 0, count);
                     offset += count;
                 }
@@ -286,6 +283,9 @@ namespace PDFtoImage.Parallel.Internals
             WriteMessage(stream, CreateBitmapMetadata(bitmap));
         }
 
+        internal static void WriteMappedBitmapMetadataResponse(Stream stream, int width, int height, int rowBytes, int byteCount) =>
+            WriteMessage(stream, CreateBitmapMetadata(width, height, rowBytes, byteCount));
+
         internal static unsafe SKBitmap ReadMappedBitmap(byte[] payload, int offset, FileStream file)
         {
             const int metadataSize = 6 * sizeof(int);
@@ -334,6 +334,17 @@ namespace PDFtoImage.Parallel.Internals
                 throw;
             }
         }
+
+        private static byte[] CreateBitmapMetadata(int width, int height, int rowBytes, int byteCount) => CreateMessage(writer =>
+        {
+            writer.Write((byte)WorkerResponse.Success);
+            writer.Write(width);
+            writer.Write(height);
+            writer.Write((int)SKColorType.Bgra8888);
+            writer.Write((int)SKAlphaType.Premul);
+            writer.Write(rowBytes);
+            writer.Write(byteCount);
+        });
 
         private static byte[] CreateBitmapMetadata(SKBitmap bitmap) => CreateMessage(writer =>
         {
