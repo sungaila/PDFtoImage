@@ -58,6 +58,34 @@ namespace PDFtoImage.Parallel.Internals
             }
         }
 
+        internal static async Task<(string Path, FileStream Lifetime)> WriteTempFileAsync(Stream stream, string tempDirectory, CancellationToken cancellationToken)
+        {
+            ArgumentNullException.ThrowIfNull(stream);
+            var path = Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".pdf");
+            FileStream? lifetime = null;
+
+            try
+            {
+                await using (var output = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, BufferSize, FileOptions.Asynchronous | FileOptions.SequentialScan))
+                {
+                    if (OperatingSystem.IsWindows())
+                        File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Temporary);
+                    await stream.CopyToAsync(output, cancellationToken).ConfigureAwait(false);
+                }
+
+                cancellationToken.ThrowIfCancellationRequested();
+                var lifetimeOptions = OperatingSystem.IsWindows() ? FileOptions.DeleteOnClose : FileOptions.None;
+                lifetime = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, BufferSize, lifetimeOptions);
+                return (path, lifetime);
+            }
+            catch
+            {
+                lifetime?.Dispose();
+                File.Delete(path);
+                throw;
+            }
+        }
+
         private static void ThrowIfTooLarge(long length, int maximumLength)
         {
             if (length > maximumLength)

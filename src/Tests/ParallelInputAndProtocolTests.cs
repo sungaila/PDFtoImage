@@ -66,7 +66,7 @@ namespace PDFtoImage.Tests
         [DataRow(true, true)]
         public async Task ShortReadsFromCurrentPositionPreservePdfAndOwnership(bool seekable, bool leaveOpen)
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var input = new ChunkedInputStream(seekable);
             var options = new RenderOptions(Dpi: 40);
             using var actual = await processor.ToImageAsync(input, leaveOpen: leaveOpen, options: options, cancellationToken: TestContext!.CancellationToken);
@@ -89,7 +89,7 @@ namespace PDFtoImage.Tests
         [DataRow(true, true, true)]
         public async Task CancelledReadsPreserveOwnership(bool seekable, bool leaveOpen, bool cancelBeforeRead)
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             using var input = new ChunkedInputStream(seekable, cancellation.Cancel);
             if (cancelBeforeRead)
@@ -106,7 +106,7 @@ namespace PDFtoImage.Tests
         [DataRow(true)]
         public async Task TruncatedSeekableStreamFailsWithoutStartingWorker(bool leaveOpen)
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var input = new ChunkedInputStream(seekable: true) { ExtraLength = 1 };
             await Assert.ThrowsExactlyAsync<EndOfStreamException>(() => processor.ToImageAsync(input, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken));
             Assert.AreEqual(leaveOpen, input.CanRead);
@@ -118,7 +118,7 @@ namespace PDFtoImage.Tests
         [DataRow(true)]
         public async Task OversizedSeekablePdfIsRejectedBeforeReadingOrStartingWorker(bool leaveOpen)
         {
-            await using var processor = new ParallelPdfProcessor(1);
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var input = new ChunkedInputStream(seekable: true)
             {
                 ExtraLength = checked(WorkerProtocol.GetMaximumPdfLength(null) - Pdf.Length + 1)
@@ -204,6 +204,7 @@ namespace PDFtoImage.Tests
                 {
                     writer.Write((byte)WorkerCommand.RenderPage);
                     writer.Write(0);
+                    WorkerProtocol.WriteNullableString(writer, null);
                     WorkerProtocol.WriteRenderOptions(writer, new RenderOptions(Dpi: 40));
                     if (trailingData)
                         writer.Write((byte)42);

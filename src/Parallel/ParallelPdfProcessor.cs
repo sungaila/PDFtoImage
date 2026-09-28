@@ -17,9 +17,15 @@ namespace PDFtoImage.Parallel
     [SupportedOSPlatform("windows10.0")]
     [SupportedOSPlatform("linux")]
     [SupportedOSPlatform("macos")]
-    public sealed class ParallelPdfProcessor : IDisposable, IAsyncDisposable
+    public sealed class ParallelPdfProcessor : IParallelPdfProcessor
     {
         private readonly WorkerPool _pool;
+
+        private readonly ProcessorTransferMode _transferMode;
+
+        private readonly int? _maxParallelism;
+
+        private readonly string _tempDirectory;
 
         private readonly CancellationTokenSource _shutdown = new();
 
@@ -27,23 +33,43 @@ namespace PDFtoImage.Parallel
 
         private readonly TaskCompletionSource _requestsDrained = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
+        private readonly HashSet<PdfRequest> _temporaryPdfs = [];
+
         private bool _disposed;
 
         private bool _cleanupFinished;
 
         private int _activeRequests;
 
-        /// <summary>
-        /// Creates a reusable pool. Workers start on demand, up to the specified limit.
-        /// </summary>
-        /// <param name="workerCount">Maximum concurrent workers; defaults to <see cref="Environment.ProcessorCount"/>.</param>
-        public ParallelPdfProcessor(int? workerCount = null)
+        /// <summary>Creates a reusable pool with default options.</summary>
+        public ParallelPdfProcessor() : this(new ProcessorOptions()) { }
+
+        /// <summary>Creates a reusable pool with the specified worker and transfer options.</summary>
+        /// <param name="options">Settings read once when the processor is constructed.</param>
+        public ParallelPdfProcessor(ProcessorOptions options)
         {
-            var count = workerCount ?? Environment.ProcessorCount;
+            ArgumentNullException.ThrowIfNull(options);
+            var count = options.WorkerCount ?? Environment.ProcessorCount;
 
-            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count, nameof(workerCount));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count, nameof(options.WorkerCount));
+            if (options.SlotCount is int maximum)
+                ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximum, nameof(options.SlotCount));
+            if (!Enum.IsDefined(options.TransferMode))
+                throw new ArgumentOutOfRangeException(nameof(options.TransferMode));
 
-            _pool = new WorkerPool(count);
+            if (options.TransferMode == ProcessorTransferMode.MemoryMappedFile)
+            {
+                _tempDirectory = Path.GetFullPath(options.TempDirectory ?? Path.GetTempPath());
+                Directory.CreateDirectory(_tempDirectory);
+            }
+            else
+            {
+                _tempDirectory = Path.GetTempPath();
+            }
+
+            _transferMode = options.TransferMode;
+            _maxParallelism = options.SlotCount;
+            _pool = new WorkerPool(count, options.SlotCount, options.TransferMode, _tempDirectory);
         }
 
         internal int[] WorkerProcessIds => _pool.WorkerProcessIds;
@@ -51,6 +77,15 @@ namespace PDFtoImage.Parallel
         internal Guid?[] WorkerDocumentIds => _pool.WorkerDocumentIds;
 
         internal int[] WorkerDocumentLoadCounts => _pool.WorkerDocumentLoadCounts;
+
+        internal string[] TemporaryPdfPaths
+        {
+            get
+            {
+                lock (_gate)
+                    return [.. _temporaryPdfs.Select(request => request.FilePath!)];
+            }
+        }
 
         /// <summary>Stops all workers and cancels active and queued requests. Safe to call repeatedly.</summary>
         public void Dispose()
@@ -75,10 +110,17 @@ namespace PDFtoImage.Parallel
                 }
                 finally
                 {
-                    lock (_gate)
+                    try
                     {
-                        _cleanupFinished = true;
-                        CompleteDisposalIfDrained();
+                        CleanupTemporaryPdfs();
+                    }
+                    finally
+                    {
+                        lock (_gate)
+                        {
+                            _cleanupFinished = true;
+                            CompleteDisposalIfDrained();
+                        }
                     }
                 }
             }
@@ -110,8 +152,8 @@ namespace PDFtoImage.Parallel
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             using var request = BeginRequest(cancellationToken);
-            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
-            return await ToImageCoreAsync(pdf, page, password, options, request.Token).ConfigureAwait(false);
+            using var pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
+            return await ToImageCoreAsync(pdf, page, options, request.Token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -139,7 +181,7 @@ namespace PDFtoImage.Parallel
         private async IAsyncEnumerable<SKBitmap> ToImagesFromStreamAsync(Stream pdfStream, PageSelection pages, bool leaveOpen, string? password, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             CancellationTokenSource enumerationCancellation;
-            byte[] pdf;
+            PdfRequest pdf;
 
             using (var request = BeginRequest(cancellationToken))
             {
@@ -147,9 +189,10 @@ namespace PDFtoImage.Parallel
                 enumerationCancellation = CreateEnumerationCancellation(cancellationToken);
             }
 
+            using (pdf)
             using (enumerationCancellation)
             {
-                await using var iterator = ToImagesCoreAsync(pdf, pages, password, options, enumerationCancellation.Token)
+                await using var iterator = ToImagesCoreAsync(pdf, pages, options, enumerationCancellation.Token)
                     .GetAsyncEnumerator(enumerationCancellation.Token);
 
                 while (true)
@@ -172,26 +215,81 @@ namespace PDFtoImage.Parallel
             }
         }
 
-        private async Task<byte[]> ReadPdfAsync(Stream pdfStream, bool leaveOpen, string? password, CancellationToken cancellationToken)
+        private async Task<PdfRequest> ReadPdfAsync(Stream pdfStream, bool leaveOpen, string? password, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(pdfStream);
+            PdfRequest? result = null;
             try
             {
-                _pool.ThrowIfDisposed();
-                cancellationToken.ThrowIfCancellationRequested();
-                return await PdfInputReader.ReadAsync(pdfStream, WorkerProtocol.GetMaximumPdfLength(password), cancellationToken).ConfigureAwait(false);
+                try
+                {
+                    _pool.ThrowIfDisposed();
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (_transferMode == ProcessorTransferMode.MemoryMappedFile)
+                    {
+                        var (path, lifetime) = await PdfInputReader.WriteTempFileAsync(pdfStream, _tempDirectory, cancellationToken).ConfigureAwait(false);
+                        result = new PdfRequest(path, lifetime, password, ReleaseTemporaryPdf);
+                        var disposed = false;
+                        lock (_gate)
+                        {
+                            if (_disposed)
+                                disposed = true;
+                            else
+                                _temporaryPdfs.Add(result);
+                        }
+                        if (disposed)
+                            throw new ObjectDisposedException(nameof(ParallelPdfProcessor));
+                        return result;
+                    }
+
+                    result = new PdfRequest(await PdfInputReader.ReadAsync(pdfStream, WorkerProtocol.GetMaximumPdfLength(password), cancellationToken).ConfigureAwait(false), password);
+                    return result;
+                }
+                finally
+                {
+                    if (!leaveOpen)
+                        await pdfStream.DisposeAsync();
+                }
             }
-            finally
+            catch
             {
-                if (!leaveOpen)
-                    await pdfStream.DisposeAsync();
+                result?.Dispose();
+                throw;
             }
         }
 
-        private async Task<SKBitmap> ToImageCoreAsync(byte[] pdf, Index page, string? password, RenderOptions options, CancellationToken cancellationToken)
+        private void ReleaseTemporaryPdf(PdfRequest request)
+        {
+            lock (_gate)
+                _temporaryPdfs.Remove(request);
+        }
+
+        private void CleanupTemporaryPdfs()
+        {
+            PdfRequest[] requests;
+            lock (_gate)
+                requests = [.. _temporaryPdfs];
+
+            List<Exception>? errors = null;
+            foreach (var request in requests)
+            {
+                try
+                {
+                    request.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    (errors ??= []).Add(exception);
+                }
+            }
+
+            if (errors != null)
+                throw new AggregateException("Temporary PDF cleanup failed.", errors);
+        }
+
+        private async Task<SKBitmap> ToImageCoreAsync(PdfRequest request, Index page, RenderOptions options, CancellationToken cancellationToken)
         {
             _pool.ThrowIfDisposed();
-            var request = new PdfRequest(pdf, password);
             try
             {
                 var bitmap = await _pool.RenderPageAsync(request, page, options, cancellationToken).ConfigureAwait(false);
@@ -212,7 +310,7 @@ namespace PDFtoImage.Parallel
             }
         }
 
-        private async IAsyncEnumerable<SKBitmap> ToImagesCoreAsync(byte[] pdf, PageSelection pages, string? password, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
+        private async IAsyncEnumerable<SKBitmap> ToImagesCoreAsync(PdfRequest request, PageSelection pages, RenderOptions options, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             _pool.ThrowIfDisposed();
             cancellationToken.ThrowIfCancellationRequested();
@@ -220,7 +318,6 @@ namespace PDFtoImage.Parallel
             if (pages.MaximumCount == 0)
                 yield break;
 
-            var request = new PdfRequest(pdf, password);
             try
             {
                 var pageCount = await _pool.GetPageCountAsync(request, cancellationToken).ConfigureAwait(false);
@@ -230,7 +327,7 @@ namespace PDFtoImage.Parallel
                     yield break;
 
                 await foreach (var bitmap in OrderedScheduler.RunAsync(
-                    pageNumbers, (int)Math.Min(pageNumbers.Length, (long)_pool.WorkerCount * 2),
+                    pageNumbers, (int)Math.Min(pageNumbers.Length, (long)Math.Min(_pool.WorkerCount, _maxParallelism ?? int.MaxValue) * 2),
                     (page, token) => _pool.RenderPageAsync(request, page, options, token), cancellationToken).ConfigureAwait(false))
                 {
                     try

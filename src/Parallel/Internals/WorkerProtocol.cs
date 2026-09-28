@@ -2,6 +2,7 @@ using SkiaSharp;
 using System;
 using System.Buffers;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +17,9 @@ namespace PDFtoImage.Parallel.Internals
 
         RenderPage = 2,
 
-        UnloadDocument = 3
+        UnloadDocument = 3,
+
+        LoadDocumentFile = 4
     }
 
     internal enum WorkerResponse : byte
@@ -30,7 +33,7 @@ namespace PDFtoImage.Parallel.Internals
 
     internal static class WorkerProtocol
     {
-        internal const int Version = 1;
+        internal const int Version = 2;
 
         private const int MaximumMessageLength = 1024 * 1024 * 1024;
 
@@ -256,6 +259,92 @@ namespace PDFtoImage.Parallel.Internals
                 ArrayPool<byte>.Shared.Return(buffer, clearArray: true);
             }
         }
+
+        internal static unsafe void WriteMappedBitmapResponse(Stream stream, SKBitmap bitmap, string path)
+        {
+            if (bitmap.ByteCount <= 0)
+                throw new InvalidDataException("The rendered bitmap has no pixels.");
+
+            using (var file = new FileStream(path, FileMode.Open, FileAccess.ReadWrite, FileShare.Read | FileShare.Delete, 4096, FileOptions.SequentialScan))
+            {
+                file.SetLength(bitmap.ByteCount);
+                using var mapping = MemoryMappedFile.CreateFromFile(file, null, bitmap.ByteCount, MemoryMappedFileAccess.ReadWrite, HandleInheritability.None, leaveOpen: false);
+                using var view = mapping.CreateViewAccessor(0, bitmap.ByteCount, MemoryMappedFileAccess.Write);
+                byte* pointer = null;
+                try
+                {
+                    view.SafeMemoryMappedViewHandle.AcquirePointer(ref pointer);
+                    Buffer.MemoryCopy(bitmap.GetPixels().ToPointer(), pointer + view.PointerOffset, bitmap.ByteCount, bitmap.ByteCount);
+                }
+                finally
+                {
+                    if (pointer != null)
+                        view.SafeMemoryMappedViewHandle.ReleasePointer();
+                }
+            }
+
+            WriteMessage(stream, CreateBitmapMetadata(bitmap));
+        }
+
+        internal static unsafe SKBitmap ReadMappedBitmap(byte[] payload, int offset, FileStream file)
+        {
+            const int metadataSize = 6 * sizeof(int);
+            if (offset < 0 || payload.Length - offset != metadataSize)
+                throw new InvalidDataException("A worker returned incomplete mapped bitmap metadata.");
+
+            using var reader = CreateReader(payload);
+            reader.BaseStream.Position = offset;
+            var width = reader.ReadInt32();
+            var height = reader.ReadInt32();
+            var colorType = (SKColorType)reader.ReadInt32();
+            var alphaType = (SKAlphaType)reader.ReadInt32();
+            var rowBytes = reader.ReadInt32();
+            var byteCount = reader.ReadInt32();
+
+            if (width <= 0 || height <= 0 || colorType != SKColorType.Bgra8888 || alphaType != SKAlphaType.Premul ||
+                (long)width * 4 != rowBytes || (long)rowBytes * height != byteCount || byteCount <= 0 ||
+                file.Length != byteCount)
+                throw new InvalidDataException("A worker returned invalid mapped bitmap metadata.");
+
+            var bitmap = new SKBitmap(width, height, colorType, alphaType);
+            try
+            {
+                if (bitmap.RowBytes != rowBytes || bitmap.ByteCount != byteCount)
+                    throw new InvalidDataException("A worker returned incompatible bitmap metadata.");
+
+                using var mapping = MemoryMappedFile.CreateFromFile(file, null, 0, MemoryMappedFileAccess.Read, HandleInheritability.None, leaveOpen: true);
+                using var view = mapping.CreateViewAccessor(0, byteCount, MemoryMappedFileAccess.Read);
+                byte* pointer = null;
+                try
+                {
+                    view.SafeMemoryMappedViewHandle.AcquirePointer(ref pointer);
+                    Buffer.MemoryCopy(pointer + view.PointerOffset, bitmap.GetPixels().ToPointer(), byteCount, byteCount);
+                }
+                finally
+                {
+                    if (pointer != null)
+                        view.SafeMemoryMappedViewHandle.ReleasePointer();
+                }
+
+                return bitmap;
+            }
+            catch
+            {
+                bitmap.Dispose();
+                throw;
+            }
+        }
+
+        private static byte[] CreateBitmapMetadata(SKBitmap bitmap) => CreateMessage(writer =>
+        {
+            writer.Write((byte)WorkerResponse.Success);
+            writer.Write(bitmap.Width);
+            writer.Write(bitmap.Height);
+            writer.Write((int)bitmap.ColorType);
+            writer.Write((int)bitmap.AlphaType);
+            writer.Write(bitmap.RowBytes);
+            writer.Write(bitmap.ByteCount);
+        });
 
         internal static SKBitmap ReadBitmap(byte[] payload, int offset = 0)
         {
