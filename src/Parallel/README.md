@@ -5,9 +5,8 @@
 
 True parallel PDF rendering for [PDFtoImage](https://www.nuget.org/packages/PDFtoImage/) by distributing PDFium work across isolated worker processes.
 
-## What this project provides
-
-PDFium is not thread-safe, so parallel rendering requires multiple processes. PDFtoImage.Parallel provides a simple stream-to-`SKBitmap` API and hides the process orchestration behind it.
+## What this library provides
+PDFium is not thread-safe, so parallel rendering requires multiple processes. PDFtoImage.Parallel provides a simple stream-to-[`SKBitmap`](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap?view=skiasharp) API and hides the process orchestration behind it.
 
 It handles:
 
@@ -73,10 +72,9 @@ builder.Services.AddSingleton<PDFtoImage.Parallel.IParallelPdfProcessor>(_ =>
     }));
 ```
 
-`WorkerCount` sets the maximum number of worker processes; `null` uses [`Environment.ProcessorCount`](https://learn.microsoft.com/en-us/dotnet/api/system.environment.processorcount). `ProcessorOptions` implements `IProcessorOptions` and provides room for future settings.
+`WorkerCount` sets the maximum number of worker processes; `null` uses [`Environment.ProcessorCount`](https://learn.microsoft.com/en-us/dotnet/api/system.environment.processorcount).
 
 ## Limit parallelism for memory backpressure
-
 A service may keep a large worker pool but limit simultaneous operations to control the memory used by active renders and queued page results:
 
 ```csharp
@@ -90,10 +88,9 @@ await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(
 
 `SlotCount` defaults to `null`, which leaves only `WorkerCount` as the limit. It limits document loading and rendering across concurrent requests; cleanup can proceed without waiting for a render slot. The effective rendering limit is the smaller of `WorkerCount` and `SlotCount`.
 
-This is a concurrency limit, not a memory budget: IPC input streams are buffered before entering the pool, each enumeration has its own bounded look-ahead, and returned bitmaps belong to the caller. Services should also bound incoming request concurrency and dispose images promptly. Dispose manually created async enumerators when stopping early; `await foreach` does this automatically.
+This is a concurrency limit, not a memory budget: IPC input streams are buffered before entering the pool, each enumeration has its own bounded look-ahead, and returned bitmaps belong to the caller. Dispose returned images promptly. Dispose manually created async enumerators when stopping early; `await foreach` does this automatically.
 
 ## File-backed transfer for throughput
-
 For workloads where copying large PDFs and bitmaps through IPC is expensive, use temporary PDF files and raw file-backed memory maps for bitmap pixels:
 
 ```csharp
@@ -114,19 +111,38 @@ Workers start on demand and are reused until the processor is disposed. Set `Wor
 Cancellation or a worker failure does not prevent later requests. Workers also exit if the parent process stops.
 
 ### Single-worker fault isolation
-Using `WorkerCount = 1` does not provide parallel rendering, but still runs PDFium out of process. This can be useful when isolating the host application from native worker failures (e.g. a PDFium process crash) is more important than parallel throughput.
+Using `WorkerCount = 1` does not provide parallel rendering, but still runs PDFium out of process. This can be useful when isolating the host application from native worker failures (e.g. PDFium crashes the process) is more important than parallel throughput.
 
-Worker process isolation can protect the host from native PDFium crashes, but it is not a security sandbox. Workers normally run with the same user security context as the host application.
+### Security
+Worker processes isolate PDFium crashes, but process isolation is not a security sandbox. Workers run with the host application's user identity and privileges. For publicly supplied, untrusted PDFs, run the service with minimal privileges and use an OS or container sandbox if stronger isolation is required.
 
-### Deployment
-Framework-dependent, self-contained, trimmed single-file, and Native AOT applications are supported.
+In `MemoryMappedFile` mode, set `TempDirectory` to a private, access-controlled directory outside the web root; the default system temporary directory can be shared. Temporary PDFs and raw bitmaps can contain sensitive data. The host creates files with unique names and restricts Unix file permissions, but the service controls the directory and its Windows ACL. Allow only the service account to access it, and provide enough space for concurrent renders.
+
+Reused `FileStream` inputs are reopened by path. Keep uploaded files in a protected location and unchanged until rendering finishes.
+
+The consuming service should validate uploads and set limits for PDF size, page count, render dimensions or DPI, request concurrency, execution time, and temporary storage. Pass request cancellation to the processor. `SlotCount` limits worker operations, not input buffering, queued bitmaps, or disk usage.
 
 ### Memory
-With the default `ProcessorTransferMode.Ipc`, the processor buffers each PDF in memory, copies it over IPC, and receives bitmap pixels over IPC. Workers may load additional copies. Large PDFs and concurrent requests can use substantial memory.
+The default `ProcessorTransferMode.Ipc` mode buffers each PDF in host memory, sends it through local pipes, and receives bitmap pixels the same way. Workers may hold additional PDF copies. `ProcessorTransferMode.MemoryMappedFile` lets workers read a shared PDF file and render directly into a raw, file-backed bitmap. The host copies those pixels once into the returned `SKBitmap` and removes temporary files when they are no longer needed.
 
-`ProcessorTransferMode.MemoryMappedFile` makes each PDF available as a file shared read-only by workers, creating a temporary copy when needed. Bitmap pixels are written into a raw, file-backed memory map and copied into the returned `SKBitmap` by the host. The host deletes bitmap files before returning each image and deletes temporary PDF files when the request completes or is cancelled. Disposing the processor also removes temporary PDF files held by unfinished enumerations. This mode needs writable temporary storage and trades disk I/O for lower IPC buffering.
+Use `Ipc` when:
 
-In IPC mode, PDF data and rendered bitmaps must each fit in a 1 GiB IPC message, including protocol metadata. The file-backed mode does not use this IPC payload limit for PDF data or bitmap pixels.
+* PDFs and rendered pages are relatively small.
+* Avoiding temporary files is preferred.
+* Simpler deployment matters more than maximum throughput.
+
+Use `MemoryMappedFile` when:
+
+* Rendering at high DPI or large dimensions.
+* Processing large or many-page PDFs.
+* PDFs are supplied as readable, seekable `FileStream` instances, which can be reopened without a PDF copy.
+* Multiple pages are rendered concurrently.
+* IPC memory pressure or its 1 GiB message limit is relevant.
+
+The file-backed mode needs writable temporary storage and trades disk I/O for lower IPC buffering. Its PDF and bitmap payloads are not subject to the IPC message limit.
 
 ### Worker bootstrap
 No separate worker executable is deployed. PDFtoImage.Parallel re-launches the consuming application and enters worker mode before `Main`. CoreCLR uses a startup hook, so `System.StartupHookProvider.IsSupported` must not be explicitly disabled; the package explicitly re-enables startup-hook support for trimmed CoreCLR publishes. Native AOT uses a module initializer instead.
+
+### Deployment
+Framework-dependent, self-contained, trimmed single-file, and Native AOT applications are supported.
