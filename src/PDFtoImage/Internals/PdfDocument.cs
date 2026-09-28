@@ -109,6 +109,9 @@ namespace PDFtoImage.Internals
                 getPixels, cancellationToken);
         }
 
+#if NETCOREAPP
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1513")]
+#endif
         private void Render(int page, float? requestedWidth, float? requestedHeight, float dpiX, float dpiY, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, bool useTiling, bool withAspectRatio, bool dpiRelativeToBounds, Func<int, int, (IntPtr Pixels, int RowBytes)> getPixels, CancellationToken cancellationToken)
         {
             if (_disposed)

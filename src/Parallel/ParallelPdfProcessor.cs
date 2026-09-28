@@ -51,11 +51,14 @@ namespace PDFtoImage.Parallel
         public ParallelPdfProcessor(ProcessorOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
+
             var count = options.WorkerCount ?? Environment.ProcessorCount;
 
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count, nameof(options.WorkerCount));
+
             if (options.SlotCount is int maximum)
                 ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maximum, nameof(options.SlotCount));
+
             if (!Enum.IsDefined(options.TransferMode))
                 throw new ArgumentOutOfRangeException(nameof(options.TransferMode));
 

@@ -9,7 +9,6 @@ namespace PDFtoImage.Parallel
 {
     /// <summary>Renders PDF pages with isolated worker processes.</summary>
     // These overloads mirror the existing preview API, whose page selectors have distinct types.
-#pragma warning disable RS0026
     public interface IParallelPdfProcessor : IDisposable, IAsyncDisposable
     {
         /// <summary>Renders a single page.</summary>
@@ -30,5 +29,4 @@ namespace PDFtoImage.Parallel
         /// <summary>Renders selected pages in the requested order.</summary>
         IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, IEnumerable<int> pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default);
     }
-#pragma warning restore RS0026
 }

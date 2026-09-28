@@ -63,14 +63,18 @@ namespace PDFtoImage.Tests
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1859")]
         public async Task PublicInterfaceAndDefaultOptionsRenderWithIpc()
         {
-            IProcessorOptions defaults = new ProcessorOptions();
+            var defaults = new ProcessorOptions();
             Assert.IsNull(defaults.WorkerCount);
             Assert.IsNull(defaults.SlotCount);
             Assert.IsNull(defaults.TempDirectory);
             Assert.AreEqual(ProcessorTransferMode.Ipc, defaults.TransferMode);
             Assert.IsTrue(defaults.ReuseFileStream);
 
-            await using IParallelPdfProcessor processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            var configured = defaults with { WorkerCount = 1 };
+            Assert.IsNull(defaults.WorkerCount);
+            Assert.AreEqual(1, configured.WorkerCount);
+
+            await using IParallelPdfProcessor processor = new ParallelPdfProcessor(configured);
             using var actual = await processor.ToImageAsync(OpenPdf(), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             using var expected = Conversion.ToImage(Pdf, options: new RenderOptions(Dpi: 40));
             AssertBitmapsEqual(expected, actual);
