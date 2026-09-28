@@ -215,7 +215,7 @@ namespace PDFtoImage.Tests
                 options: new RenderOptions(Dpi: 72), cancellationToken: cancellation.Token);
             try
             {
-                while (!Directory.GetFiles(directory.PathName, "*.bitmap.raw").Any())
+                while (Directory.GetFiles(directory.PathName, "*.bitmap.raw").Length == 0)
                 {
                     Assert.IsFalse(render.IsCompleted, "The slow render must remain active until it is interrupted.");
                     await Task.Delay(10, cancellation.Token);

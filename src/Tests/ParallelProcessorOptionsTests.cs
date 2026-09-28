@@ -60,6 +60,7 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1859")]
         public async Task PublicInterfaceAndDefaultOptionsRenderWithIpc()
         {
             IProcessorOptions defaults = new ProcessorOptions();
@@ -207,7 +208,7 @@ namespace PDFtoImage.Tests
             using (var source = File.OpenRead(fixture.InputPath))
             {
                 await using var iterator = copyProcessor.ToImagesAsync(source, [0], leaveOpen: true,
-                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator();
+                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 iterator.Current.Dispose();
                 Assert.HasCount(1, copyProcessor.TemporaryPdfPaths);
@@ -223,7 +224,7 @@ namespace PDFtoImage.Tests
             using (var exclusive = new FileStream(fixture.InputPath, FileMode.Open, FileAccess.Read, FileShare.None))
             {
                 await using var iterator = fallbackProcessor.ToImagesAsync(exclusive, [0], leaveOpen: true,
-                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator();
+                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 iterator.Current.Dispose();
                 Assert.HasCount(1, fallbackProcessor.TemporaryPdfPaths);
@@ -233,7 +234,7 @@ namespace PDFtoImage.Tests
             using (var nonSeekable = new NonSeekableFileStream(fixture.InputPath))
             {
                 await using var iterator = fallbackProcessor.ToImagesAsync(nonSeekable, [0], leaveOpen: true,
-                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator();
+                    options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 iterator.Current.Dispose();
                 Assert.HasCount(1, fallbackProcessor.TemporaryPdfPaths);
@@ -259,7 +260,7 @@ namespace PDFtoImage.Tests
             source.Position = 4;
 
             await using (var iterator = processor.ToImagesAsync(source, [0], leaveOpen: true,
-                options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator())
+                options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken))
             {
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 using var image = iterator.Current;
@@ -295,7 +296,7 @@ namespace PDFtoImage.Tests
                 TempDirectory = fixture.TempDirectory
             });
             await using var iterator = mapped.ToImagesAsync(File.OpenRead(fixture.InputPath), [0],
-                options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator();
+                options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             iterator.Current.Dispose();
             Assert.IsEmpty(mapped.TemporaryPdfPaths);
@@ -446,7 +447,7 @@ namespace PDFtoImage.Tests
         public async Task ProcessorDisposalDeletesPdfHeldByPausedEnumeration()
         {
             var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1, TransferMode = ProcessorTransferMode.MemoryMappedFile });
-            await using var iterator = processor.ToImagesAsync(OpenPdf(), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator();
+            await using var iterator = processor.ToImagesAsync(OpenPdf(), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             iterator.Current.Dispose();
             var path = processor.TemporaryPdfPaths.Single();
