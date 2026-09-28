@@ -10,10 +10,11 @@ namespace PDFtoImage.Parallel
         int? WorkerCount { get; init; }
 
         /// <summary>
-        /// Maximum number of simultaneous operations admitted to the worker pool, including document loading,
-        /// page rendering, and cleanup. A positive value adds memory backpressure when <see cref="WorkerCount"/>
+        /// Maximum number of simultaneous operations admitted to the worker pool, including document loading
+        /// and page rendering. A positive value adds memory backpressure when <see cref="WorkerCount"/>
         /// is large. <see langword="null"/> adds no limit beyond <see cref="WorkerCount"/>.
         /// Input streams in <see cref="ProcessorTransferMode.Ipc"/> mode are buffered before entering these slots.
+        /// Cleanup does not wait for render slots. Returned bitmaps are owned by the caller and are not counted.
         /// </summary>
         int? SlotCount { get; init; }
 

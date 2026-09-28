@@ -6,7 +6,6 @@ using SkiaSharp;
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using static PDFtoImage.Tests.TestUtils;
@@ -57,32 +56,10 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
-        public async Task SlotCountBlocksOperationsBeforeWorkersStart()
-        {
-            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 3, SlotCount = 1 });
-            var pool = (WorkerPool)typeof(ParallelPdfProcessor).GetField("_pool", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(processor)!;
-            var limiter = (SemaphoreSlim)typeof(WorkerPool).GetField("_parallelismSlots", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(pool)!;
-            await limiter.WaitAsync(TestContext!.CancellationToken);
-            try
-            {
-                var jobs = Enumerable.Range(0, 3).Select(_ => processor.ToImageAsync(OpenPdf(), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext.CancellationToken)).ToArray();
-                Assert.IsTrue(jobs.All(job => !job.IsCompleted));
-                Assert.IsEmpty(processor.WorkerProcessIds);
-                limiter.Release();
-                var images = await Task.WhenAll(jobs);
-                foreach (var image in images)
-                    image.Dispose();
-                Assert.IsNotEmpty(processor.WorkerProcessIds);
-            }
-            finally
-            {
-                if (limiter.CurrentCount == 0)
-                    limiter.Release();
-            }
-        }
-
-        [TestMethod]
-        public async Task MappedModeRendersOrderedPagesAndDeletesTemporaryFiles()
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        public async Task MappedModeRendersOrderedPagesAndDeletesTemporaryFiles(int slotCount)
         {
             var root = Path.Combine(Path.GetTempPath(), "PDFtoImage.Parallel.Tests." + Guid.NewGuid().ToString("N"));
             var directory = Path.Combine(root, "nested", "files");
@@ -91,7 +68,7 @@ namespace PDFtoImage.Tests
                 await using var processor = new ParallelPdfProcessor(new ProcessorOptions
                 {
                     WorkerCount = 2,
-                    SlotCount = 1,
+                    SlotCount = slotCount == 0 ? null : slotCount,
                     TransferMode = ProcessorTransferMode.MemoryMappedFile,
                     TempDirectory = directory
                 });

@@ -110,16 +110,10 @@ namespace PDFtoImage.Parallel.Internals
             }
 
             var cleanupAcquired = false;
-            var parallelismAcquired = false;
 
             try
             {
-                if (_parallelismSlots != null)
-                {
-                    await _parallelismSlots.WaitAsync().ConfigureAwait(false);
-                    parallelismAcquired = true;
-                }
-
+                // Releasing documents must not queue behind unrelated render jobs.
                 // Cleanup temporarily leases every idle worker. Serialize cleanups so one
                 // request cannot mistake slots held by another cleanup for busy workers and
                 // leave its document loaded indefinitely. Rendering remains fully parallel.
@@ -151,9 +145,6 @@ namespace PDFtoImage.Parallel.Internals
             {
                 if (cleanupAcquired)
                     _documentCleanup.Release();
-
-                if (parallelismAcquired)
-                    _parallelismSlots!.Release();
 
                 lock (_gate)
                 {
@@ -233,12 +224,12 @@ namespace PDFtoImage.Parallel.Internals
                 return await worker.ExecuteAsync(request,
                     (pageCount, token) => execute(worker, pageCount, token), cancellation.Token).ConfigureAwait(false);
             }
-            catch (ParallelConversionException exception) when (exception.RemoteExceptionType != "WorkerProcessTerminated")
+            catch (ParallelConversionException exception) when (exception.RemoteExceptionType != "WorkerProcessTerminated" && worker is { IsDisposed: false })
             {
                 // A complete remote error frame leaves the connection synchronized.
                 throw;
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentOutOfRangeException) when (worker is { IsDisposed: false })
             {
                 // Local page validation has not altered the IPC stream.
                 throw;

@@ -152,8 +152,25 @@ namespace PDFtoImage.Parallel
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             using var request = BeginRequest(cancellationToken);
-            using var pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
-            return await ToImageCoreAsync(pdf, page, options, request.Token).ConfigureAwait(false);
+            var pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
+            SKBitmap? bitmap = null;
+            try
+            {
+                try
+                {
+                    bitmap = await ToImageCoreAsync(pdf, page, options, request.Token).ConfigureAwait(false);
+                }
+                finally
+                {
+                    pdf.Dispose();
+                }
+                return bitmap;
+            }
+            catch
+            {
+                bitmap?.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -186,7 +203,15 @@ namespace PDFtoImage.Parallel
             using (var request = BeginRequest(cancellationToken))
             {
                 pdf = await ReadPdfAsync(pdfStream, leaveOpen, password, request.Token).ConfigureAwait(false);
-                enumerationCancellation = CreateEnumerationCancellation(cancellationToken);
+                try
+                {
+                    enumerationCancellation = CreateEnumerationCancellation(cancellationToken);
+                }
+                catch
+                {
+                    pdf.Dispose();
+                    throw;
+                }
             }
 
             using (pdf)
@@ -228,7 +253,7 @@ namespace PDFtoImage.Parallel
                     if (_transferMode == ProcessorTransferMode.MemoryMappedFile)
                     {
                         var (path, lifetime) = await PdfInputReader.WriteTempFileAsync(pdfStream, _tempDirectory, cancellationToken).ConfigureAwait(false);
-                        result = new PdfRequest(path, lifetime, password, ReleaseTemporaryPdf);
+                        result = new PdfRequest(path, lifetime, password, ReleaseTemporaryPdf, deleteOnClose: OperatingSystem.IsWindows());
                         var disposed = false;
                         lock (_gate)
                         {
@@ -290,23 +315,24 @@ namespace PDFtoImage.Parallel
         private async Task<SKBitmap> ToImageCoreAsync(PdfRequest request, Index page, RenderOptions options, CancellationToken cancellationToken)
         {
             _pool.ThrowIfDisposed();
+            SKBitmap? bitmap = null;
             try
             {
-                var bitmap = await _pool.RenderPageAsync(request, page, options, cancellationToken).ConfigureAwait(false);
                 try
                 {
+                    bitmap = await _pool.RenderPageAsync(request, page, options, cancellationToken).ConfigureAwait(false);
                     cancellationToken.ThrowIfCancellationRequested();
                     return bitmap;
                 }
-                catch
+                finally
                 {
-                    bitmap.Dispose();
-                    throw;
+                    await _pool.ReleaseDocumentAsync(request).ConfigureAwait(false);
                 }
             }
-            finally
+            catch
             {
-                await _pool.ReleaseDocumentAsync(request).ConfigureAwait(false);
+                bitmap?.Dispose();
+                throw;
             }
         }
 

@@ -13,9 +13,10 @@ namespace PDFtoImage.Parallel
         public int? WorkerCount { get; init; }
 
         /// <summary>
-        /// Maximum number of concurrent worker-pool operations, including loading, rendering, and cleanup.
+        /// Maximum number of concurrent worker-pool operations for loading and rendering.
         /// Use a positive value for memory backpressure with a large <see cref="WorkerCount"/>;
-        /// <see langword="null"/> adds no limit. IPC input buffering happens before this limit.
+        /// <see langword="null"/> adds no limit. Cleanup is not queued behind render slots.
+        /// IPC input buffering happens before this limit; returned bitmaps are owned by the caller.
         /// </summary>
         public int? SlotCount { get; init; }
 

@@ -16,6 +16,8 @@ namespace PDFtoImage.Parallel.Internals
 
         protected int _disposed;
 
+        private readonly Lock _disposeGate = new();
+
         private SafeFileHandle? _lifetime;
 
         private Guid? _documentId;
@@ -30,6 +32,8 @@ namespace PDFtoImage.Parallel.Internals
         }
 
         internal int ProcessId => _process?.ProcessId ?? 0;
+
+        internal bool IsDisposed => Volatile.Read(ref _disposed) != 0;
 
         internal Guid? DocumentId => _documentId;
 
@@ -168,6 +172,7 @@ namespace PDFtoImage.Parallel.Internals
                 ? Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".bitmap.raw")
                 : null;
             FileStream? bitmapLifetime = null;
+            SKBitmap? bitmap = null;
 
             try
             {
@@ -198,9 +203,15 @@ namespace PDFtoImage.Parallel.Internals
 
                 WorkerProtocol.ThrowIfError(reader);
 
-                return bitmapPath == null
+                bitmap = bitmapPath == null
                     ? WorkerProtocol.ReadBitmap(response, checked((int)reader.BaseStream.Position))
                     : WorkerProtocol.ReadMappedBitmap(response, checked((int)reader.BaseStream.Position), bitmapLifetime!);
+                return bitmap;
+            }
+            catch (ParallelConversionException)
+            {
+                // A complete remote error leaves the protocol synchronized and the worker reusable.
+                throw;
             }
             catch (IOException exception)
             {
@@ -220,32 +231,63 @@ namespace PDFtoImage.Parallel.Internals
             }
             finally
             {
-                bitmapLifetime?.Dispose();
-                if (bitmapPath != null)
-                    File.Delete(bitmapPath);
+                try
+                {
+                    try
+                    {
+                        bitmapLifetime?.Dispose();
+                    }
+                    finally
+                    {
+                        if (bitmapPath != null && (bitmapLifetime == null || !OperatingSystem.IsWindows()))
+                            File.Delete(bitmapPath);
+                    }
+                }
+                catch
+                {
+                    // A failed cleanup prevents ownership from reaching the caller.
+                    bitmap?.Dispose();
+                    throw;
+                }
             }
         }
 
         public virtual void Dispose()
         {
-            if (Interlocked.Exchange(ref _disposed, 1) != 0)
-                return;
-
-            _stream.Dispose();
-            Interlocked.Exchange(ref _lifetime, null)?.Dispose();
-
-            var process = Interlocked.Exchange(ref _process, null);
-            if (process == null)
-                return;
-
-            try
+            lock (_disposeGate)
             {
-                process.Kill();
-                process.WaitForExit();
-            }
-            finally
-            {
-                process.Dispose();
+                if (Interlocked.Exchange(ref _disposed, 1) != 0)
+                    return;
+
+                // Concurrent request cancellation and pool shutdown must both wait
+                // until this worker has released its file handles.
+                try
+                {
+                    _stream.Dispose();
+                }
+                finally
+                {
+                    try
+                    {
+                        Interlocked.Exchange(ref _lifetime, null)?.Dispose();
+                    }
+                    finally
+                    {
+                        var process = Interlocked.Exchange(ref _process, null);
+                        if (process != null)
+                        {
+                            try
+                            {
+                                process.Kill();
+                                process.WaitForExit();
+                            }
+                            finally
+                            {
+                                process.Dispose();
+                            }
+                        }
+                    }
+                }
             }
         }
 

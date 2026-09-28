@@ -88,7 +88,9 @@ await using var converter = new PDFtoImage.Parallel.ParallelPdfProcessor(
     });
 ```
 
-`SlotCount` defaults to `null`, which leaves only `WorkerCount` as the limit. It limits work entering the worker pool across concurrent requests; input streams in the default IPC mode are still buffered before they reach that limit.
+`SlotCount` defaults to `null`, which leaves only `WorkerCount` as the limit. It limits document loading and rendering across concurrent requests; cleanup can proceed without waiting for a render slot. The effective rendering limit is the smaller of `WorkerCount` and `SlotCount`.
+
+This is a concurrency limit, not a memory budget: IPC input streams are buffered before entering the pool, each enumeration has its own bounded look-ahead, and returned bitmaps belong to the caller. Services should also bound incoming request concurrency and dispose images promptly. Dispose manually created async enumerators when stopping early; `await foreach` does this automatically.
 
 ## File-backed transfer for throughput
 
