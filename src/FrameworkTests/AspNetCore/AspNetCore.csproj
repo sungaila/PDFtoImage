@@ -8,8 +8,13 @@
     <RootNamespace>PDFtoImage.FrameworkTests.AspNetCore</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TestParallel)' == 'true'">
+    <DefineConstants>$(DefineConstants);PDFTOIMAGE_PARALLEL</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\PDFtoImage\PDFtoImage.csproj" />
+    <ProjectReference Include="..\..\Parallel\Parallel.csproj" Condition="'$(TestParallel)' == 'true'" />
   </ItemGroup>
 
   <ItemGroup>
