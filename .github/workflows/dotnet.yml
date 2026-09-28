@@ -563,7 +563,7 @@ jobs:
           files: artifacts/**/*.trx
           check_run: false
           comment_mode: off
-          job_summary: false
+          job_summary: true
           compare_to_earlier_commit: false
           action_fail_on_inconclusive: true
           json_file: test-results.json
