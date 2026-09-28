@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>PDFtoImage.FrameworkTests.AotConsole</AssemblyName>
@@ -12,6 +12,12 @@
     <PublishAot Condition="'$(PublishAot)' == ''">true</PublishAot>
     <SelfContained Condition="'$(SelfContained)' == ''">true</SelfContained>
     <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TestParallel)' == 'true'">
+    <DefineConstants>$(DefineConstants);PDFTOIMAGE_PARALLEL</DefineConstants>
+    <!-- ProjectReference builds do not import the NuGet package's buildTransitive asset. -->
+    <StartupHookSupport Condition="'$(PublishTrimmed)' == 'true' and '$(PublishAot)' != 'true'">true</StartupHookSupport>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -30,5 +36,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\PDFtoImage\PDFtoImage.csproj" />
+    <ProjectReference Include="..\..\Parallel\Parallel.csproj" Condition="'$(TestParallel)' == 'true'" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,43 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="ReleaseSigned" />
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/FrameworkTests/">
+    <Project Path="FrameworkTests/AotConsole/AotConsole.csproj">
+      <BuildType Solution="ReleaseSigned|*" Project="Release" />
+    </Project>
+    <Project Path="FrameworkTests/AspNet/AspNet.csproj" Id="4559b552-d5fd-49f1-b5b7-8ade803fd6e0">
+      <BuildType Solution="ReleaseSigned|*" Project="Release" />
+    </Project>
+    <Project Path="FrameworkTests/AspNetCore/AspNetCore.csproj">
+      <BuildType Solution="ReleaseSigned|*" Project="Release" />
+    </Project>
+    <Project Path="FrameworkTests/MauiApp/MauiApp.csproj">
+      <BuildType Solution="ReleaseSigned|*" Project="Release" />
+      <Deploy />
+    </Project>
+    <Project Path="FrameworkTests/Unity2D/Assembly-CSharp.csproj" Id="78ba516b-2bb8-7c77-cf97-a656e70436d4">
+      <BuildType Solution="ReleaseSigned|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../etc/Icon.png" />
+    <File Path="../etc/Icon_128.png" />
+    <File Path="../README.md" />
+  </Folder>
+  <Project Path="Parallel/Parallel.csproj" />
+  <Project Path="PDFtoImage/PDFtoImage.csproj" />
+  <Project Path="Tests/Tests.csproj">
+    <BuildType Solution="ReleaseSigned|*" Project="Release" />
+  </Project>
+  <Project Path="WebConverter/WebConverter.csproj">
+    <BuildType Solution="ReleaseSigned|*" Project="Release" />
+  </Project>
+</Solution>

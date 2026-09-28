@@ -71,10 +71,10 @@ namespace PDFtoImage.Internals
                 // arrive. Keep GetDocument() as the conclusive open/error operation.
                 _ = NativeMethods.Avail_IsDocAvail(_avail);
 
-                _document = NativeMethods.Avail_GetDocument(_avail, password);
+                _document = NativeMethods.Avail_GetDocument(_avail, password, out var error);
 
                 if (_document == IntPtr.Zero)
-                    throw PdfException.CreateException(NativeMethods.GetLastError()) ?? new PdfUnknownException();
+                    throw PdfException.CreateException(error) ?? new PdfUnknownException();
 
                 // Let the same availability context process form-related data before initializing
                 // the form-fill environment. PDF_FORM_NOTEXIST is a normal result, and there is no
@@ -171,11 +171,10 @@ namespace PDFtoImage.Internals
         {
             ResolvePage(pageNumber);
 
-            var page = NativeMethods.LoadPage(_document, pageNumber);
+            var page = NativeMethods.LoadPage(_document, pageNumber, out var error);
             if (page != IntPtr.Zero)
                 return page;
 
-            var error = NativeMethods.GetLastError();
             throw PdfException.CreateException(error) ?? new PdfPageNotFoundException();
         }
 

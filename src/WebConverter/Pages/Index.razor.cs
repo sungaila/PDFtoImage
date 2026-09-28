@@ -48,7 +48,13 @@ namespace PDFtoImage.WebConverter.Pages
         private async Task SetupDotNetHelper()
         {
             _objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeAsync<string>("setDotNetHelper", _objRef);
+            try
+            {
+                await JS.InvokeAsync<string>("setDotNetHelper", _objRef);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async void OnFilesHandled(object? sender, Program.HandledFileEventArgs args)
@@ -85,16 +91,27 @@ namespace PDFtoImage.WebConverter.Pages
             Model.Input = null;
             Model.Output?.Dispose();
             Model.Output = null;
-            StateHasChanged();
 
-            await JS.InvokeVoidAsync("resetImage", "outputImage");
+            try
+            {
+                await JS.InvokeVoidAsync("resetImage", "outputImage");
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async Task SetImage()
         {
             if (Model.Output == null)
             {
-                await JS.InvokeVoidAsync("resetImage", "outputImage");
+                try
+                {
+                    await JS.InvokeVoidAsync("resetImage", "outputImage");
+                }
+                catch (Exception)
+                {
+                }
                 return;
             }
 
@@ -104,7 +121,13 @@ namespace PDFtoImage.WebConverter.Pages
             fs.Position = 0;
 
             using var streamRef = new DotNetStreamReference(fs);
-            await JS.InvokeVoidAsync("setImage", "outputImage", RenderRequest.GetMimeType(Model.Format), streamRef);
+            try
+            {
+                await JS.InvokeVoidAsync("setImage", "outputImage", RenderRequest.GetMimeType(Model.Format), streamRef);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async Task Reset()
@@ -112,7 +135,13 @@ namespace PDFtoImage.WebConverter.Pages
             Model.Dispose();
             Model = new();
             LastException = null;
-            await JS.InvokeVoidAsync("resetImage", "outputImage");
+            try
+            {
+                await JS.InvokeVoidAsync("resetImage", "outputImage");
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private const long MaxAllowedSize = 250 * 1000 * 1000;

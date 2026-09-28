@@ -1,7 +1,3 @@
-using Microsoft.Maui;
-using Microsoft.Maui.Hosting;
-using System;
-
 namespace PDFtoImage.FrameworkTests.MauiApp
 {
     internal class Program : MauiApplication

@@ -1,9 +1,6 @@
 using SkiaSharp;
 using System;
 using System.IO;
-using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 
 public class PdfiumTestScript : MonoBehaviour
 {

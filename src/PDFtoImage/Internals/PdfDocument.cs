@@ -279,10 +279,10 @@ namespace PDFtoImage.Internals
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), bitmap.RowBytes);
+                handle = NativeMethods.Bitmap_CreateEx((int)width, (int)height, NativeMethods.FPDFBitmap.BGRA, bitmap.GetPixels(), bitmap.RowBytes, out var error);
 
                 if (handle == IntPtr.Zero)
-                    throw PdfException.CreateException(NativeMethods.GetLastError()) ?? new PdfUnknownException();
+                    throw PdfException.CreateException(error) ?? new PdfUnknownException();
 
                 cancellationToken.ThrowIfCancellationRequested();
 

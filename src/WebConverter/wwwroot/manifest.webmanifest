@@ -106,22 +106,28 @@
   ],
   "icons": [
     {
+      "src": "icon-16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512-maskable.png",
-      "sizes": "512x512",
-      "type": "image/png",
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     },
     {
       "src": "icon-512-monochrome.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "monochrome maskable"
+      "purpose": "monochrome"
     },
     {
       "src": "icon-192.png",

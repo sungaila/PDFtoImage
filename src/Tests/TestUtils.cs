@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SkiaSharp;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace PDFtoImage.Tests
 {
@@ -18,16 +18,98 @@ namespace PDFtoImage.Tests
         {
             Assert.IsNotNull(outputStream);
             Assert.AreNotEqual(0, outputStream.Length);
-
             Assert.AreEqual(expectedStream.Length, outputStream.Length);
 
             expectedStream.Position = 0;
             outputStream.Position = 0;
 
-            for (int i = 0; i < expectedStream.Length; i++)
+            const int BufferSize = 64 * 1024;
+
+            var expectedBuffer = System.Buffers.ArrayPool<byte>.Shared.Rent(BufferSize);
+            var outputBuffer = System.Buffers.ArrayPool<byte>.Shared.Rent(BufferSize);
+
+            try
             {
-                Assert.AreEqual(expectedStream.ReadByte(), outputStream.ReadByte());
+                long position = 0;
+
+                while (position < expectedStream.Length)
+                {
+                    var count = (int)Math.Min(BufferSize, expectedStream.Length - position);
+
+                    ReadExactly(expectedStream, expectedBuffer, count);
+                    ReadExactly(outputStream, outputBuffer, count);
+
+                    if (!expectedBuffer.AsSpan(0, count).SequenceEqual(outputBuffer.AsSpan(0, count)))
+                    {
+                        for (var i = 0; i < count; i++)
+                        {
+                            if (expectedBuffer[i] != outputBuffer[i])
+                            {
+                                Assert.Fail(
+                                    $"Streams differ at byte position {position + i}. " +
+                                    $"Expected: {expectedBuffer[i]}, Actual: {outputBuffer[i]}.");
+                            }
+                        }
+                    }
+
+                    position += count;
+                }
             }
+            finally
+            {
+                System.Buffers.ArrayPool<byte>.Shared.Return(expectedBuffer);
+                System.Buffers.ArrayPool<byte>.Shared.Return(outputBuffer);
+            }
+        }
+
+        private static void ReadExactly(Stream stream, byte[] buffer, int count)
+        {
+#if NET7_0_OR_GREATER
+            stream.ReadExactly(buffer, 0, count);
+#else
+            var offset = 0;
+
+            while (offset < count)
+            {
+                var read = stream.Read(
+                    buffer,
+                    offset,
+                    count - offset);
+
+                if (read == 0)
+                    throw new EndOfStreamException();
+
+                offset += read;
+            }
+#endif
+        }
+
+        public static void AssertBitmapsEqual(SKBitmap expected, SKBitmap actual)
+        {
+            Assert.AreEqual(expected.Width, actual.Width);
+            Assert.AreEqual(expected.Height, actual.Height);
+            Assert.AreEqual(expected.ColorType, actual.ColorType);
+            Assert.AreEqual(expected.AlphaType, actual.AlphaType);
+            Assert.AreEqual(expected.RowBytes, actual.RowBytes);
+
+            if (!expected.GetPixelSpan().SequenceEqual(actual.GetPixelSpan()))
+            {
+                Assert.Fail("The bitmap pixel data differs.");
+            }
+        }
+
+        internal static void AssertBitmapMatchesPng(string expectedPath, SKBitmap actual)
+        {
+            if (TestBase.SaveOutputInGeneratedFolder)
+            {
+                using var output = CreateOutputStream(expectedPath);
+                actual.Encode(output, SKEncodedImageFormat.Png, 100);
+            }
+
+            using var stream = GetExpectedStream(expectedPath);
+            using var codec = SKCodec.Create(stream);
+            using var expected = SKBitmap.Decode(codec, codec.Info.WithColorType(actual.ColorType).WithAlphaType(actual.AlphaType));
+            AssertBitmapsEqual(expected, actual);
         }
 
         public static string GetPlatformAsString()
@@ -69,7 +151,7 @@ namespace PDFtoImage.Tests
         }
 
 #if NET9_0_OR_GREATER
-        private static readonly Lock _lockObject = new();
+        private static readonly System.Threading.Lock _lockObject = new();
 #else
         private static readonly object _lockObject = new();
 #endif
@@ -85,8 +167,9 @@ namespace PDFtoImage.Tests
             {
                 if (!File.Exists(outputPath))
                 {
-                    if (!Directory.Exists(outputPath))
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+                    var directory = Path.GetDirectoryName(outputPath);
+                    if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                        Directory.CreateDirectory(directory);
 
                     return new FileStream(
                         outputPath,

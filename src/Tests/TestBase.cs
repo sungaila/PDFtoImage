@@ -2,6 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
+[assembly: Parallelize(Scope = ExecutionScope.MethodLevel)]
 namespace PDFtoImage.Tests
 {
     public abstract class TestBase

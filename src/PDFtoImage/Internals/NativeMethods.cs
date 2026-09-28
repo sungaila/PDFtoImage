@@ -99,11 +99,13 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static IntPtr Avail_GetDocument(IntPtr avail, string? password)
+        public static IntPtr Avail_GetDocument(IntPtr avail, string? password, out FPDF_ERR error)
         {
             lock (LockString)
             {
-                return Avail_GetDocumentCore(avail, password);
+                var document = Avail_GetDocumentCore(avail, password);
+                error = document == IntPtr.Zero ? GetLastErrorCore() : FPDF_ERR.SUCCESS;
+                return document;
             }
         }
 
@@ -207,11 +209,13 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static IntPtr LoadPage(IntPtr document, int page_index)
+        public static IntPtr LoadPage(IntPtr document, int page_index, out FPDF_ERR error)
         {
             lock (LockString)
             {
-                return Imports.FPDF_LoadPage(document, page_index);
+                var page = Imports.FPDF_LoadPage(document, page_index);
+                error = page == IntPtr.Zero ? GetLastErrorCore() : FPDF_ERR.SUCCESS;
+                return page;
             }
         }
 
@@ -263,11 +267,13 @@ namespace PDFtoImage.Internals
             }
         }
 
-        public static IntPtr Bitmap_CreateEx(int width, int height, FPDFBitmap format, IntPtr first_scan, int stride)
+        public static IntPtr Bitmap_CreateEx(int width, int height, FPDFBitmap format, IntPtr first_scan, int stride, out FPDF_ERR error)
         {
             lock (LockString)
             {
-                return Imports.FPDFBitmap_CreateEx(width, height, (int)format, first_scan, stride);
+                var bitmap = Imports.FPDFBitmap_CreateEx(width, height, (int)format, first_scan, stride);
+                error = bitmap == IntPtr.Zero ? GetLastErrorCore() : FPDF_ERR.SUCCESS;
+                return bitmap;
             }
         }
 
