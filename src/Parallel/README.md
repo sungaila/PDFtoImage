@@ -1,4 +1,4 @@
-# ![PDFtoImage.Parallel Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_Parallel_128.png) PDFtoImage.Parallel
+# ![PDFtoImage.Parallel Logo](https://raw.githubusercontent.com/sungaila/PDFtoImage/master/etc/Icon_Parallel_64.png) PDFtoImage.Parallel
 
 [![NuGet version](https://img.shields.io/nuget/v/PDFtoImage.Parallel.svg?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/PDFtoImage.Parallel/)
 [![NuGet downloads](https://img.shields.io/nuget/dt/PDFtoImage.Parallel.svg?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/PDFtoImage.Parallel/)
