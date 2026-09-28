@@ -143,15 +143,7 @@ namespace PDFtoImage.Parallel
             }
         }
 
-        /// <summary>
-        /// Renders one page from a PDF stream as one job in the worker pool.
-        /// </summary>
-        /// <param name="pdfStream">The PDF to render.</param>
-        /// <param name="page">The zero-based page index.</param>
-        /// <param name="leaveOpen">Whether to leave <paramref name="pdfStream"/> open after it has been read.</param>
-        /// <param name="password">The optional PDF password.</param>
-        /// <param name="options">Rendering options.</param>
-        /// <param name="cancellationToken">Cancels reading or rendering the request.</param>
+        /// <inheritdoc />
         public async Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             using var request = BeginRequest(cancellationToken);
@@ -176,21 +168,15 @@ namespace PDFtoImage.Parallel
             }
         }
 
-        /// <summary>
-        /// Renders all pages from a PDF stream into images using worker processes.
-        /// </summary>
+        /// <inheritdoc />
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default) =>
             ToImagesFromStreamAsync(pdfStream, PageSelection.All, leaveOpen, password, options, cancellationToken);
 
-        /// <summary>
-        /// Renders a range of pages from a PDF stream into images using worker processes.
-        /// </summary>
+        /// <inheritdoc />
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, Range pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default) =>
             ToImagesFromStreamAsync(pdfStream, PageSelection.FromRange(pages), leaveOpen, password, options, cancellationToken);
 
-        /// <summary>
-        /// Renders selected pages from a PDF stream into images using worker processes.
-        /// </summary>
+        /// <inheritdoc />
         public IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, IEnumerable<int> pages, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(pages);

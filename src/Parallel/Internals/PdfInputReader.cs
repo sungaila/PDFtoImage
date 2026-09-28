@@ -16,9 +16,6 @@ namespace PDFtoImage.Parallel.Internals
             FileStream? readable = null;
             try
             {
-                if (source.Position != 0)
-                    return null;
-
                 readable = new FileStream(source.Name, FileMode.Open, FileAccess.Read,
                     FileShare.Read, BufferSize, FileOptions.RandomAccess);
                 if (readable.Length == source.Length)
@@ -39,6 +36,10 @@ namespace PDFtoImage.Parallel.Internals
         {
             ArgumentNullException.ThrowIfNull(stream);
             ArgumentOutOfRangeException.ThrowIfNegative(maximumLength);
+
+            // PDFium reads FileStreams by absolute offsets, independently of their current position.
+            if (stream is FileStream && stream.CanSeek)
+                stream.Position = 0;
 
             if (stream.CanSeek && stream.CanRead)
             {
@@ -86,6 +87,10 @@ namespace PDFtoImage.Parallel.Internals
         internal static async Task<(string Path, FileStream Lifetime)> WriteTempFileAsync(Stream stream, string tempDirectory, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(stream);
+
+            if (stream is FileStream && stream.CanSeek)
+                stream.Position = 0;
+
             var path = Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".pdf");
             FileStream? lifetime = null;
 

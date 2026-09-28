@@ -194,7 +194,7 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
-        public async Task FileStreamCopyCanBeForcedAndIsUsedForNonzeroPositionOrExclusiveSharing()
+        public async Task FileStreamCopyCanBeForcedAndIsUsedForExclusiveSharing()
         {
             using var fixture = new FileFixture();
             await using var copyProcessor = new ParallelPdfProcessor(new ProcessorOptions
@@ -239,19 +239,40 @@ namespace PDFtoImage.Tests
                 Assert.HasCount(1, fallbackProcessor.TemporaryPdfPaths);
             }
             Assert.IsEmpty(Directory.GetFiles(fixture.TempDirectory));
+        }
 
-            File.WriteAllBytes(fixture.InputPath, [0, 1, 2, 3, .. Pdf]);
-            using var offset = File.OpenRead(fixture.InputPath);
-            offset.Position = 4;
-            await using (var iterator = fallbackProcessor.ToImagesAsync(offset, [0], leaveOpen: true,
+        [TestMethod]
+        [DataRow(ProcessorTransferMode.MemoryMappedFile, true)]
+        [DataRow(ProcessorTransferMode.MemoryMappedFile, false)]
+        [DataRow(ProcessorTransferMode.Ipc, true)]
+        public async Task FileStreamAtNonzeroPositionRendersWholePdf(ProcessorTransferMode mode, bool reuseFileStream)
+        {
+            using var fixture = new FileFixture();
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions
+            {
+                WorkerCount = 1,
+                TransferMode = mode,
+                TempDirectory = fixture.TempDirectory,
+                ReuseFileStream = reuseFileStream
+            });
+            using var source = File.OpenRead(fixture.InputPath);
+            source.Position = 4;
+
+            await using (var iterator = processor.ToImagesAsync(source, [0], leaveOpen: true,
                 options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken).GetAsyncEnumerator())
             {
                 Assert.IsTrue(await iterator.MoveNextAsync());
                 using var image = iterator.Current;
                 using var expected = Conversion.ToImage(Pdf, options: new RenderOptions(Dpi: 40));
                 AssertBitmapsEqual(expected, image);
-                Assert.HasCount(1, fallbackProcessor.TemporaryPdfPaths);
+
+                if (mode == ProcessorTransferMode.MemoryMappedFile && !reuseFileStream)
+                    Assert.HasCount(1, processor.TemporaryPdfPaths);
+                else
+                    Assert.IsEmpty(processor.TemporaryPdfPaths);
             }
+
+            Assert.AreEqual(reuseFileStream && mode == ProcessorTransferMode.MemoryMappedFile ? 4 : source.Length, source.Position);
             Assert.IsEmpty(Directory.GetFiles(fixture.TempDirectory));
         }
 

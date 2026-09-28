@@ -13,6 +13,12 @@ namespace PDFtoImage.Parallel
     public interface IParallelPdfProcessor : IDisposable, IAsyncDisposable
     {
         /// <summary>Renders a single page.</summary>
+        /// <param name="pdfStream">The PDF to render.</param>
+        /// <param name="page">The page index, optionally counted from the end.</param>
+        /// <param name="leaveOpen">Whether to leave <paramref name="pdfStream"/> open after it has been read.</param>
+        /// <param name="password">The optional PDF password.</param>
+        /// <param name="options">Rendering options.</param>
+        /// <param name="cancellationToken">Cancels reading or rendering the request.</param>
         Task<SKBitmap> ToImageAsync(Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default, CancellationToken cancellationToken = default);
 
         /// <summary>Renders every page.</summary>
