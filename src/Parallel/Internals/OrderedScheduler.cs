@@ -20,6 +20,7 @@ namespace PDFtoImage.Parallel.Internals
             {
                 for (var i = 0; i < capacity && input.MoveNext(); i++)
                 {
+                    cancellation.Token.ThrowIfCancellationRequested();
                     pending.Enqueue(render(input.Current, cancellation.Token));
                 }
 
@@ -39,22 +40,29 @@ namespace PDFtoImage.Parallel.Internals
 
                     yield return result;
 
+                    cancellation.Token.ThrowIfCancellationRequested();
+
                     if (input.MoveNext())
                         pending.Enqueue(render(input.Current, cancellation.Token));
                 }
             }
             finally
             {
-                cancellation.Cancel();
-
-                foreach (var task in pending)
+                try
                 {
-                    try
+                    cancellation.Cancel();
+                }
+                finally
+                {
+                    foreach (var task in pending)
                     {
-                        if (await task.ConfigureAwait(false) is IDisposable disposable)
-                            disposable.Dispose();
+                        try
+                        {
+                            if (await task.ConfigureAwait(false) is IDisposable disposable)
+                                disposable.Dispose();
+                        }
+                        catch { /* Observe failures during cancellation/early enumeration exit. */ }
                     }
-                    catch { /* Observe failures during cancellation/early enumeration exit. */ }
                 }
             }
         }

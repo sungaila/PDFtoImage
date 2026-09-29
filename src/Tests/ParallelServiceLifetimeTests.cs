@@ -58,6 +58,109 @@ namespace PDFtoImage.Tests
             }
         }
 
+        private sealed class TrackedInputStream() : MemoryStream(Pdf)
+        {
+            internal int DisposeCount;
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                    DisposeCount++;
+                base.Dispose(disposing);
+            }
+        }
+
+        private static System.Collections.Generic.IEnumerable<int> FailingPages()
+        {
+            yield return 0;
+            throw new IOException("page selection failed");
+        }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task DisposedProcessorStillHonorsInputOwnership(bool leaveOpen)
+        {
+            var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            processor.Dispose();
+
+            using var single = new TrackedInputStream();
+            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => processor.ToImageAsync(single, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken));
+            Assert.AreEqual(leaveOpen ? 0 : 1, single.DisposeCount);
+
+            for (var selection = 0; selection < 3; selection++)
+            {
+                using var stream = new TrackedInputStream();
+                var images = selection switch
+                {
+                    0 => processor.ToImagesAsync(stream, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken),
+                    1 => processor.ToImagesAsync(stream, 0..1, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken),
+                    _ => processor.ToImagesAsync(stream, [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken)
+                };
+                await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
+                {
+                    await foreach (var image in images)
+                        image.Dispose();
+                });
+                Assert.AreEqual(leaveOpen ? 0 : 1, stream.DisposeCount);
+            }
+        }
+
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task FailingPageSelectionStillHonorsInputOwnership(bool leaveOpen)
+        {
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            using var stream = new TrackedInputStream();
+            var images = processor.ToImagesAsync(stream, FailingPages(), leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken);
+            Assert.AreEqual(0, stream.DisposeCount);
+            await Assert.ThrowsExactlyAsync<IOException>(async () =>
+            {
+                await foreach (var image in images)
+                    image.Dispose();
+            });
+            Assert.AreEqual(leaveOpen ? 0 : 1, stream.DisposeCount);
+            Assert.IsEmpty(processor.WorkerProcessIds);
+        }
+
+        [TestMethod]
+        public async Task CanceledPageSelectionDoesNotRunUserEnumerator()
+        {
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            using var stream = new TrackedInputStream();
+            await Assert.ThrowsAsync<OperationCanceledException>(async () =>
+            {
+                await foreach (var image in processor.ToImagesAsync(stream, FailingPages(), cancellationToken: new CancellationToken(true)))
+                    image.Dispose();
+            });
+            Assert.AreEqual(1, stream.DisposeCount);
+        }
+
+        [TestMethod]
+        [DataRow(false, false)]
+        [DataRow(false, true)]
+        [DataRow(true, false)]
+        [DataRow(true, true)]
+        public async Task InputIsReleasedBeforeFirstImageIsYielded(bool mapped, bool selectedPages)
+        {
+            using var directory = new TestDirectory();
+            await using var processor = new ParallelPdfProcessor(new ProcessorOptions
+            {
+                WorkerCount = 1,
+                TransferMode = mapped ? ProcessorTransferMode.MemoryMappedFile : ProcessorTransferMode.Ipc,
+                TempDirectory = directory.PathName
+            });
+            using var stream = new TrackedInputStream();
+            var images = selectedPages
+                ? processor.ToImagesAsync(stream, [0], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken)
+                : processor.ToImagesAsync(stream, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+            await using var iterator = images.GetAsyncEnumerator(TestContext!.CancellationToken);
+            Assert.IsTrue(await iterator.MoveNextAsync());
+            iterator.Current.Dispose();
+            Assert.AreEqual(1, stream.DisposeCount);
+        }
+
         [TestMethod]
         public async Task InputDisposalFailureDeletesBufferedPdfAndDoesNotPoisonProcessor()
         {

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PDFtoImage
 {
@@ -250,7 +251,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            await foreach (var image in ToImagesAsync(pdfStream, pages, false, password, options, cancellationToken))
+            await foreach (var image in ToImagesAsync(pdfStream, pages, false, password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }
@@ -273,7 +274,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            await foreach (var image in ToImagesAsync(pdfStream, pages, false, password, options, cancellationToken))
+            await foreach (var image in ToImagesAsync(pdfStream, pages, false, password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }
@@ -295,7 +296,7 @@ namespace PDFtoImage
             // Base64 string -> byte[] -> MemoryStream
             using var pdfStream = new MemoryStream(pdfAsByteArray, false);
 
-            await foreach (var image in ToImagesAsync(pdfStream, false, password, options, cancellationToken))
+            await foreach (var image in ToImagesAsync(pdfStream, false, password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }

@@ -398,22 +398,11 @@ namespace PDFtoImage.Internals
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+            if (_disposed)
+                return;
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <param name="disposing">Whether this method is called from <see cref="Dispose()"/>.</param>
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed && disposing)
-            {
-                _file.Dispose();
-
-                _disposed = true;
-            }
+            _disposed = true;
+            _file.Dispose();
         }
     }
 }

@@ -198,6 +198,115 @@ namespace PDFtoImage.Tests
             AssertSynchronizationResourcesDisposed(pool);
         }
 
+        [TestMethod]
+        [DataRow(false)]
+        [DataRow(true)]
+        public async Task ProcessorAggregatesShutdownAndWorkerCleanupErrors(bool asynchronous)
+        {
+            var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
+            try
+            {
+                using var warmup = await processor.ToImageAsync(new MemoryStream(Pdf), options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
+                var pool = (WorkerPool)typeof(ParallelPdfProcessor).GetField("_pool", Fields)!.GetValue(processor)!;
+                var workers = ObserveWorkers(pool);
+                var shutdown = (CancellationTokenSource)typeof(ParallelPdfProcessor).GetField("_shutdown", Fields)!.GetValue(processor)!;
+                using var registration = shutdown.Token.Register(() => throw new IOException("shutdown callback"));
+                var error = asynchronous
+                    ? await Assert.ThrowsExactlyAsync<AggregateException>(() => processor.DisposeAsync().AsTask())
+                    : Assert.ThrowsExactly<AggregateException>(processor.Dispose);
+                Assert.AreEquivalent(new[] { "shutdown callback", "worker cleanup" }, error.Flatten().InnerExceptions.Select(exception => exception.Message).ToArray());
+                Assert.IsTrue(workers.All(worker => worker.Disposed));
+                AssertSynchronizationResourcesDisposed(pool);
+
+                processor.Dispose();
+                var repeated = await Assert.ThrowsExactlyAsync<AggregateException>(() => processor.DisposeAsync().AsTask());
+                Assert.AreEquivalent(new[] { "shutdown callback", "worker cleanup" }, repeated.InnerExceptions.Select(exception => exception.Message).ToArray());
+            }
+            finally
+            {
+                processor.Dispose();
+            }
+        }
+
+        [TestMethod, OSCondition(OperatingSystems.Windows)]
+        public void PdfRequestRetriesFailedTempFileDeletion()
+        {
+            var path = Path.Combine(Path.GetTempPath(), "PDFtoImage.Tests." + Guid.NewGuid().ToString("N") + ".pdf");
+            File.WriteAllBytes(path, Pdf);
+            var lifetime = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete);
+            var releaseCount = 0;
+            var request = new PdfRequest(path, lifetime, null, _ => releaseCount++);
+            try
+            {
+                File.SetAttributes(path, FileAttributes.ReadOnly);
+                Assert.ThrowsExactly<UnauthorizedAccessException>(request.Dispose);
+                Assert.AreEqual(0, releaseCount);
+                Assert.IsTrue(File.Exists(path));
+
+                File.SetAttributes(path, FileAttributes.Normal);
+                request.Dispose();
+                request.Dispose();
+                Assert.AreEqual(1, releaseCount);
+                Assert.IsFalse(File.Exists(path));
+            }
+            finally
+            {
+                if (File.Exists(path))
+                {
+                    File.SetAttributes(path, FileAttributes.Normal);
+                    File.Delete(path);
+                }
+            }
+        }
+
+        private sealed class ReadOnlyPartialPdfStream : MemoryStream
+        {
+            internal string? PartialPath;
+
+            public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
+            {
+                PartialPath = ((FileStream)destination).Name;
+                File.SetAttributes(PartialPath, FileAttributes.ReadOnly);
+                throw new IOException("copy failure");
+            }
+        }
+
+        [TestMethod, OSCondition(OperatingSystems.Windows)]
+        public async Task TempPdfCleanupPreservesCopyAndDeletionFailures()
+        {
+            using var stream = new ReadOnlyPartialPdfStream();
+            try
+            {
+                var error = await Assert.ThrowsExactlyAsync<AggregateException>(() => PdfInputReader.WriteTempFileAsync(stream, Path.GetTempPath(), TestContext!.CancellationToken));
+                Assert.HasCount(2, error.InnerExceptions);
+                Assert.AreEqual("copy failure", error.InnerExceptions[0].Message);
+                Assert.IsInstanceOfType<UnauthorizedAccessException>(error.InnerExceptions[1]);
+            }
+            finally
+            {
+                if (stream.PartialPath != null)
+                {
+                    File.SetAttributes(stream.PartialPath, FileAttributes.Normal);
+                    File.Delete(stream.PartialPath);
+                }
+            }
+        }
+
+        private sealed class IdleWorker() : WorkerConnection(Stream.Null);
+
+        [TestMethod]
+        public async Task PreCanceledFileOperationsDoNotAccessTempDirectory()
+        {
+            var missingDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+            var token = new CancellationToken(true);
+            using var stream = new MemoryStream(Pdf);
+            await Assert.ThrowsAsync<OperationCanceledException>(() => PdfInputReader.WriteTempFileAsync(stream, missingDirectory, token));
+            using var worker = new IdleWorker();
+            await Assert.ThrowsAsync<OperationCanceledException>(() => worker.RenderPageAsync(0, default, ProcessorTransferMode.MemoryMappedFile, missingDirectory, token));
+            Assert.IsFalse(worker.IsDisposed, "Pre-cancellation must not invalidate an idle worker.");
+            Assert.IsFalse(Directory.Exists(missingDirectory));
+        }
+
         private sealed class DelayedCancellationStream : MemoryStream
         {
             internal readonly TaskCompletionSource Started = new(TaskCreationOptions.RunContinuationsAsynchronously);

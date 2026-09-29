@@ -13,7 +13,7 @@ namespace PDFtoImage.Internals
         {
             lock (LockString)
             {
-                return Imports.FPDFBitmap_FillRect(bitmapHandle, left, top, width, height, color) != 0;
+                return Imports.FPDFBitmap_FillRect(bitmapHandle, left, top, width, height, new UIntPtr(color)) != 0;
             }
         }
 
@@ -26,16 +26,16 @@ namespace PDFtoImage.Internals
         }
 
         private static FPDF_ERR GetLastErrorCore()
-            => (FPDF_ERR)Imports.FPDF_GetLastError();
+            => (FPDF_ERR)unchecked((uint)Imports.FPDF_GetLastError().ToUInt64());
 
         private unsafe static IntPtr CreateAvailFileAccessState(long length, int id)
         {
 #if BROWSER
-            delegate* unmanaged[Cdecl]<IntPtr, uint, IntPtr, uint, int> getBlock = &FPDF_GetBlock;
-            var access = new FPDF_FILEACCESS(checked((uint)length), (IntPtr)getBlock, id);
+            delegate* unmanaged[Cdecl]<IntPtr, UIntPtr, IntPtr, UIntPtr, int> getBlock = &FPDF_GetBlock;
+            var access = new FPDF_FILEACCESS(new UIntPtr(checked((ulong)length)), (IntPtr)getBlock, id);
 #else
             var getBlock = Marshal.GetFunctionPointerForDelegate(_getBlockDelegate);
-            var access = new FPDF_FILEACCESS(checked((uint)length), getBlock, (IntPtr)id);
+            var access = new FPDF_FILEACCESS(new UIntPtr(checked((ulong)length)), getBlock, (IntPtr)id);
 #endif
 
             var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
@@ -109,19 +109,29 @@ namespace PDFtoImage.Internals
         // needed for Unity IL2CPP compilation
         [AOT.MonoPInvokeCallback(typeof(FPDF_GetBlockDelegate))]
 #endif
-        private static int FPDF_GetBlock(IntPtr param, uint position, IntPtr buffer, uint size)
+        private static int FPDF_GetBlock(IntPtr param, UIntPtr position, IntPtr buffer, UIntPtr size)
         {
             byte[]? rentedBuffer = null;
 
             try
             {
                 var streamId = checked((int)param.ToInt64());
-                var positionConverted = (long)position;
+                var nativePosition = position.ToUInt64();
+                var nativeSize = size.ToUInt64();
 
-                if (size > int.MaxValue)
+                // Windows passes C unsigned long as 32 bits even in a 64-bit register.
+                // The register's upper half is outside the callback ABI contract.
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    nativePosition &= uint.MaxValue;
+                    nativeSize &= uint.MaxValue;
+                }
+
+                if (nativePosition > long.MaxValue || nativeSize > int.MaxValue)
                     return 0;
 
-                var sizeConverted = (int)size;
+                var positionConverted = (long)nativePosition;
+                var sizeConverted = (int)nativeSize;
 
                 if (sizeConverted == 0)
                     return 1;
@@ -215,13 +225,13 @@ namespace PDFtoImage.Internals
             public static extern IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, uint color);
+            public static extern int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, UIntPtr color);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDFBitmap_Destroy(IntPtr bitmapHandle);
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
-            public static extern uint FPDF_GetLastError();
+            public static extern UIntPtr FPDF_GetLastError();
 
             [DllImport("pdfium", CallingConvention = CallingConvention.Cdecl)]
             public static extern void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
@@ -258,7 +268,7 @@ namespace PDFtoImage.Internals
         }
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate int FPDF_GetBlockDelegate(IntPtr param, uint position, IntPtr buffer, uint size);
+        private delegate int FPDF_GetBlockDelegate(IntPtr param, UIntPtr position, IntPtr buffer, UIntPtr size);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int FX_IsDataAvailDelegate(IntPtr param, UIntPtr offset, UIntPtr size);
@@ -275,9 +285,9 @@ namespace PDFtoImage.Internals
 #endif
 
         [StructLayout(LayoutKind.Sequential)]
-        public readonly struct FPDF_FILEACCESS(uint m_FileLen, IntPtr m_GetBlock, IntPtr m_Param)
+        public readonly struct FPDF_FILEACCESS(UIntPtr m_FileLen, IntPtr m_GetBlock, IntPtr m_Param)
         {
-            private readonly uint m_FileLen = m_FileLen;
+            private readonly UIntPtr m_FileLen = m_FileLen;
             private readonly IntPtr m_GetBlock = m_GetBlock;
             private readonly IntPtr m_Param = m_Param;
         }

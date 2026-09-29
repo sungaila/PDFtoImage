@@ -2,6 +2,7 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PDFtoImage.Parallel.Internals
 {
@@ -10,13 +11,13 @@ namespace PDFtoImage.Parallel.Internals
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2022")]
         internal static void StartWatchdog(SafeFileHandle lifetime)
         {
-            using var ready = new ManualResetEventSlim();
+            var ready = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
             var watchdog = new Thread(() =>
             {
                 try
                 {
                     using var stream = new FileStream(lifetime, FileAccess.Read, bufferSize: 1, isAsync: false);
-                    ready.Set();
+                    ready.TrySetResult();
 
                     // The pipe carries no data. EOF, an error, or unexpected data all
                     // mean that the parent no longer owns this worker.
@@ -27,7 +28,7 @@ namespace PDFtoImage.Parallel.Internals
                 catch (ObjectDisposedException) { }
                 finally
                 {
-                    ready.Set();
+                    ready.TrySetResult();
                 }
 
                 try
@@ -46,7 +47,7 @@ namespace PDFtoImage.Parallel.Internals
             };
 
             watchdog.Start();
-            ready.Wait();
+            ready.Task.GetAwaiter().GetResult();
         }
     }
 }

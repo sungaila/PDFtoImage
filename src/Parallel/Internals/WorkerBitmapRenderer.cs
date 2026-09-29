@@ -82,10 +82,22 @@ namespace PDFtoImage.Parallel.Internals
                 }
                 finally
                 {
-                    if (pointerAcquired)
-                        view!.SafeMemoryMappedViewHandle.ReleasePointer();
-                    view?.Dispose();
-                    mapping?.Dispose();
+                    try
+                    {
+                        if (pointerAcquired)
+                            view!.SafeMemoryMappedViewHandle.ReleasePointer();
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            view?.Dispose();
+                        }
+                        finally
+                        {
+                            mapping?.Dispose();
+                        }
+                    }
                 }
             }
 
