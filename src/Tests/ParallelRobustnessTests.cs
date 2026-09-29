@@ -544,14 +544,14 @@ namespace PDFtoImage.Tests
                 return Task.FromResult(page);
             }
 
-            await using var iterator = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator();
+            await using var iterator = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator(TestContext!.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             Assert.AreEqual(2, started);
             cancellation.Cancel();
             await Assert.ThrowsAsync<OperationCanceledException>(async () => await iterator.MoveNextAsync());
             Assert.AreEqual(2, started);
 
-            await using var canceled = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator();
+            await using var canceled = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator(TestContext!.CancellationToken);
             await Assert.ThrowsAsync<OperationCanceledException>(async () => await canceled.MoveNextAsync());
             Assert.AreEqual(2, started);
         }

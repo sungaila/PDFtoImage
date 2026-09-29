@@ -61,7 +61,7 @@ namespace PDFtoImage.Tests
             var file = (PdfFile)typeof(PdfDocument).GetField("_file", Fields)!.GetValue(document)!;
             Assert.ThrowsExactly<IOException>(document.Dispose);
             AssertFileReleased(file);
-            Assert.ThrowsExactly<ObjectDisposedException>(() => document.Render(0, new RenderOptions(Dpi: 40), (_, _) => throw new AssertFailedException()));
+            Assert.ThrowsExactly<ObjectDisposedException>(() => document.Render(0, new RenderOptions(Dpi: 40), (_, _) => throw new AssertFailedException(), TestContext!.CancellationToken));
             document.Dispose();
             file.Dispose();
             Assert.AreEqual(1, stream.DisposeCount);
@@ -148,7 +148,7 @@ namespace PDFtoImage.Tests
         {
             0 => Conversion.ToImagesAsync(stream, leaveOpen, options: new RenderOptions(Dpi: 40), cancellationToken: token),
             1 => Conversion.ToImagesAsync(stream, 0..1, leaveOpen, options: new RenderOptions(Dpi: 40), cancellationToken: token),
-            _ => Conversion.ToImagesAsync(stream, new[] { 0 }, leaveOpen, options: new RenderOptions(Dpi: 40), cancellationToken: token)
+            _ => Conversion.ToImagesAsync(stream, [0], leaveOpen, options: new RenderOptions(Dpi: 40), cancellationToken: token)
         };
 
         [TestMethod]
@@ -231,7 +231,7 @@ namespace PDFtoImage.Tests
         public async Task AsyncCleanupFailurePreservesDeliveredBitmap(int selection)
         {
             var stream = new TrackingStream(Pdf) { OnDispose = () => throw new IOException("dispose failure") };
-            await using var iterator = ConvertAsync(stream, selection, false, TestContext!.CancellationToken).GetAsyncEnumerator();
+            await using var iterator = ConvertAsync(stream, selection, false, TestContext!.CancellationToken).GetAsyncEnumerator(TestContext!.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             using var bitmap = iterator.Current;
             await Assert.ThrowsExactlyAsync<IOException>(() => iterator.DisposeAsync().AsTask());
@@ -251,7 +251,7 @@ namespace PDFtoImage.Tests
             try
             {
                 using var stream = new AsyncDisposeStream();
-                var iterator = ConvertAsync(stream, selection, leaveOpen: false, CancellationToken.None).GetAsyncEnumerator();
+                var iterator = ConvertAsync(stream, selection, leaveOpen: false, CancellationToken.None).GetAsyncEnumerator(TestContext!.CancellationToken);
                 try
                 {
                     Assert.IsTrue(iterator.MoveNextAsync().AsTask().GetAwaiter().GetResult());
@@ -282,7 +282,7 @@ namespace PDFtoImage.Tests
             {
                 0 => Conversion.ToImagesAsync("invalid base64", cancellationToken: token),
                 1 => Conversion.ToImagesAsync("invalid base64", 0..1, cancellationToken: token),
-                _ => Conversion.ToImagesAsync("invalid base64", new[] { 0 }, cancellationToken: token)
+                _ => Conversion.ToImagesAsync("invalid base64", [0], cancellationToken: token)
             };
             await Assert.ThrowsAsync<OperationCanceledException>(async () =>
             {

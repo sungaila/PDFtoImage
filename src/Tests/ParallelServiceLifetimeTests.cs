@@ -85,7 +85,7 @@ namespace PDFtoImage.Tests
             processor.Dispose();
 
             using var single = new TrackedInputStream();
-            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => processor.ToImageAsync(single, leaveOpen: leaveOpen));
+            await Assert.ThrowsExactlyAsync<ObjectDisposedException>(() => processor.ToImageAsync(single, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken));
             Assert.AreEqual(leaveOpen ? 0 : 1, single.DisposeCount);
 
             for (var selection = 0; selection < 3; selection++)
@@ -93,9 +93,9 @@ namespace PDFtoImage.Tests
                 using var stream = new TrackedInputStream();
                 var images = selection switch
                 {
-                    0 => processor.ToImagesAsync(stream, leaveOpen: leaveOpen),
-                    1 => processor.ToImagesAsync(stream, 0..1, leaveOpen: leaveOpen),
-                    _ => processor.ToImagesAsync(stream, new[] { 0 }, leaveOpen: leaveOpen)
+                    0 => processor.ToImagesAsync(stream, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken),
+                    1 => processor.ToImagesAsync(stream, 0..1, leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken),
+                    _ => processor.ToImagesAsync(stream, [0], leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken)
                 };
                 await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () =>
                 {
@@ -113,7 +113,7 @@ namespace PDFtoImage.Tests
         {
             await using var processor = new ParallelPdfProcessor(new ProcessorOptions { WorkerCount = 1 });
             using var stream = new TrackedInputStream();
-            var images = processor.ToImagesAsync(stream, FailingPages(), leaveOpen: leaveOpen);
+            var images = processor.ToImagesAsync(stream, FailingPages(), leaveOpen: leaveOpen, cancellationToken: TestContext!.CancellationToken);
             Assert.AreEqual(0, stream.DisposeCount);
             await Assert.ThrowsExactlyAsync<IOException>(async () =>
             {
@@ -153,8 +153,8 @@ namespace PDFtoImage.Tests
             });
             using var stream = new TrackedInputStream();
             var images = selectedPages
-                ? processor.ToImagesAsync(stream, new[] { 0 }, options: new RenderOptions(Dpi: 40))
-                : processor.ToImagesAsync(stream, options: new RenderOptions(Dpi: 40));
+                ? processor.ToImagesAsync(stream, [0], options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken)
+                : processor.ToImagesAsync(stream, options: new RenderOptions(Dpi: 40), cancellationToken: TestContext!.CancellationToken);
             await using var iterator = images.GetAsyncEnumerator(TestContext!.CancellationToken);
             Assert.IsTrue(await iterator.MoveNextAsync());
             iterator.Current.Dispose();
