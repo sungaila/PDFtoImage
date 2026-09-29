@@ -87,12 +87,12 @@ namespace PDFtoImage.Parallel.Internals
         internal static async Task<(string Path, FileStream Lifetime)> WriteTempFileAsync(Stream stream, string tempDirectory, CancellationToken cancellationToken)
         {
             ArgumentNullException.ThrowIfNull(stream);
+            cancellationToken.ThrowIfCancellationRequested();
 
             if (stream is FileStream && stream.CanSeek)
                 stream.Position = 0;
 
             var path = Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".pdf");
-            FileStream? lifetime = null;
 
             try
             {
@@ -107,7 +107,8 @@ namespace PDFtoImage.Parallel.Internals
                 if (!OperatingSystem.IsWindows())
                     createOptions.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
 
-                await using (var output = new FileStream(path, createOptions))
+                var output = new FileStream(path, createOptions);
+                await using (output.ConfigureAwait(false))
                 {
                     if (OperatingSystem.IsWindows())
                         File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Temporary);
@@ -116,13 +117,20 @@ namespace PDFtoImage.Parallel.Internals
 
                 cancellationToken.ThrowIfCancellationRequested();
                 var lifetimeOptions = OperatingSystem.IsWindows() ? FileOptions.DeleteOnClose : FileOptions.None;
-                lifetime = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, BufferSize, lifetimeOptions);
+                var lifetime = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read | FileShare.Delete, BufferSize, lifetimeOptions);
                 return (path, lifetime);
             }
-            catch
+            catch (Exception error)
             {
-                lifetime?.Dispose();
-                File.Delete(path);
+                // Preserve the copy/open failure if deleting the partial file also fails.
+                try
+                {
+                    File.Delete(path);
+                }
+                catch (Exception cleanupError)
+                {
+                    throw new AggregateException("Temporary PDF cleanup failed.", error, cleanupError);
+                }
                 throw;
             }
         }

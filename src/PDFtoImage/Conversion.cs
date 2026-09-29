@@ -62,12 +62,18 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            // Stream -> Internals.PdfDocument
-            using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
-
-            await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, pages, cancellationToken))
+            // Own the stream even if cancellation prevents the load delegate from running.
+            try
             {
-                yield return bitmap;
+                using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, disposeStream: false), cancellationToken).ConfigureAwait(false);
+
+                await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, pages, cancellationToken).ConfigureAwait(false))
+                    yield return bitmap;
+            }
+            finally
+            {
+                if (!leaveOpen)
+                    await pdfStream.DisposeAsync().ConfigureAwait(false);
             }
         }
 
@@ -83,7 +89,7 @@ namespace PDFtoImage
                 cancellationToken.ThrowIfCancellationRequested();
 
                 // Internals.PdfDocument -> Image
-                yield return await Task.Run(() => RenderImpl(pdfDocument, page, PdfDocument.GetRenderFlags(options), options, cancellationToken), cancellationToken);
+                yield return await Task.Run(() => RenderImpl(pdfDocument, page, PdfDocument.GetRenderFlags(options), options, cancellationToken), cancellationToken).ConfigureAwait(false);
             }
         }
 #endif

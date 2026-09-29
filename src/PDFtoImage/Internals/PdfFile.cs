@@ -85,7 +85,7 @@ namespace PDFtoImage.Internals
             }
             catch
             {
-                Cleanup(disposing: true);
+                Dispose();
                 throw;
             }
         }
@@ -194,12 +194,11 @@ namespace PDFtoImage.Internals
             if (_disposed)
                 return;
 
-            Cleanup(disposing: true);
             _disposed = true;
-            GC.SuppressFinalize(this);
+            Cleanup();
         }
 
-        private void Cleanup(bool disposing)
+        private void Cleanup()
         {
             try
             {
@@ -233,11 +232,10 @@ namespace PDFtoImage.Internals
                     {
                         StreamManager.Unregister(_id);
 
-                        if (disposing && _disposeStream)
-                        {
-                            _stream?.Dispose();
-                            _stream = null;
-                        }
+                        var stream = _stream;
+                        _stream = null;
+                        if (_disposeStream)
+                            stream?.Dispose();
                     }
                 }
             }

@@ -501,6 +501,62 @@ namespace PDFtoImage.Tests
         }
 
         [TestMethod]
+        public async Task ThrowingCancellationCallbackStillDisposesPendingResults()
+        {
+            var results = new List<DisposableResult>();
+            CancellationTokenRegistration registration = default;
+            Task<DisposableResult> Render(int page, CancellationToken token)
+            {
+                if (page == 0)
+                    registration = token.Register(() => throw new IOException("cancellation callback"));
+                var result = new DisposableResult();
+                results.Add(result);
+                return Task.FromResult(result);
+            }
+
+            try
+            {
+                await Assert.ThrowsExactlyAsync<AggregateException>(async () =>
+                {
+                    await foreach (var result in OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 4, Render, TestContext!.CancellationToken))
+                    {
+                        result.Dispose();
+                        break;
+                    }
+                });
+                Assert.HasCount(4, results);
+                Assert.IsTrue(results.All(result => result.IsDisposed));
+            }
+            finally
+            {
+                registration.Dispose();
+            }
+        }
+
+        [TestMethod]
+        public async Task CanceledSchedulerDoesNotScheduleMorePages()
+        {
+            using var cancellation = new CancellationTokenSource();
+            var started = 0;
+            Task<int> Render(int page, CancellationToken token)
+            {
+                started++;
+                return Task.FromResult(page);
+            }
+
+            await using var iterator = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator();
+            Assert.IsTrue(await iterator.MoveNextAsync());
+            Assert.AreEqual(2, started);
+            cancellation.Cancel();
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await iterator.MoveNextAsync());
+            Assert.AreEqual(2, started);
+
+            await using var canceled = OrderedScheduler.RunAsync(Enumerable.Range(0, 10), 2, Render, cancellation.Token).GetAsyncEnumerator();
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await canceled.MoveNextAsync());
+            Assert.AreEqual(2, started);
+        }
+
+        [TestMethod]
         [DataRow(-1)]
         [DataRow(0)]
         [DataRow(int.MaxValue)]

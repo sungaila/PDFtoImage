@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace PDFtoImage
 {
@@ -224,7 +225,9 @@ namespace PDFtoImage
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), pages, password, options, cancellationToken))
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), pages, password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }
@@ -244,7 +247,9 @@ namespace PDFtoImage
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), pages, password, options, cancellationToken))
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), pages, password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }
@@ -263,7 +268,9 @@ namespace PDFtoImage
             if (pdfAsBase64String == null)
                 throw new ArgumentNullException(nameof(pdfAsBase64String));
 
-            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), password, options, cancellationToken))
+            cancellationToken.ThrowIfCancellationRequested();
+
+            await foreach (var image in ToImagesAsync(Convert.FromBase64String(pdfAsBase64String), password, options, cancellationToken).ConfigureAwait(false))
             {
                 yield return image;
             }

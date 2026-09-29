@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PDFtoImage.Internals;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -12,6 +13,17 @@ namespace PDFtoImage.Tests
     [TestClass]
     public class CppUnsignedLongTests : TestBase
     {
+        [TestMethod]
+        public void FileAccessInteropUsesNativeWordSizedLengthAndAlignedPointers()
+        {
+            var type = typeof(NativeMethods.FPDF_FILEACCESS);
+#if !NET6_0_OR_GREATER
+            Assert.AreEqual(typeof(UIntPtr), type.GetField("m_FileLen", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!.FieldType);
+#endif
+            Assert.AreEqual(IntPtr.Size == 8 ? 24 : 12, Marshal.SizeOf(type));
+            Assert.AreEqual(IntPtr.Size == 8 ? 8 : 4, Marshal.OffsetOf(type, "m_GetBlock").ToInt32());
+        }
+
         private const long Exactly4GiB = 1L << 32;
         private const long LargePdfXrefOffset = (long)uint.MaxValue + 4096;
 

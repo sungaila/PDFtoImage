@@ -85,10 +85,10 @@ namespace PDFtoImage
             if (pages == null)
                 throw new ArgumentNullException(nameof(pages));
 
+            using var ownedStream = leaveOpen ? null : pdfStream;
             var validatedPages = pages.ToArray();
 
-            // Stream -> Internals.PdfDocument
-            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
+            using var pdfDocument = PdfDocument.Load(pdfStream, password, disposeStream: false);
 
             var pageCount = pdfDocument.PageSizes.Count;
 
@@ -223,16 +223,26 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            // Stream -> Internals.PdfDocument
-            using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
+            SKBitmap? bitmap = null;
+            try
+            {
+                using var pdfDocument = PdfDocument.Load(pdfStream, password, !leaveOpen);
 
-            var pageCount = pdfDocument.PageSizes.Count;
-            var offset = page.GetOffset(pageCount);
+                var pageCount = pdfDocument.PageSizes.Count;
+                var offset = page.GetOffset(pageCount);
 
-            if (offset >= pageCount)
-                throw new ArgumentOutOfRangeException(nameof(page), $"The page number must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
+                if (offset >= pageCount)
+                    throw new ArgumentOutOfRangeException(nameof(page), $"The page number must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
 
-            return ToImagesImpl(pdfDocument, options, [offset]).First();
+                bitmap = ToImagesImpl(pdfDocument, options, [offset]).First();
+                return bitmap;
+            }
+            catch
+            {
+                // Ownership only reaches the caller after document cleanup succeeds.
+                bitmap?.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -282,20 +292,25 @@ namespace PDFtoImage
             if (pdfStream == null)
                 throw new ArgumentNullException(nameof(pdfStream));
 
-            // Stream -> Internals.PdfDocument
-            using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
-
-            var pageCount = pdfDocument.PageSizes.Count;
-            var (offset, length) = pages.GetOffsetAndLength(pageCount);
-
-            if (offset + length > pageCount)
-                throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
-
-            var pageNumbers = Enumerable.Range(offset, length);
-
-            await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, pageNumbers, cancellationToken))
+            try
             {
-                yield return bitmap;
+                using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, disposeStream: false), cancellationToken).ConfigureAwait(false);
+
+                var pageCount = pdfDocument.PageSizes.Count;
+                var (offset, length) = pages.GetOffsetAndLength(pageCount);
+
+                if (offset + length > pageCount)
+                    throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
+
+                var pageNumbers = Enumerable.Range(offset, length);
+
+                await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, pageNumbers, cancellationToken).ConfigureAwait(false))
+                    yield return bitmap;
+            }
+            finally
+            {
+                if (!leaveOpen)
+                    await pdfStream.DisposeAsync().ConfigureAwait(false);
             }
         }
 
@@ -317,19 +332,25 @@ namespace PDFtoImage
             if (pages == null)
                 throw new ArgumentNullException(nameof(pages));
 
-            var validatedPages = pages.ToArray();
-
-            // Stream -> Internals.PdfDocument
-            using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, !leaveOpen), cancellationToken);
-
-            var pageCount = pdfDocument.PageSizes.Count;
-
-            if (validatedPages.Any(p => p < 0 || p >= pageCount))
-                throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
-
-            await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, validatedPages, cancellationToken))
+            try
             {
-                yield return bitmap;
+                cancellationToken.ThrowIfCancellationRequested();
+                var validatedPages = pages.ToArray();
+
+                using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, disposeStream: false), cancellationToken).ConfigureAwait(false);
+
+                var pageCount = pdfDocument.PageSizes.Count;
+
+                if (validatedPages.Any(p => p < 0 || p >= pageCount))
+                    throw new ArgumentOutOfRangeException(nameof(pages), $"The page numbers must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
+
+                await foreach (var bitmap in ToImagesImplAsync(pdfDocument, options, validatedPages, cancellationToken).ConfigureAwait(false))
+                    yield return bitmap;
+            }
+            finally
+            {
+                if (!leaveOpen)
+                    await pdfStream.DisposeAsync().ConfigureAwait(false);
             }
         }
 
@@ -344,7 +365,7 @@ namespace PDFtoImage
         /// <returns>The rendered PDF pages as images.</returns>
         public static async IAsyncEnumerable<SKBitmap> ToImagesAsync(Stream pdfStream, bool leaveOpen = false, string? password = null, RenderOptions options = default, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
-            await foreach (var bitmap in ToImagesImplAsync(pdfStream, leaveOpen, password, options, null, cancellationToken))
+            await foreach (var bitmap in ToImagesImplAsync(pdfStream, leaveOpen, password, options, null, cancellationToken).ConfigureAwait(false))
             {
                 yield return bitmap;
             }
@@ -353,8 +374,12 @@ namespace PDFtoImage
 
         internal static void SaveImpl(string filename, SKEncodedImageFormat format, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
+            if (pdfStream == null)
+                throw new ArgumentNullException(nameof(pdfStream));
+
+            using var ownedStream = leaveOpen ? null : pdfStream;
             using var fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write);
-            SaveImpl(fileStream, format, pdfStream, page, leaveOpen, password, options);
+            SaveImpl(fileStream, format, pdfStream, page, leaveOpen: true, password, options);
         }
 
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)

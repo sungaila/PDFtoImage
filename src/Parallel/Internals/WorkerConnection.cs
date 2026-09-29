@@ -168,6 +168,8 @@ namespace PDFtoImage.Parallel.Internals
 
         internal async Task<SKBitmap> RenderPageAsync(int page, RenderOptions options, ProcessorTransferMode transferMode, string tempDirectory, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var bitmapPath = transferMode == ProcessorTransferMode.MemoryMappedFile
                 ? Path.Combine(tempDirectory, "PDFtoImage.Parallel." + Guid.NewGuid().ToString("N") + ".bitmap.raw")
                 : null;
