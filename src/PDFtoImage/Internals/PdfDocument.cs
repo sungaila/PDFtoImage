@@ -483,13 +483,17 @@ namespace PDFtoImage.Internals
             for (var y = 0; y < height; y++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
+
                 var row = (byte*)pixels + (long)y * rowBytes;
+
                 for (var x = 0; x < width; x++)
                 {
                     var pixel = row + x * 4;
                     var alpha = pixel[3];
+
                     if (alpha == byte.MaxValue)
                         continue;
+
                     pixel[0] = (byte)((pixel[0] * alpha + 127) / 255);
                     pixel[1] = (byte)((pixel[1] * alpha + 127) / 255);
                     pixel[2] = (byte)((pixel[2] * alpha + 127) / 255);

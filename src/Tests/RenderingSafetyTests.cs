@@ -40,18 +40,18 @@ namespace PDFtoImage.Tests
         {
             using var output = new MemoryStream();
             using var input = new MemoryStream(Pdf);
-            Assert.ThrowsExactly<IOException>(() =>
-            {
-                // WebP cannot encode dimensions above 16383 pixels. Rendering this
-                // thin page is valid, but the encoder must report its failure.
-                var options = new RenderOptions(Dpi: 72, Width: 16384, Height: 1);
-                if (inputKind == 0)
-                    Conversion.SaveWebp(output, input, options: options);
-                else if (inputKind == 1)
-                    Conversion.SaveWebp(output, Pdf, options: options);
-                else
-                    Conversion.SaveWebp(output, Convert.ToBase64String(Pdf), options: options);
-            });
+
+            // WebP cannot encode dimensions above 16383 pixels. Rendering this
+            // thin page is valid, but the encoder must report its failure.
+            var options = new RenderOptions(Dpi: 72, Width: 16384, Height: 1);
+            
+            if (inputKind == 0)
+                Assert.ThrowsExactly<IOException>(() => Conversion.SaveWebp(output, input, options: options));
+            else if (inputKind == 1)
+                Assert.ThrowsExactly<IOException>(() => Conversion.SaveWebp(output, Pdf, options: options));
+            else
+                Assert.ThrowsExactly<IOException>(() => Conversion.SaveWebp(output, Convert.ToBase64String(Pdf), options: options));
+
             Assert.AreEqual(0L, output.Length);
         }
 
@@ -96,7 +96,7 @@ namespace PDFtoImage.Tests
             using var stream = new MemoryStream(Pdf);
             using var document = PdfDocument.Load(stream, null, disposeStream: false);
             Assert.ThrowsExactly<ArgumentOutOfRangeException>(() => document.Render(0, options,
-                (_, _) => throw new AssertFailedException("Invalid options must be rejected before allocating pixels.")));
+                (_, _) => throw new AssertFailedException("Invalid options must be rejected before allocating pixels."), TestContext!.CancellationToken));
         }
 
 #if NET6_0_OR_GREATER

@@ -10,8 +10,10 @@ namespace PDFtoImage.Internals
         private static readonly object _syncRoot = new();
 #endif
         private static PdfLibrary? _library;
+
+        private readonly bool _initialized;
+
         private bool disposedValue;
-        private bool _initialized;
 
         public static void EnsureLoaded()
         {
