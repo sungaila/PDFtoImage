@@ -211,7 +211,7 @@ namespace PDFtoImage.Parallel
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                selection = PageSelection.FromPages([.. pages]);
+                selection = PageSelection.FromPages(global::PDFtoImage.Conversion.SnapshotPages(pages, cancellationToken));
             }
             catch
             {

@@ -117,12 +117,38 @@ namespace PDFtoImage.Internals
             if (_disposed)
                 throw new ObjectDisposedException(GetType().Name);
 
+            cancellationToken.ThrowIfCancellationRequested();
+
+            ValidatePositiveFinite(dpiX, nameof(dpiX));
+            ValidatePositiveFinite(dpiY, nameof(dpiY));
+
+            if (requestedWidth.HasValue)
+                ValidatePositiveFinite(requestedWidth.Value, nameof(requestedWidth));
+
+            if (requestedHeight.HasValue)
+                ValidatePositiveFinite(requestedHeight.Value, nameof(requestedHeight));
+
+            if (rotate < PdfRotation.Rotate0 || rotate > PdfRotation.Rotate270)
+                throw new ArgumentOutOfRangeException(nameof(rotate));
+
+            if (bounds.HasValue)
+            {
+                ValidatePositiveFinite(bounds.Value.Width, nameof(bounds));
+                ValidatePositiveFinite(bounds.Value.Height, nameof(bounds));
+
+                if (!IsFinite(bounds.Value.X) || !IsFinite(bounds.Value.Y))
+                    throw new ArgumentOutOfRangeException(nameof(bounds), "Bounds coordinates must be finite.");
+            }
+
             // correct the width and height for the given dpi
             // but only if both width and height are not specified (so the original sizes are corrected)
             var correctFromDpi = requestedWidth == null && requestedHeight == null;
 
             var originalWidth = PageSizes[page].Width;
             var originalHeight = PageSizes[page].Height;
+
+            if (!IsFinite(originalWidth) || !IsFinite(originalHeight) || originalWidth <= 0 || originalHeight <= 0)
+                throw new PdfInvalidFormatException();
 
             if (withAspectRatio && !(dpiRelativeToBounds && bounds.HasValue))
             {
@@ -249,8 +275,10 @@ namespace PDFtoImage.Internals
                 }
             }
 
-            var bitmapWidth = (int)width;
-            var bitmapHeight = (int)height;
+            // All consumers use signed 32-bit strides and byte counts. Validate before
+            // allocating pixels or allowing float-to-int overflow to reach PDFium.
+            var (bitmapWidth, bitmapHeight) = ValidateBitmapDimensions(width, height);
+            _ = GetRenderBounds(width, height, bounds, originalWidth, originalHeight);
             cancellationToken.ThrowIfCancellationRequested();
             var (pixels, rowBytes) = getPixels(bitmapWidth, bitmapHeight);
             if (pixels == IntPtr.Zero || bitmapWidth <= 0 || bitmapHeight <= 0 || rowBytes < checked(bitmapWidth * 4))
@@ -278,6 +306,11 @@ namespace PDFtoImage.Internals
                 float boundsHeightFactor = bounds != null ? bounds.Value.Height / originalHeight : 0f;
 
                 using var canvas = new SKCanvas(bitmap);
+                // Each tile already contains its background. Copy translucent tiles
+                // without blending that background into the destination a second time.
+                using var paint = backgroundColor.Alpha == byte.MaxValue
+                    ? null
+                    : new SKPaint { BlendMode = SKBlendMode.Src };
                 canvas.Clear(backgroundColor);
 
                 for (int y = 0; y < verticalTileCount; y++)
@@ -316,7 +349,7 @@ namespace PDFtoImage.Internals
                                 (float)Math.Floor(y * currentTileHeight),
                                 (float)Math.Floor(x * currentTileWidth + currentTileWidth),
                                 (float)Math.Floor(y * currentTileHeight + currentTileHeight)),
-                            SKSamplingOptions.Default);
+                            SKSamplingOptions.Default, paint);
                     }
                 }
 
@@ -335,6 +368,51 @@ namespace PDFtoImage.Internals
             {
                 height = pageSize.Height / pageSize.Width * width.Value;
             }
+        }
+
+        private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
+
+        private static void ValidatePositiveFinite(float value, string parameterName)
+        {
+            if (!IsFinite(value) || value <= 0)
+                throw new ArgumentOutOfRangeException(parameterName, "The value must be positive and finite.");
+        }
+
+        private static (int Width, int Height) ValidateBitmapDimensions(float width, float height)
+        {
+            if (!IsFinite(width) || !IsFinite(height) || width < 1 || height < 1 ||
+                (double)width > int.MaxValue || (double)height > int.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(width), "The rendered page dimensions must fit positive 32-bit pixel counts.");
+
+            var bitmapWidth = (int)width;
+            var bitmapHeight = (int)height;
+            if ((long)bitmapWidth * bitmapHeight > int.MaxValue / 4)
+                throw new ArgumentOutOfRangeException(nameof(width), "The rendered BGRA bitmap must fit a signed 32-bit byte count.");
+            return (bitmapWidth, bitmapHeight);
+        }
+
+        private static (int X, int Y, int Width, int Height) GetRenderBounds(float width, float height, RectangleF? bounds, float originalWidth, float originalHeight)
+        {
+            if (bounds.HasValue)
+            {
+                ValidatePositiveFinite(bounds.Value.Width, nameof(bounds));
+                ValidatePositiveFinite(bounds.Value.Height, nameof(bounds));
+                if (!IsFinite(bounds.Value.X) || !IsFinite(bounds.Value.Y))
+                    throw new ArgumentOutOfRangeException(nameof(bounds), "Scaled bounds coordinates must be finite.");
+            }
+
+            return (
+                ToRenderCoordinate(bounds.HasValue ? -Math.Floor(bounds.Value.X * (originalWidth / bounds.Value.Width)) : 0),
+                ToRenderCoordinate(bounds.HasValue ? -Math.Floor(bounds.Value.Y * (originalHeight / bounds.Value.Height)) : 0),
+                ToRenderCoordinate(bounds.HasValue ? Math.Ceiling(originalWidth * (width / bounds.Value.Width)) : Math.Ceiling(width)),
+                ToRenderCoordinate(bounds.HasValue ? Math.Ceiling(originalHeight * (height / bounds.Value.Height)) : Math.Ceiling(height)));
+        }
+
+        private static int ToRenderCoordinate(double value)
+        {
+            if (double.IsNaN(value) || double.IsInfinity(value) || value < int.MinValue || value > int.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(value), "The scaled bounds must fit PDFium's signed 32-bit coordinates.");
+            return (int)value;
         }
 
         private static SKBitmap RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, CancellationToken cancellationToken = default)
@@ -357,6 +435,7 @@ namespace PDFtoImage.Internals
         private static void RenderSubset(PdfFile file, int page, float width, float height, PdfRotation rotate, NativeMethods.FPDFRenderFlags flags, bool renderFormFill, SKColor backgroundColor, RectangleF? bounds, float originalWidth, float originalHeight, IntPtr pixels, int rowBytes, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            var renderBounds = GetRenderBounds(width, height, bounds, originalWidth, originalHeight);
             IntPtr handle = IntPtr.Zero;
 
             try
@@ -377,10 +456,10 @@ namespace PDFtoImage.Internals
                 file.RenderPDFPageToBitmap(
                     page,
                     handle,
-                    bounds != null ? -(int)Math.Floor(bounds.Value.X * (originalWidth / bounds.Value.Width)) : 0,
-                    bounds != null ? -(int)Math.Floor(bounds.Value.Y * (originalHeight / bounds.Value.Height)) : 0,
-                    bounds != null ? (int)Math.Ceiling(originalWidth * (width / bounds.Value.Width)) : (int)Math.Ceiling(width),
-                    bounds != null ? (int)Math.Ceiling(originalHeight * (height / bounds.Value.Height)) : (int)Math.Ceiling(height),
+                    renderBounds.X,
+                    renderBounds.Y,
+                    renderBounds.Width,
+                    renderBounds.Height,
                     (int)rotate,
                     flags,
                     renderFormFill
@@ -390,6 +469,31 @@ namespace PDFtoImage.Internals
             {
                 if (handle != IntPtr.Zero)
                     NativeMethods.Bitmap_Destroy(handle);
+            }
+
+            // FPDFBitmap_BGRA uses straight alpha. Skia bitmaps and the worker protocol
+            // use premultiplied alpha, including tiles consumed by SKCanvas.
+            if (backgroundColor.Alpha != byte.MaxValue)
+                PremultiplyPixels(pixels, (int)width, (int)height, rowBytes, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+        }
+
+        private static unsafe void PremultiplyPixels(IntPtr pixels, int width, int height, int rowBytes, CancellationToken cancellationToken)
+        {
+            for (var y = 0; y < height; y++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var row = (byte*)pixels + (long)y * rowBytes;
+                for (var x = 0; x < width; x++)
+                {
+                    var pixel = row + x * 4;
+                    var alpha = pixel[3];
+                    if (alpha == byte.MaxValue)
+                        continue;
+                    pixel[0] = (byte)((pixel[0] * alpha + 127) / 255);
+                    pixel[1] = (byte)((pixel[1] * alpha + 127) / 255);
+                    pixel[2] = (byte)((pixel[2] * alpha + 127) / 255);
+                }
             }
         }
 

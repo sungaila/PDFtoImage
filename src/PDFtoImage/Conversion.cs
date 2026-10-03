@@ -28,6 +28,24 @@ namespace PDFtoImage
 #endif
     public static partial class Conversion
     {
+        internal static int[] SnapshotPages(IEnumerable<int> pages, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var result = new List<int>();
+            using var iterator = pages.GetEnumerator();
+
+            while (!cancellationToken.IsCancellationRequested && iterator.MoveNext())
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                result.Add(iterator.Current);
+            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return [.. result];
+        }
+
         internal static IEnumerable<SKBitmap> ToImagesImpl(Stream pdfStream, bool leaveOpen, string? password, RenderOptions options, IEnumerable<int>? pages)
         {
             if (pdfStream == null)
