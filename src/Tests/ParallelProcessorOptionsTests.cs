@@ -1,8 +1,8 @@
 #if NET11_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PDFtoImage.Internals;
 using PDFtoImage.Parallel;
 using PDFtoImage.Parallel.Internals;
-using PDFtoImage.Internals;
 using SkiaSharp;
 using System;
 using System.IO;

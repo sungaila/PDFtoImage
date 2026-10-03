@@ -10,6 +10,9 @@ namespace PDFtoImage.Internals
         private static readonly object _syncRoot = new();
 #endif
         private static PdfLibrary? _library;
+
+        private readonly bool _initialized;
+
         private bool disposedValue;
 
         public static void EnsureLoaded()
@@ -29,6 +32,7 @@ namespace PDFtoImage.Internals
         private PdfLibrary()
         {
             NativeMethods.InitLibrary();
+            _initialized = true;
         }
 
         ~PdfLibrary()
@@ -41,8 +45,12 @@ namespace PDFtoImage.Internals
         {
             if (!disposedValue)
             {
-                NativeMethods.DestroyLibrary();
                 disposedValue = true;
+                // A finalizer also runs for an object whose constructor threw. In
+                // particular, a missing PDFium binary must not cause another native
+                // load failure on the finalizer thread and terminate the host process.
+                if (_initialized)
+                    NativeMethods.DestroyLibrary();
             }
         }
 

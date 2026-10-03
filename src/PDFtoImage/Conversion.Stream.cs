@@ -203,7 +203,7 @@ namespace PDFtoImage
             var pageCount = pdfDocument.PageSizes.Count;
             var offset = page.GetOffset(pageCount);
 
-            if (offset >= pageCount)
+            if (offset < 0 || offset >= pageCount)
                 throw new ArgumentOutOfRangeException(nameof(page), $"The page number must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
 
             return pdfDocument.PageSizes[offset];
@@ -231,7 +231,7 @@ namespace PDFtoImage
                 var pageCount = pdfDocument.PageSizes.Count;
                 var offset = page.GetOffset(pageCount);
 
-                if (offset >= pageCount)
+                if (offset < 0 || offset >= pageCount)
                     throw new ArgumentOutOfRangeException(nameof(page), $"The page number must be between 0 and {pageCount - 1}. The PDF has {pageCount} pages in total.");
 
                 bitmap = ToImagesImpl(pdfDocument, options, [offset]).First();
@@ -335,7 +335,8 @@ namespace PDFtoImage
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var validatedPages = pages.ToArray();
+
+                var validatedPages = SnapshotPages(pages, cancellationToken);
 
                 using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, disposeStream: false), cancellationToken).ConfigureAwait(false);
 
@@ -384,8 +385,20 @@ namespace PDFtoImage
 
         internal static void SaveImpl(Stream stream, SKEncodedImageFormat format, Stream pdfStream, Index page = default, bool leaveOpen = false, string? password = null, RenderOptions options = default)
         {
+            if (stream == null)
+            {
+                using var ownedStream = leaveOpen ? null : pdfStream;
+                throw new ArgumentNullException(nameof(stream));
+            }
+
             using var bitmap = ToImage(pdfStream, page, leaveOpen, password, options);
-            bitmap.Encode(stream, format, 100);
+            EncodeImage(bitmap, stream, format);
+        }
+
+        private static void EncodeImage(SKBitmap bitmap, Stream stream, SKEncodedImageFormat format)
+        {
+            if (!bitmap.Encode(stream, format, 100))
+                throw new IOException($"Skia could not encode the rendered page as {format}.");
         }
     }
 }

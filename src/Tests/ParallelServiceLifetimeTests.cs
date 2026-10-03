@@ -167,7 +167,9 @@ namespace PDFtoImage.Tests
             using var directory = new TestDirectory();
             await using var processor = new ParallelPdfProcessor(new ProcessorOptions
             {
-                WorkerCount = 1, TransferMode = ProcessorTransferMode.MemoryMappedFile, TempDirectory = directory.PathName
+                WorkerCount = 1,
+                TransferMode = ProcessorTransferMode.MemoryMappedFile,
+                TempDirectory = directory.PathName
             });
             await Assert.ThrowsExactlyAsync<IOException>(() => processor.ToImageAsync(new FailingDisposeStream(), cancellationToken: TestContext!.CancellationToken));
             Assert.IsEmpty(Directory.GetFiles(directory.PathName));
@@ -182,7 +184,10 @@ namespace PDFtoImage.Tests
             using var directory = new TestDirectory();
             await using var processor = new ParallelPdfProcessor(new ProcessorOptions
             {
-                WorkerCount = 3, SlotCount = 2, TransferMode = ProcessorTransferMode.MemoryMappedFile, TempDirectory = directory.PathName
+                WorkerCount = 3,
+                SlotCount = 2,
+                TransferMode = ProcessorTransferMode.MemoryMappedFile,
+                TempDirectory = directory.PathName
             });
             var otherPdf = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "..", "Assets", "Wikimedia_Commons_web.pdf"));
             var options = new RenderOptions(Dpi: 40);
@@ -310,7 +315,10 @@ namespace PDFtoImage.Tests
             using var directory = new TestDirectory();
             await using var processor = new ParallelPdfProcessor(new ProcessorOptions
             {
-                WorkerCount = 1, SlotCount = 1, TransferMode = ProcessorTransferMode.MemoryMappedFile, TempDirectory = directory.PathName
+                WorkerCount = 1,
+                SlotCount = 1,
+                TransferMode = ProcessorTransferMode.MemoryMappedFile,
+                TempDirectory = directory.PathName
             });
             using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext!.CancellationToken);
             cancellation.CancelAfter(TimeSpan.FromSeconds(30));
