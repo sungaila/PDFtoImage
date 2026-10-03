@@ -44,7 +44,7 @@ namespace PDFtoImage.Tests
             // WebP cannot encode dimensions above 16383 pixels. Rendering this
             // thin page is valid, but the encoder must report its failure.
             var options = new RenderOptions(Dpi: 72, Width: 16384, Height: 1);
-            
+
             if (inputKind == 0)
                 Assert.ThrowsExactly<IOException>(() => Conversion.SaveWebp(output, input, options: options));
             else if (inputKind == 1)
