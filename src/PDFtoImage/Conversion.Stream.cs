@@ -335,7 +335,7 @@ namespace PDFtoImage
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                
+
                 var validatedPages = SnapshotPages(pages, cancellationToken);
 
                 using var pdfDocument = await Task.Run(() => PdfDocument.Load(pdfStream, password, disposeStream: false), cancellationToken).ConfigureAwait(false);

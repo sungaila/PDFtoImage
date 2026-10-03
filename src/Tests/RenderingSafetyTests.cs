@@ -186,7 +186,8 @@ namespace PDFtoImage.Tests
         {
             await using var processor = new Parallel.ParallelPdfProcessor(new Parallel.ProcessorOptions
             {
-                WorkerCount = 1, TransferMode = transferMode
+                WorkerCount = 1,
+                TransferMode = transferMode
             });
             var background = new SKColor(40, 80, 120, 160);
             var options = new RenderOptions(Dpi: 72, Width: useTiling ? 4004 : 32, Height: 32,
@@ -204,7 +205,8 @@ namespace PDFtoImage.Tests
         {
             await using var processor = new Parallel.ParallelPdfProcessor(new Parallel.ProcessorOptions
             {
-                WorkerCount = 1, TransferMode = transferMode
+                WorkerCount = 1,
+                TransferMode = transferMode
             });
             var error = await Assert.ThrowsExactlyAsync<Parallel.ParallelConversionException>(() => processor.ToImageAsync(
                 new MemoryStream(Pdf), options: new RenderOptions(Width: 50000, Height: 50000), cancellationToken: TestContext!.CancellationToken));

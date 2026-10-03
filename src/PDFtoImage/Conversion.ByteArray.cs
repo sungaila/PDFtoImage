@@ -318,7 +318,7 @@ namespace PDFtoImage
                 throw new ArgumentNullException(nameof(imageStream));
 
             using var bitmap = ToImage(pdfAsByteArray, page, password, options);
-            
+
             EncodeImage(bitmap, imageStream, format);
         }
     }
