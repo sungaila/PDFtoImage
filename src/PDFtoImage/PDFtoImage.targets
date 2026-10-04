@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<!--
+		iOS apps must not contain standalone dylibs (ITMS-90171: Invalid bundle structure).
+		Wrap libpdfium.dylib from bblanchon.PDFium.iOS into pdfium.framework before the app bundle is created.
+	-->
+	<Target Name="PDFtoImageReplacePdfiumDylib" AfterTargets="ComputeResolvedFilesToPublishList" DependsOnTargets="_PDFtoImageComputePdfiumFramework;_PDFtoImageCreatePdfiumFramework" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+		<ItemGroup Condition="'@(_PDFtoImagePdfiumDylib)' != ''">
+			<ResolvedFileToPublish Remove="@(_PDFtoImagePdfiumDylib)" />
+			<ResolvedFileToPublish Include="$(_PDFtoImagePdfiumFramework)pdfium;$(_PDFtoImagePdfiumFramework)Info.plist" CopyToPublishDirectory="PreserveNewest" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_PDFtoImageComputePdfiumFramework">
+		<ItemGroup>
+			<_PDFtoImagePdfiumDylib Include="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'libpdfium.dylib'" />
+		</ItemGroup>
+
+		<PropertyGroup>
+			<_PDFtoImagePdfiumFramework>$([MSBuild]::NormalizeDirectory('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'pdfium.framework'))</_PDFtoImagePdfiumFramework>
+			<_PDFtoImagePdfiumVersion>@(_PDFtoImagePdfiumDylib->'%(NuGetPackageVersion)')</_PDFtoImagePdfiumVersion>
+			<_PDFtoImagePdfiumPlatform>iPhoneOS</_PDFtoImagePdfiumPlatform>
+			<_PDFtoImagePdfiumPlatform Condition="$(RuntimeIdentifier.StartsWith('iossimulator'))">iPhoneSimulator</_PDFtoImagePdfiumPlatform>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_PDFtoImageCreatePdfiumFramework" Condition="'@(_PDFtoImagePdfiumDylib)' != ''" Inputs="@(_PDFtoImagePdfiumDylib);$(MSBuildThisFileFullPath)" Outputs="$(_PDFtoImagePdfiumFramework)pdfium;$(_PDFtoImagePdfiumFramework)Info.plist">
+		<Copy SourceFiles="@(_PDFtoImagePdfiumDylib)" DestinationFiles="$(_PDFtoImagePdfiumFramework)pdfium" />
+
+		<!-- the dylib has the install name ./libpdfium.dylib which cannot be resolved inside of a framework -->
+		<Exec Command="xcrun install_name_tool -id @rpath/pdfium.framework/pdfium &quot;$(_PDFtoImagePdfiumFramework)pdfium&quot;" IgnoreStandardErrorWarningFormat="true" />
+
+		<!-- the Info.plist must not claim a lower minimum OS version than the binary (ITMS-90208) -->
+		<Exec Command="xcrun vtool -show-build &quot;$(_PDFtoImagePdfiumFramework)pdfium&quot; | awk '/minos/ { print $2; exit }'" ConsoleToMSBuild="true" StandardOutputImportance="low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_PDFtoImagePdfiumMinimumOSVersion" />
+		</Exec>
+
+		<PropertyGroup>
+			<_PDFtoImagePdfiumInfoPlist><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleExecutable</key>
+	<string>pdfium</string>
+	<key>CFBundleIdentifier</key>
+	<string>de.sungaila.pdftoimage.pdfium</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>pdfium</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(_PDFtoImagePdfiumVersion)</string>
+	<key>CFBundleVersion</key>
+	<string>$(_PDFtoImagePdfiumVersion)</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>$(_PDFtoImagePdfiumPlatform)</string>
+	</array>
+	<key>MinimumOSVersion</key>
+	<string>$(_PDFtoImagePdfiumMinimumOSVersion)</string>
+</dict>
+</plist>]]></_PDFtoImagePdfiumInfoPlist>
+		</PropertyGroup>
+
+		<WriteLinesToFile File="$(_PDFtoImagePdfiumFramework)Info.plist" Lines="$(_PDFtoImagePdfiumInfoPlist)" Overwrite="true" />
+	</Target>
+</Project>
