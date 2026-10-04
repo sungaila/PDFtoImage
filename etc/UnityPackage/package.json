@@ -3,7 +3,7 @@
     "version": "5.4.0",
     "displayName": "PDFtoImage",
     "description": "A .NET library to render PDF files into images.",
-    "unity": "6000.0",
+    "unity": "2022.3",
     "documentationUrl": "https://github.com/sungaila/PDFtoImage",
     "changelogUrl": "https://github.com/sungaila/PDFtoImage/releases/tag/v5.4.0",
     "license": "MIT",

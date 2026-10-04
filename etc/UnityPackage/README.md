@@ -30,6 +30,6 @@ Dispose returned `SKBitmap` instances after use. To save one, use [`SKBitmap.Enc
 
 ## iOS
 
-The included PDFium binaries require iOS 17.0 or later; set the minimum iOS version in Player Settings accordingly.
+Unity 2022.3 or later is supported. The included PDFium binaries require iOS 17.0 or later; set the minimum iOS version in Player Settings accordingly.
 
 PDFium and SkiaSharp are embedded as dynamic frameworks. The native iOS plugin redirects their library names for IL2CPP, so the same managed DLLs can be used on all platforms.
