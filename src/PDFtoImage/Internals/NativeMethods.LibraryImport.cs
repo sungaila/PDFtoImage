@@ -140,107 +140,115 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
-            [LibraryImport("pdfium")]
+            private const string LibraryName =
+#if IOS
+            // iOS apps must not contain standalone dylibs, so pdfium is embedded as pdfium.framework instead
+            "@rpath/pdfium.framework/pdfium";
+#else
+            "pdfium";
+#endif
+
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_InitLibrary();
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_DestroyLibrary();
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_CloseDocument(IntPtr document);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDF_GetPageCount(IntPtr document);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDF_LoadPage(IntPtr document, int page_index);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnAfterLoadPage(IntPtr page, IntPtr _form);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial double FPDF_GetPageWidth(IntPtr page);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial double FPDF_GetPageHeight(IntPtr page);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FORM_OnBeforeClosePage(IntPtr page, IntPtr _form);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_ClosePage(IntPtr page);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RenderPageBitmap(IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDF_GetPageSizeByIndex(IntPtr document, int page_index, out double width, out double height);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFBitmap_CreateEx(int width, int height, int format, IntPtr first_scan, int stride);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDFBitmap_FillRect(IntPtr bitmapHandle, int left, int top, int width, int height, CULong color);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFBitmap_Destroy(IntPtr bitmapHandle);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial CULong FPDF_GetLastError();
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_FFLDraw(IntPtr form, IntPtr bitmap, IntPtr page, int start_x, int start_y, int size_x, int size_y, int rotate, int flags);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDF_RemoveFormFieldHighlight(IntPtr form);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFAvail_Create(IntPtr file_avail, IntPtr file);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFAvail_Destroy(IntPtr avail);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDFAvail_IsDocAvail(IntPtr avail, IntPtr hints);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDFAvail_IsPageAvail(IntPtr avail, int page_index, IntPtr hints);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial int FPDFAvail_IsFormAvail(IntPtr avail, IntPtr hints);
 
-            [LibraryImport("pdfium", StringMarshalling = StringMarshalling.Utf8)]
+            [LibraryImport(LibraryName, StringMarshalling = StringMarshalling.Utf8)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFAvail_GetDocument(IntPtr avail, string? password);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial IntPtr FPDFDOC_InitFormFillEnvironment(IntPtr document, IntPtr formInfo);
 
-            [LibraryImport("pdfium")]
+            [LibraryImport(LibraryName)]
             [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
             public static partial void FPDFDOC_ExitFormFillEnvironment(IntPtr handle);
         }

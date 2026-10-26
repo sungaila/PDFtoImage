@@ -26,7 +26,6 @@ PluginImporter:
         Exclude OSXUniversal: 1
         Exclude Win: 1
         Exclude Win64: 1
-        Exclude WindowsStoreApps: 1
         Exclude iOS: 0
     Editor:
       enabled: 0
@@ -50,14 +49,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
-    WindowsStoreApps:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
     iOS:
       enabled: 1
       settings:
@@ -65,6 +56,7 @@ PluginImporter:
         CPU: ARM64Simulator, X64
         CompileFlags: 
         FrameworkDependencies: 
+        XcodeProjectType: All
   userData: 
   assetBundleName: 
   assetBundleVariant: 

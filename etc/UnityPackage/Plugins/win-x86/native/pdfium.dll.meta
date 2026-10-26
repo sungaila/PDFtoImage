@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: 1c8fb1988311dca42905666fc6e16d7d
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
@@ -11,92 +11,52 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : Any
-    second:
+    Android:
+      enabled: 0
+      settings:
+        AndroidLibraryDependee: UnityLibrary
+        AndroidSharedLibraryType: Executable
+        CPU: ARMv7
+    Any:
       enabled: 0
       settings:
         Exclude Android: 1
         Exclude Editor: 1
         Exclude Linux64: 0
         Exclude OSXUniversal: 0
-        Exclude WebGL: 1
         Exclude Win: 0
         Exclude Win64: 1
-        Exclude WindowsStoreApps: 0
         Exclude iOS: 1
-        Exclude tvOS: 1
-  - first:
-      Android: Android
-    second:
-      enabled: 0
-      settings:
-        AndroidSharedLibraryType: Executable
-        CPU: ARMv7
-  - first:
-      Any: 
-    second:
-      enabled: 0
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 0
       settings:
         CPU: AnyCPU
         DefaultValueInitialized: true
-        OS: Windows
-  - first:
-      Standalone: Linux64
-    second:
+        OS: AnyOS
+    Linux64:
       enabled: 1
       settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: OSXUniversal
-    second:
+        CPU: None
+    OSXUniversal:
       enabled: 1
       settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: Win
-    second:
+        CPU: None
+    Win:
       enabled: 1
       settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: Win64
-    second:
+        CPU: x86
+    Win64:
       enabled: 0
       settings:
-        CPU: AnyCPU
-  - first:
-      Windows Store Apps: WindowsStoreApps
-    second:
-      enabled: 1
-      settings:
-        CPU: X86
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: UWP
-        ScriptingBackend: AnyScriptingBackend
-  - first:
-      iPhone: iOS
-    second:
+        CPU: None
+    iOS:
       enabled: 0
       settings:
         AddToEmbeddedBinaries: false
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-  - first:
-      tvOS: tvOS
-    second:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        CompileFlags: 
-        FrameworkDependencies: 
+        XcodeProjectType: All
   userData: 
   assetBundleName: 
   assetBundleVariant: 

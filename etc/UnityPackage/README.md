@@ -27,3 +27,8 @@ PDFtoImage.Conversion.SavePng(
 `SaveJpeg`, `SavePng`, `SaveWebp`, and `ToImage` render a single page. `ToImages` and `ToImagesAsync` render multiple pages.
 
 Dispose returned `SKBitmap` instances after use. To save one, use [`SKBitmap.Encode`](https://learn.microsoft.com/en-us/dotnet/api/skiasharp.skbitmap.encode?view=skiasharp).
+
+## iOS
+The included PDFium binaries require iOS 17.4 or later; set the minimum iOS version in Player Settings accordingly.
+
+PDFium and SkiaSharp are embedded as dynamic frameworks. The native iOS plugin redirects their library names for IL2CPP, so the same managed DLLs can be used on all platforms.

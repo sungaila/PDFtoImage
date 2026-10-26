@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 207944e6dde1ea4459670913a6422bd5
+guid: b9ceaa44cd248c944aef21fafde8ea4b
 PluginImporter:
   externalObjects: {}
   serializedVersion: 3
@@ -26,7 +26,6 @@ PluginImporter:
         Exclude OSXUniversal: 1
         Exclude Win: 1
         Exclude Win64: 1
-        Exclude WindowsStoreApps: 1
         Exclude iOS: 0
     Editor:
       enabled: 0
@@ -41,7 +40,7 @@ PluginImporter:
     OSXUniversal:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
     Win:
       enabled: 0
       settings:
@@ -50,14 +49,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
-    WindowsStoreApps:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
     iOS:
       enabled: 1
       settings:
@@ -65,6 +56,7 @@ PluginImporter:
         CPU: ARM64
         CompileFlags: 
         FrameworkDependencies: 
+        XcodeProjectType: All
   userData: 
   assetBundleName: 
   assetBundleVariant: 

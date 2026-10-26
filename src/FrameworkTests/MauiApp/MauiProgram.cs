@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace PDFtoImage.FrameworkTests.MauiApp
+﻿namespace PDFtoImage.FrameworkTests.MauiApp
 {
     public static class MauiProgram
     {
@@ -14,10 +12,6 @@ namespace PDFtoImage.FrameworkTests.MauiApp
                     fonts.AddFont("OpenSans_Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans_Semibold.ttf", "OpenSansSemibold");
                 });
-
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
 
             return builder.Build();
         }
