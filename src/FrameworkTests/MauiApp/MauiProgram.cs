@@ -13,10 +13,6 @@
                     fonts.AddFont("OpenSans_Semibold.ttf", "OpenSansSemibold");
                 });
 
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
-
             return builder.Build();
         }
     }
