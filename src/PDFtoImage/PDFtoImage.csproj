@@ -15,7 +15,7 @@
 	<!-- NuGet -->
 	<PropertyGroup>
 		<VersionPrefix>$(ProductVersion)</VersionPrefix>
-		<VersionSuffix>preview</VersionSuffix>
+		<VersionSuffix>preview2</VersionSuffix>
 		<Authors>David Sungaila</Authors>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,6 +23,7 @@
 		<PackageProjectUrl>https://github.com/sungaila/PDFtoImage</PackageProjectUrl>
 		<Description>A .NET library to render PDF files into images.</Description>
 		<PackageReleaseNotes>- Added .NET 11 TargetFramework.
+- Added support for iOS and iOS Simulator.
 - Updated PDFium and SkiaSharp dependencies.
 - Prepared the core library for PDFtoImage.Parallel.
 - Improved input validation and resource cleanup.
@@ -156,7 +157,6 @@
 
 	<ItemGroup>
 		<None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0-browser1.0\PDFtoImage.props" />
-		<None Include="PDFtoImage.targets" Pack="true" PackagePath="buildTransitive\net10.0-ios18.0\PDFtoImage.targets" />
 	</ItemGroup>
 
 	<Import Project="PDFtoImage.PropertiesSigning.targets" />

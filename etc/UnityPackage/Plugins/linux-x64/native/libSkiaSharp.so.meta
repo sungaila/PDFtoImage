@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: 46527f46cf599634cb616cd5f9a87261
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
@@ -11,9 +11,14 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : Any
-    second:
+    Android:
+      enabled: 0
+      settings:
+        AndroidLibraryDependee: UnityLibrary
+        AndroidSharedLibraryType: Executable
+        CPU: ARMv7
+        Is16KbAligned: false
+    Any:
       enabled: 0
       settings:
         Exclude Android: 1
@@ -26,58 +31,32 @@ PluginImporter:
         Exclude WindowsStoreApps: 1
         Exclude iOS: 1
         Exclude tvOS: 1
-  - first:
-      Android: Android
-    second:
-      enabled: 0
-      settings:
-        AndroidSharedLibraryType: Executable
-        CPU: ARMv7
-  - first:
-      Any: 
-    second:
-      enabled: 0
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 1
       settings:
         CPU: x86_64
         DefaultValueInitialized: true
         OS: Linux
-  - first:
-      Standalone: Linux64
-    second:
+    Linux64:
       enabled: 1
       settings:
-        CPU: AnyCPU
-  - first:
-      Standalone: OSXUniversal
-    second:
+        CPU: x86_64
+    OSXUniversal:
       enabled: 0
       settings:
         CPU: None
-  - first:
-      Standalone: Win
-    second:
-      enabled: 1
-      settings:
-        CPU: None
-  - first:
-      Standalone: Win64
-    second:
-      enabled: 1
-      settings:
-        CPU: None
-  - first:
-      WebGL: WebGL
-    second:
+    WebGL:
       enabled: 0
       settings: {}
-  - first:
-      Windows Store Apps: WindowsStoreApps
-    second:
+    Win:
+      enabled: 1
+      settings:
+        CPU: None
+    Win64:
+      enabled: 1
+      settings:
+        CPU: None
+    WindowsStoreApps:
       enabled: 0
       settings:
         CPU: AnyCPU
@@ -85,18 +64,15 @@ PluginImporter:
         PlaceholderPath: 
         SDK: AnySDK
         ScriptingBackend: AnyScriptingBackend
-  - first:
-      iPhone: iOS
-    second:
+    iOS:
       enabled: 0
       settings:
         AddToEmbeddedBinaries: false
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-  - first:
-      tvOS: tvOS
-    second:
+        XcodeProjectType: All
+    tvOS:
       enabled: 0
       settings:
         CPU: AnyCPU

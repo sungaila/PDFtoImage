@@ -46,8 +46,8 @@ https://github.com/sungaila/PDFtoImage.git?path=etc/UnityPackage
 * [ASP.NET](https://learn.microsoft.com/en-us/aspnet/overview)
 * [ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/introduction-to-aspnet-core)
 * [Blazor WebAssembly](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly)
-* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui) (excluding iOS, see [#141](https://github.com/sungaila/PDFtoImage/issues/141))
-* [Unity](https://docs.unity3d.com/Manual/Mono.html) (excluding iOS, see [#141](https://github.com/sungaila/PDFtoImage/issues/141))
+* [.NET Multi-platform App UI (.NET MAUI)](https://learn.microsoft.com/en-us/dotnet/maui/what-is-maui)
+* [Unity](https://docs.unity3d.com/Manual/Mono.html)
 * [Universal Windows Platform (UWP)](https://learn.microsoft.com/en-us/windows/uwp/get-started/universal-application-platform-guide)
 * [Windows UI Library 3 (WinUI 3)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
 

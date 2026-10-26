@@ -140,11 +140,12 @@ namespace PDFtoImage.Internals
 
         private static partial class Imports
         {
+            private const string LibraryName =
 #if IOS
             // iOS apps must not contain standalone dylibs, so pdfium is embedded as pdfium.framework instead
-            private const string LibraryName = "@rpath/pdfium.framework/pdfium";
+            "@rpath/pdfium.framework/pdfium";
 #else
-            private const string LibraryName = "pdfium";
+            "pdfium";
 #endif
 
             [LibraryImport(LibraryName)]

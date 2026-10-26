@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSTest.Sdk/4.4.1">
+﻿<Project Sdk="MSTest.Sdk/4.5.1">
   <!-- Assembly -->
   <PropertyGroup>
     <TargetFrameworks>net471;net481;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
@@ -50,8 +50,5 @@
     <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
 		<PackageReference Include="System.Buffers" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
 		<PackageReference Include="System.Memory" Condition="'$(TargetFramework)' == 'net471' or '$(TargetFramework)' == 'net481'" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageVersion Update="Microsoft.Testing.Extensions.CodeCoverage" Version="18.11.2" />
   </ItemGroup>
 </Project>
