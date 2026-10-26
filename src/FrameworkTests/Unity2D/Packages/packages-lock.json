@@ -209,7 +209,7 @@
       "url": "https://packages.unity.com"
     },
     "de.sungaila.pdftoimage": {
-      "version": "file:X:/Repos/PDFtoImage/etc/UnityPackage",
+      "version": "file:X:/Repos/sungaila/PDFtoImage/etc/UnityPackage",
       "depth": 0,
       "source": "local",
       "dependencies": {}

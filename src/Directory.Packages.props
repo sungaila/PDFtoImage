@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <ProductVersion>6.0.0</ProductVersion>
+		<ProductVersionSuffix>preview.2</ProductVersionSuffix>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>

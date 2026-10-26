@@ -8,7 +8,7 @@
 		<RootNamespace>PDFtoImage.WebConverter</RootNamespace>
 		<StartupObject>PDFtoImage.WebConverter.Client.Program</StartupObject>
 		<VersionPrefix>$(ProductVersion)</VersionPrefix>
-		<VersionSuffix>preview2</VersionSuffix>
+		<VersionSuffix>$(ProductVersionSuffix)</VersionSuffix>
 		<WasmNativeStrip>true</WasmNativeStrip>
 		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
 		<InvariantGlobalization>true</InvariantGlobalization>
