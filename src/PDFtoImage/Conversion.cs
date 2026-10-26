@@ -21,8 +21,8 @@ namespace PDFtoImage
     [SupportedOSPlatform("Windows")]
     [SupportedOSPlatform("Linux")]
     [SupportedOSPlatform("macOS")]
-    [SupportedOSPlatform("iOS13.6")]
-    [SupportedOSPlatform("MacCatalyst13.5")]
+    [SupportedOSPlatform("iOS17.4")]
+    [SupportedOSPlatform("MacCatalyst17.4")]
     [SupportedOSPlatform("Android31.0")]
     [SupportedOSPlatform("browser")]
 #endif

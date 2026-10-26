@@ -36,11 +36,11 @@ PluginImporter:
     Linux64:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
     OSXUniversal:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
     Win:
       enabled: 0
       settings:
@@ -48,7 +48,7 @@ PluginImporter:
     Win64:
       enabled: 0
       settings:
-        CPU: AnyCPU
+        CPU: None
     iOS:
       enabled: 1
       settings:

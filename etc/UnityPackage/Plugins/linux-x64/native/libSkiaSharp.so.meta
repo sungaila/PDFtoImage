@@ -25,12 +25,9 @@ PluginImporter:
         Exclude Editor: 0
         Exclude Linux64: 0
         Exclude OSXUniversal: 1
-        Exclude WebGL: 1
         Exclude Win: 0
         Exclude Win64: 0
-        Exclude WindowsStoreApps: 1
         Exclude iOS: 1
-        Exclude tvOS: 1
     Editor:
       enabled: 1
       settings:
@@ -45,9 +42,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
-    WebGL:
-      enabled: 0
-      settings: {}
     Win:
       enabled: 1
       settings:
@@ -56,14 +50,6 @@ PluginImporter:
       enabled: 1
       settings:
         CPU: None
-    WindowsStoreApps:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        DontProcess: false
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
     iOS:
       enabled: 0
       settings:
@@ -72,12 +58,6 @@ PluginImporter:
         CompileFlags: 
         FrameworkDependencies: 
         XcodeProjectType: All
-    tvOS:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
-        CompileFlags: 
-        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

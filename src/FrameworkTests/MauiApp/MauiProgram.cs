@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace PDFtoImage.FrameworkTests.MauiApp
+﻿namespace PDFtoImage.FrameworkTests.MauiApp
 {
     public static class MauiProgram
     {
