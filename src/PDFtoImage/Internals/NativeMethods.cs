@@ -12,6 +12,11 @@ namespace PDFtoImage.Internals
         // threads, even when there are multiple AppDomain's in play.
         private static readonly string LockString = string.Intern("e362349b-001d-4cb2-bf55-a71606a3e36f");
 
+        /// <summary>
+        /// The size of the rented buffer used for reading from streams.
+        /// </summary>
+        internal const int RentedBufferSize = 64 * 1024;
+
         public static void InitLibrary()
         {
             lock (LockString)
