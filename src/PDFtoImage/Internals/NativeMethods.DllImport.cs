@@ -146,21 +146,21 @@ namespace PDFtoImage.Internals
 
                 stream.Position = positionConverted;
 
-                rentedBuffer = ArrayPool<byte>.Shared.Rent(sizeConverted);
+                // avoid retaining full PDF arrays in the pool for large native read requests
+                rentedBuffer = ArrayPool<byte>.Shared.Rent(Math.Min(sizeConverted, RentedBufferSize));
 
                 var totalRead = 0;
 
                 while (totalRead < sizeConverted)
                 {
-                    var read = stream.Read(rentedBuffer, totalRead, sizeConverted - totalRead);
+                    var read = stream.Read(rentedBuffer, 0, Math.Min(rentedBuffer.Length, sizeConverted - totalRead));
 
                     if (read <= 0)
                         return 0;
 
+                    Marshal.Copy(rentedBuffer, 0, IntPtr.Add(buffer, totalRead), read);
                     totalRead += read;
                 }
-
-                Marshal.Copy(rentedBuffer, 0, buffer, sizeConverted);
 
                 return 1;
             }
