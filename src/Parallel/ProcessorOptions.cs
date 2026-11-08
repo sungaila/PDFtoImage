@@ -42,7 +42,9 @@ namespace PDFtoImage.Parallel
         /// <see langword="null"/> uses <see cref="System.IO.Path.GetTempPath()"/>. A specified directory is resolved
         /// to an absolute path and created when the processor is constructed. Temporary files are deleted by the host
         /// when their requests finish or are cancelled; the directory itself is retained. On a multi-user host,
-        /// choose a directory that other users cannot modify.
+        /// choose a private directory that other users cannot read or modify. Newly created Unix directories
+        /// allow access only to the owner (0700, subject to umask); existing directory permissions and Windows
+        /// ACLs are not changed. Securing the directory and its parent directories is the caller's responsibility.
         /// </summary>
         public string? TempDirectory { get; init; }
     }

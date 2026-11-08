@@ -1,8 +1,10 @@
 using Microsoft.Win32.SafeHandles;
 using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -175,6 +177,8 @@ namespace PDFtoImage.Parallel.Internals
                 : null;
             FileStream? bitmapLifetime = null;
             SKBitmap? bitmap = null;
+            Exception? renderError = null;
+            List<Exception>? cleanupErrors = null;
 
             try
             {
@@ -216,49 +220,58 @@ namespace PDFtoImage.Parallel.Internals
                 bitmap = bitmapPath == null
                     ? WorkerProtocol.ReadBitmap(response, checked((int)reader.BaseStream.Position))
                     : WorkerProtocol.ReadMappedBitmap(response, checked((int)reader.BaseStream.Position), bitmapLifetime!);
-                return bitmap;
             }
-            catch (ParallelConversionException)
+            catch (Exception exception)
             {
+                renderError = exception is IOException
+                    ? new ParallelConversionException("WorkerProcessTerminated",
+                        "The PDF conversion worker terminated unexpectedly.", null, exception)
+                    : exception;
+
                 // A complete remote error leaves the protocol synchronized and the worker reusable.
-                throw;
+                if (bitmapPath != null && exception is not ParallelConversionException)
+                    TryDispose(this, ref cleanupErrors);
             }
-            catch (IOException exception)
+
+            // Attempt every cleanup even if an earlier one fails, retaining the render error.
+            TryDispose(bitmapLifetime, ref cleanupErrors);
+            try
             {
-                if (bitmapPath != null)
-                    Dispose();
-                throw new ParallelConversionException(
-                    "WorkerProcessTerminated",
-                    "The PDF conversion worker terminated unexpectedly.",
-                    null,
-                    exception);
+                if (bitmapPath != null && (bitmapLifetime == null || !OperatingSystem.IsWindows()))
+                    File.Delete(bitmapPath);
             }
-            catch
+            catch (Exception exception)
             {
-                if (bitmapPath != null)
-                    Dispose();
-                throw;
+                (cleanupErrors ??= []).Add(exception);
             }
-            finally
+
+            // Ownership reaches the caller only after rendering and cleanup both succeed.
+            if (renderError != null || cleanupErrors != null)
+                TryDispose(bitmap, ref cleanupErrors);
+
+            if (cleanupErrors != null)
             {
-                try
-                {
-                    try
-                    {
-                        bitmapLifetime?.Dispose();
-                    }
-                    finally
-                    {
-                        if (bitmapPath != null && (bitmapLifetime == null || !OperatingSystem.IsWindows()))
-                            File.Delete(bitmapPath);
-                    }
-                }
-                catch
-                {
-                    // A failed cleanup prevents ownership from reaching the caller.
-                    bitmap?.Dispose();
-                    throw;
-                }
+                if (renderError != null)
+                    cleanupErrors.Insert(0, renderError);
+                if (cleanupErrors.Count == 1)
+                    ExceptionDispatchInfo.Throw(cleanupErrors[0]);
+                throw new AggregateException("PDF rendering cleanup failed.", cleanupErrors);
+            }
+            if (renderError != null)
+                ExceptionDispatchInfo.Throw(renderError);
+
+            return bitmap!;
+        }
+
+        private static void TryDispose(IDisposable? resource, ref List<Exception>? errors)
+        {
+            try
+            {
+                resource?.Dispose();
+            }
+            catch (Exception exception)
+            {
+                (errors ??= []).Add(exception);
             }
         }
 

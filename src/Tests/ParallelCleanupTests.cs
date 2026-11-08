@@ -292,6 +292,131 @@ namespace PDFtoImage.Tests
             }
         }
 
+        private sealed class FailingWriteStream(Exception error, Action? beforeFailure = null) : MemoryStream
+        {
+            public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+            {
+                beforeFailure?.Invoke();
+                return ValueTask.FromException(error);
+            }
+        }
+
+        private sealed class FailingRenderWorker(Stream stream, Exception? cleanupError) : WorkerConnection(stream)
+        {
+            public override void Dispose()
+            {
+                if (IsDisposed)
+                    return;
+                base.Dispose();
+                if (cleanupError != null)
+                    throw cleanupError;
+            }
+        }
+
+        [TestMethod]
+        [DataRow(false, false)]
+        [DataRow(false, true)]
+        [DataRow(true, false)]
+        [DataRow(true, true)]
+        public async Task RenderFailurePreservesOriginalErrorAndWorkerCleanupFailure(bool cancelled, bool cleanupFails)
+        {
+            var directory = Path.Combine(Path.GetTempPath(), "PDFtoImage.Tests." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(directory);
+            try
+            {
+                Exception renderError = cancelled
+                    ? new OperationCanceledException("render cancellation", new CancellationToken(true))
+                    : new IOException("render failure");
+                var cleanupError = new IOException("worker cleanup");
+                using var stream = new FailingWriteStream(renderError);
+                using var worker = new FailingRenderWorker(stream, cleanupFails ? cleanupError : null);
+                var error = await Assert.ThrowsAsync<Exception>(() =>
+                    worker.RenderPageAsync(0, default, ProcessorTransferMode.MemoryMappedFile, directory, TestContext!.CancellationToken));
+
+                if (cleanupFails)
+                {
+                    Assert.IsInstanceOfType<AggregateException>(error);
+                    var aggregate = (AggregateException)error;
+                    Assert.HasCount(2, aggregate.InnerExceptions);
+                    Assert.AreSame(cleanupError, aggregate.InnerExceptions[1]);
+                    error = aggregate.InnerExceptions[0];
+                }
+                if (cancelled)
+                {
+                    Assert.AreSame(renderError, error);
+                }
+                else
+                {
+                    Assert.IsInstanceOfType<ParallelConversionException>(error);
+                    Assert.AreSame(renderError, error.InnerException);
+                }
+                Assert.IsTrue(worker.IsDisposed);
+                Assert.IsEmpty(Directory.GetFileSystemEntries(directory));
+            }
+            finally
+            {
+                Directory.Delete(directory);
+            }
+        }
+
+        [TestMethod, OSCondition(OperatingSystems.Linux | OperatingSystems.OSX)]
+        public async Task RenderFailurePreservesTempFileDeletionFailure()
+        {
+            var directory = Path.Combine(Path.GetTempPath(), "PDFtoImage.Tests." + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(directory);
+            try
+            {
+                var renderError = new IOException("render failure");
+                using var stream = new FailingWriteStream(renderError, () =>
+                {
+                    // Force unlink to fail after the lifetime handle has been opened.
+                    var path = Directory.GetFiles(directory).Single();
+                    File.Move(path, path + ".moved");
+                    Directory.CreateDirectory(path);
+                });
+                using var worker = new FailingRenderWorker(stream, null);
+                var error = await Assert.ThrowsExactlyAsync<AggregateException>(() =>
+                    worker.RenderPageAsync(0, default, ProcessorTransferMode.MemoryMappedFile, directory, TestContext!.CancellationToken));
+                Assert.HasCount(2, error.InnerExceptions);
+                Assert.IsInstanceOfType<ParallelConversionException>(error.InnerExceptions[0]);
+                Assert.AreSame(renderError, error.InnerExceptions[0].InnerException);
+                Assert.IsTrue(error.InnerExceptions[1] is IOException or UnauthorizedAccessException);
+            }
+            finally
+            {
+                Directory.Delete(directory, recursive: true);
+            }
+        }
+
+        [TestMethod, OSCondition(OperatingSystems.Linux | OperatingSystems.OSX)]
+        [DataRow(false)]
+        [DataRow(true)]
+        public void ProcessorRestrictsNewUnixTempDirectoriesWithoutChangingExistingPermissions(bool existing)
+        {
+            var directory = Path.Combine(Path.GetTempPath(), "PDFtoImage.Tests." + Guid.NewGuid().ToString("N"));
+            var mode = UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute;
+            if (existing)
+            {
+                mode |= UnixFileMode.GroupRead | UnixFileMode.GroupExecute;
+                Directory.CreateDirectory(directory);
+                File.SetUnixFileMode(directory, mode);
+            }
+            try
+            {
+                using var processor = new ParallelPdfProcessor(new ProcessorOptions
+                {
+                    WorkerCount = 1,
+                    TransferMode = ProcessorTransferMode.MemoryMappedFile,
+                    TempDirectory = directory
+                });
+                Assert.AreEqual(mode, File.GetUnixFileMode(directory));
+            }
+            finally
+            {
+                Directory.Delete(directory);
+            }
+        }
+
         private sealed class IdleWorker() : WorkerConnection(Stream.Null);
 
         [TestMethod]
