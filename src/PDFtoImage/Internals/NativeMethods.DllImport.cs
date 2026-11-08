@@ -38,11 +38,11 @@ namespace PDFtoImage.Internals
             var access = new FPDF_FILEACCESS(new UIntPtr(checked((ulong)length)), getBlock, (IntPtr)id);
 #endif
 
-            var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
+            var fileAccessState = Marshal.AllocHGlobal(sizeof(FPDF_FILEACCESS));
 
             try
             {
-                Marshal.StructureToPtr(access, fileAccessState, false);
+                *(FPDF_FILEACCESS*)fileAccessState = access;
                 return fileAccessState;
             }
             catch
