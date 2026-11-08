@@ -20,9 +20,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 11.x
-          dotnet-quality: 'preview'
+          dotnet-quality: 'ga'
       - name: Setup .NET workloads
-        run: dotnet workload install wasm-tools --include-previews
+        run: dotnet workload install wasm-tools
       - name: Update relative paths
         working-directory: src/WebConverter/wwwroot
         shell: pwsh

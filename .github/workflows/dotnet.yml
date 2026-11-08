@@ -77,15 +77,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
           dotnet workload install --include-previews
@@ -127,15 +121,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
           dotnet workload install --include-previews
@@ -165,15 +153,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
           dotnet workload install --include-previews
@@ -245,15 +227,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Setup .NET workloads
         run: >
           dotnet workload install --include-previews
@@ -313,15 +289,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Build .NET Framework test assemblies
         if: runner.os == 'Windows'
         run: |
@@ -329,8 +299,6 @@ jobs:
           dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net481 -p:TargetFrameworks=net481 -p:VersionSuffix=ci
       - name: Build .NET test assemblies
         run: |
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net8.0 -p:TargetFrameworks=net8.0 -p:VersionSuffix=ci
-          dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net9.0 -p:TargetFrameworks=net9.0 -p:VersionSuffix=ci
           dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net10.0 -p:TargetFrameworks=net10.0 -p:VersionSuffix=ci
           dotnet build src/Tests/Tests.csproj -c ${{ env.BUILD_CONFIGURATION }} -f net11.0 -p:TargetFrameworks=net11.0 -p:VersionSuffix=ci
       - name: .NET Framework 4.7.1
@@ -339,12 +307,6 @@ jobs:
       - name: .NET Framework 4.8.1
         if: runner.os == 'Windows' && (success() || failure())
         run: .\src/Tests/bin/${{ env.BUILD_CONFIGURATION }}\net481\PDFtoImage.Tests.exe --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
-      - name: .NET 8
-        if: success() || failure()
-        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net8.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
-      - name: .NET 9
-        if: success() || failure()
-        run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net9.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
       - name: .NET 10
         if: success() || failure()
         run: dotnet test --test-modules src/Tests/bin/${{ env.BUILD_CONFIGURATION }}/net10.0/PDFtoImage.Tests.dll --report-trx --report-gh --report-gh-step-summary-sections test-results --report-gh-slow-test-notices off --output Detailed --results-directory "${{ matrix.os }}/TestResults" ${{ (github.event_name == 'workflow_dispatch' && inputs.generate_assets) == true && '--settings src/Tests/SaveOutputInGeneratedFolder.runsettings' || '' }}
@@ -530,12 +492,12 @@ jobs:
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
         with:
           arch: x64
-      - name: Setup .NET 11 RC
+      - name: Setup .NET
         if: success() || failure()
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 11.x
-          dotnet-quality: preview
+          dotnet-quality: 'ga'
       - name: Publish Native AOT (win-x64)
         if: success() || failure()
         run: |
@@ -602,15 +564,9 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
-            8.x
-            9.x
             10.x
+            11.x
           dotnet-quality: 'ga'
-      - name: Setup .NET 11 RC
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: 11.x
-          dotnet-quality: 'preview'
       - name: Disable .NET problem matcher (no annotations)
         run: echo "::remove-matcher owner=csc::"
       - name: Setup dotnet-coverage

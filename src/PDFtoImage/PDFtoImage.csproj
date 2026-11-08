@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<!-- Assembly -->
 	<PropertyGroup>
-		<TargetFrameworks>net471;net481;netstandard2.1;net8.0;net9.0;net9.0-browser;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst;net11.0;net11.0-browser;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks>net471;net481;netstandard2.1;net10.0;net10.0-browser;net10.0-android;net10.0-ios;net10.0-maccatalyst;net11.0;net11.0-browser;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
 		<AssemblyName>PDFtoImage</AssemblyName>
 		<RootNamespace>PDFtoImage</RootNamespace>
 		<EmbedAllSources>true</EmbedAllSources>
@@ -156,7 +156,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net9.0-browser1.0\PDFtoImage.props" />
+		<None Include="PDFtoImage.props" Pack="true" PackagePath="buildTransitive\net10.0-browser1.0\PDFtoImage.props" />
 	</ItemGroup>
 
 	<Import Project="PDFtoImage.PropertiesSigning.targets" />
