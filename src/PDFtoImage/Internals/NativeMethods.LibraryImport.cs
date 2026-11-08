@@ -32,11 +32,11 @@ namespace PDFtoImage.Internals
             delegate* unmanaged[Cdecl]<IntPtr, CULong, IntPtr, CULong, int> getBlock = &FPDF_GetBlock;
             var access = new FPDF_FILEACCESS(new CULong(checked((nuint)length)), getBlock, id);
 
-            var fileAccessState = Marshal.AllocHGlobal(Marshal.SizeOf<FPDF_FILEACCESS>());
+            var fileAccessState = Marshal.AllocHGlobal(sizeof(FPDF_FILEACCESS));
 
             try
             {
-                Marshal.StructureToPtr(access, fileAccessState, false);
+                *(FPDF_FILEACCESS*)fileAccessState = access;
                 return fileAccessState;
             }
             catch

@@ -293,6 +293,7 @@ jobs:
     permissions:
       contents: read
     name: Test (${{ matrix.os }})
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -484,6 +485,14 @@ jobs:
     timeout-minutes: 90
     if: success() && (github.event_name != 'workflow_dispatch' && true || inputs.run_docker) == true
     steps:
+      - name: Docker issue workaround
+        # https://github.com/actions/runner-images/issues/13729#issuecomment-4183956802
+        id: docker-workaround
+        run: |
+          $dockerState = Get-Service -Name "docker"
+          if ($dockerState.Status -ne "Running") {
+            Start-Service -Name "docker"
+          }
       - name: Checkout
         uses: actions/checkout@v7
         with:

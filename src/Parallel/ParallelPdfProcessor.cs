@@ -67,7 +67,10 @@ namespace PDFtoImage.Parallel
             if (options.TransferMode == ProcessorTransferMode.MemoryMappedFile)
             {
                 _tempDirectory = Path.GetFullPath(options.TempDirectory ?? Path.GetTempPath());
-                Directory.CreateDirectory(_tempDirectory);
+                if (OperatingSystem.IsWindows())
+                    Directory.CreateDirectory(_tempDirectory);
+                else
+                    Directory.CreateDirectory(_tempDirectory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
             }
             else
             {

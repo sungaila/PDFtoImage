@@ -116,7 +116,7 @@ Using `WorkerCount = 1` does not provide parallel rendering, but still runs PDFi
 ### Security
 Worker processes isolate PDFium crashes, but process isolation is not a security sandbox. Workers run with the host application's user identity and privileges. For publicly supplied, untrusted PDFs, run the service with minimal privileges and use an OS or container sandbox if stronger isolation is required.
 
-In `MemoryMappedFile` mode, set `TempDirectory` to a private, access-controlled directory outside the web root; the default system temporary directory can be shared. Temporary PDFs and raw bitmaps can contain sensitive data. The host creates files with unique names and restricts Unix file permissions, but the service controls the directory and its Windows ACL. Allow only the service account to access it, and provide enough space for concurrent renders.
+In `MemoryMappedFile` mode, set `TempDirectory` to a private, access-controlled directory outside the web root; the default system temporary directory can be shared. Temporary PDFs and raw bitmaps can contain sensitive data. The host creates files with unique names and Unix permissions `0600`. Newly created Unix directories use `0700` (both subject to umask). Existing directory permissions and Windows ACLs are not changed. The consuming application is responsible for securing the directory and its parent directories against access or modification by other users. Allow only the service account to access it, and provide enough space for concurrent renders.
 
 Reused `FileStream` inputs are reopened by path. Keep uploaded files in a protected location and unchanged until rendering finishes.
 
