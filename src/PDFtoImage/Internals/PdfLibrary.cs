@@ -11,9 +11,7 @@ namespace PDFtoImage.Internals
 #endif
         private static PdfLibrary? _library;
 
-        private readonly bool _initialized;
-
-        private bool disposedValue;
+        private bool _initialized;
 
         public static void EnsureLoaded()
         {
@@ -35,29 +33,21 @@ namespace PDFtoImage.Internals
             _initialized = true;
         }
 
-        ~PdfLibrary()
-        {
-            Dispose(disposing: false);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
-        private void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                disposedValue = true;
-                // A finalizer also runs for an object whose constructor threw. In
-                // particular, a missing PDFium binary must not cause another native
-                // load failure on the finalizer thread and terminate the host process.
-                if (_initialized)
-                    NativeMethods.DestroyLibrary();
-            }
-        }
-
+        // PDFium is shared by all AppDomains/load contexts.
+        // Only an explicit shutdown, after all native objects have been closed, may destroy its global state.
         public void Dispose()
         {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            lock (_syncRoot)
+            {
+                if (!_initialized)
+                    return;
+
+                NativeMethods.DestroyLibrary();
+                _initialized = false;
+
+                if (ReferenceEquals(_library, this))
+                    _library = null;
+            }
         }
     }
 }
